@@ -14,33 +14,9 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Styling
-const styles = {
-  form: {
-    textAlign: "center",
-  },
-  image: {
-    margin: "20px auto 20px auto",
-    width: "200px",
-  },
-  pageTitle: {
-    margin: "10px auto 10px auto",
-  },
-  textField: {
-    margin: "10px auto 10px auto",
-  },
-  button: {
-    marginTop: 20,
-    position: "relative",
-  },
-  cutomError: {
-    color: "red",
-    fontSize: "0.8rem",
-    marginTop: 10,
-  },
-  progress: {
-    position: "absolute",
-  },
-};
+const styles = (theme) => ({
+  ...theme.spreadThis,
+});
 
 class signup extends Component {
   constructor() {
@@ -53,6 +29,7 @@ class signup extends Component {
       errors: {},
     };
   }
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
@@ -62,29 +39,42 @@ class signup extends Component {
       email: this.state.email,
       password: this.state.password,
       confirmPassword: this.state.confirmPassword,
+      firstName: "",
+      lastName: "",
+      class: "",
+      majors: [],
+      preferredPronouns: "",
+      interests: [],
+      groups: [],
+      varsitySports: [],
+      affinitySports: [],
+      greekLife: "",
+      favorites: {},
+      bio: "",
+      courses: [],
     };
     axios
       .post("/signup", newUserData)
       .then((res) => {
-        console.log(res.data);
-        localStorage.setItem("FBIdToken", `Bearer ${res.data.token}`);
+        const FBIdToken = `Bearer ${res.data.token}`;
+        localStorage.setItem("FBIdToken", FBIdToken);
+        axios.defaults.headers.common["Authorization"] = FBIdToken;
         this.setState({
           loading: false,
         });
         this.props.history.push("/profileBuild");
       })
       .catch((err) => {
-        this.setState({
-          errors: err.response.data,
-          loading: false,
-        });
+        this.setState({ errors: err.response.data, loading: false });
       });
   };
+
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
   };
+
   render() {
     const { classes } = this.props;
     const { errors, loading } = this.state;
@@ -129,7 +119,7 @@ class signup extends Component {
               className={classes.textField}
               helperText={errors.confirmPassword}
               error={errors.confirmPassword ? true : false}
-              value={this.state.password}
+              value={this.state.confirmPassword}
               onChange={this.handleChange}
               fullWidth
             />
@@ -152,7 +142,7 @@ class signup extends Component {
             </Button>
             <br />
             <small>
-              already have an account? login <Link to="/login">here</Link>
+              Already have an account? Login <Link to="/login">here</Link>
             </small>
           </form>
         </Grid>

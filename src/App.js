@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles/";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import themeFile from "./util/theme";
 
 // Components
 import NavBar from "./components/NavBar";
@@ -16,25 +17,7 @@ import signup from "./pages/signup";
 import profileBuild from "./pages/profileBuild";
 import profileView from "./pages/profileView";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: "#33c9dc",
-      main: "#ed1c24",
-      dark: "#008394",
-      contrastText: "#fff",
-    },
-    secondary: {
-      light: "#ff6333",
-      main: "#ff3d00",
-      dark: "#b22a00",
-      contrastText: "#fff",
-    },
-  },
-  typography: {
-    useNextVariants: true,
-  },
-});
+const theme = createMuiTheme(themeFile);
 
 let authenticated;
 const token = localStorage.FBIdToken;
