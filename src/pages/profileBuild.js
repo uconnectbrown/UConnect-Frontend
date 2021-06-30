@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -123,422 +124,845 @@ class profileBuild extends Component {
               type="text"
               label="First Name"
               className={classes.textField}
-              helperText={errors.firstName}
-              error={errors.firstName ? true : false}
               value={this.state.firstName}
               onChange={this.handleChange}
               fullWidth
+              required
+              variant="outlined"
+              size={'small'}
             />
+            <br />
             <TextField
               id="lastName"
               name="lastName"
               type="text"
               label="Last Name"
               className={classes.textField}
-              helperText={errors.lastName}
-              error={errors.lastName ? true : false}
               value={this.state.lastName}
               onChange={this.handleChange}
               fullWidth
+              required
+              variant="outlined"
+              size={'small'}
             />
-            <section className={classes.textField}>
-              <label for="class">Class of </label>
-              <select name="class" id="class">
-                <option value="2021.5">2021.5</option>
-                <option value="2022">2022</option>
-                <option value="2022.5">2022.5</option>
-                <option value="2023">2023</option>
-                <option value="2023.5">2023.5</option>
-                <option value="2024">2024</option>
-                <option value="2024.5">2024.5</option>
-                <option value="2025">2025</option>
-              </select>
-            </section>
-            <section class={classes.textField}>
-              <label>
-                What is your intended concentration? Feel free to put Undecided
-                if you don't know at this point.
-              </label>
-              <input list="majors" name="majors" />
-              <datalist id="majors">
-                <option value="Africana Studies" />
-                <option value="American Studies" />
-                <option value="Anthropology" />
-                <option value="Applied Mathematics" />
-                <option value="Applied Mathematics-Biology" />
-                <option value="Applied Mathematics-Computer Science" />
-                <option value="Applied Mathematics-Economics" />
-                <option value="Archaeology and the Ancient World" />
-                <option value="Architecture" />
-                <option value="Astronomy" />
-                <option value="Behavioral Decision Sciences" />
-                <option value="Biochemistry and Molecular Biology" />
-                <option value="Biology" />
-                <option value="Biomedical Engineering" />
-                <option value="Biophysics" />
-                <option value="Business, Entrepreneurship, and Organizations" />
-                <option value="Chemical Physics" />
-                <option value="Chemistry" />
-                <option value="Classics" />
-                <option value="Cognitive Neuroscience" />
-                <option value="Cognitive Science" />
-                <option value="Comparative Literature" />
-                <option value="Computational Biology" />
-                <option value="Computer Science" />
-                <option value="Computer Science-Economics" />
-                <option value="Contemplative Studies" />
-                <option value="Development Studies" />
-                <option value="Early Modern World" />
-                <option value="East Asian Studies" />
-                <option value="Economics" />
-                <option value="Education Studies" />
-                <option value="Egyptology and Assyriology" />
-                <option value="Engineering" />
-                <option value="Engineering and Physics" />
-                <option value="English" />
-                <option value="Environmental Studies" />
-                <option value="Ethnic Studies" />
-                <option value="French and Francophone Studies" />
-                <option value="Gender and Sexuality Studies" />
-                <option value="Geological Sciences" />
-                <option value="Geology-Biology" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-              </datalist>
-            </section>
-            <section className={classes.textField}>
-              <label for="preferredPronouns">
-                What are your preferred pronouns?{" "}
-              </label>
-              <select name="preferredPronouns" id="preferredPronouns">
-                <option value="he/him">he/him</option>
-                <option value="she/her">she/her</option>
-                <option value="they/them">they/them</option>
-                <option value="ze/hir">ze/hir</option>
-                <option value="other">other</option>
-              </select>
-            </section>
+            <TextField
+                id="class"
+                name="class"
+                select
+                label="Class of ..."
+                className={classes.textField}
+                value={this.state.class}
+                onChange={this.handleChange}
+                variant="outlined"
+                required
+                helperText="Please select your graduating class"
+                size={'small'}
+                >
+                    <MenuItem key="2021.5" value="2021.5">2021.5</MenuItem>
+                    <MenuItem key="2022" value="2022">2022</MenuItem>
+                    <MenuItem key="2022.5" value="2022.5">2022.5</MenuItem>
+                    <MenuItem key="2023" value="2023">2023</MenuItem>
+                    <MenuItem key="2023.5" value="2023.5">2023.5</MenuItem>
+                    <MenuItem key="2024" value="2024">2024</MenuItem>
+                    <MenuItem key="2024.5" value="2024.5">2024.5</MenuItem>
+                    <MenuItem key="2025" value="2025">2025</MenuItem>
+            </TextField>
+            <br />
+            <body1>
+                What is your intended concentration? Feel free to put Undecided if you don't know at this point.
+            </body1>
+            <TextField
+                variant="outlined"
+                name="majors"
+                size={'small'}
+                label="Concentration"
+                className={classes.textField}
+                fullWidth
+                required
+                onChange={this.handleChange}
+                InputProps={{
+                    endAdornment: (
+                        <datalist id="majors">
+                            <option value="Africana Studies" />
+                            <option value="American Studies" />
+                            <option value="Anthropology" />
+                            <option value="Applied Mathematics" />
+                            <option value="Applied Mathematics-Biology" />
+                            <option value="Applied Mathematics-Computer Science" />
+                            <option value="Applied Mathematics-Economics" />
+                            <option value="Archaeology and the Ancient World" />
+                            <option value="Architecture" />
+                            <option value="Astronomy" />
+                            <option value="Behavioral Decision Sciences" />
+                            <option value="Biochemistry and Molecular Biology" />
+                            <option value="Biology" />
+                            <option value="Biomedical Engineering" />
+                            <option value="Biophysics" />
+                            <option value="Business, Entrepreneurship, and Organizations" />
+                            <option value="Chemical Physics" />
+                            <option value="Chemistry" />
+                            <option value="Classics" />
+                            <option value="Cognitive Neuroscience" />
+                            <option value="Cognitive Science" />
+                            <option value="Comparative Literature" />
+                            <option value="Computational Biology" />
+                            <option value="Computer Science" />
+                            <option value="Computer Science-Economics" />
+                            <option value="Contemplative Studies" />
+                            <option value="Development Studies" />
+                            <option value="Early Modern World" />
+                            <option value="East Asian Studies" />
+                            <option value="Economics" />
+                            <option value="Education Studies" />
+                            <option value="Egyptology and Assyriology" />
+                            <option value="Engineering" />
+                            <option value="Engineering and Physics" />
+                            <option value="English" />
+                            <option value="Environmental Studies" />
+                            <option value="Ethnic Studies" />
+                            <option value="French and Francophone Studies" />
+                            <option value="Gender and Sexuality Studies" />
+                            <option value="Geological Sciences" />
+                            <option value="Geology-Biology" />
+                            <option value="Geology-Chemistry" />
+                            <option value="Geology-Physics/Mathematics" />
+                            <option value="German Studies" />
+                            <option value="Health and Human Biology" />
+                            <option value="Hispanic Literatures and Cultures" />
+                            <option value="History" />
+                            <option value="History of Art and Architecture" />
+                            <option value="Independent Concentration" />
+                            <option value="International and Public Affairs" />
+                            <option value="International Relations" />
+                            <option value="Italian Studies" />
+                            <option value="Judaic Studies" />
+                            <option value="Latin American and Caribbean Studies" />
+                            <option value="Linguistics" />
+                            <option value="Literary Arts" />
+                            <option value="Mathematics" />
+                            <option value="Mathematics-Computer Science" />
+                            <option value="Mathematics-Economics" />
+                            <option value="Medieval Cultures" />
+                            <option value="Middle East Studies" />
+                            <option value="Modern Culture and Media" />
+                            <option value="Music" />
+                            <option value="Neuroscience" />
+                            <option value="Philosophy" />
+                            <option value="Physics" />
+                            <option value="Physics and Philosophy" />
+                            <option value="Political Science" />
+                            <option value="Portuguese and Brazilian Studies" />
+                            <option value="Psychology" />
+                            <option value="Public Health" />
+                            <option value="Public Policy" />
+                            <option value="Religious Studies" />
+                            <option value="Science, Technology, and Society" />
+                            <option value="Slavic Studies" />
+                            <option value="Social Analysis and Research" />
+                            <option value="Sociology" />
+                            <option value="South Asian Studies" />
+                            <option value="Statistics" />
+                            <option value="Theatre Arts and Performance Studies" />
+                            <option value="Undecided" />
+                            <option value="Urban Studies" />
+                            <option value="Visual Art" />                       
+                        </datalist>
+                    ),
+                    inputProps: {
+                      list: "majors"
+                    }
+                }}/>
+            <body1>
+                If you have more than one concentration, please list the others below.
+            </body1>
+            <TextField
+                variant="outlined"
+                name="majors"
+                size={'small'}
+                label="Second Concentration"
+                className={classes.textField}
+                fullWidth
+                onChange={this.handleChange}
+                InputProps={{
+                    endAdornment: (
+                        <datalist id="majors">
+                            <option value="Africana Studies" />
+                            <option value="American Studies" />
+                            <option value="Anthropology" />
+                            <option value="Applied Mathematics" />
+                            <option value="Applied Mathematics-Biology" />
+                            <option value="Applied Mathematics-Computer Science" />
+                            <option value="Applied Mathematics-Economics" />
+                            <option value="Archaeology and the Ancient World" />
+                            <option value="Architecture" />
+                            <option value="Astronomy" />
+                            <option value="Behavioral Decision Sciences" />
+                            <option value="Biochemistry and Molecular Biology" />
+                            <option value="Biology" />
+                            <option value="Biomedical Engineering" />
+                            <option value="Biophysics" />
+                            <option value="Business, Entrepreneurship, and Organizations" />
+                            <option value="Chemical Physics" />
+                            <option value="Chemistry" />
+                            <option value="Classics" />
+                            <option value="Cognitive Neuroscience" />
+                            <option value="Cognitive Science" />
+                            <option value="Comparative Literature" />
+                            <option value="Computational Biology" />
+                            <option value="Computer Science" />
+                            <option value="Computer Science-Economics" />
+                            <option value="Contemplative Studies" />
+                            <option value="Development Studies" />
+                            <option value="Early Modern World" />
+                            <option value="East Asian Studies" />
+                            <option value="Economics" />
+                            <option value="Education Studies" />
+                            <option value="Egyptology and Assyriology" />
+                            <option value="Engineering" />
+                            <option value="Engineering and Physics" />
+                            <option value="English" />
+                            <option value="Environmental Studies" />
+                            <option value="Ethnic Studies" />
+                            <option value="French and Francophone Studies" />
+                            <option value="Gender and Sexuality Studies" />
+                            <option value="Geological Sciences" />
+                            <option value="Geology-Biology" />
+                            <option value="Geology-Chemistry" />
+                            <option value="Geology-Physics/Mathematics" />
+                            <option value="German Studies" />
+                            <option value="Health and Human Biology" />
+                            <option value="Hispanic Literatures and Cultures" />
+                            <option value="History" />
+                            <option value="History of Art and Architecture" />
+                            <option value="Independent Concentration" />
+                            <option value="International and Public Affairs" />
+                            <option value="International Relations" />
+                            <option value="Italian Studies" />
+                            <option value="Judaic Studies" />
+                            <option value="Latin American and Caribbean Studies" />
+                            <option value="Linguistics" />
+                            <option value="Literary Arts" />
+                            <option value="Mathematics" />
+                            <option value="Mathematics-Computer Science" />
+                            <option value="Mathematics-Economics" />
+                            <option value="Medieval Cultures" />
+                            <option value="Middle East Studies" />
+                            <option value="Modern Culture and Media" />
+                            <option value="Music" />
+                            <option value="Neuroscience" />
+                            <option value="Philosophy" />
+                            <option value="Physics" />
+                            <option value="Physics and Philosophy" />
+                            <option value="Political Science" />
+                            <option value="Portuguese and Brazilian Studies" />
+                            <option value="Psychology" />
+                            <option value="Public Health" />
+                            <option value="Public Policy" />
+                            <option value="Religious Studies" />
+                            <option value="Science, Technology, and Society" />
+                            <option value="Slavic Studies" />
+                            <option value="Social Analysis and Research" />
+                            <option value="Sociology" />
+                            <option value="South Asian Studies" />
+                            <option value="Statistics" />
+                            <option value="Theatre Arts and Performance Studies" />
+                            <option value="Undecided" />
+                            <option value="Urban Studies" />
+                            <option value="Visual Art" />                       
+                        </datalist>
+                    ),
+                    inputProps: {
+                      list: "majors"
+                    }
+                }}/>
+            <TextField
+                variant="outlined"
+                name="majors"
+                size={'small'}
+                label="Third Concentration"
+                className={classes.textField}
+                fullWidth
+                onChange={this.handleChange}
+                InputProps={{
+                    endAdornment: (
+                        <datalist id="majors">
+                            <option value="Africana Studies" />
+                            <option value="American Studies" />
+                            <option value="Anthropology" />
+                            <option value="Applied Mathematics" />
+                            <option value="Applied Mathematics-Biology" />
+                            <option value="Applied Mathematics-Computer Science" />
+                            <option value="Applied Mathematics-Economics" />
+                            <option value="Archaeology and the Ancient World" />
+                            <option value="Architecture" />
+                            <option value="Astronomy" />
+                            <option value="Behavioral Decision Sciences" />
+                            <option value="Biochemistry and Molecular Biology" />
+                            <option value="Biology" />
+                            <option value="Biomedical Engineering" />
+                            <option value="Biophysics" />
+                            <option value="Business, Entrepreneurship, and Organizations" />
+                            <option value="Chemical Physics" />
+                            <option value="Chemistry" />
+                            <option value="Classics" />
+                            <option value="Cognitive Neuroscience" />
+                            <option value="Cognitive Science" />
+                            <option value="Comparative Literature" />
+                            <option value="Computational Biology" />
+                            <option value="Computer Science" />
+                            <option value="Computer Science-Economics" />
+                            <option value="Contemplative Studies" />
+                            <option value="Development Studies" />
+                            <option value="Early Modern World" />
+                            <option value="East Asian Studies" />
+                            <option value="Economics" />
+                            <option value="Education Studies" />
+                            <option value="Egyptology and Assyriology" />
+                            <option value="Engineering" />
+                            <option value="Engineering and Physics" />
+                            <option value="English" />
+                            <option value="Environmental Studies" />
+                            <option value="Ethnic Studies" />
+                            <option value="French and Francophone Studies" />
+                            <option value="Gender and Sexuality Studies" />
+                            <option value="Geological Sciences" />
+                            <option value="Geology-Biology" />
+                            <option value="Geology-Chemistry" />
+                            <option value="Geology-Physics/Mathematics" />
+                            <option value="German Studies" />
+                            <option value="Health and Human Biology" />
+                            <option value="Hispanic Literatures and Cultures" />
+                            <option value="History" />
+                            <option value="History of Art and Architecture" />
+                            <option value="Independent Concentration" />
+                            <option value="International and Public Affairs" />
+                            <option value="International Relations" />
+                            <option value="Italian Studies" />
+                            <option value="Judaic Studies" />
+                            <option value="Latin American and Caribbean Studies" />
+                            <option value="Linguistics" />
+                            <option value="Literary Arts" />
+                            <option value="Mathematics" />
+                            <option value="Mathematics-Computer Science" />
+                            <option value="Mathematics-Economics" />
+                            <option value="Medieval Cultures" />
+                            <option value="Middle East Studies" />
+                            <option value="Modern Culture and Media" />
+                            <option value="Music" />
+                            <option value="Neuroscience" />
+                            <option value="Philosophy" />
+                            <option value="Physics" />
+                            <option value="Physics and Philosophy" />
+                            <option value="Political Science" />
+                            <option value="Portuguese and Brazilian Studies" />
+                            <option value="Psychology" />
+                            <option value="Public Health" />
+                            <option value="Public Policy" />
+                            <option value="Religious Studies" />
+                            <option value="Science, Technology, and Society" />
+                            <option value="Slavic Studies" />
+                            <option value="Social Analysis and Research" />
+                            <option value="Sociology" />
+                            <option value="South Asian Studies" />
+                            <option value="Statistics" />
+                            <option value="Theatre Arts and Performance Studies" />
+                            <option value="Undecided" />
+                            <option value="Urban Studies" />
+                            <option value="Visual Art" />                       
+                        </datalist>
+                    ),
+                    inputProps: {
+                      list: "majors"
+                    }
+                }}/>
+            <TextField
+                id="preferredPronouns"
+                name="preferredPronouns"
+                select
+                label="Preferred Pronouns"
+                className={classes.textField}
+                value={this.state.preferredPronouns}
+                onChange={this.handleChange}
+                variant="outlined"
+                size={'small'}
+                helperText="Please select your preferred pronouns">
+                    <MenuItem key="he/him" value="he/him">he/him</MenuItem>
+                    <MenuItem key="she/her" value="she/her">she/her</MenuItem>
+                    <MenuItem key="they/them" value="they/them">they/them</MenuItem>
+                    <MenuItem key="ze/hir" value="ze/hir">ze/hir</MenuItem>
+                    <MenuItem key="other" value="other">other</MenuItem>
+            </TextField>
+
             <h2>Interests</h2>
             <body1>
               Please list between 3 and 5 areas of interest you have.
             </body1>
             <TextField
-              id="interests"
-              name="interests"
+              id="interestOne"
+              name="interestOne"
               type="text"
               label="First Interest"
               className={classes.textField}
-              helperText={errors.interests}
-              error={errors.interests ? true : false}
-              value={this.state.interests}
+              value={this.state.interests[0]}
               onChange={this.handleChange}
               fullWidth
+              required
+              size={'small'}
             />
             <TextField
-              id="interests"
-              name="interests"
+              id="interestTwo"
+              name="interestTwo"
               type="text"
               label="Second Interest"
               className={classes.textField}
-              helperText={errors.interests}
-              error={errors.interests ? true : false}
-              value={this.state.interests}
+              value={this.state.interests[1]}
               onChange={this.handleChange}
               fullWidth
+              required
+              size={'small'}
             />
             <TextField
-              id="interests"
-              name="interests"
+              id="interestThree"
+              name="interestThree"
               type="text"
               label="Third Interest"
               className={classes.textField}
-              helperText={errors.interests}
-              error={errors.interests ? true : false}
-              value={this.state.interests}
+              value={this.state.interests[2]}
               onChange={this.handleChange}
               fullWidth
+              required
+              size={'small'}
             />
             <TextField
-              id="interests"
-              name="interests"
+              id="interestFour"
+              name="interestFour"
               type="text"
               label="Fourth Interest"
               className={classes.textField}
-              helperText={errors.interests}
-              error={errors.interests ? true : false}
-              value={this.state.interests}
+              value={this.state.interests[3]}
               onChange={this.handleChange}
               fullWidth
+              size={'small'}
             />
             <TextField
-              id="interests"
-              name="interests"
+              id="interestFive"
+              name="interestFive"
               type="text"
               label="Fifth Interest"
               className={classes.textField}
-              helperText={errors.interests}
-              error={errors.interests ? true : false}
-              value={this.state.interests}
+              value={this.state.interests[4]}
               onChange={this.handleChange}
               fullWidth
+              size={'small'}
             />
+
             <h2>Groups</h2>
             <body1>
               Please list up to 3 clubs, affinity groups, or student
               organizations you are involved with.
             </body1>
             <TextField
-              id="groups"
-              name="groups"
+              id="groupOne"
+              name="groupOne"
               type="text"
               label="First Group"
               className={classes.textField}
-              helperText={errors.groups}
-              error={errors.groups ? true : false}
-              value={this.state.groups}
+              value={this.state.groups[0]}
               onChange={this.handleChange}
               fullWidth
+              size={'small'}
             />
             <TextField
-              id="groups"
-              name="groups"
+              id="groupTwo"
+              name="groupTwo"
               type="text"
               label="Second Group"
               className={classes.textField}
-              helperText={errors.groups}
-              error={errors.groups ? true : false}
-              value={this.state.groups}
+              value={this.state.groups[1]}
               onChange={this.handleChange}
               fullWidth
+              size={'small'}
             />
             <TextField
-              id="groups"
-              name="groups"
+              id="groupThree"
+              name="groupThree"
               type="text"
               label="Third Group"
               className={classes.textField}
-              helperText={errors.groups}
-              error={errors.groups ? true : false}
-              value={this.state.groups}
+              value={this.state.groups[2]}
               onChange={this.handleChange}
               fullWidth
+              size={'small'}
             />
+
             <h2>Athletics</h2>
             <body1>
               If you are a member of any varsity sports teams, please indicate
               which ones below.
             </body1>
-            <section class={classes.textField}>
-              <label>First Varsity Sport:</label>
-              <input list="varsitySports" name="varsitySports" />
-              <datalist id="varsitySports">
-                <option value="Africana Studies" />
-                <option value="American Studies" />
-                <option value="Anthropology" />
-                <option value="Applied Mathematics" />
-                <option value="Applied Mathematics-Biology" />
-                <option value="Applied Mathematics-Computer Science" />
-                <option value="Applied Mathematics-Economics" />
-                <option value="Archaeology and the Ancient World" />
-                <option value="Architecture" />
-                <option value="Astronomy" />
-                <option value="Behavioral Decision Sciences" />
-                <option value="Biochemistry and Molecular Biology" />
-                <option value="Biology" />
-                <option value="Biomedical Engineering" />
-                <option value="Biophysics" />
-                <option value="Business, Entrepreneurship, and Organizations" />
-                <option value="Chemical Physics" />
-                <option value="Chemistry" />
-                <option value="Classics" />
-                <option value="Cognitive Neuroscience" />
-                <option value="Cognitive Science" />
-                <option value="Comparative Literature" />
-                <option value="Computational Biology" />
-                <option value="Computer Science" />
-                <option value="Computer Science-Economics" />
-                <option value="Contemplative Studies" />
-                <option value="Development Studies" />
-                <option value="Early Modern World" />
-                <option value="East Asian Studies" />
-                <option value="Economics" />
-                <option value="Education Studies" />
-                <option value="Egyptology and Assyriology" />
-                <option value="Engineering" />
-                <option value="Engineering and Physics" />
-                <option value="English" />
-                <option value="Environmental Studies" />
-                <option value="Ethnic Studies" />
-                <option value="French and Francophone Studies" />
-                <option value="Gender and Sexuality Studies" />
-                <option value="Geological Sciences" />
-                <option value="Geology-Biology" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-              </datalist>
-            </section>
-            <section class={classes.textField}>
-              <label>Second Varsity Sport:</label>
-              <input list="varsitySports" name="varsitySports" />
-              <datalist id="varsitySports">
-                <option value="Africana Studies" />
-                <option value="American Studies" />
-                <option value="Anthropology" />
-                <option value="Applied Mathematics" />
-                <option value="Applied Mathematics-Biology" />
-                <option value="Applied Mathematics-Computer Science" />
-                <option value="Applied Mathematics-Economics" />
-                <option value="Archaeology and the Ancient World" />
-                <option value="Architecture" />
-                <option value="Astronomy" />
-                <option value="Behavioral Decision Sciences" />
-                <option value="Biochemistry and Molecular Biology" />
-                <option value="Biology" />
-                <option value="Biomedical Engineering" />
-                <option value="Biophysics" />
-                <option value="Business, Entrepreneurship, and Organizations" />
-                <option value="Chemical Physics" />
-                <option value="Chemistry" />
-                <option value="Classics" />
-                <option value="Cognitive Neuroscience" />
-                <option value="Cognitive Science" />
-                <option value="Comparative Literature" />
-                <option value="Computational Biology" />
-                <option value="Computer Science" />
-                <option value="Computer Science-Economics" />
-                <option value="Contemplative Studies" />
-                <option value="Development Studies" />
-                <option value="Early Modern World" />
-                <option value="East Asian Studies" />
-                <option value="Economics" />
-                <option value="Education Studies" />
-                <option value="Egyptology and Assyriology" />
-                <option value="Engineering" />
-                <option value="Engineering and Physics" />
-                <option value="English" />
-                <option value="Environmental Studies" />
-                <option value="Ethnic Studies" />
-                <option value="French and Francophone Studies" />
-                <option value="Gender and Sexuality Studies" />
-                <option value="Geological Sciences" />
-                <option value="Geology-Biology" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-              </datalist>
-            </section>
-            <section class={classes.textField}>
-              <label>Third Varsity Sport:</label>
-              <input list="varsitySports" name="varsitySports" />
-              <datalist id="varsitySports">
-                <option value="Africana Studies" />
-                <option value="American Studies" />
-                <option value="Anthropology" />
-                <option value="Applied Mathematics" />
-                <option value="Applied Mathematics-Biology" />
-                <option value="Applied Mathematics-Computer Science" />
-                <option value="Applied Mathematics-Economics" />
-                <option value="Archaeology and the Ancient World" />
-                <option value="Architecture" />
-                <option value="Astronomy" />
-                <option value="Behavioral Decision Sciences" />
-                <option value="Biochemistry and Molecular Biology" />
-                <option value="Biology" />
-                <option value="Biomedical Engineering" />
-                <option value="Biophysics" />
-                <option value="Business, Entrepreneurship, and Organizations" />
-                <option value="Chemical Physics" />
-                <option value="Chemistry" />
-                <option value="Classics" />
-                <option value="Cognitive Neuroscience" />
-                <option value="Cognitive Science" />
-                <option value="Comparative Literature" />
-                <option value="Computational Biology" />
-                <option value="Computer Science" />
-                <option value="Computer Science-Economics" />
-                <option value="Contemplative Studies" />
-                <option value="Development Studies" />
-                <option value="Early Modern World" />
-                <option value="East Asian Studies" />
-                <option value="Economics" />
-                <option value="Education Studies" />
-                <option value="Egyptology and Assyriology" />
-                <option value="Engineering" />
-                <option value="Engineering and Physics" />
-                <option value="English" />
-                <option value="Environmental Studies" />
-                <option value="Ethnic Studies" />
-                <option value="French and Francophone Studies" />
-                <option value="Gender and Sexuality Studies" />
-                <option value="Geological Sciences" />
-                <option value="Geology-Biology" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-                <option value="Astronomy" />
-              </datalist>
-            </section>
+            <TextField
+                variant="outlined"
+                name="varsitySports"
+                size={'small'}
+                label="First Varsity Sport"
+                className={classes.textField}
+                fullWidth
+                onChange={this.handleChange}
+                InputProps={{
+                    endAdornment: (
+                        <datalist id="varsitySports">
+                            <option value="Baseball" />
+                            <option value="Basketball" />
+                            <option value="Crew" />
+                            <option value="Cross Country" />
+                            <option value="Equestrian" />
+                            <option value="Fencing" />
+                            <option value="Field Hockey" />
+                            <option value="Football" />
+                            <option value="Ice Hockey" />
+                            <option value="Lacrosse" />
+                            <option value="Rugby" />
+                            <option value="Sailing" />
+                            <option value="Soccer" />
+                            <option value="Softball" />
+                            <option value="Swimming and Diving" />
+                            <option value="Tennis" />
+                            <option value="Track and Field" />
+                            <option value="Volleyball" />
+                            <option value="Water Polo" />
+                            <option value="Wrestling" />                        
+                        </datalist>
+                    ),
+                    inputProps: {
+                      list: "varsitySports"
+                    }
+                }}/>
+            <TextField
+                variant="outlined"
+                name="varsitySports"
+                size={'small'}
+                label="Second Varsity Sport"
+                className={classes.textField}
+                fullWidth
+                onChange={this.handleChange}
+                InputProps={{
+                    endAdornment: (
+                        <datalist id="varsitySports">
+                            <option value="Baseball" />
+                            <option value="Basketball" />
+                            <option value="Crew" />
+                            <option value="Cross Country" />
+                            <option value="Equestrian" />
+                            <option value="Fencing" />
+                            <option value="Field Hockey" />
+                            <option value="Football" />
+                            <option value="Ice Hockey" />
+                            <option value="Lacrosse" />
+                            <option value="Rugby" />
+                            <option value="Sailing" />
+                            <option value="Soccer" />
+                            <option value="Softball" />
+                            <option value="Swimming and Diving" />
+                            <option value="Tennis" />
+                            <option value="Track and Field" />
+                            <option value="Volleyball" />
+                            <option value="Water Polo" />
+                            <option value="Wrestling" />                        
+                        </datalist>
+                    ),
+                    inputProps: {
+                      list: "varsitySports"
+                    }
+                }}/>
             <body1>
               If you are not on a varsity sports team but still enjoy playing
               and competing in sports, please indicate which ones below.
             </body1>
             <TextField
-              id="affinitySports"
-              name="affinitySports"
+              id="affinitySportOne"
+              name="affinitySportOne"
               type="text"
               label="First Sport"
               className={classes.textField}
-              helperText={errors.affinitySports}
-              error={errors.affinitySports ? true : false}
-              value={this.state.affinitySports}
+              value={this.state.affinitySports[0]}
               onChange={this.handleChange}
               fullWidth
+              size={'small'}
             />
             <TextField
-              id="affinitySports"
-              name="affinitySports"
+              id="affinitySportTwo"
+              name="affinitySportTwo"
               type="text"
               label="Second Sport"
               className={classes.textField}
-              helperText={errors.affinitySports}
-              error={errors.affinitySports ? true : false}
-              value={this.state.affinitySports}
+              value={this.state.affinitySports[1]}
               onChange={this.handleChange}
               fullWidth
+              size={'small'}
             />
             <TextField
-              id="affinitySports"
-              name="affinitySports"
+              id="affinitySportThree"
+              name="affinitySportThree"
               type="text"
               label="Third Sport"
               className={classes.textField}
-              helperText={errors.affinitySports}
-              error={errors.affinitySports ? true : false}
-              value={this.state.affinitySports}
+              value={this.state.affinitySports[2]}
               onChange={this.handleChange}
               fullWidth
+              size={'small'}
             />
+
+            <h2>Greek Life</h2>
+            <body1>
+              If you are a member of any Greek Organizations, please indicate
+              which one below.
+            </body1>
+            <TextField
+                variant="outlined"
+                name="greekLife"
+                size={'small'}
+                label="Greek Organization"
+                className={classes.textField}
+                fullWidth
+                onChange={this.handleChange}
+                InputProps={{
+                    endAdornment: (
+                        <datalist id="greekLife">
+                            <option value="Alpha Chi Omega" />
+                            <option value="Alpha Delta Phi Society" />
+                            <option value="Alpha Phi Alpha" />
+                            <option value="Beta Omega Chi" />
+                            <option value="Delta Gamma" />
+                            <option value="Delta Phi" />
+                            <option value="Delta Sigma Theta" />
+                            <option value="Delta Tau" />
+                            <option value="Kappa Alpha Theta" />
+                            <option value="Kappa Alpha Psi" />
+                            <option value="Kappa Delta" />
+                            <option value="Theta Alpha" />
+                            <option value="Zeta Delta Xi" />                       
+                        </datalist>
+                    ),
+                    inputProps: {
+                      list: "greekLife"
+                    }
+                }}/>
+
+            <h2>Favorites</h2>
+            <body1>
+              Feel free to share your favorite book, movie, tv show, and artist below. :)
+            </body1>
+            <TextField
+              id="book"
+              name="book"
+              type="text"
+              label="Favorite Book"
+              className={classes.textField}
+              value={this.state.favorites.book}
+              onChange={this.handleChange}
+              fullWidth
+              required
+              size={'small'}
+            />
+            <TextField
+              id="movie"
+              name="movie"
+              type="text"
+              label="Favorite Movie"
+              className={classes.textField}
+              value={this.state.favorites.movie}
+              onChange={this.handleChange}
+              fullWidth
+              required
+              size={'small'}
+            />
+            <TextField
+              id="tvShow"
+              name="tvShow"
+              type="text"
+              label="Favorite Show"
+              className={classes.textField}
+              value={this.state.favorites.tvShow}
+              onChange={this.handleChange}
+              fullWidth
+              required
+              size={'small'}
+            />
+            <TextField
+              id="artist"
+              name="artist"
+              type="text"
+              label="Favorite Artist"
+              className={classes.textField}
+              value={this.state.favorites.artist}
+              onChange={this.handleChange}
+              fullWidth
+              required
+              size={'small'}
+            />
+
+            <h2>Bio</h2>
+            <body1>
+              If there is anything else you would like to share, we would love for you to include it here.
+            </body1>
+            <br />
+            <br />
+            <TextField
+                id="bio"
+                name="bio"
+                multiline
+                rows={4}
+                variant="outlined"
+                fullWidth
+            />
+
+            <h2>Courses</h2>
+            <body1>
+              In order to give you access to the profiles of all of your classmates, we will need you to provide us with your current courses in the fields below.
+            </body1>
+            <br />
+            <br />
+            <body1>
+              The course code refers to the unique string identifier listed on C@B for the course (e.g. ECON 0110). Note: please include the space between the capital letters and the numbers and the 0 at the start of the numbers if it less than 1000.
+            </body1>
+            <br />
+            <br />
+            <body1>
+              The course name refers to the name listed on either C@B or Canvas for the course (e.g. Principles of Economics). Note: this name is just meant to help you easily recognize the class, so don't worry about formatting it in a particular way.
+            </body1>
+            <h3>Course #1</h3>
+            <TextField
+              id="courseCode"
+              name="courseCode"
+              type="text"
+              label="Course Code"
+              className={classes.textField}
+              helperText={errors.courseCode}
+              error={errors.courseCode ? true : false}
+              value={this.state.courseCode}
+              onChange={this.handleChange}
+              size={'small'}
+              required
+              variant="outlined"
+            />
+            <TextField
+              id="courseName"
+              name="courseName"
+              type="text"
+              label="Course Name"
+              className={classes.textField}
+              value={this.state.courseName}
+              onChange={this.handleChange}
+              fullWidth
+              required
+              size={'small'}
+            />
+            <h3>Course #2</h3>
+            <TextField
+              id="courseCode"
+              name="courseCode"
+              type="text"
+              label="Course Code"
+              className={classes.textField}
+              helperText={errors.courseCode}
+              error={errors.courseCode ? true : false}
+              value={this.state.courseCode}
+              onChange={this.handleChange}
+              size={'small'}
+              required
+              variant="outlined"
+            />
+            <TextField
+              id="courseName"
+              name="courseName"
+              type="text"
+              label="Course Name"
+              className={classes.textField}
+              value={this.state.courseName}
+              onChange={this.handleChange}
+              fullWidth
+              required
+              size={'small'}
+            />
+            <h3>Course #3</h3>
+            <TextField
+              id="courseCode"
+              name="courseCode"
+              type="text"
+              label="Course Code"
+              className={classes.textField}
+              helperText={errors.courseCode}
+              error={errors.courseCode ? true : false}
+              value={this.state.courseCode}
+              onChange={this.handleChange}
+              size={'small'}
+              required
+              variant="outlined"
+            />
+            <TextField
+              id="courseName"
+              name="courseName"
+              type="text"
+              label="Course Name"
+              className={classes.textField}
+              value={this.state.courseName}
+              onChange={this.handleChange}
+              fullWidth
+              required
+              size={'small'}
+            />
+            <h3>Course #4</h3>
+            <TextField
+              id="courseCode"
+              name="courseCode"
+              type="text"
+              label="Course Code"
+              className={classes.textField}
+              helperText={errors.courseCode}
+              error={errors.courseCode ? true : false}
+              value={this.state.courseCode}
+              onChange={this.handleChange}
+              size={'small'}
+              variant="outlined"
+            />
+            <TextField
+              id="courseName"
+              name="courseName"
+              type="text"
+              label="Course Name"
+              className={classes.textField}
+              value={this.state.courseName}
+              onChange={this.handleChange}
+              fullWidth
+              size={'small'}
+            />
+            <h3>Course #5</h3>
+            <TextField
+              id="courseCode"
+              name="courseCode"
+              type="text"
+              label="Course Code"
+              className={classes.textField}
+              helperText={errors.courseCode}
+              error={errors.courseCode ? true : false}
+              value={this.state.courseCode}
+              onChange={this.handleChange}
+              size={'small'}
+              variant="outlined"
+            />
+            <TextField
+              id="courseName"
+              name="courseName"
+              type="text"
+              label="Course Name"
+              className={classes.textField}
+              value={this.state.courseName}
+              onChange={this.handleChange}
+              fullWidth
+              size={'small'}
+            />
+            <h3>Thank you for taking the time to build your profile and welcome to Uconnect!</h3>
+
             {errors.general && (
               <Typography variant="body2" className={classes.customError}>
                 {errors.general}
@@ -551,15 +975,13 @@ class profileBuild extends Component {
               className={classes.Button}
               disabled={loading}
             >
-              Sign Up
+              Create Profile
               {loading && (
                 <CircularProgress size={30} className={classes.progress} />
               )}
             </Button>
             <br />
-            <small>
-              already have an account? login <Link to="/login">here</Link>
-            </small>
+            <br />
           </form>
         </Grid>
         <Grid item sm />

@@ -68,8 +68,7 @@ class signup extends Component {
                 this.setState({
                     loading: false
                 });
-                // push to course landing page in future
-                this.props.history.push('/profileView')
+                this.props.history.push('/profileBuild')
             })
             .catch(err => {
                 this.setState({
