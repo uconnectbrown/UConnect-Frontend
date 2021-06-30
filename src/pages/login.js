@@ -1,3 +1,4 @@
+// Imports
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
@@ -12,6 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+// Styling
 const styles = {
   form: {
     textAlign: "center",
