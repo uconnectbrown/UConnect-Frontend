@@ -14,12 +14,13 @@ import welcome from "./pages/welcome";
 import login from "./pages/login";
 import signup from "./pages/signup";
 import profileBuild from "./pages/profileBuild";
+import profileView from "./pages/profileView";
 
 const theme = createMuiTheme({
   palette: {
     primary: {
       light: "#33c9dc",
-      main: "#00bcd4",
+      main: "#ed1c24",
       dark: "#008394",
       contrastText: "#fff",
     },
@@ -69,6 +70,7 @@ function App() {
                 authenticated={authenticated}
               />
               <Route exact path="/profileBuild" component={profileBuild} />
+              <Route exact path="/profileView" component={profileView} />
             </Switch>
           </div>
         </Router>

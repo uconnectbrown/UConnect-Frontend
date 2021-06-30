@@ -32,7 +32,7 @@ const styles = {
     marginTop: 20,
     position: "relative",
   },
-  cutomError: {
+  customError: {
     color: "red",
     fontSize: "0.8rem",
     marginTop: 10,
@@ -64,7 +64,6 @@ class login extends Component {
     axios
       .post("/login", userData)
       .then((res) => {
-        console.log(res.data);
         localStorage.setItem("FBIdToken", `Bearer ${res.data.token}`);
         this.setState({
           loading: false,

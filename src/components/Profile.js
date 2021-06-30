@@ -26,8 +26,8 @@ class Profile extends Component {
     return (
       <Card className={classes.card}>
         <CardContent className={classes.content}>
-          <Typography variant="body1">{email}</Typography>
-          <Typography variant="body1">{classYear}</Typography>
+          <Typography variant="body2">{email}</Typography>
+          <Typography variant="body2">{classYear}</Typography>
         </CardContent>
       </Card>
     );

@@ -25,7 +25,9 @@ class welcome extends Component {
   }
   render() {
     let profiles = this.state.profiles ? (
-      this.state.profiles.map((profile) => <Profile profile={profile} />)
+      this.state.profiles.map((profile) => (
+        <Profile key={profile.email} profile={profile} />
+      ))
     ) : (
       <p>Loading profiles...</p>
     );
