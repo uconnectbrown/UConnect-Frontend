@@ -50,14 +50,32 @@ class profileBuild extends Component {
       firstName: "",
       lastName: "",
       class: "",
-      concentrations: [],
+      majors: [],
+      // firstMajor: "",
+      // secondMajor: "",
+      // thirdMajor: "",
       preferredPronouns: "",
       interests: [],
+      // firstInterest: "",
+      // secondInterest: "",
+      // thirdInterest: "",
       groups: [],
+      // firstGroup: "",
+      // secondGroup: "",
+      // thirdGroup: "",
       varsitySports: [],
+      // firstVarsitySport: "",
+      // secondVarsitySport: "",
       affinitySports: [],
+      // firstAffinitySport: "",
+      // secondAffinitySport: "",
+      // thirdAffinitySport: "",
       greekLife: "",
       favorites: {},
+      // favoriteBook: "",
+      // favoriteMovie: "",
+      // favoriteTVShow: "",
+      // favoriteArtist: "",
       bio: "",
       courses: [],
       loading: false,
@@ -73,14 +91,34 @@ class profileBuild extends Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       class: this.state.class,
-      concentrations: this.state.concentrations,
+      majors: this.state.majors,
+      // firstMajor: this.state.firstMajor,
+      // secondMajor: this.state.secondMajor,
+      // thirdMajor: this.state.thirdMajor,
       preferredPronouns: this.state.preferredPronouns,
       interests: this.state.interests,
+      // firstInterest: this.state.firstInterest,
+      // secondInterest: this.state.secondInterest,
+      // thirdInterest: this.state.thirdInterest,
+      // fourthInterest: this.state.fourthInterest,
+      // fifthInterest: this.state.fifthInterest,
       groups: this.state.groups,
+      // firstGroup: this.state.firstGroup,
+      // secondGroup: this.state.firstMajor,
+      // thirdGroup: this.state.thirdGroup,
       varsitySports: this.state.varsitySports,
+      // firstVarsitySport: this.state.firstVarsitySport,
+      // secondVarsitySport: this.state.secondVarsitySport,
       affinitySports: this.state.affinitySports,
+      // firstAffinitySport: this.state.firstAffinitySport,
+      // secondAffinitySport: this.state.secondAffinitySport,
+      // thirdAffinitySport: this.state.thirdAffinitySport,
       greekLife: this.state.greekLife,
       favorites: this.state.favorites,
+      // favoriteBook: this.state.favoriteBook,
+      // favoriteMovie: this.state.favoriteMovie,
+      // favoriteTVShow: this.state.favoriteTVShow,
+      // favoriteArtist: this.state.favoriteArtist,
       bio: this.state.bio,
       courses: this.state.courses,
     };
@@ -239,6 +277,19 @@ class profileBuild extends Component {
                   list: "majors",
                 },
               }}
+            />
+            <body1>If you are living on campus this semester, please indicate which dorm you are a resident of.</body1>
+            <TextField
+              id="dorm"
+              name="dorm"
+              type="text"
+              label="Dorm"
+              className={classes.textField}
+              value={this.state.dorm}
+              onChange={this.handleChange}
+              fullWidth
+              variant="outlined"
+              size={"small"}
             />
             <TextField
               id="preferredPronouns"
@@ -591,7 +642,9 @@ class profileBuild extends Component {
             <TextField
               id="bio"
               name="bio"
+              value={this.state.bio}
               multiline
+              onChange={this.handleChange}
               rows={4}
               variant="outlined"
               fullWidth
@@ -621,26 +674,26 @@ class profileBuild extends Component {
             </body>
             <h3>Course #1</h3>
             <TextField
-              id="courseCode"
-              name="courseCode"
+              id="courseCodeOne"
+              name="courseCodeOne"
               type="text"
               label="Course Code"
               className={classes.textField}
-              helperText={errors.courseCode}
-              error={errors.courseCode ? true : false}
-              value={this.state.courseCode}
+              helperText={errors.courseCodeOne}
+              error={errors.courseCodeOne ? true : false}
+              value={this.state.courseCodeOne}
               onChange={this.handleChange}
               size={"small"}
               required
               variant="outlined"
             />
             <TextField
-              id="courseName"
-              name="courseName"
+              id="courseNameOne"
+              name="courseNameOne"
               type="text"
               label="Course Name"
               className={classes.textField}
-              value={this.state.courseName}
+              value={this.state.courseNameOne}
               onChange={this.handleChange}
               fullWidth
               required
@@ -648,26 +701,26 @@ class profileBuild extends Component {
             />
             <h3>Course #2</h3>
             <TextField
-              id="courseCode"
-              name="courseCode"
+              id="courseCodeTwo"
+              name="courseCodeTwo"
               type="text"
               label="Course Code"
               className={classes.textField}
-              helperText={errors.courseCode}
-              error={errors.courseCode ? true : false}
-              value={this.state.courseCode}
+              helperText={errors.courseCodeTwo}
+              error={errors.courseCodeTwo ? true : false}
+              value={this.state.courseCodeTwo}
               onChange={this.handleChange}
               size={"small"}
               required
               variant="outlined"
             />
             <TextField
-              id="courseName"
-              name="courseName"
+              id="courseNameTwo"
+              name="courseNameTwo"
               type="text"
               label="Course Name"
               className={classes.textField}
-              value={this.state.courseName}
+              value={this.state.courseNameTwo}
               onChange={this.handleChange}
               fullWidth
               required
@@ -675,26 +728,26 @@ class profileBuild extends Component {
             />
             <h3>Course #3</h3>
             <TextField
-              id="courseCode"
-              name="courseCode"
+              id="courseCodeThree"
+              name="courseCodeThree"
               type="text"
               label="Course Code"
               className={classes.textField}
-              helperText={errors.courseCode}
-              error={errors.courseCode ? true : false}
-              value={this.state.courseCode}
+              helperText={errors.courseCodeThree}
+              error={errors.courseCodeThree ? true : false}
+              value={this.state.courseCodeThree}
               onChange={this.handleChange}
               size={"small"}
               required
               variant="outlined"
             />
             <TextField
-              id="courseName"
-              name="courseName"
+              id="courseNameThree"
+              name="courseNameThree"
               type="text"
               label="Course Name"
               className={classes.textField}
-              value={this.state.courseName}
+              value={this.state.courseNameThree}
               onChange={this.handleChange}
               fullWidth
               required
@@ -702,50 +755,50 @@ class profileBuild extends Component {
             />
             <h3>Course #4</h3>
             <TextField
-              id="courseCode"
-              name="courseCode"
+              id="courseCodeFour"
+              name="courseCodeFour"
               type="text"
               label="Course Code"
               className={classes.textField}
-              helperText={errors.courseCode}
-              error={errors.courseCode ? true : false}
-              value={this.state.courseCode}
+              helperText={errors.courseCodeFour}
+              error={errors.courseCodeFour ? true : false}
+              value={this.state.courseCodeFour}
               onChange={this.handleChange}
               size={"small"}
               variant="outlined"
             />
             <TextField
-              id="courseName"
-              name="courseName"
+              id="courseNameFour"
+              name="courseNameFour"
               type="text"
               label="Course Name"
               className={classes.textField}
-              value={this.state.courseName}
+              value={this.state.courseNameFour}
               onChange={this.handleChange}
               fullWidth
               size={"small"}
             />
             <h3>Course #5</h3>
             <TextField
-              id="courseCode"
-              name="courseCode"
+              id="courseCodeFive"
+              name="courseCodeFive"
               type="text"
               label="Course Code"
               className={classes.textField}
-              helperText={errors.courseCode}
-              error={errors.courseCode ? true : false}
-              value={this.state.courseCode}
+              helperText={errors.courseCodeFive}
+              error={errors.courseCodeFive ? true : false}
+              value={this.state.courseCodeFive}
               onChange={this.handleChange}
               size={"small"}
               variant="outlined"
             />
             <TextField
-              id="courseName"
-              name="courseName"
+              id="courseNameFive"
+              name="courseNameFive"
               type="text"
               label="Course Name"
               className={classes.textField}
-              value={this.state.courseName}
+              value={this.state.courseNameFive}
               onChange={this.handleChange}
               fullWidth
               size={"small"}

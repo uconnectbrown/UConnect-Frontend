@@ -43,13 +43,31 @@ class signup extends Component {
       lastName: "",
       class: "",
       majors: [],
+      // firstMajor: "",
+      // secondMajor: "",
+      // thirdMajor: "",
       preferredPronouns: "",
       interests: [],
+      // firstInterest: "",
+      // secondInterest: "",
+      // thirdInterest: "",
       groups: [],
+      // firstGroup: "",
+      // secondGroup: "",
+      // thirdGroup: "",
       varsitySports: [],
+      // firstVarsitySport: "",
+      // secondVarsitySport: "",
       affinitySports: [],
+      // firstAffinitySport: "",
+      // secondAffinitySport: "",
+      // thirdAffinitySport: "",
       greekLife: "",
       favorites: {},
+      // favoriteBook: "",
+      // favoriteMovie: "",
+      // favoriteTVShow: "",
+      // favoriteArtist: "",
       bio: "",
       courses: [],
     };
@@ -98,6 +116,7 @@ class signup extends Component {
               value={this.state.email}
               onChange={this.handleChange}
               fullWidth
+              required
             />
             <TextField
               id="password"
@@ -110,6 +129,7 @@ class signup extends Component {
               value={this.state.password}
               onChange={this.handleChange}
               fullWidth
+              required
             />
             <TextField
               id="confirmPassword"
@@ -122,6 +142,7 @@ class signup extends Component {
               value={this.state.confirmPassword}
               onChange={this.handleChange}
               fullWidth
+              required
             />
             {errors.general && (
               <Typography variant="body2" className={classes.customError}>
