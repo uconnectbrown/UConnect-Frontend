@@ -12,36 +12,14 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-// Import Dropdown Data
+// Import Data
 import majorList from "../resources/majors";
+import varsitySports from "../resources/varsitySports";
 
-const styles = {
-  form: {
-    textAlign: "center",
-  },
-  image: {
-    margin: "20px auto 20px auto",
-    width: "200px",
-  },
-  pageTitle: {
-    margin: "10px auto 10px auto",
-  },
-  textField: {
-    margin: "10px auto 10px auto",
-  },
-  button: {
-    marginTop: 20,
-    position: "relative",
-  },
-  cutomError: {
-    color: "red",
-    fontSize: "0.8rem",
-    marginTop: 10,
-  },
-  progress: {
-    position: "absolute",
-  },
-};
+// Styling
+const styles = (theme) => ({
+  ...theme.spreadThis,
+});
 
 class profileBuild extends Component {
   constructor() {
@@ -49,39 +27,62 @@ class profileBuild extends Component {
     this.state = {
       firstName: "",
       lastName: "",
+      email: "",
       class: "",
-      majors: [],
-      // firstMajor: "",
-      // secondMajor: "",
-      // thirdMajor: "",
+      majorOne: "",
+      majorTwo: "",
+      majorThree: "",
       preferredPronouns: "",
-      interests: [],
-      // firstInterest: "",
-      // secondInterest: "",
-      // thirdInterest: "",
-      groups: [],
-      // firstGroup: "",
-      // secondGroup: "",
-      // thirdGroup: "",
-      varsitySports: [],
-      // firstVarsitySport: "",
-      // secondVarsitySport: "",
-      affinitySports: [],
-      // firstAffinitySport: "",
-      // secondAffinitySport: "",
-      // thirdAffinitySport: "",
+      interestOne: "",
+      interestTwo: "",
+      interestThree: "",
+      interestFour: "",
+      interestFive: "",
+      groupOne: "",
+      groupTwo: "",
+      groupThree: "",
+      varsitySportOne: "",
+      varsitySportTwo: "",
+      affinitySportOne: "",
+      affinitySportTwo: "",
+      affinitySportThree: "",
       greekLife: "",
-      favorites: {},
-      // favoriteBook: "",
-      // favoriteMovie: "",
-      // favoriteTVShow: "",
-      // favoriteArtist: "",
+      favorites: {
+        movie: "",
+        book: "",
+        tvShow: "",
+        artist: "",
+      },
       bio: "",
-      courses: [],
+      courseOne: {},
+      courseTwo: {},
+      courseThree: {},
+      courseFour: {},
+      courseFive: {},
       loading: false,
       errors: {},
+      validProfile: true,
     };
   }
+
+  validProfile = (profile) => {
+    if (
+      profile.firstName &&
+      profile.lastName &&
+      profile.class &&
+      profile.interests.filter(Boolean).length > 2 &&
+      profile.majors.filter(Boolean).length > 0 &&
+      profile.favorites.movie &&
+      profile.favorites.book &&
+      profile.favorites.tvShow &&
+      profile.favorites.artist &&
+      profile.courses.filter((course) => Object.keys(course).length > 1)
+        .length > 2
+    ) {
+      return true;
+    }
+  };
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
@@ -91,47 +92,55 @@ class profileBuild extends Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       class: this.state.class,
-      majors: this.state.majors,
-      // firstMajor: this.state.firstMajor,
-      // secondMajor: this.state.secondMajor,
-      // thirdMajor: this.state.thirdMajor,
+      majors: [this.state.majorOne, this.state.majorTwo, this.state.majorThree],
       preferredPronouns: this.state.preferredPronouns,
-      interests: this.state.interests,
-      // firstInterest: this.state.firstInterest,
-      // secondInterest: this.state.secondInterest,
-      // thirdInterest: this.state.thirdInterest,
-      // fourthInterest: this.state.fourthInterest,
-      // fifthInterest: this.state.fifthInterest,
-      groups: this.state.groups,
-      // firstGroup: this.state.firstGroup,
-      // secondGroup: this.state.firstMajor,
-      // thirdGroup: this.state.thirdGroup,
-      varsitySports: this.state.varsitySports,
-      // firstVarsitySport: this.state.firstVarsitySport,
-      // secondVarsitySport: this.state.secondVarsitySport,
-      affinitySports: this.state.affinitySports,
-      // firstAffinitySport: this.state.firstAffinitySport,
-      // secondAffinitySport: this.state.secondAffinitySport,
-      // thirdAffinitySport: this.state.thirdAffinitySport,
+      interests: [
+        this.state.interestOne,
+        this.state.interestTwo,
+        this.state.interestThree,
+        this.state.interestFour,
+        this.state.interestFive,
+      ],
+      groups: [this.state.groupOne, this.state.groupTwo, this.state.groupThree],
+      varsitySports: [this.state.varsitySportOne, this.state.varsitySportTwo],
+      affinitySports: [
+        this.state.affinitySportOne,
+        this.state.affinitySportTwo,
+        this.state.affinitySportThree,
+      ],
       greekLife: this.state.greekLife,
       favorites: this.state.favorites,
-      // favoriteBook: this.state.favoriteBook,
-      // favoriteMovie: this.state.favoriteMovie,
-      // favoriteTVShow: this.state.favoriteTVShow,
-      // favoriteArtist: this.state.favoriteArtist,
       bio: this.state.bio,
-      courses: this.state.courses,
+      courses: [
+        this.state.courseOne,
+        this.state.courseTwo,
+        this.state.courseThree,
+        this.state.courseFour,
+        this.state.courseFive,
+      ],
     };
-    // not sure what our profile data populating function is called
+
     console.log(newUserData);
+    if (!this.validProfile(newUserData)) {
+      this.setState({
+        loading: false,
+        validProfile: false,
+      });
+      return;
+    }
+
     axios
       .post("/edit", newUserData)
       .then(() => {
         this.setState({
           loading: false,
+          email: this.props.location.state.email,
+          validProfile: true,
         });
-        // push to course landing page in future
-        // this.props.history.pushState("/profileView");
+        this.props.history.push({
+          pathname: "/profileView",
+          state: { email: this.state.email },
+        });
       })
       .catch((err) => {
         this.setState({
@@ -140,9 +149,68 @@ class profileBuild extends Component {
         });
       });
   };
+
   handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  handleFavorites = (event) => {
+    let input = event.target.value;
+    let subfield = event.target.id;
+    this.setState((prevState) => {
+      let favorites = Object.assign({}, prevState.favorites);
+      favorites[subfield] = input;
+      return { favorites };
+    });
+  };
+
+  handleCourseOne = (event) => {
+    let input = event.target.value;
+    let subfield = event.target.id;
+    this.setState((prevState) => {
+      let courseOne = Object.assign({}, prevState.courseOne);
+      courseOne[subfield] = input;
+      return { courseOne };
+    });
+  };
+
+  handleCourseTwo = (event) => {
+    let input = event.target.value;
+    let subfield = event.target.id;
+    this.setState((prevState) => {
+      let courseTwo = Object.assign({}, prevState.courseTwo);
+      courseTwo[subfield] = input;
+      return { courseTwo };
+    });
+  };
+
+  handleCourseThree = (event) => {
+    let input = event.target.value;
+    let subfield = event.target.id;
+    this.setState((prevState) => {
+      let courseThree = Object.assign({}, prevState.courseThree);
+      courseThree[subfield] = input;
+      return { courseThree };
+    });
+  };
+
+  handleCourseFour = (event) => {
+    let input = event.target.value;
+    let subfield = event.target.id;
+    this.setState((prevState) => {
+      let courseFour = Object.assign({}, prevState.courseFour);
+      courseFour[subfield] = input;
+      return { courseFour };
+    });
+  };
+
+  handleCourseFive = (event) => {
+    let input = event.target.value;
+    let subfield = event.target.id;
+    this.setState((prevState) => {
+      let courseFive = Object.assign({}, prevState.courseFive);
+      courseFive[subfield] = input;
+      return { courseFive };
     });
   };
 
@@ -225,14 +293,14 @@ class profileBuild extends Component {
             </TextField>
             <br />
             <body1>
-              What is your intended concentration? Feel free to put Undecided if
-              you don't know at this point.
+              What is your intended major? Feel free to put Undecided if you
+              don't know at this point.
             </body1>
             <TextField
               variant="outlined"
-              name="majors"
+              name="majorOne"
               size={"small"}
-              label="Concentration"
+              label="Major"
               className={classes.textField}
               fullWidth
               required
@@ -245,14 +313,13 @@ class profileBuild extends Component {
               }}
             />
             <body1>
-              If you have more than one concentration, please list the others
-              below.
+              If you have more than one major, please list the others below.
             </body1>
             <TextField
               variant="outlined"
-              name="majors"
+              name="majorTwo"
               size={"small"}
-              label="Second Concentration"
+              label="Second Major"
               className={classes.textField}
               fullWidth
               onChange={this.handleChange}
@@ -265,9 +332,9 @@ class profileBuild extends Component {
             />
             <TextField
               variant="outlined"
-              name="majors"
+              name="majorThree"
               size={"small"}
-              label="Third Concentration"
+              label="Third Major"
               className={classes.textField}
               fullWidth
               onChange={this.handleChange}
@@ -277,19 +344,6 @@ class profileBuild extends Component {
                   list: "majors",
                 },
               }}
-            />
-            <body1>If you are living on campus this semester, please indicate which dorm you are a resident of.</body1>
-            <TextField
-              id="dorm"
-              name="dorm"
-              type="text"
-              label="Dorm"
-              className={classes.textField}
-              value={this.state.dorm}
-              onChange={this.handleChange}
-              fullWidth
-              variant="outlined"
-              size={"small"}
             />
             <TextField
               id="preferredPronouns"
@@ -330,7 +384,6 @@ class profileBuild extends Component {
               type="text"
               label="First Interest"
               className={classes.textField}
-              value={this.state.interests[0]}
               onChange={this.handleChange}
               fullWidth
               required
@@ -342,7 +395,6 @@ class profileBuild extends Component {
               type="text"
               label="Second Interest"
               className={classes.textField}
-              value={this.state.interests[1]}
               onChange={this.handleChange}
               fullWidth
               required
@@ -354,7 +406,6 @@ class profileBuild extends Component {
               type="text"
               label="Third Interest"
               className={classes.textField}
-              value={this.state.interests[2]}
               onChange={this.handleChange}
               fullWidth
               required
@@ -366,7 +417,6 @@ class profileBuild extends Component {
               type="text"
               label="Fourth Interest"
               className={classes.textField}
-              value={this.state.interests[3]}
               onChange={this.handleChange}
               fullWidth
               size={"small"}
@@ -377,7 +427,6 @@ class profileBuild extends Component {
               type="text"
               label="Fifth Interest"
               className={classes.textField}
-              value={this.state.interests[4]}
               onChange={this.handleChange}
               fullWidth
               size={"small"}
@@ -394,7 +443,6 @@ class profileBuild extends Component {
               type="text"
               label="First Group"
               className={classes.textField}
-              value={this.state.groups[0]}
               onChange={this.handleChange}
               fullWidth
               size={"small"}
@@ -405,7 +453,6 @@ class profileBuild extends Component {
               type="text"
               label="Second Group"
               className={classes.textField}
-              value={this.state.groups[1]}
               onChange={this.handleChange}
               fullWidth
               size={"small"}
@@ -416,7 +463,6 @@ class profileBuild extends Component {
               type="text"
               label="Third Group"
               className={classes.textField}
-              value={this.state.groups[2]}
               onChange={this.handleChange}
               fullWidth
               size={"small"}
@@ -429,37 +475,14 @@ class profileBuild extends Component {
             </body1>
             <TextField
               variant="outlined"
-              name="varsitySports"
+              name="varsitySportOne"
               size={"small"}
               label="First Varsity Sport"
               className={classes.textField}
               fullWidth
               onChange={this.handleChange}
               InputProps={{
-                endAdornment: (
-                  <datalist id="varsitySports">
-                    <option value="Baseball" />
-                    <option value="Basketball" />
-                    <option value="Crew" />
-                    <option value="Cross Country" />
-                    <option value="Equestrian" />
-                    <option value="Fencing" />
-                    <option value="Field Hockey" />
-                    <option value="Football" />
-                    <option value="Ice Hockey" />
-                    <option value="Lacrosse" />
-                    <option value="Rugby" />
-                    <option value="Sailing" />
-                    <option value="Soccer" />
-                    <option value="Softball" />
-                    <option value="Swimming and Diving" />
-                    <option value="Tennis" />
-                    <option value="Track and Field" />
-                    <option value="Volleyball" />
-                    <option value="Water Polo" />
-                    <option value="Wrestling" />
-                  </datalist>
-                ),
+                endAdornment: varsitySports,
                 inputProps: {
                   list: "varsitySports",
                 },
@@ -467,37 +490,14 @@ class profileBuild extends Component {
             />
             <TextField
               variant="outlined"
-              name="varsitySports"
+              name="varsitySportTwo"
               size={"small"}
               label="Second Varsity Sport"
               className={classes.textField}
               fullWidth
               onChange={this.handleChange}
               InputProps={{
-                endAdornment: (
-                  <datalist id="varsitySports">
-                    <option value="Baseball" />
-                    <option value="Basketball" />
-                    <option value="Crew" />
-                    <option value="Cross Country" />
-                    <option value="Equestrian" />
-                    <option value="Fencing" />
-                    <option value="Field Hockey" />
-                    <option value="Football" />
-                    <option value="Ice Hockey" />
-                    <option value="Lacrosse" />
-                    <option value="Rugby" />
-                    <option value="Sailing" />
-                    <option value="Soccer" />
-                    <option value="Softball" />
-                    <option value="Swimming and Diving" />
-                    <option value="Tennis" />
-                    <option value="Track and Field" />
-                    <option value="Volleyball" />
-                    <option value="Water Polo" />
-                    <option value="Wrestling" />
-                  </datalist>
-                ),
+                endAdornment: varsitySports,
                 inputProps: {
                   list: "varsitySports",
                 },
@@ -513,7 +513,6 @@ class profileBuild extends Component {
               type="text"
               label="First Sport"
               className={classes.textField}
-              value={this.state.affinitySports[0]}
               onChange={this.handleChange}
               fullWidth
               size={"small"}
@@ -524,7 +523,6 @@ class profileBuild extends Component {
               type="text"
               label="Second Sport"
               className={classes.textField}
-              value={this.state.affinitySports[1]}
               onChange={this.handleChange}
               fullWidth
               size={"small"}
@@ -535,7 +533,6 @@ class profileBuild extends Component {
               type="text"
               label="Third Sport"
               className={classes.textField}
-              value={this.state.affinitySports[2]}
               onChange={this.handleChange}
               fullWidth
               size={"small"}
@@ -585,48 +582,48 @@ class profileBuild extends Component {
             </body1>
             <TextField
               id="book"
-              name="book"
+              name="favorites"
               type="text"
               label="Favorite Book"
               className={classes.textField}
               value={this.state.favorites.book}
-              onChange={this.handleChange}
+              onChange={this.handleFavorites}
               fullWidth
               required
               size={"small"}
             />
             <TextField
               id="movie"
-              name="movie"
+              name="favorites"
               type="text"
               label="Favorite Movie"
               className={classes.textField}
               value={this.state.favorites.movie}
-              onChange={this.handleChange}
+              onChange={this.handleFavorites}
               fullWidth
               required
               size={"small"}
             />
             <TextField
               id="tvShow"
-              name="tvShow"
+              name="favorites"
               type="text"
               label="Favorite Show"
               className={classes.textField}
               value={this.state.favorites.tvShow}
-              onChange={this.handleChange}
+              onChange={this.handleFavorites}
               fullWidth
               required
               size={"small"}
             />
             <TextField
               id="artist"
-              name="artist"
+              name="favorites"
               type="text"
               label="Favorite Artist"
               className={classes.textField}
               value={this.state.favorites.artist}
-              onChange={this.handleChange}
+              onChange={this.handleFavorites}
               fullWidth
               required
               size={"small"}
@@ -642,7 +639,6 @@ class profileBuild extends Component {
             <TextField
               id="bio"
               name="bio"
-              value={this.state.bio}
               multiline
               onChange={this.handleChange}
               rows={4}
@@ -674,132 +670,132 @@ class profileBuild extends Component {
             </body>
             <h3>Course #1</h3>
             <TextField
-              id="courseCodeOne"
-              name="courseCodeOne"
+              id="courseCode"
+              name="courseCode"
               type="text"
               label="Course Code"
               className={classes.textField}
-              helperText={errors.courseCodeOne}
-              error={errors.courseCodeOne ? true : false}
-              value={this.state.courseCodeOne}
-              onChange={this.handleChange}
+              helperText={errors.courseCode}
+              error={errors.courseCode ? true : false}
+              value={this.state.courseCode}
+              onChange={this.handleCourseOne}
               size={"small"}
               required
               variant="outlined"
             />
             <TextField
-              id="courseNameOne"
-              name="courseNameOne"
+              id="courseName"
+              name="courseName"
               type="text"
               label="Course Name"
               className={classes.textField}
-              value={this.state.courseNameOne}
-              onChange={this.handleChange}
+              value={this.state.courseName}
+              onChange={this.handleCourseOne}
               fullWidth
               required
               size={"small"}
             />
             <h3>Course #2</h3>
             <TextField
-              id="courseCodeTwo"
-              name="courseCodeTwo"
+              id="courseCode"
+              name="courseCode"
               type="text"
               label="Course Code"
               className={classes.textField}
-              helperText={errors.courseCodeTwo}
-              error={errors.courseCodeTwo ? true : false}
-              value={this.state.courseCodeTwo}
-              onChange={this.handleChange}
+              helperText={errors.courseCode}
+              error={errors.courseCode ? true : false}
+              value={this.state.courseCode}
+              onChange={this.handleCourseTwo}
               size={"small"}
               required
               variant="outlined"
             />
             <TextField
-              id="courseNameTwo"
-              name="courseNameTwo"
+              id="courseName"
+              name="courseName"
               type="text"
               label="Course Name"
               className={classes.textField}
-              value={this.state.courseNameTwo}
-              onChange={this.handleChange}
+              value={this.state.courseName}
+              onChange={this.handleCourseTwo}
               fullWidth
               required
               size={"small"}
             />
             <h3>Course #3</h3>
             <TextField
-              id="courseCodeThree"
-              name="courseCodeThree"
+              id="courseCode"
+              name="courseCode"
               type="text"
               label="Course Code"
               className={classes.textField}
-              helperText={errors.courseCodeThree}
-              error={errors.courseCodeThree ? true : false}
-              value={this.state.courseCodeThree}
-              onChange={this.handleChange}
+              helperText={errors.courseCode}
+              error={errors.courseCode ? true : false}
+              value={this.state.courseCode}
+              onChange={this.handleCourseThree}
               size={"small"}
               required
               variant="outlined"
             />
             <TextField
-              id="courseNameThree"
-              name="courseNameThree"
+              id="courseName"
+              name="courseName"
               type="text"
               label="Course Name"
               className={classes.textField}
-              value={this.state.courseNameThree}
-              onChange={this.handleChange}
+              value={this.state.courseName}
+              onChange={this.handleCourseThree}
               fullWidth
               required
               size={"small"}
             />
             <h3>Course #4</h3>
             <TextField
-              id="courseCodeFour"
-              name="courseCodeFour"
+              id="courseCode"
+              name="courseCode"
               type="text"
               label="Course Code"
               className={classes.textField}
-              helperText={errors.courseCodeFour}
-              error={errors.courseCodeFour ? true : false}
-              value={this.state.courseCodeFour}
-              onChange={this.handleChange}
+              helperText={errors.courseCode}
+              error={errors.courseCode ? true : false}
+              value={this.state.courseCode}
+              onChange={this.handleCourseFour}
               size={"small"}
               variant="outlined"
             />
             <TextField
-              id="courseNameFour"
-              name="courseNameFour"
+              id="courseName"
+              name="courseName"
               type="text"
               label="Course Name"
               className={classes.textField}
-              value={this.state.courseNameFour}
-              onChange={this.handleChange}
+              value={this.state.courseName}
+              onChange={this.handleCourseFour}
               fullWidth
               size={"small"}
             />
             <h3>Course #5</h3>
             <TextField
-              id="courseCodeFive"
-              name="courseCodeFive"
+              id="courseCode"
+              name="courseCode"
               type="text"
               label="Course Code"
               className={classes.textField}
-              helperText={errors.courseCodeFive}
-              error={errors.courseCodeFive ? true : false}
-              value={this.state.courseCodeFive}
-              onChange={this.handleChange}
+              helperText={errors.courseCode}
+              error={errors.courseCode ? true : false}
+              value={this.state.courseCode}
+              onChange={this.handleCourseFive}
               size={"small"}
               variant="outlined"
             />
             <TextField
-              id="courseNameFive"
-              name="courseNameFive"
+              id="courseName"
+              name="courseName"
               type="text"
               label="Course Name"
               className={classes.textField}
-              value={this.state.courseNameFive}
-              onChange={this.handleChange}
+              value={this.state.courseName}
+              onChange={this.handleCourseFive}
               fullWidth
               size={"small"}
             />
@@ -825,6 +821,12 @@ class profileBuild extends Component {
                 <CircularProgress size={30} className={classes.progress} />
               )}
             </Button>
+
+            {!this.state.validProfile && (
+              <Typography variant="body2" className={classes.customError}>
+                Please fill out all required fields
+              </Typography>
+            )}
             <br />
             <br />
           </form>

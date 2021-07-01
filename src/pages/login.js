@@ -40,12 +40,17 @@ class login extends Component {
     axios
       .post("/login", userData)
       .then((res) => {
-        localStorage.setItem("FBIdToken", `Bearer ${res.data.token}`);
+        const FBIdToken = `Bearer ${res.data.token}`;
+        localStorage.setItem("FBIdToken", FBIdToken);
+        axios.defaults.headers.common["Authorization"] = FBIdToken;
         this.setState({
           loading: false,
         });
         // push to course landing page in future
-        this.props.history.push("/profileView");
+        this.props.history.push({
+          pathname: "/profileView",
+          state: { email: this.state.email },
+        });
       })
       .catch((err) => {
         this.setState({
