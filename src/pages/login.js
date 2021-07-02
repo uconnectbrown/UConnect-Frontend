@@ -46,7 +46,6 @@ class login extends Component {
         this.setState({
           loading: false,
         });
-        // push to course landing page in future
         this.props.history.push({
           pathname: "/profileView",
           state: { email: this.state.email },

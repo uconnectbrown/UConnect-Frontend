@@ -12,17 +12,14 @@ class NavBar extends Component {
     return (
       <AppBar>
         <Toolbar className="nav-container">
-          <Button color="inherit" component={Link} to="/">
-            Welcome
+          <Button color="inherit" component={Link} to="/profileView">
+            Profile
           </Button>
-          <Button color="inherit" component={Link} to="/login">
-            Login
+          <Button color="inherit" component={Link} to="/courseView">
+            Courses
           </Button>
-          <Button color="inherit" component={Link} to="/signup">
-            Signup
-          </Button>
-          <Button color="inherit" component={Link} to="/profileBuild">
-            Build Profile
+          <Button color="inherit" Messages component={Link} to="/messageView">
+            Messages
           </Button>
         </Toolbar>
       </AppBar>

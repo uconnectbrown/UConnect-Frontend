@@ -1,3 +1,4 @@
+// Setup
 import "./App.css";
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -7,7 +8,6 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import themeFile from "./util/theme";
 
 // Components
-import NavBar from "./components/NavBar";
 import AuthRoute from "./util/AuthRoute";
 
 // Pages
@@ -16,6 +16,8 @@ import login from "./pages/login";
 import signup from "./pages/signup";
 import profileBuild from "./pages/profileBuild";
 import profileView from "./pages/profileView";
+import courseView from "./pages/courseView";
+import messageView from "./pages/messageView";
 
 const theme = createMuiTheme(themeFile);
 
@@ -36,7 +38,6 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <div className="App">
         <Router>
-          <NavBar />
           <div className="container">
             <Switch>
               <Route exact path="/" component={welcome} />
@@ -54,6 +55,8 @@ function App() {
               />
               <Route exact path="/profileBuild" component={profileBuild} />
               <Route exact path="/profileView" component={profileView} />
+              <Route exact path="/courseView" component={courseView} />
+              <Route exact path="/messageView" component={messageView} />
             </Switch>
           </div>
         </Router>

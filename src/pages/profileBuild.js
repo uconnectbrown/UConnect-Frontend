@@ -1,8 +1,8 @@
+// Setup
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -15,73 +15,22 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 // Import Data
 import majorList from "../resources/majors";
 import varsitySports from "../resources/varsitySports";
+import emptyProfile from "../resources/emptyProfile";
+import greekLife from "../resources/greekLife";
 
 // Styling
 const styles = (theme) => ({
   ...theme.spreadThis,
 });
 
+// Validators
+const { validProfile } = require("../util/validators");
+
 class profileBuild extends Component {
   constructor() {
     super();
-    this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      class: "",
-      majorOne: "",
-      majorTwo: "",
-      majorThree: "",
-      preferredPronouns: "",
-      interestOne: "",
-      interestTwo: "",
-      interestThree: "",
-      interestFour: "",
-      interestFive: "",
-      groupOne: "",
-      groupTwo: "",
-      groupThree: "",
-      varsitySportOne: "",
-      varsitySportTwo: "",
-      affinitySportOne: "",
-      affinitySportTwo: "",
-      affinitySportThree: "",
-      greekLife: "",
-      favorites: {
-        movie: "",
-        book: "",
-        tvShow: "",
-        artist: "",
-      },
-      bio: "",
-      courseOne: {},
-      courseTwo: {},
-      courseThree: {},
-      courseFour: {},
-      courseFive: {},
-      loading: false,
-      errors: {},
-      validProfile: true,
-    };
+    this.state = emptyProfile;
   }
-
-  validProfile = (profile) => {
-    if (
-      profile.firstName &&
-      profile.lastName &&
-      profile.class &&
-      profile.interests.filter(Boolean).length > 2 &&
-      profile.majors.filter(Boolean).length > 0 &&
-      profile.favorites.movie &&
-      profile.favorites.book &&
-      profile.favorites.tvShow &&
-      profile.favorites.artist &&
-      profile.courses.filter((course) => Object.keys(course).length > 1)
-        .length > 2
-    ) {
-      return true;
-    }
-  };
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -120,8 +69,7 @@ class profileBuild extends Component {
       ],
     };
 
-    console.log(newUserData);
-    if (!this.validProfile(newUserData)) {
+    if (!validProfile(newUserData)) {
       this.setState({
         loading: false,
         validProfile: false,
@@ -552,23 +500,7 @@ class profileBuild extends Component {
               fullWidth
               onChange={this.handleChange}
               InputProps={{
-                endAdornment: (
-                  <datalist id="greekLife">
-                    <option value="Alpha Chi Omega" />
-                    <option value="Alpha Delta Phi Society" />
-                    <option value="Alpha Phi Alpha" />
-                    <option value="Beta Omega Chi" />
-                    <option value="Delta Gamma" />
-                    <option value="Delta Phi" />
-                    <option value="Delta Sigma Theta" />
-                    <option value="Delta Tau" />
-                    <option value="Kappa Alpha Theta" />
-                    <option value="Kappa Alpha Psi" />
-                    <option value="Kappa Delta" />
-                    <option value="Theta Alpha" />
-                    <option value="Zeta Delta Xi" />
-                  </datalist>
-                ),
+                endAdornment: greekLife,
                 inputProps: {
                   list: "greekLife",
                 },
@@ -578,7 +510,7 @@ class profileBuild extends Component {
             <h2>Favorites</h2>
             <body1>
               Feel free to share your favorite book, movie, tv show, and artist
-              below. :)
+              below.
             </body1>
             <TextField
               id="book"
