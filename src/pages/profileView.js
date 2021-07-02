@@ -11,6 +11,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 
 class profileView extends Component {
   state = {
@@ -95,9 +97,25 @@ class profileView extends Component {
           </CardContent>
         </Card>
         <br />
-        <Card>
+        <Grid container spacing={2}>
+          <Grid item sm>
+          <Card>
+          <CardContent align="center">
+            <Typography variant="h3">Groups</Typography>
+            <hr />
+            <br />
+            {this.state.groups.map((group) => (
+              <Typography variant="body1">{group}</Typography>
+            ))}
+          </CardContent>
+        </Card>
+          </Grid>
+          <Grid item sm>
+          <Card>
           <CardContent align="center">
             <Typography variant="h3">Interests</Typography>
+            <hr />
+            <br />
             <Typography variant="h5">General</Typography>
             {this.state.interests.map((interest) => (
               <Typography variant="body1">{interest}</Typography>
@@ -112,10 +130,13 @@ class profileView extends Component {
             ))}
           </CardContent>
         </Card>
-        <br />
-        <Card>
+          </Grid>
+          <Grid item sm>
+          <Card>
           <CardContent align="center">
             <Typography variant="h3">Favorites</Typography>
+            <hr />
+            <br />
             <Typography variant="body1">
               Book: {this.state.favorites.book}
             </Typography>
@@ -130,25 +151,22 @@ class profileView extends Component {
             </Typography>
           </CardContent>
         </Card>
-        <br />
-        <Card>
-          <CardContent align="center">
-            <Typography variant="h3">Groups</Typography>
-            {this.state.groups.map((group) => (
-              <Typography variant="body1">{group}</Typography>
-            ))}
-          </CardContent>
-        </Card>
+          </Grid>
+        </Grid>
         <br />
         <Card>
           <CardContent align="center">
             <Typography variant="h3">Courses</Typography>
+            <hr />
+            <br />
+            <Grid container>
             {this.state.courses.map((course) => (
-              <div>
+              <Grid item sm>
                 <Typography variant="h5">{course.courseCode}</Typography>
                 <Typography variant="body1">{course.courseName}</Typography>
-              </div>
+              </Grid>
             ))}
+            </Grid>
           </CardContent>
         </Card>
       </div>
