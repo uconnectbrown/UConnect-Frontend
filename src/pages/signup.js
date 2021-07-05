@@ -56,6 +56,8 @@ class signup extends Component {
     axios
       .post("/signup", newUserData)
       .then((res) => {
+        const emailId = this.state.email.split("@")[0];
+        localStorage.setItem("emailId", emailId);
         const FBIdToken = `Bearer ${res.data.token}`;
         localStorage.setItem("FBIdToken", FBIdToken);
         axios.defaults.headers.common["Authorization"] = FBIdToken;

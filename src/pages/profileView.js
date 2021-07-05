@@ -19,7 +19,7 @@ class profileView extends Component {
     affinitySports: [],
     bio: "",
     class: "",
-    courses: [],
+    courses: [{},{},{},{},{}],
     createdAt: "",
     email: "",
     favorites: {},
@@ -36,7 +36,7 @@ class profileView extends Component {
   };
 
   componentDidMount() {
-    const emailId = this.props.location.state.email.split("@")[0];
+    const emailId = localStorage.emailId;
     axios
       .get(`/user/${emailId}`)
       .then((res) => {
@@ -62,44 +62,60 @@ class profileView extends Component {
       })
       .catch((err) => console.log(err));
   }
+
+  logoutUser = () => {
+    localStorage.removeItem("emailId");
+    localStorage.removeItem('FBIdToken');
+    delete axios.defaults.headers.common['Authorization'];
+  }
+
   render() {
     return (
       <div>
         <NavBar />
-        <Card>
+        <Card raised>
           <CardContent align="center">
             <img src={this.state.imageUrl} width={450} />
+            <br />
+            <br />
             <Typography variant="h3">
               {this.state.firstName} {this.state.lastName}
             </Typography>
             <Typography variant="h5">
-              ({this.state.preferredPronouns})
+            ({this.state.preferredPronouns})
             </Typography>
-            <Typography variant="body1">Class of {this.state.class}</Typography>
-            <Typography variant="body1">
-              Concentration(s): {this.state.majors[0]}
-              {this.state.majors[1] && `, ${this.state.majors[1]}`}
-              {this.state.majors[2] && `, ${this.state.majors[2]}`}
-            </Typography>
-            {this.state.varsitySports[0] && (
-              <Typography variant="body1">
-                Sport(s): {this.state.varsitySports[0]}
-                {this.state.varsitySports[1] &&
-                  `, ${this.state.varsitySports[1]}`}
-              </Typography>
-            )}
-            {this.state.greekLife && (
-              <Typography variant="body1">
-                Greek Organization: {this.state.greekLife}
-              </Typography>
-            )}
-            <Typography variant="body1">{this.state.bio}</Typography>
+            <br />
+            <Card variant='outlined' style={{maxWidth: 450, borderStyle:'solid', borderWidth:'2px', borderColor:'red'}}>
+              <CardContent>
+                <Typography variant="body1">Class of {this.state.class}</Typography>
+                <Typography variant="body1">
+                  Concentration(s): {this.state.majors[0]}
+                  {this.state.majors[1] && `, ${this.state.majors[1]}`}
+                  {this.state.majors[2] && `, ${this.state.majors[2]}`}
+                </Typography>
+                {this.state.varsitySports[0] && (
+                  <Typography variant="body1">
+                    Sport(s): {this.state.varsitySports[0]}
+                    {this.state.varsitySports[1] &&
+                      `, ${this.state.varsitySports[1]}`}
+                  </Typography>
+                )}
+                {this.state.greekLife && (
+                  <Typography variant="body1">
+                    Greek Organization: {this.state.greekLife}
+                  </Typography>
+                )}
+                <br />
+                <Typography variant="body1">{this.state.bio}</Typography>
+              </CardContent>
+            </Card>
           </CardContent>
         </Card>
         <br />
-        <Grid container spacing={2}>
+        <Grid container
+          spacing={2}>
           <Grid item sm>
-          <Card>
+          <Card raised>
           <CardContent align="center">
             <Typography variant="h3">Groups</Typography>
             <hr />
@@ -111,28 +127,57 @@ class profileView extends Component {
         </Card>
           </Grid>
           <Grid item sm>
-          <Card>
+        <Card raised>
           <CardContent align="center">
             <Typography variant="h3">Interests</Typography>
             <hr />
             <br />
-            <Typography variant="h5">General</Typography>
-            {this.state.interests.map((interest) => (
-              <Typography variant="body1">{interest}</Typography>
-            ))}
-            {(this.state.affinitySports[0] ||
-              this.state.affinitySports[1] ||
-              this.state.affinitySports[2]) && (
-              <Typography variant="h5">Athletic</Typography>
-            )}
-            {this.state.affinitySports.map((affinitySport) => (
-              <Typography variant="body1">{affinitySport}</Typography>
-            ))}
+            
+                <Typography variant="h5">General</Typography>
+                <Grid container >
+                  <Grid item sm >
+                  <Typography variant="body1">• {this.state.interests[0]}</Typography>
+                  <Typography variant="body1">• {this.state.interests[2]}</Typography>
+                  {this.state.interests[4] && (
+                    <Typography variant="body1">• {this.state.interests[4]}</Typography>
+                  )}
+                  </Grid>
+                  <Grid item sm >
+                  <Typography variant="body1">• {this.state.interests[1]}</Typography>
+                  {this.state.interests[3] && (
+                    <Typography variant="body1">• {this.state.interests[3]}</Typography>
+                  )}
+                  </Grid>
+                </Grid>
+              
+            <br />
+            
+                {(this.state.affinitySports[0] ||
+                this.state.affinitySports[1] ||
+                this.state.affinitySports[2]) && (
+                  <Typography variant="h5">Athletic</Typography>
+                )}
+                <Grid container >
+                  <Grid item sm >
+                  {this.state.affinitySports[0] && (
+                    <Typography variant="body1">• {this.state.affinitySports[0]}</Typography>
+                  )}
+                  {this.state.affinitySports[2] && (
+                    <Typography variant="body1">• {this.state.affinitySports[2]}</Typography>
+                  )}
+                  </Grid>
+                  <Grid item sm >
+                  {this.state.affinitySports[1] && (
+                    <Typography variant="body1">• {this.state.affinitySports[1]}</Typography>
+                  )}
+                  </Grid>
+                </Grid>
+              
           </CardContent>
         </Card>
           </Grid>
           <Grid item sm>
-          <Card>
+          <Card raised >
           <CardContent align="center">
             <Typography variant="h3">Favorites</Typography>
             <hr />
@@ -154,21 +199,73 @@ class profileView extends Component {
           </Grid>
         </Grid>
         <br />
-        <Card>
+        <Card raised>
           <CardContent align="center">
             <Typography variant="h3">Courses</Typography>
             <hr />
             <br />
-            <Grid container>
-            {this.state.courses.map((course) => (
+            <Grid container spacing={2}>
+            <Grid item sm>
+              <Card style={{borderStyle:'solid',borderWidth:'1px',borderColor:'red'}}>
+                <CardContent>
+                  <Typography variant="h5">{this.state.courses[0].courseCode}</Typography>
+                  <Typography variant="body1">{this.state.courses[0].courseName}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item sm>
+              <Card style={{borderStyle:'solid',borderWidth:'1px',borderColor:'red'}}>
+                <CardContent>
+                  <Typography variant="h5">{this.state.courses[1].courseCode}</Typography>
+                  <Typography variant="body1">{this.state.courses[1].courseName}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item sm>
+              <Card style={{borderStyle:'solid',borderWidth:'1px',borderColor:'red'}}>
+                <CardContent>
+                  <Typography variant="h5">{this.state.courses[2].courseCode}</Typography>
+                  <Typography variant="body1">{this.state.courses[2].courseName}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            {(this.state.courses[3].courseCode || this.state.courses[3].courseName) && (
               <Grid item sm>
-                <Typography variant="h5">{course.courseCode}</Typography>
-                <Typography variant="body1">{course.courseName}</Typography>
+                <Card style={{borderStyle:'solid',borderWidth:'1px',borderColor:'red'}}>
+                  <CardContent>
+                    <Typography variant="h5">{this.state.courses[3].courseCode}</Typography>
+                    <Typography variant="body1">{this.state.courses[3].courseName}</Typography>
+                  </CardContent>
+                </Card>
               </Grid>
-            ))}
+            )}
+            {(this.state.courses[4].courseCode || this.state.courses[4].courseName) && (
+              <Grid item sm>
+                <Card style={{borderStyle:'solid',borderWidth:'1px',borderColor:'red'}}>
+                  <CardContent>
+                    <Typography variant="h5">{this.state.courses[4].courseCode}</Typography>
+                    <Typography variant="body1">{this.state.courses[4].courseName}</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            )}
             </Grid>
           </CardContent>
         </Card>
+        <br />
+        <Grid contained align="center">
+        <Button variant="contained"
+          color="secondary"
+          component={Link}
+          to="/login"
+          onClick={this.logoutUser}
+          >
+          <Typography variant="body1">
+            Logout
+          </Typography>
+        </Button>
+        </Grid>
+        <br />
       </div>
     );
   }

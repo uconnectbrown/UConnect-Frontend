@@ -40,6 +40,8 @@ class login extends Component {
     axios
       .post("/login", userData)
       .then((res) => {
+        const emailId = this.state.email.split("@")[0];
+        localStorage.setItem("emailId", emailId);
         const FBIdToken = `Bearer ${res.data.token}`;
         localStorage.setItem("FBIdToken", FBIdToken);
         axios.defaults.headers.common["Authorization"] = FBIdToken;
