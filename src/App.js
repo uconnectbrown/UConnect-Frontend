@@ -16,8 +16,9 @@ import login from "./pages/login";
 import signup from "./pages/signup";
 import profileBuild from "./pages/profileBuild";
 import profileView from "./pages/profileView";
-import courseView from "./pages/courseView";
+import coursesView from "./pages/coursesView";
 import messageView from "./pages/messageView";
+import courseView from "./pages/courseView";
 
 const theme = createMuiTheme(themeFile);
 
@@ -55,8 +56,9 @@ function App() {
               />
               <Route exact path="/profileBuild" component={profileBuild} />
               <Route exact path="/profileView" component={profileView} />
-              <Route exact path="/courseView" component={courseView} />
+              <Route exact path="/coursesView" component={coursesView} />
               <Route exact path="/messageView" component={messageView} />
+              <Route exact path="/courseView" component={courseView} />
             </Switch>
           </div>
         </Router>
