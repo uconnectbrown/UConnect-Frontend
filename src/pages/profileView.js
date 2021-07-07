@@ -11,10 +11,10 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 class profileView extends Component {
   state = {
@@ -61,6 +61,7 @@ class profileView extends Component {
           userId: res.data.user.userId,
           varsitySports: res.data.user.varsitySports,
         });
+        return axios.get("/update");
       })
       .catch((err) => console.log(err));
   }
@@ -73,6 +74,18 @@ class profileView extends Component {
   };
 
   render() {
+    let courseCode0 = this.state.courses[0].courseCode;
+    let courseCode1 = this.state.courses[1].courseCode;
+    let courseCode2 = this.state.courses[2].courseCode;
+    let courseCode3 = this.state.courses[3].courseCode;
+    let courseCode4 = this.state.courses[4].courseCode;
+    let numCourses = [
+      courseCode0,
+      courseCode1,
+      courseCode2,
+      courseCode3,
+      courseCode4,
+    ].filter(Boolean).length;
     return (
       <div>
         <NavBar />
@@ -124,12 +137,12 @@ class profileView extends Component {
             </Card>
             <br />
             <Button
-                  variant="contained"
-                  color="secondary"
-                  startIcon={<EditIcon />}
-                >
-                  Edit Profile
-                </Button>
+              variant="contained"
+              color="secondary"
+              startIcon={<EditIcon />}
+            >
+              Edit Profile
+            </Button>
           </CardContent>
         </Card>
         <br />
@@ -249,9 +262,7 @@ class profileView extends Component {
                   }}
                 >
                   <CardContent>
-                    <Typography variant="h5">
-                      {this.state.courses[0].courseCode}
-                    </Typography>
+                    <Typography variant="h5">{courseCode0}</Typography>
                     <Typography variant="body1">
                       {this.state.courses[0].courseName}
                     </Typography>
@@ -267,9 +278,7 @@ class profileView extends Component {
                   }}
                 >
                   <CardContent>
-                    <Typography variant="h5">
-                      {this.state.courses[1].courseCode}
-                    </Typography>
+                    <Typography variant="h5">{courseCode1}</Typography>
                     <Typography variant="body1">
                       {this.state.courses[1].courseName}
                     </Typography>
@@ -285,9 +294,7 @@ class profileView extends Component {
                   }}
                 >
                   <CardContent>
-                    <Typography variant="h5">
-                      {this.state.courses[2].courseCode}
-                    </Typography>
+                    <Typography variant="h5">{courseCode2} </Typography>
                     <Typography variant="body1">
                       {this.state.courses[2].courseName}
                     </Typography>
@@ -305,9 +312,7 @@ class profileView extends Component {
                     }}
                   >
                     <CardContent>
-                      <Typography variant="h5">
-                        {this.state.courses[3].courseCode}
-                      </Typography>
+                      <Typography variant="h5">{courseCode3} </Typography>
                       <Typography variant="body1">
                         {this.state.courses[3].courseName}
                       </Typography>
@@ -326,9 +331,7 @@ class profileView extends Component {
                     }}
                   >
                     <CardContent>
-                      <Typography variant="h5">
-                        {this.state.courses[4].courseCode}
-                      </Typography>
+                      <Typography variant="h5">{courseCode4} </Typography>
                       <Typography variant="body1">
                         {this.state.courses[4].courseName}
                       </Typography>
@@ -337,22 +340,26 @@ class profileView extends Component {
                 </Grid>
               )}
               <Grid item sm>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  startIcon={<AddIcon />}
-                >
-                  Add Course
-                </Button>
+                {numCourses < 5 && (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<AddIcon />}
+                  >
+                    Add Course
+                  </Button>
+                )}
                 <br />
                 <br />
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  startIcon={<DeleteIcon />}
-                >
-                  Remove Course
-                </Button>
+                {numCourses > 0 && (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<DeleteIcon />}
+                  >
+                    Remove Course
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </CardContent>

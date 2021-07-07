@@ -51,7 +51,13 @@ class signup extends Component {
       greekLife: "",
       favorites: {},
       bio: "",
-      courses: [],
+      courses: [
+        { courseCode: "", courseName: "" },
+        { courseCode: "", courseName: "" },
+        { courseCode: "", courseName: "" },
+        { courseCode: "", courseName: "" },
+        { courseCode: "", courseName: "" },
+      ],
     };
     axios
       .post("/signup", newUserData)

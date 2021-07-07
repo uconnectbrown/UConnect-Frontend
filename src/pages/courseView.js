@@ -23,13 +23,11 @@ export class courseView extends Component {
 
   componentDidMount() {
     const courseCode = localStorage.courseCode;
-    console.log(courseCode);
+
     axios
       .get(`/course/${courseCode}`)
       .then((res) => {
-        this.setState({
-          students: res.data,
-        });
+        this.setState({ students: [...this.state.students, ...res.data] });
       })
       .catch((err) => console.log(err));
   }
@@ -47,7 +45,9 @@ export class courseView extends Component {
     return (
       <div>
         <NavBar />
-        <Typography variant='h3' align='center'>{code}: {name}</Typography>
+        <Typography variant="h3" align="center">
+          {code}: {name}
+        </Typography>
         <Button
           variant="contained"
           color="secondary"
@@ -59,8 +59,8 @@ export class courseView extends Component {
         </Button>
         <br />
         <br />
-        <GridList cols={3} spacing={20} cellHeight='auto'>
-          {students.map((student) => (
+        <GridList cols={3} spacing={20} cellHeight="auto">
+          {this.state.students.map((student) => (
             <GridListTile item sm>
               <Card
                 raised
@@ -68,21 +68,33 @@ export class courseView extends Component {
                   borderStyle: "solid",
                   borderWidth: "3px",
                   borderColor: "red",
+                  height: 450,
                 }}
                 align="center"
               >
                 <ButtonBase>
                   <CardContent>
-                    <img src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" style={{width:150, borderRadius:'50%'}} />
+                    <img
+                      src={student.imageUrl}
+                      style={{ width: 150, height: 150, borderRadius: "50%" }}
+                    />
                     <br />
                     <br />
-                    <Typography variant='h4'>Student Name</Typography>
-                    <Typography variant='h6'>Graduating Class</Typography>
-                    <Typography variant='h6'>Concentration(s)</Typography>
-                    <Typography variant='body1'>Interests:</Typography>
-                    <Typography variant='body1'>• Interest 1</Typography>
-                    <Typography variant='body1'>• Interest 2</Typography>
-                    <Typography variant='body1'>• Interest 3</Typography>
+                    <Typography variant="h4">
+                      {student.firstName} {student.lastName}
+                    </Typography>
+                    <Typography variant="h6">{student.classYear}</Typography>
+                    <Typography variant="h6">{student.majors}</Typography>
+                    <Typography variant="body1">Interests:</Typography>
+                    <Typography variant="body1">
+                      • {student.interests[0]}
+                    </Typography>
+                    <Typography variant="body1">
+                      • {student.interests[1]}
+                    </Typography>
+                    <Typography variant="body1">
+                      • {student.interests[2]}
+                    </Typography>
                     {/* <Typography variant="h4">{student}</Typography> */}
                   </CardContent>
                 </ButtonBase>

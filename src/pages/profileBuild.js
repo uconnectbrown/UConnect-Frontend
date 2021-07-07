@@ -37,6 +37,21 @@ class profileBuild extends Component {
     this.setState({
       loading: true,
     });
+    if (Object.keys(this.state.courseOne).length === 0) {
+      this.state.courseOne = { courseCode: "", courseName: "" };
+    }
+    if (Object.keys(this.state.courseTwo).length === 0) {
+      this.state.courseTwo = { courseCode: "", courseName: "" };
+    }
+    if (Object.keys(this.state.courseThree).length === 0) {
+      this.state.courseThree = { courseCode: "", courseName: "" };
+    }
+    if (Object.keys(this.state.courseFour).length === 0) {
+      this.state.courseFour = { courseCode: "", courseName: "" };
+    }
+    if (Object.keys(this.state.courseFive).length === 0) {
+      this.state.courseFive = { courseCode: "", courseName: "" };
+    }
     const newUserData = {
       firstName: this.state.firstName,
       lastName: this.state.lastName,

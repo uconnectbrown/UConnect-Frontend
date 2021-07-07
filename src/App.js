@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles/";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import { createMuiTheme } from "@material-ui/core/styles";
 import themeFile from "./util/theme";
 
 // Components
