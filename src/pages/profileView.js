@@ -11,6 +11,10 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 class profileView extends Component {
   state = {
@@ -118,6 +122,14 @@ class profileView extends Component {
                 <Typography variant="body1">{this.state.bio}</Typography>
               </CardContent>
             </Card>
+            <br />
+            <Button
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<EditIcon />}
+                >
+                  Edit Profile
+                </Button>
           </CardContent>
         </Card>
         <br />
@@ -324,6 +336,24 @@ class profileView extends Component {
                   </Card>
                 </Grid>
               )}
+              <Grid item sm>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<AddIcon />}
+                >
+                  Add Course
+                </Button>
+                <br />
+                <br />
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<DeleteIcon />}
+                >
+                  Remove Course
+                </Button>
+              </Grid>
             </Grid>
           </CardContent>
         </Card>

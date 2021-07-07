@@ -15,6 +15,8 @@ import Typography from "@material-ui/core/Typography";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import ButtonBase from "@material-ui/core/ButtonBase";
+import Avatar from '@material-ui/core/Avatar';
+import AvatarGroup from '@material-ui/lab/AvatarGroup';
 
 export class coursesView extends Component {
   state = {
@@ -33,9 +35,11 @@ export class coursesView extends Component {
       .catch((err) => console.log(err));
   }
 
-  handleClick = (code) => {
+  handleClick = (code, name) => {
     const courseCode = code.replace(/\s/g, "");
     localStorage.setItem("courseCode", courseCode);
+    localStorage.setItem("code", code);
+    localStorage.setItem("name", name);
     this.props.history.push({
       pathname: "/courseView",
     });
@@ -68,13 +72,25 @@ export class coursesView extends Component {
                 height: 200,
               }}
             >
-              <ButtonBase onClick={() => this.handleClick(code0)}>
+              <ButtonBase onClick={() => this.handleClick(code0, name0)}>
                 <CardContent align="center">
                   <Typography variant="h4">{code0}</Typography>
                   <Typography variant="h5">{name0}</Typography>
                   <hr />
                   <br />
-                  <Typography variant="body1">Course Info</Typography>
+                  {/* Proof of concept styling idea */}
+                  <AvatarGroup max={6}>
+                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                  </AvatarGroup>
                 </CardContent>
               </ButtonBase>
             </Card>
@@ -89,7 +105,7 @@ export class coursesView extends Component {
                 height: 200,
               }}
             >
-              <ButtonBase onClick={() => this.handleClick(code2)}>
+              <ButtonBase onClick={() => this.handleClick(code2, name2)}>
                 <CardContent align="center">
                   <Typography variant="h4">{code2}</Typography>
                   <Typography variant="h5">{name2}</Typography>
@@ -113,7 +129,7 @@ export class coursesView extends Component {
                     height: 200,
                   }}
                 >
-                  <ButtonBase onClick={() => this.handleClick(code4)}>
+                  <ButtonBase onClick={() => this.handleClick(code4, name4)}>
                     <CardContent align="center">
                       <Typography variant="h4">{code4}</Typography>
                       <Typography variant="h5">{name4}</Typography>
@@ -136,7 +152,7 @@ export class coursesView extends Component {
                 height: 200,
               }}
             >
-              <ButtonBase onClick={() => this.handleClick(code1)}>
+              <ButtonBase onClick={() => this.handleClick(code1, name1)}>
                 <CardContent align="center">
                   <Typography variant="h4">{code1}</Typography>
                   <Typography variant="h5">{name1}</Typography>
@@ -160,7 +176,7 @@ export class coursesView extends Component {
                     height: 200,
                   }}
                 >
-                  <ButtonBase onClick={() => this.handleClick(code3)}>
+                  <ButtonBase onClick={() => this.handleClick(code3, name3)}>
                     <CardContent align="center">
                       <Typography variant="h4">{code3}</Typography>
                       <Typography variant="h5">{name3}</Typography>
