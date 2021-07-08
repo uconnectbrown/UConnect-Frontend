@@ -21,6 +21,11 @@ import AvatarGroup from '@material-ui/lab/AvatarGroup';
 export class coursesView extends Component {
   state = {
     courses: [{}, {}, {}, {}, {}],
+    students0: [],
+    students1: [],
+    students2: [],
+    students3: [],
+    students4: [],
   };
 
   componentDidMount() {
@@ -31,8 +36,55 @@ export class coursesView extends Component {
         this.setState({
           courses: res.data.user.courses,
         });
+        // trying to pull the students from each class to populate the avatars appropriately
+        Promise.all([
+          axios.get(`/course/${this.state.courses[0].courseCode}`),
+          axios.get(`/course/${this.state.courses[1].courseCode}`),
+          axios.get(`/course/${this.state.courses[2].courseCode}`),
+          axios.get(`/course/${this.state.courses[3].courseCode}`),
+          axios.get(`/course/${this.state.courses[4].courseCode}`),
+        ])
+        .then(([res0, res1, res2, res3, res4]) => {
+          this.setState({ students0: [...this.state.students0, ...res0.data] });
+          this.setState({ students1: [...this.state.students1, ...res1.data] });
+          this.setState({ students2: [...this.state.students2, ...res2.data] });
+          this.setState({ students3: [...this.state.students3, ...res3.data] });
+          this.setState({ students4: [...this.state.students4, ...res4.data] });
+          console.log(this.state.students4)
+        })
+        .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
+    // axios
+    //   .get(`/course/${this.state.courses[0].courseCode}`)
+    //   .then((res) => {
+    //     this.setState({ students0: [...this.state.students0, ...res.data] });
+    //   })
+    //   .catch((err) => console.log(err));
+    // axios
+    //   .get(`/course/${this.state.courses[1].courseCode}`)
+    //   .then((res) => {
+    //     this.setState({ students1: [...this.state.students1, ...res.data] });
+    //   })
+    //   .catch((err) => console.log(err));
+    // axios
+    //   .get(`/course/${this.state.courses[2].courseCode}`)
+    //   .then((res) => {
+    //     this.setState({ students2: [...this.state.students2, ...res.data] });
+    //   })
+    //   .catch((err) => console.log(err));
+    // axios
+    //   .get(`/course/${this.state.courses[3].courseCode}`)
+    //   .then((res) => {
+    //     this.setState({ students3: [...this.state.students3, ...res.data] });
+    //   })
+    //   .catch((err) => console.log(err));
+    // axios
+    //   .get(`/course/${this.state.courses[4].courseCode}`)
+    //   .then((res) => {
+    //     this.setState({ students4: [...this.state.students4, ...res.data] });
+    //   })
+    //   .catch((err) => console.log(err));
   }
 
   handleClick = (code, name) => {
@@ -80,16 +132,9 @@ export class coursesView extends Component {
                   <br />
                   {/* Proof of concept styling idea */}
                   <AvatarGroup max={6}>
-                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
-                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
-                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
-                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
-                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
-                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
-                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
-                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
-                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
-                    <Avatar src="https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" />
+                    {this.state.students0.map((student) => (
+                      <Avatar src={student.imageUrl} />
+                    ))}
                   </AvatarGroup>
                 </CardContent>
               </ButtonBase>
@@ -111,7 +156,11 @@ export class coursesView extends Component {
                   <Typography variant="h5">{name2}</Typography>
                   <hr />
                   <br />
-                  <Typography variant="body1">Course Info</Typography>
+                  <AvatarGroup max={6}>
+                    {this.state.students0.map((student) => (
+                      <Avatar src={student.imageUrl} />
+                    ))}
+                  </AvatarGroup>
                 </CardContent>
               </ButtonBase>
             </Card>
@@ -135,7 +184,11 @@ export class coursesView extends Component {
                       <Typography variant="h5">{name4}</Typography>
                       <hr />
                       <br />
-                      <Typography variant="body1">Course Info</Typography>
+                      <AvatarGroup max={6}>
+                        {this.state.students0.map((student) => (
+                          <Avatar src={student.imageUrl} />
+                        ))}
+                      </AvatarGroup>
                     </CardContent>
                   </ButtonBase>
                 </Card>
@@ -158,7 +211,11 @@ export class coursesView extends Component {
                   <Typography variant="h5">{name1}</Typography>
                   <hr />
                   <br />
-                  <Typography variant="body1">Course Info</Typography>
+                  <AvatarGroup max={6}>
+                    {this.state.students0.map((student) => (
+                      <Avatar src={student.imageUrl} />
+                    ))}
+                  </AvatarGroup>
                 </CardContent>
               </ButtonBase>
             </Card>
@@ -182,7 +239,11 @@ export class coursesView extends Component {
                       <Typography variant="h5">{name3}</Typography>
                       <hr />
                       <br />
-                      <Typography variant="body1">Course Info</Typography>
+                      <AvatarGroup max={6}>
+                        {this.state.students0.map((student) => (
+                          <Avatar src={student.imageUrl} />
+                        ))}
+                      </AvatarGroup>
                     </CardContent>
                   </ButtonBase>
                 </Card>

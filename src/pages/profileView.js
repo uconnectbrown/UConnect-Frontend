@@ -15,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class profileView extends Component {
   state = {
@@ -73,6 +74,27 @@ class profileView extends Component {
     delete axios.defaults.headers.common["Authorization"];
   };
 
+  // attempting to implement edit user image function
+  // think i'm using the backend post request wrong
+  handleImageChange = (event) => {
+    event.preventDefault();
+    const image = event.target.files[0];
+    const formData = new FormData();
+    formData.append('image', image, image.lastName);
+    
+    axios.post('/uploadImage', formData)
+      .then(() => {
+        this.props.history.push("/profileView");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  handleEditPicture = () => {
+    const fileInput = document.getElementById('imageInput');
+    fileInput.click();
+  }
+
   render() {
     let courseCode0 = this.state.courses[0].courseCode;
     let courseCode1 = this.state.courses[1].courseCode;
@@ -92,13 +114,18 @@ class profileView extends Component {
         <Card raised>
           <CardContent align="center">
             <img src={this.state.imageUrl} width={450} />
+            <input type="file" id="imageInput" hidden="hidden" onChange={this.handleImageChange} />
+            {/* want to use tooltip and iconbutton but getting a weird error upon rendering */}
+            <Button onClick={this.handleEditPicture}>
+              <EditIcon color="primary" />
+            </Button>
             <br />
             <br />
             <Typography variant="h3">
               {this.state.firstName} {this.state.lastName}
             </Typography>
             <Typography variant="h5">
-              ({this.state.preferredPronouns})
+              {this.state.preferredPronouns && `(${this.state.preferredPronouns})`}
             </Typography>
             <br />
             <Card

@@ -68,7 +68,7 @@ export class courseView extends Component {
                   borderStyle: "solid",
                   borderWidth: "3px",
                   borderColor: "red",
-                  height: 450,
+                  height: 400,
                 }}
                 align="center"
               >
@@ -76,15 +76,15 @@ export class courseView extends Component {
                   <CardContent>
                     <img
                       src={student.imageUrl}
-                      style={{ width: 150, height: 150, borderRadius: "50%" }}
+                      style={{ width: 150, height: 150, objectFit:'cover', borderRadius: "50%" }}
                     />
                     <br />
                     <br />
                     <Typography variant="h4">
                       {student.firstName} {student.lastName}
                     </Typography>
-                    <Typography variant="h6">{student.classYear}</Typography>
-                    <Typography variant="h6">{student.majors}</Typography>
+                    <Typography variant="h6">Class of {student.classYear}</Typography>
+                    <Typography variant="h6">{student.majors[0]}{student.majors[1] && `, ${student.majors[1]}`}{student.majors[2] && `, ${student.majors[2]}`}</Typography>
                     <Typography variant="body1">Interests:</Typography>
                     <Typography variant="body1">
                       • {student.interests[0]}
@@ -95,7 +95,6 @@ export class courseView extends Component {
                     <Typography variant="body1">
                       • {student.interests[2]}
                     </Typography>
-                    {/* <Typography variant="h4">{student}</Typography> */}
                   </CardContent>
                 </ButtonBase>
               </Card>
