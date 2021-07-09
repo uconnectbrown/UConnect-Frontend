@@ -30,6 +30,9 @@ class profileView extends Component {
     addCourseCode: "",
     addCourseName: "",
     affinitySports: [],
+    affinitySportOne: "",
+    affinitySportTwo: "",
+    affinitySportThree: "",
     bio: "",
     class: "",
     courses: [{}, {}, {}, {}, {}],
@@ -37,6 +40,10 @@ class profileView extends Component {
     delete: false,
     email: "",
     favorites: {},
+    favoriteBook: "",
+    favoriteMovie: "",
+    favoriteShow: "",
+    favoriteArtist: "",
     firstName: "",
     greekLife: "",
     groups: [],
@@ -45,6 +52,11 @@ class profileView extends Component {
     groupThree: "",
     imageUrl: "",
     interests: [],
+    interestOne: "",
+    interestTwo: "",
+    interestThree: "",
+    interestFour: "",
+    interestFive: "",
     lastName: "",
     majors: [],
     addOpen: false,
@@ -65,20 +77,29 @@ class profileView extends Component {
       .get(`/user/${emailId}`)
       .then((res) => {
         this.setState({
-          affinitySports: res.data.user.affinitySports,
+          affinitySportOne: res.data.user.affinitySports[0],
+          affinitySportTwo: res.data.user.affinitySports[1],
+          affinitySportThree: res.data.user.affinitySports[2],
           bio: res.data.user.bio,
           class: res.data.user.class,
           courses: res.data.user.courses,
           createdAt: res.data.user.createdAt,
           email: res.data.user.email,
-          favorites: res.data.user.favorites,
+          favoriteBook: res.data.user.favorites.book,
+          favoriteMovie: res.data.user.favorites.movie,
+          favoriteShow: res.data.user.favorites.tvShow,
+          favoriteArtist: res.data.user.favorites.artist,
           firstName: res.data.user.firstName,
           greekLife: res.data.user.greekLife,
           groupOne: res.data.user.groups[0],
           groupTwo: res.data.user.groups[1],
           groupThree: res.data.user.groups[2],
           imageUrl: res.data.user.imageUrl,
-          interests: res.data.user.interests,
+          interestOne: res.data.user.interests[0],
+          interestTwo: res.data.user.interests[1],
+          interestThree: res.data.user.interests[2],
+          interestFour: res.data.user.interests[3],
+          interestFive: res.data.user.interests[4],
           lastName: res.data.user.lastName,
           majors: res.data.user.majors,
           preferredPronouns: res.data.user.preferredPronouns,
@@ -214,6 +235,57 @@ class profileView extends Component {
       });
     });
     this.setState({ groupOpen: false });
+  };
+  handleSubmitInterests = () => {
+    let interestsList = [
+      this.state.interestOne,
+      this.state.interestTwo,
+      this.state.interestThree,
+      this.state.interestFour,
+      this.state.interestFive,
+    ];
+    let affinitySportsList = [
+      this.state.affinitySportOne,
+      this.state.affinitySportTwo,
+      this.state.affinitySportThree,
+    ];
+    let newInterests = {
+      interests: interestsList,
+      affinitySports: affinitySportsList,
+    };
+    axios.post("/edit", newInterests).then(() => {
+      this.setState({
+        interestOne: interestsList[0],
+        interestTwo: interestsList[1],
+        interestThree: interestsList[2],
+        interestFour: interestsList[3],
+        interestFive: interestsList[4],
+        affinitySportOne: affinitySportsList[0],
+        affinitySportTwo: affinitySportsList[1],
+        affinitySportThree: affinitySportsList[2],
+      });
+    });
+    this.setState({ interestsOpen: false });
+  };
+  handleSubmitFavorites = () => {
+    let favorites = {
+      book: this.state.favoriteBook,
+      movie: this.state.favoriteMovie,
+      tvShow: this.state.favoriteShow,
+      artist: this.state.favoriteArtist
+    };
+    let newFavorites = {
+      favorites: favorites,
+    };
+    axios.post("/edit", newFavorites).then(() => {
+      this.setState({
+        favoriteBook: favorites['book'],
+        favoriteMovie: favorites['movie'],
+        favoriteShow: favorites['tvShow'],
+        favoriteArtist: favorites['artist'],
+      });
+    });
+    this.setState({ favoritesOpen: false });
   };
 
   handleChange = (event) => {
@@ -407,12 +479,122 @@ class profileView extends Component {
                   Interests{" "}
                   <Tooltip title="Edit interests" placement="top">
                     <IconButton
-                      onClick={this.handleEditInterests}
+                      onClick={this.handleInterestsOpen}
                       className="button"
                     >
                       <EditIcon color="primary" />
                     </IconButton>
                   </Tooltip>
+                  <Dialog
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    open={this.state.interestsOpen}
+                    onClose={this.handleInterestsClose}
+                  >
+                    <DialogTitle
+                      style={{ cursor: "move" }}
+                      id="draggable-dialog-title"
+                    >
+                      Edit Interests
+                    </DialogTitle>
+                    <DialogContent>
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="interestOne"
+                        name="interestOne"
+                        label="First General Interest"
+                        defaultValue={this.state.interestOne}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="interestTwo"
+                        name="interestTwo"
+                        label="Second General Interest"
+                        defaultValue={this.state.interestTwo}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="interestThree"
+                        name="interestThree"
+                        label="Third General Interest"
+                        defaultValue={this.state.interestThree}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="interestFour"
+                        name="interestFour"
+                        label="Fourth General Interest"
+                        defaultValue={this.state.interestFour}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="interestFive"
+                        name="interestFive"
+                        label="Fifth General Interest"
+                        defaultValue={this.state.interestFive}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="affinitySportOne"
+                        name="affinitySportOne"
+                        label="First Athletic Interest"
+                        defaultValue={this.state.affinitySportOne}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="affinitySportTwo"
+                        name="affinitySportTwo"
+                        label="Second Athletic Interest"
+                        defaultValue={this.state.affinitySportTwo}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="affinitySportThree"
+                        name="affinitySportThree"
+                        label="Third Athletic Interest"
+                        defaultValue={this.state.affinitySportThree}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={this.handleSubmitInterests}
+                        color="secondary"
+                      >
+                        Edit
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </Typography>
                 <hr />
                 <br />
@@ -421,24 +603,24 @@ class profileView extends Component {
                 <Grid container>
                   <Grid item sm>
                     <Typography variant="body1">
-                      • {this.state.interests[0]}
+                      • {this.state.interestOne}
                     </Typography>
                     <Typography variant="body1">
-                      • {this.state.interests[2]}
+                      • {this.state.interestThree}
                     </Typography>
-                    {this.state.interests[4] && (
+                    {this.state.interestFive && (
                       <Typography variant="body1">
-                        • {this.state.interests[4]}
+                        • {this.state.interestFive}
                       </Typography>
                     )}
                   </Grid>
                   <Grid item sm>
                     <Typography variant="body1">
-                      • {this.state.interests[1]}
+                      • {this.state.interestTwo}
                     </Typography>
-                    {this.state.interests[3] && (
+                    {this.state.interestFour && (
                       <Typography variant="body1">
-                        • {this.state.interests[3]}
+                        • {this.state.interestFour}
                       </Typography>
                     )}
                   </Grid>
@@ -446,28 +628,28 @@ class profileView extends Component {
 
                 <br />
 
-                {(this.state.affinitySports[0] ||
-                  this.state.affinitySports[1] ||
-                  this.state.affinitySports[2]) && (
+                {(this.state.affinitySportOne ||
+                  this.state.affinitySportTwo ||
+                  this.state.affinitySportThree) && (
                   <Typography variant="h5">Athletic</Typography>
                 )}
                 <Grid container>
                   <Grid item sm>
-                    {this.state.affinitySports[0] && (
+                    {this.state.affinitySportOne && (
                       <Typography variant="body1">
-                        • {this.state.affinitySports[0]}
+                        • {this.state.affinitySportOne}
                       </Typography>
                     )}
-                    {this.state.affinitySports[2] && (
+                    {this.state.affinitySportThree && (
                       <Typography variant="body1">
-                        • {this.state.affinitySports[2]}
+                        • {this.state.affinitySportThree}
                       </Typography>
                     )}
                   </Grid>
                   <Grid item sm>
-                    {this.state.affinitySports[1] && (
+                    {this.state.affinitySportTwo && (
                       <Typography variant="body1">
-                        • {this.state.affinitySports[1]}
+                        • {this.state.affinitySportTwo}
                       </Typography>
                     )}
                   </Grid>
@@ -482,26 +664,92 @@ class profileView extends Component {
                   Favorites{" "}
                   <Tooltip title="Edit favorites" placement="top">
                     <IconButton
-                      onClick={this.handleEditFavorites}
+                      onClick={this.handleFavoritesOpen}
                       className="button"
                     >
                       <EditIcon color="primary" />
                     </IconButton>
                   </Tooltip>
+                  <Dialog
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    open={this.state.favoritesOpen}
+                    onClose={this.handleFavoritesClose}
+                  >
+                    <DialogTitle
+                      style={{ cursor: "move" }}
+                      id="draggable-dialog-title"
+                    >
+                      Edit Favorites
+                    </DialogTitle>
+                    <DialogContent>
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="favoriteBook"
+                        name="favoriteBook"
+                        label="Book"
+                        defaultValue={this.state.favoriteBook}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="favoriteMovie"
+                        name="favoriteMovie"
+                        label="Movie"
+                        defaultValue={this.state.favoriteMovie}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="favoriteShow"
+                        name="favoriteShow"
+                        label="Show"
+                        defaultValue={this.state.favoriteShow}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="favoriteArtist"
+                        name="favoriteArtist"
+                        label="Artist"
+                        defaultValue={this.state.favoriteArtist}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={this.handleSubmitFavorites}
+                        color="secondary"
+                      >
+                        Edit
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </Typography>
                 <hr />
                 <br />
                 <Typography variant="body1">
-                  Book: {this.state.favorites.book}
+                  Book: {this.state.favoriteBook}
                 </Typography>
                 <Typography variant="body1">
-                  Movie: {this.state.favorites.movie}
+                  Movie: {this.state.favoriteMovie}
                 </Typography>
                 <Typography variant="body1">
-                  Show: {this.state.favorites.tvShow}
+                  Show: {this.state.favoriteShow}
                 </Typography>
                 <Typography variant="body1">
-                  Artist: {this.state.favorites.artist}
+                  Artist: {this.state.favoriteArtist}
                 </Typography>
               </CardContent>
             </Card>
