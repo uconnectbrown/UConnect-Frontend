@@ -16,14 +16,24 @@ import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
+import RemoveIcon from "@material-ui/icons/Remove";
 
 class profileView extends Component {
   state = {
+    addCourseCode: "",
+    addCourseName: "",
     affinitySports: [],
     bio: "",
     class: "",
     courses: [{}, {}, {}, {}, {}],
     createdAt: "",
+    delete: false,
     email: "",
     favorites: {},
     firstName: "",
@@ -33,6 +43,9 @@ class profileView extends Component {
     interests: [],
     lastName: "",
     majors: [],
+    addOpen: false,
+    removeOpen: false,
+    deleteCourse: false,
     preferredPronouns: "",
     userId: "",
     varsitySports: [],
@@ -80,20 +93,81 @@ class profileView extends Component {
     event.preventDefault();
     const image = event.target.files[0];
     const formData = new FormData();
-    formData.append('image', image, image.lastName);
-    
-    axios.post('/uploadImage', formData)
-      .then(() => {
-        this.props.history.push("/profileView");
+    formData.append("image", image, image.name);
+    axios
+      .post("/image", formData)
+      .then((data) => {
+        this.setState({ imageUrl: data.data.imageUrl });
       })
       .catch((err) => {
         console.log(err);
       });
   };
   handleEditPicture = () => {
-    const fileInput = document.getElementById('imageInput');
+    const fileInput = document.getElementById("imageInput");
     fileInput.click();
-  }
+  };
+
+  handleAddOpen = () => {
+    this.setState({ addOpen: true });
+  };
+
+  handleRemoveOpen = (deleteIndex) => {
+    this.setState({ removeOpen: true });
+    let courseList = [];
+    for (let i = 0; i < 5; i++) {
+      if (i === deleteIndex) {
+        courseList.push({ courseCode: "", courseName: "" });
+      } else courseList.push(this.state.courses[i]);
+    }
+    let newCourses = { courses: courseList };
+    axios.post("/edit", newCourses).then(() => {
+      this.setState({ courses: courseList });
+      return axios.get("/update");
+    });
+    this.setState({ removeOpen: false });
+  };
+
+  handleAddClose = () => {
+    this.setState({ addOpen: false });
+  };
+  handleRemoveClose = () => {
+    this.setState({ removeOpen: false });
+  };
+
+  handleSubmitAdd = () => {
+    let firstIndex;
+    let courseList = [];
+    for (let i = 0; i < 5; i++) {
+      if (!this.state.courses[i].courseCode) {
+        firstIndex = i;
+        break;
+      }
+    }
+    let newCourse = {
+      courseCode: this.state.addCourseCode,
+      courseName: this.state.addCourseName,
+    };
+    for (let j = 0; j < 5; j++) {
+      if (j !== firstIndex) {
+        courseList.push(this.state.courses[j]);
+      } else courseList.push(newCourse);
+    }
+    let newCourses = { courses: courseList };
+    axios.post("/edit", newCourses).then(() => {
+      this.setState({ courses: courseList });
+      return axios.get("/update");
+    });
+    this.setState({ addOpen: false });
+  };
+
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  toggleDelete = () => {
+    this.setState({ delete: !this.state.delete });
+  };
 
   render() {
     let courseCode0 = this.state.courses[0].courseCode;
@@ -108,24 +182,40 @@ class profileView extends Component {
       courseCode3,
       courseCode4,
     ].filter(Boolean).length;
+    let indexArray = [];
+    for (let j = 0; j < 5; j++) {
+      if (this.state.courses[j].courseCode) {
+        indexArray.push(j);
+      }
+    }
     return (
       <div>
         <NavBar />
         <Card raised>
           <CardContent align="center">
             <img src={this.state.imageUrl} width={450} />
-            <input type="file" id="imageInput" hidden="hidden" onChange={this.handleImageChange} />
-            {/* want to use tooltip and iconbutton but getting a weird error upon rendering */}
-            <Button onClick={this.handleEditPicture}>
+            <input
+              type="file"
+              id="imageInput"
+              hidden="hidden"
+              onChange={this.handleImageChange}
+            />
+            <Tooltip title="Edit profile picture" placement="top">
+              <IconButton onClick={this.handleEditPicture} className="button">
+                <EditIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+            {/* <Button onClick={this.handleEditPicture}>
               <EditIcon color="primary" />
-            </Button>
+            </Button> */}
             <br />
             <br />
             <Typography variant="h3">
               {this.state.firstName} {this.state.lastName}
             </Typography>
             <Typography variant="h5">
-              {this.state.preferredPronouns && `(${this.state.preferredPronouns})`}
+              {this.state.preferredPronouns &&
+                `(${this.state.preferredPronouns})`}
             </Typography>
             <br />
             <Card
@@ -280,56 +370,7 @@ class profileView extends Component {
             <hr />
             <br />
             <Grid container spacing={2}>
-              <Grid item sm>
-                <Card
-                  style={{
-                    borderStyle: "solid",
-                    borderWidth: "1px",
-                    borderColor: "red",
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="h5">{courseCode0}</Typography>
-                    <Typography variant="body1">
-                      {this.state.courses[0].courseName}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item sm>
-                <Card
-                  style={{
-                    borderStyle: "solid",
-                    borderWidth: "1px",
-                    borderColor: "red",
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="h5">{courseCode1}</Typography>
-                    <Typography variant="body1">
-                      {this.state.courses[1].courseName}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item sm>
-                <Card
-                  style={{
-                    borderStyle: "solid",
-                    borderWidth: "1px",
-                    borderColor: "red",
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="h5">{courseCode2} </Typography>
-                    <Typography variant="body1">
-                      {this.state.courses[2].courseName}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              {(this.state.courses[3].courseCode ||
-                this.state.courses[3].courseName) && (
+              {indexArray.map((index) => (
                 <Grid item sm>
                   <Card
                     style={{
@@ -339,53 +380,105 @@ class profileView extends Component {
                     }}
                   >
                     <CardContent>
-                      <Typography variant="h5">{courseCode3} </Typography>
+                      <Typography variant="h5">
+                        {this.state.courses[index].courseCode}
+                      </Typography>
                       <Typography variant="body1">
-                        {this.state.courses[3].courseName}
+                        {this.state.courses[index].courseName}
                       </Typography>
                     </CardContent>
+                    {this.state.delete && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<RemoveIcon />}
+                        onClick={() => this.handleRemoveOpen(index)}
+                      >
+                        {index + 1}
+                      </Button>
+                    )}
                   </Card>
                 </Grid>
-              )}
-              {(this.state.courses[4].courseCode ||
-                this.state.courses[4].courseName) && (
-                <Grid item sm>
-                  <Card
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "1px",
-                      borderColor: "red",
-                    }}
-                  >
-                    <CardContent>
-                      <Typography variant="h5">{courseCode4} </Typography>
-                      <Typography variant="body1">
-                        {this.state.courses[4].courseName}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              )}
+              ))}
               <Grid item sm>
                 {numCourses < 5 && (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    startIcon={<AddIcon />}
-                  >
-                    Add Course
-                  </Button>
+                  <div>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      startIcon={<AddIcon />}
+                      onClick={this.handleAddOpen}
+                    >
+                      Add Course
+                    </Button>
+                    <Dialog
+                      overlayStyle={{ backgroundColor: "transparent" }}
+                      open={this.state.addOpen}
+                      onClose={this.handleAddClose}
+                    >
+                      <DialogTitle
+                        style={{ cursor: "move" }}
+                        id="draggable-dialog-title"
+                      >
+                        Add Course
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>
+                          Please enter the course code and course name below:
+                        </DialogContentText>
+                        <TextField
+                          autofocus
+                          margin="dense"
+                          id="courseCode"
+                          name="addCourseCode"
+                          label="Course Code (e.g. ECON 0110)"
+                          fullWidth
+                          type="text"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          autofocus
+                          type="text"
+                          margin="dense"
+                          id="courseName"
+                          name="addCourseName"
+                          label="Course Name (e.g. Principles of Economics)"
+                          fullWidth
+                          onChange={this.handleChange}
+                        />
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={this.handleSubmitAdd} color="primary">
+                          Add
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </div>
                 )}
                 <br />
-                <br />
+
                 {numCourses > 0 && (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    startIcon={<DeleteIcon />}
-                  >
-                    Remove Course
-                  </Button>
+                  <div>
+                    {!this.state.delete && (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<DeleteIcon />}
+                        onClick={this.toggleDelete}
+                      >
+                        Remove Course
+                      </Button>
+                    )}
+                    {this.state.delete && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.toggleDelete}
+                      >
+                        Cancel
+                      </Button>
+                    )}
+                  </div>
                 )}
               </Grid>
             </Grid>

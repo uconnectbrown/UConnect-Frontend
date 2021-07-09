@@ -38,19 +38,19 @@ class profileBuild extends Component {
       loading: true,
     });
     if (Object.keys(this.state.courseOne).length === 0) {
-      this.state.courseOne = { courseCode: "", courseName: "" };
+      this.setState.courseOne = { courseCode: "", courseName: "" };
     }
     if (Object.keys(this.state.courseTwo).length === 0) {
-      this.state.courseTwo = { courseCode: "", courseName: "" };
+      this.setState.courseTwo = { courseCode: "", courseName: "" };
     }
     if (Object.keys(this.state.courseThree).length === 0) {
-      this.state.courseThree = { courseCode: "", courseName: "" };
+      this.setState.courseThree = { courseCode: "", courseName: "" };
     }
     if (Object.keys(this.state.courseFour).length === 0) {
-      this.state.courseFour = { courseCode: "", courseName: "" };
+      this.setState.courseFour = { courseCode: "", courseName: "" };
     }
     if (Object.keys(this.state.courseFive).length === 0) {
-      this.state.courseFive = { courseCode: "", courseName: "" };
+      this.setState.courseFive = { courseCode: "", courseName: "" };
     }
     const newUserData = {
       firstName: this.state.firstName,
