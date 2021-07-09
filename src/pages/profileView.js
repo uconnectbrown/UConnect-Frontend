@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import PhotoIcon from "@material-ui/icons/PhotoCamera";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
 import Dialog from "@material-ui/core/Dialog";
@@ -22,7 +23,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-import RemoveIcon from "@material-ui/icons/Remove";
+import RemoveIcon from "@material-ui/icons/RemoveCircle";
 
 class profileView extends Component {
   state = {
@@ -39,6 +40,9 @@ class profileView extends Component {
     firstName: "",
     greekLife: "",
     groups: [],
+    groupOne: "",
+    groupTwo: "",
+    groupThree: "",
     imageUrl: "",
     interests: [],
     lastName: "",
@@ -49,6 +53,10 @@ class profileView extends Component {
     preferredPronouns: "",
     userId: "",
     varsitySports: [],
+    groupOpen: false,
+    basicOpen: false,
+    interestsOpen: false,
+    favoritesOpen: false,
   };
 
   componentDidMount() {
@@ -66,7 +74,9 @@ class profileView extends Component {
           favorites: res.data.user.favorites,
           firstName: res.data.user.firstName,
           greekLife: res.data.user.greekLife,
-          groups: res.data.user.groups,
+          groupOne: res.data.user.groups[0],
+          groupTwo: res.data.user.groups[1],
+          groupThree: res.data.user.groups[2],
           imageUrl: res.data.user.imageUrl,
           interests: res.data.user.interests,
           lastName: res.data.user.lastName,
@@ -111,21 +121,36 @@ class profileView extends Component {
   handleAddOpen = () => {
     this.setState({ addOpen: true });
   };
+  handleBasicOpen = () => {
+    this.setState({ basicOpen: true });
+  };
+  handleGroupsOpen = () => {
+    this.setState({ groupOpen: true });
+  };
+  handleInterestsOpen = () => {
+    this.setState({ interestsOpen: true });
+  };
+  handleFavoritesOpen = () => {
+    this.setState({ favoritesOpen: true });
+  };
 
   handleRemoveOpen = (deleteIndex) => {
     this.setState({ removeOpen: true });
     let courseList = [];
+    let deleteCourse;
     for (let i = 0; i < 5; i++) {
       if (i === deleteIndex) {
         courseList.push({ courseCode: "", courseName: "" });
+        deleteCourse = this.state.courses[i].courseCode.replace(/\s/g, "");
       } else courseList.push(this.state.courses[i]);
     }
     let newCourses = { courses: courseList };
     axios.post("/edit", newCourses).then(() => {
       this.setState({ courses: courseList });
-      return axios.get("/update");
+      return axios.get(`delete/${deleteCourse}`);
     });
     this.setState({ removeOpen: false });
+    this.setState({ delete: false });
   };
 
   handleAddClose = () => {
@@ -134,8 +159,20 @@ class profileView extends Component {
   handleRemoveClose = () => {
     this.setState({ removeOpen: false });
   };
+  handleGroupsClose = () => {
+    this.setState({ groupOpen: false });
+  };
+  handleInterestsClose = () => {
+    this.setState({ interestsOpen: false });
+  };
+  handleFavoritesClose = () => {
+    this.setState({ favoritesOpen: false });
+  };
+  handleBasicClose = () => {
+    this.setState({ basicOpen: false });
+  };
 
-  handleSubmitAdd = () => {
+  handleSubmitCourses = () => {
     let firstIndex;
     let courseList = [];
     for (let i = 0; i < 5; i++) {
@@ -159,6 +196,24 @@ class profileView extends Component {
       return axios.get("/update");
     });
     this.setState({ addOpen: false });
+  };
+  handleSubmitGroups = () => {
+    let groupList = [
+      this.state.groupOne,
+      this.state.groupTwo,
+      this.state.groupThree,
+    ];
+    let newGroups = {
+      groups: groupList,
+    };
+    axios.post("/edit", newGroups).then(() => {
+      this.setState({
+        groupOne: groupList[0],
+        groupTwo: groupList[1],
+        groupThree: groupList[2],
+      });
+    });
+    this.setState({ groupOpen: false });
   };
 
   handleChange = (event) => {
@@ -200,18 +255,25 @@ class profileView extends Component {
               hidden="hidden"
               onChange={this.handleImageChange}
             />
+            <br />
             <Tooltip title="Edit profile picture" placement="top">
               <IconButton onClick={this.handleEditPicture} className="button">
-                <EditIcon color="primary" />
+                <PhotoIcon color="primary" />
               </IconButton>
             </Tooltip>
             {/* <Button onClick={this.handleEditPicture}>
               <EditIcon color="primary" />
             </Button> */}
             <br />
+
             <br />
-            <Typography variant="h3">
-              {this.state.firstName} {this.state.lastName}
+            <Typography variant="h3" align="center">
+              {this.state.firstName} {this.state.lastName}{" "}
+              <Tooltip title="Edit basic information" placement="top">
+                <IconButton onClick={this.handleEditBasic} className="button">
+                  <EditIcon color="primary" />
+                </IconButton>
+              </Tooltip>
             </Typography>
             <Typography variant="h5">
               {this.state.preferredPronouns &&
@@ -253,13 +315,6 @@ class profileView extends Component {
               </CardContent>
             </Card>
             <br />
-            <Button
-              variant="contained"
-              color="secondary"
-              startIcon={<EditIcon />}
-            >
-              Edit Profile
-            </Button>
           </CardContent>
         </Card>
         <br />
@@ -267,10 +322,79 @@ class profileView extends Component {
           <Grid item sm>
             <Card raised>
               <CardContent align="center">
-                <Typography variant="h3">Groups</Typography>
+                <Typography variant="h3">
+                  Groups{" "}
+                  <Tooltip title="Edit groups" placement="top">
+                    <IconButton
+                      onClick={this.handleGroupsOpen}
+                      className="button"
+                    >
+                      <EditIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                  <Dialog
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    open={this.state.groupOpen}
+                    onClose={this.handleGroupsClose}
+                  >
+                    <DialogTitle
+                      style={{ cursor: "move" }}
+                      id="draggable-dialog-title"
+                    >
+                      Edit Groups
+                    </DialogTitle>
+                    <DialogContent>
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="groupOne"
+                        name="groupOne"
+                        label="Group 1"
+                        defaultValue={this.state.groupOne}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="groupTwo"
+                        name="groupTwo"
+                        label="Group 2"
+                        defaultValue={this.state.groupTwo}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="groupThree"
+                        name="groupThree"
+                        label="Group 3"
+                        defaultValue={this.state.groupThree}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={this.handleSubmitGroups}
+                        color="secondary"
+                      >
+                        Edit
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </Typography>
                 <hr />
                 <br />
-                {this.state.groups.map((group) => (
+                {[
+                  this.state.groupOne,
+                  this.state.groupTwo,
+                  this.state.groupThree,
+                ].map((group) => (
                   <Typography variant="body1">{group}</Typography>
                 ))}
               </CardContent>
@@ -279,7 +403,17 @@ class profileView extends Component {
           <Grid item sm>
             <Card raised>
               <CardContent align="center">
-                <Typography variant="h3">Interests</Typography>
+                <Typography variant="h3">
+                  Interests{" "}
+                  <Tooltip title="Edit interests" placement="top">
+                    <IconButton
+                      onClick={this.handleEditInterests}
+                      className="button"
+                    >
+                      <EditIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                </Typography>
                 <hr />
                 <br />
 
@@ -344,7 +478,17 @@ class profileView extends Component {
           <Grid item sm>
             <Card raised>
               <CardContent align="center">
-                <Typography variant="h3">Favorites</Typography>
+                <Typography variant="h3">
+                  Favorites{" "}
+                  <Tooltip title="Edit favorites" placement="top">
+                    <IconButton
+                      onClick={this.handleEditFavorites}
+                      className="button"
+                    >
+                      <EditIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                </Typography>
                 <hr />
                 <br />
                 <Typography variant="body1">
@@ -377,6 +521,7 @@ class profileView extends Component {
                       borderStyle: "solid",
                       borderWidth: "1px",
                       borderColor: "red",
+                      height: 125,
                     }}
                   >
                     <CardContent>
@@ -386,17 +531,16 @@ class profileView extends Component {
                       <Typography variant="body1">
                         {this.state.courses[index].courseName}
                       </Typography>
+                      {this.state.delete && (
+                        <IconButton
+                          size="large"
+                          color="primary"
+                          onClick={() => this.handleRemoveOpen(index)}
+                        >
+                          <DeleteIcon fontSize="large" />
+                        </IconButton>
+                      )}
                     </CardContent>
-                    {this.state.delete && (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<RemoveIcon />}
-                        onClick={() => this.handleRemoveOpen(index)}
-                      >
-                        {index + 1}
-                      </Button>
-                    )}
                   </Card>
                 </Grid>
               ))}
@@ -448,7 +592,10 @@ class profileView extends Component {
                         />
                       </DialogContent>
                       <DialogActions>
-                        <Button onClick={this.handleSubmitAdd} color="primary">
+                        <Button
+                          onClick={this.handleSubmitCourses}
+                          color="primary"
+                        >
                           Add
                         </Button>
                       </DialogActions>
@@ -462,7 +609,7 @@ class profileView extends Component {
                     {!this.state.delete && (
                       <Button
                         variant="contained"
-                        color="secondary"
+                        color="primary"
                         startIcon={<DeleteIcon />}
                         onClick={this.toggleDelete}
                       >

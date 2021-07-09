@@ -19,6 +19,7 @@ import profileView from "./pages/profileView";
 import coursesView from "./pages/coursesView";
 import messageView from "./pages/messageView";
 import courseView from "./pages/courseView";
+import studentView from "./pages/studentView";
 
 const theme = createMuiTheme(themeFile);
 
@@ -59,6 +60,7 @@ function App() {
               <Route exact path="/coursesView" component={coursesView} />
               <Route exact path="/messageView" component={messageView} />
               <Route exact path="/courseView" component={courseView} />
+              <Route exact path="/studentView" component={studentView} />
             </Switch>
           </div>
         </Router>
