@@ -1,3 +1,5 @@
+// TO-DO: Replace logo
+
 // Setup
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";

@@ -1,7 +1,15 @@
+// TO-DO F:
+// 1. Fix reloading issue (doesn't allow logout unless reload)
+
+// TO-DO S:
+// 1. Make a logo and spruce up the page a little
+// 2. Space the welcome box properly without using line breaks
+
 // Setup
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import backgroundImage from "../images/Gates.jpg";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
@@ -12,38 +20,84 @@ import CardContent from "@material-ui/core/CardContent";
 class welcome extends Component {
   render() {
     return (
-      <Grid container align="center">
-        <Grid item sm />
-        <Grid item sm>
-          <Card raised>
-            <CardContent>
-              <Typography variant="h3">Welcome to UConnect!</Typography>
-              <br />
-              <Button
-                variant="contained"
-                color="secondary"
-                component={Link}
-                to="/login"
-                size="large"
-              >
-                <Typography variant="h5">Login</Typography>
-              </Button>
-              <br />
-              <br />
-              <Button
-                variant="contained"
-                color="secondary"
-                component={Link}
-                to="/signup"
-                size="large"
-              >
-                <Typography variant="h5">Signup</Typography>
-              </Button>
-            </CardContent>
-          </Card>
+      <div
+        style={{
+          width: "100%",
+          backgroundPosition: "center",
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+        }}
+      >
+        <Grid container align="center">
+          <Grid item sm />
+          <Grid item sm />
+          <Grid item sm>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <Card raised>
+              <CardContent>
+                <Typography variant="h3">Welcome to UConnect!</Typography>
+                <br />
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  component={Link}
+                  to="/login"
+                  size="large"
+                >
+                  <Typography variant="h5">Login</Typography>
+                </Button>
+                <br />
+                <br />
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  component={Link}
+                  to="/signup"
+                  size="large"
+                >
+                  <Typography variant="h5">Signup</Typography>
+                </Button>
+              </CardContent>
+            </Card>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+          </Grid>
+          <Grid item sm />
+          <Grid item sm />
         </Grid>
-        <Grid item sm />
-      </Grid>
+      </div>
     );
   }
 }

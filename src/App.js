@@ -1,10 +1,10 @@
 // Setup
 import "./App.css";
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles/";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import themeFile from "./util/theme";
 
 // Components
@@ -21,7 +21,7 @@ import messageView from "./pages/messageView";
 import courseView from "./pages/courseView";
 import studentView from "./pages/studentView";
 
-const theme = createMuiTheme(themeFile);
+const theme = createTheme(themeFile);
 
 let authenticated;
 const token = localStorage.FBIdToken;
@@ -42,7 +42,12 @@ function App() {
         <Router>
           <div className="container">
             <Switch>
-              <Route exact path="/" component={welcome} />
+              <AuthRoute
+                exact
+                path="/"
+                component={welcome}
+                authenticated={authenticated}
+              />
               <AuthRoute
                 exact
                 path="/login"

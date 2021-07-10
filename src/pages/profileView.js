@@ -77,6 +77,8 @@ class profileView extends Component {
   };
 
   componentDidMount() {
+    const FBIdToken = localStorage.FBIdToken;
+    axios.defaults.headers.common["Authorization"] = FBIdToken;
     const emailId = localStorage.emailId;
     axios
       .get(`/user/${emailId}`)
@@ -124,6 +126,7 @@ class profileView extends Component {
     localStorage.removeItem("FBIdToken");
     localStorage.removeItem("courseCode");
     delete axios.defaults.headers.common["Authorization"];
+    this.props.history.push("/");
   };
 
   // attempting to implement edit user image function
@@ -280,17 +283,17 @@ class profileView extends Component {
       book: this.state.favoriteBook,
       movie: this.state.favoriteMovie,
       tvShow: this.state.favoriteShow,
-      artist: this.state.favoriteArtist
+      artist: this.state.favoriteArtist,
     };
     let newFavorites = {
       favorites: favorites,
     };
     axios.post("/edit", newFavorites).then(() => {
       this.setState({
-        favoriteBook: favorites['book'],
-        favoriteMovie: favorites['movie'],
-        favoriteShow: favorites['tvShow'],
-        favoriteArtist: favorites['artist'],
+        favoriteBook: favorites["book"],
+        favoriteMovie: favorites["movie"],
+        favoriteShow: favorites["tvShow"],
+        favoriteArtist: favorites["artist"],
       });
     });
     this.setState({ favoritesOpen: false });
@@ -308,14 +311,14 @@ class profileView extends Component {
     };
     axios.post("/edit", newBasicInfo).then(() => {
       this.setState({
-        firstName: newBasicInfo['firstName'],
-        lastName: newBasicInfo['lastName'],
-        preferredPronouns: newBasicInfo['preferredPronouns'],
-        class: newBasicInfo['class'],
-        majors: newBasicInfo['majors'],
-        varsitySports: newBasicInfo['varsitySports'],
-        greekLife: newBasicInfo['greekLife'],
-        bio: newBasicInfo['bio'],
+        firstName: newBasicInfo["firstName"],
+        lastName: newBasicInfo["lastName"],
+        preferredPronouns: newBasicInfo["preferredPronouns"],
+        class: newBasicInfo["class"],
+        majors: newBasicInfo["majors"],
+        varsitySports: newBasicInfo["varsitySports"],
+        greekLife: newBasicInfo["greekLife"],
+        bio: newBasicInfo["bio"],
       });
     });
     this.setState({ basicOpen: false });
@@ -375,156 +378,150 @@ class profileView extends Component {
             <Typography variant="h3" align="center">
               {this.state.firstName} {this.state.lastName}{" "}
               <Tooltip title="Edit basic info" placement="top">
-                    <IconButton
-                      onClick={this.handleBasicOpen}
-                      className="button"
-                    >
-                      <EditIcon color="primary" />
-                    </IconButton>
-                  </Tooltip>
-                  <Dialog
-                    overlayStyle={{ backgroundColor: "transparent" }}
-                    open={this.state.basicOpen}
-                    onClose={this.handleBasicClose}
-                  >
-                    <DialogTitle
-                      style={{ cursor: "move" }}
-                      id="draggable-dialog-title"
-                    >
-                      Edit Basic Info
-                    </DialogTitle>
-                    <DialogContent>
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="firstName"
-                        name="firstName"
-                        label="First Name"
-                        defaultValue={this.state.firstName}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="lastName"
-                        name="lastName"
-                        label="Last Name"
-                        defaultValue={this.state.lastName}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="preferredPronouns"
-                        name="preferredPronouns"
-                        label="Preferred Pronouns"
-                        defaultValue={this.state.preferredPronouns}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="class"
-                        name="class"
-                        label="Graduating Class"
-                        defaultValue={this.state.class}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="majorOne"
-                        name="majorOne"
-                        label="First Major"
-                        defaultValue={this.state.majorOne}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="majorTwo"
-                        name="majorTwo"
-                        label="Second Major"
-                        defaultValue={this.state.majorTwo}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="majorThree"
-                        name="majorThree"
-                        label="Third Major"
-                        defaultValue={this.state.majorThree}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="varsitySportOne"
-                        name="varsitySportOne"
-                        label="First Varsity Sport"
-                        defaultValue={this.state.varsitySportOne}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="varsitySportTwo"
-                        name="varsitySportTwo"
-                        label="Second Varsity Sport"
-                        defaultValue={this.state.varsitySportTwo}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="greekLife"
-                        name="greekLife"
-                        label="Greek Organization"
-                        defaultValue={this.state.greekLife}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="bio"
-                        name="bio"
-                        label="Bio"
-                        defaultValue={this.state.bio}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button
-                        onClick={this.handleSubmitBasic}
-                        color="secondary"
-                      >
-                        Edit
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
+                <IconButton onClick={this.handleBasicOpen} className="button">
+                  <EditIcon color="primary" />
+                </IconButton>
+              </Tooltip>
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                open={this.state.basicOpen}
+                onClose={this.handleBasicClose}
+              >
+                <DialogTitle
+                  style={{ cursor: "move" }}
+                  id="draggable-dialog-title"
+                >
+                  Edit Basic Info
+                </DialogTitle>
+                <DialogContent>
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="firstName"
+                    name="firstName"
+                    label="First Name"
+                    defaultValue={this.state.firstName}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="lastName"
+                    name="lastName"
+                    label="Last Name"
+                    defaultValue={this.state.lastName}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="preferredPronouns"
+                    name="preferredPronouns"
+                    label="Preferred Pronouns"
+                    defaultValue={this.state.preferredPronouns}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="class"
+                    name="class"
+                    label="Graduating Class"
+                    defaultValue={this.state.class}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="majorOne"
+                    name="majorOne"
+                    label="First Major"
+                    defaultValue={this.state.majorOne}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="majorTwo"
+                    name="majorTwo"
+                    label="Second Major"
+                    defaultValue={this.state.majorTwo}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="majorThree"
+                    name="majorThree"
+                    label="Third Major"
+                    defaultValue={this.state.majorThree}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="varsitySportOne"
+                    name="varsitySportOne"
+                    label="First Varsity Sport"
+                    defaultValue={this.state.varsitySportOne}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="varsitySportTwo"
+                    name="varsitySportTwo"
+                    label="Second Varsity Sport"
+                    defaultValue={this.state.varsitySportTwo}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="greekLife"
+                    name="greekLife"
+                    label="Greek Organization"
+                    defaultValue={this.state.greekLife}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="bio"
+                    name="bio"
+                    label="Bio"
+                    defaultValue={this.state.bio}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleSubmitBasic} color="secondary">
+                    Edit
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Typography>
             <Typography variant="h5">
               {this.state.preferredPronouns &&
@@ -1063,8 +1060,6 @@ class profileView extends Component {
           <Button
             variant="contained"
             color="secondary"
-            component={Link}
-            to="/login"
             onClick={this.logoutUser}
           >
             <Typography variant="body1">Logout</Typography>
