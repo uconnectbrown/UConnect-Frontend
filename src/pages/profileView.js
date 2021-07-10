@@ -59,12 +59,17 @@ class profileView extends Component {
     interestFive: "",
     lastName: "",
     majors: [],
+    majorOne: "",
+    majorTwo: "",
+    majorThree: "",
     addOpen: false,
     removeOpen: false,
     deleteCourse: false,
     preferredPronouns: "",
     userId: "",
     varsitySports: [],
+    varsitySportOne: "",
+    varsitySportTwo: "",
     groupOpen: false,
     basicOpen: false,
     interestsOpen: false,
@@ -101,10 +106,13 @@ class profileView extends Component {
           interestFour: res.data.user.interests[3],
           interestFive: res.data.user.interests[4],
           lastName: res.data.user.lastName,
-          majors: res.data.user.majors,
+          majorOne: res.data.user.majors[0],
+          majorTwo: res.data.user.majors[1],
+          majorThree: res.data.user.majors[2],
           preferredPronouns: res.data.user.preferredPronouns,
           userId: res.data.user.userId,
-          varsitySports: res.data.user.varsitySports,
+          varsitySportOne: res.data.user.varsitySports[0],
+          varsitySportTwo: res.data.user.varsitySports[1],
         });
         return axios.get("/update");
       })
@@ -287,6 +295,31 @@ class profileView extends Component {
     });
     this.setState({ favoritesOpen: false });
   };
+  handleSubmitBasic = () => {
+    let newBasicInfo = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      preferredPronouns: this.state.preferredPronouns,
+      class: this.state.class,
+      majors: [this.state.majorOne, this.state.majorTwo, this.state.majorThree],
+      varsitySports: [this.state.varsitySportOne, this.state.varsitySportTwo],
+      greekLife: this.state.greekLife,
+      bio: this.state.bio,
+    };
+    axios.post("/edit", newBasicInfo).then(() => {
+      this.setState({
+        firstName: newBasicInfo['firstName'],
+        lastName: newBasicInfo['lastName'],
+        preferredPronouns: newBasicInfo['preferredPronouns'],
+        class: newBasicInfo['class'],
+        majors: newBasicInfo['majors'],
+        varsitySports: newBasicInfo['varsitySports'],
+        greekLife: newBasicInfo['greekLife'],
+        bio: newBasicInfo['bio'],
+      });
+    });
+    this.setState({ basicOpen: false });
+  };
 
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -341,11 +374,157 @@ class profileView extends Component {
             <br />
             <Typography variant="h3" align="center">
               {this.state.firstName} {this.state.lastName}{" "}
-              <Tooltip title="Edit basic information" placement="top">
-                <IconButton onClick={this.handleEditBasic} className="button">
-                  <EditIcon color="primary" />
-                </IconButton>
-              </Tooltip>
+              <Tooltip title="Edit basic info" placement="top">
+                    <IconButton
+                      onClick={this.handleBasicOpen}
+                      className="button"
+                    >
+                      <EditIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                  <Dialog
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    open={this.state.basicOpen}
+                    onClose={this.handleBasicClose}
+                  >
+                    <DialogTitle
+                      style={{ cursor: "move" }}
+                      id="draggable-dialog-title"
+                    >
+                      Edit Basic Info
+                    </DialogTitle>
+                    <DialogContent>
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="firstName"
+                        name="firstName"
+                        label="First Name"
+                        defaultValue={this.state.firstName}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="lastName"
+                        name="lastName"
+                        label="Last Name"
+                        defaultValue={this.state.lastName}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="preferredPronouns"
+                        name="preferredPronouns"
+                        label="Preferred Pronouns"
+                        defaultValue={this.state.preferredPronouns}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="class"
+                        name="class"
+                        label="Graduating Class"
+                        defaultValue={this.state.class}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="majorOne"
+                        name="majorOne"
+                        label="First Major"
+                        defaultValue={this.state.majorOne}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="majorTwo"
+                        name="majorTwo"
+                        label="Second Major"
+                        defaultValue={this.state.majorTwo}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="majorThree"
+                        name="majorThree"
+                        label="Third Major"
+                        defaultValue={this.state.majorThree}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="varsitySportOne"
+                        name="varsitySportOne"
+                        label="First Varsity Sport"
+                        defaultValue={this.state.varsitySportOne}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="varsitySportTwo"
+                        name="varsitySportTwo"
+                        label="Second Varsity Sport"
+                        defaultValue={this.state.varsitySportTwo}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="greekLife"
+                        name="greekLife"
+                        label="Greek Organization"
+                        defaultValue={this.state.greekLife}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="bio"
+                        name="bio"
+                        label="Bio"
+                        defaultValue={this.state.bio}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={this.handleSubmitBasic}
+                        color="secondary"
+                      >
+                        Edit
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
             </Typography>
             <Typography variant="h5">
               {this.state.preferredPronouns &&
