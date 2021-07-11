@@ -1,3 +1,8 @@
+// think about place for the back button
+// color code cards based on chosen theme
+// make cards a little more sleek in design
+// add filter bar and consider how to work search
+
 // Setup
 import React, { Component } from "react";
 import { Link } from "react-router-dom";

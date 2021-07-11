@@ -1,3 +1,8 @@
+// make cards taller to fill up the page better
+// include a place for general info or to do for the course
+// have the cards be color coded
+// consider what else people would find most pertinent to a landing page
+
 // Setup
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
@@ -17,6 +22,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
+import { CodeRounded } from "@material-ui/icons"
 
 export class coursesView extends Component {
   state = {

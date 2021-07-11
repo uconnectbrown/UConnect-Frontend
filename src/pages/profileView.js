@@ -1,3 +1,10 @@
+// make cards the same height and improve spacing of content
+// add icons to the favorites
+// add more photos and clean up their display
+// add chosen color theme to page
+// handle pronouns better
+// color code courses
+
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
