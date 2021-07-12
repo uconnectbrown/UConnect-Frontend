@@ -75,6 +75,10 @@ class courseView extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  handleCriteria = (event) => {
+    this.setState({ searchCriteria: event.target.value });
+  }
+
   handleSearch = (event) => {
     this.setState({ searchTerm: event.target.value });
   }
@@ -88,7 +92,6 @@ class courseView extends Component {
       indexArray.push(i);
     }
     let students = this.state.students;
-    let searchCriteria = this.state.searchCriteria;
 
     return (
       <div>
@@ -112,7 +115,7 @@ class courseView extends Component {
               select
               label="Filter by..."
               value={this.state.searchCriteria}
-              onChange={this.handleChange}
+              onChange={this.handleCriteria}
               variant="outlined"
               helperText="Please select a search criteria"
               size={"small"}
@@ -120,10 +123,10 @@ class courseView extends Component {
               <MenuItem key="firstName" value="firstName">
                 first name
               </MenuItem>
-              <MenuItem key="class" value="class">
+              <MenuItem key="classYear" value="classYear">
                 class
               </MenuItem>
-              <MenuItem key="major" value="major">
+              <MenuItem key="majors" value="majors">
                 major
               </MenuItem>
               <MenuItem key="interests" value="interests">
@@ -132,7 +135,7 @@ class courseView extends Component {
             </TextField>
       
           <input type="text" 
-            placeholder={searchCriteria} 
+            placeholder="Search..."
             align="center" 
             style={{ 
               width: "240px", 
@@ -142,16 +145,16 @@ class courseView extends Component {
             onChange={this.handleSearch}
           />
         </Typography> 
+        {this.state.searchCriteria !== "" && (console.log(this.state.searchCriteria))}
         <br />
         <br />
         <GridList cols={3} spacing={20} cellHeight="auto">
           {indexArray.filter((index) => {
-            if (this.state.searchTerm == "") {
+            if (this.state.searchTerm == "" || this.state.searchCriteria == "") {
                return index
-            } else if ((students[index].firstName).toString().toLowerCase().includes(this.state.searchTerm.toString().toLowerCase())) {
+            } else if (((students[index][`${this.state.searchCriteria}`]).toString().toLowerCase()).includes(this.state.searchTerm.toString().toLowerCase())) {
               return index
-            }
-          }).map((index) => (
+            }}).map((index) => (
             <GridListTile item component="Card" sm>
               <Card
                 raised
