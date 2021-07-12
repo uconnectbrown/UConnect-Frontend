@@ -30,10 +30,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 
-import Book from '@material-ui/icons/MenuBook';
-import Movie from '@material-ui/icons/Movie';
-import Tv from '@material-ui/icons/Tv';
-import Music from '@material-ui/icons/MusicNote';
+import Book from "@material-ui/icons/MenuBook";
+import Movie from "@material-ui/icons/Movie";
+import Tv from "@material-ui/icons/Tv";
+import Music from "@material-ui/icons/MusicNote";
 
 class profileView extends Component {
   state = {
@@ -126,6 +126,7 @@ class profileView extends Component {
           varsitySportOne: res.data.user.varsitySports[0],
           varsitySportTwo: res.data.user.varsitySports[1],
         });
+        localStorage.setItem("photoUrl", res.data.user.imageUrl);
         return axios.get("/update");
       })
       .catch((err) => console.log(err));
@@ -578,7 +579,7 @@ class profileView extends Component {
         <br />
         <Grid container spacing={2}>
           <Grid item component="Card" sm>
-            <Card raised style={{ height: '100%' }}>
+            <Card raised style={{ height: "100%" }}>
               <CardContent align="center">
                 <Typography variant="h3">
                   Groups{" "}
@@ -659,7 +660,7 @@ class profileView extends Component {
             </Card>
           </Grid>
           <Grid item component="Card" sm>
-            <Card raised style={{ height: '100%' }}>
+            <Card raised style={{ height: "100%" }}>
               <CardContent align="center">
                 <Typography variant="h3">
                   Interests{" "}
@@ -844,7 +845,7 @@ class profileView extends Component {
             </Card>
           </Grid>
           <Grid item component="Card" sm>
-            <Card raised style={{ height: '100%' }}>
+            <Card raised style={{ height: "100%" }}>
               <CardContent align="center">
                 <Typography variant="h3">
                   Favorites{" "}
@@ -929,7 +930,7 @@ class profileView extends Component {
                   <Book /> Book: {this.state.favoriteBook}
                 </Typography>
                 <Typography variant="body1">
-                  < Movie /> Movie: {this.state.favoriteMovie}
+                  <Movie /> Movie: {this.state.favoriteMovie}
                 </Typography>
                 <Typography variant="body1">
                   <Tv /> Show: {this.state.favoriteShow}
@@ -1071,6 +1072,8 @@ class profileView extends Component {
             variant="contained"
             color="secondary"
             onClick={this.logoutUser}
+            component={Link}
+            to="/"
           >
             <Typography variant="body1">Logout</Typography>
           </Button>

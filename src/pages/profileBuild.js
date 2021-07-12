@@ -37,21 +37,7 @@ class profileBuild extends Component {
     this.setState({
       loading: true,
     });
-    if (Object.keys(this.state.courseOne).length === 0) {
-      this.setState.courseOne = { courseCode: "", courseName: "" };
-    }
-    if (Object.keys(this.state.courseTwo).length === 0) {
-      this.setState.courseTwo = { courseCode: "", courseName: "" };
-    }
-    if (Object.keys(this.state.courseThree).length === 0) {
-      this.setState.courseThree = { courseCode: "", courseName: "" };
-    }
-    if (Object.keys(this.state.courseFour).length === 0) {
-      this.setState.courseFour = { courseCode: "", courseName: "" };
-    }
-    if (Object.keys(this.state.courseFive).length === 0) {
-      this.setState.courseFive = { courseCode: "", courseName: "" };
-    }
+
     const newUserData = {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -84,6 +70,12 @@ class profileBuild extends Component {
       ],
     };
 
+    for (let i = 0; i < 5; i++) {
+      if (Object.keys(newUserData.courses[i]).length === 0) {
+        newUserData.courses[i] = { courseCode: "", courseName: "" };
+      }
+    }
+
     if (!validProfile(newUserData)) {
       this.setState({
         loading: false,
@@ -102,7 +94,6 @@ class profileBuild extends Component {
         });
         this.props.history.push({
           pathname: "/profileView",
-          state: { email: this.state.email },
         });
       })
       .catch((err) => {

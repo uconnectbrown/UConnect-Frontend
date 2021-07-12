@@ -23,30 +23,14 @@ class welcome extends Component {
       <div
         style={{
           width: "100%",
-          backgroundPosition: "center",
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: "cover",
+          // backgroundPosition: "center",
+          // backgroundImage: `url(${backgroundImage})`,
+          // backgroundSize: "cover",
         }}
       >
         <Grid container align="center">
           <Grid item sm />
-          <Grid item sm />
           <Grid item sm>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
             <Card raised>
               <CardContent>
                 <Typography variant="h3">Welcome to UConnect!</Typography>
@@ -73,28 +57,7 @@ class welcome extends Component {
                 </Button>
               </CardContent>
             </Card>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
           </Grid>
-          <Grid item sm />
           <Grid item sm />
         </Grid>
       </div>
