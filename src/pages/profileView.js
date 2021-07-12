@@ -366,7 +366,16 @@ class profileView extends Component {
         <NavBar />
         <Card raised>
           <CardContent align="center">
-            <img src={this.state.imageUrl} width={450} />
+            <img src={this.state.imageUrl} 
+              style={{
+                width: 400,
+                height: 400,
+                objectFit: "cover",
+                borderRadius: "10%",
+                borderStyle: "solid",
+                borderColor: "red",
+                borderWidth: "2px",
+              }} />
             <input
               type="file"
               id="imageInput"

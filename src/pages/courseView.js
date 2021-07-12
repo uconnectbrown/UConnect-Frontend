@@ -12,6 +12,8 @@ import axios from "axios";
 import NavBar from "../components/NavBar";
 
 // MUI Stuff
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 import Grid from "@material-ui/core/Grid";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -37,6 +39,8 @@ class courseView extends Component {
     students: [],
     open: false,
     email: "",
+    searchTerm: "",
+    searchCriteria: "",
   };
 
   componentDidMount() {
@@ -67,6 +71,14 @@ class courseView extends Component {
     localStorage.removeItem("studentId");
   };
 
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  handleSearch = (event) => {
+    this.setState({ searchTerm: event.target.value });
+  }
+
   render() {
     const code = localStorage.code;
     const name = localStorage.name;
@@ -76,6 +88,7 @@ class courseView extends Component {
       indexArray.push(i);
     }
     let students = this.state.students;
+    let searchCriteria = this.state.searchCriteria;
 
     return (
       <div>
@@ -92,10 +105,53 @@ class courseView extends Component {
         >
           Back
         </Button>
+        <Typography align="center">
+            <TextField
+              id="searchCriteria"
+              name="searchCriteria"
+              select
+              label="Filter by..."
+              value={this.state.searchCriteria}
+              onChange={this.handleChange}
+              variant="outlined"
+              helperText="Please select a search criteria"
+              size={"small"}
+            >
+              <MenuItem key="firstName" value="firstName">
+                first name
+              </MenuItem>
+              <MenuItem key="class" value="class">
+                class
+              </MenuItem>
+              <MenuItem key="major" value="major">
+                major
+              </MenuItem>
+              <MenuItem key="interests" value="interests">
+                interests
+              </MenuItem>
+            </TextField>
+      
+          <input type="text" 
+            placeholder={searchCriteria} 
+            align="center" 
+            style={{ 
+              width: "240px", 
+              height: "40px", 
+              textAlign: "center", 
+              fontSize: "18px" }}
+            onChange={this.handleSearch}
+          />
+        </Typography> 
         <br />
         <br />
         <GridList cols={3} spacing={20} cellHeight="auto">
-          {indexArray.map((index) => (
+          {indexArray.filter((index) => {
+            if (this.state.searchTerm == "") {
+               return index
+            } else if ((students[index].firstName).toString().toLowerCase().includes(this.state.searchTerm.toString().toLowerCase())) {
+              return index
+            }
+          }).map((index) => (
             <GridListTile item component="Card" sm>
               <Card
                 raised
@@ -103,11 +159,11 @@ class courseView extends Component {
                   borderStyle: "solid",
                   borderWidth: "3px",
                   borderColor: "red",
-                  height: "100%",
+                  borderRadius: "5%",
+                  height: "97%",
                 }}
                 align="center"
               >
-                {/* <ButtonBase onClick={this.handleClickOpen}> */}
                 <CardContent>
                   <ButtonBase
                     size="large"
@@ -121,7 +177,10 @@ class courseView extends Component {
                           width: 150,
                           height: 150,
                           objectFit: "cover",
-                          borderRadius: "50%",
+                          borderRadius: "10%",
+                          borderStyle: "solid",
+                          borderColor: "red",
+                          borderWidth: "2px",
                         }}
                       />
 
@@ -153,7 +212,6 @@ class courseView extends Component {
                     </div>
                   </ButtonBase>
                 </CardContent>
-                {/* </ButtonBase> */}
               </Card>
             </GridListTile>
           ))}
