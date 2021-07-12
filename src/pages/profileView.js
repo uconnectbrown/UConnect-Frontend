@@ -1,5 +1,3 @@
-// make cards the same height and improve spacing of content
-// add icons to the favorites
 // add more photos and clean up their display
 // add chosen color theme to page
 // handle pronouns better
@@ -31,6 +29,11 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
+
+import Book from '@material-ui/icons/MenuBook';
+import Movie from '@material-ui/icons/Movie';
+import Tv from '@material-ui/icons/Tv';
+import Music from '@material-ui/icons/MusicNote';
 
 class profileView extends Component {
   state = {
@@ -574,8 +577,8 @@ class profileView extends Component {
         </Card>
         <br />
         <Grid container spacing={2}>
-          <Grid item sm>
-            <Card raised>
+          <Grid item component="Card" sm>
+            <Card raised style={{ height: '100%' }}>
               <CardContent align="center">
                 <Typography variant="h3">
                   Groups{" "}
@@ -655,8 +658,8 @@ class profileView extends Component {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item sm>
-            <Card raised>
+          <Grid item component="Card" sm>
+            <Card raised style={{ height: '100%' }}>
               <CardContent align="center">
                 <Typography variant="h3">
                   Interests{" "}
@@ -840,8 +843,8 @@ class profileView extends Component {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item sm>
-            <Card raised>
+          <Grid item component="Card" sm>
+            <Card raised style={{ height: '100%' }}>
               <CardContent align="center">
                 <Typography variant="h3">
                   Favorites{" "}
@@ -923,16 +926,16 @@ class profileView extends Component {
                 <hr />
                 <br />
                 <Typography variant="body1">
-                  Book: {this.state.favoriteBook}
+                  <Book /> Book: {this.state.favoriteBook}
                 </Typography>
                 <Typography variant="body1">
-                  Movie: {this.state.favoriteMovie}
+                  < Movie /> Movie: {this.state.favoriteMovie}
                 </Typography>
                 <Typography variant="body1">
-                  Show: {this.state.favoriteShow}
+                  <Tv /> Show: {this.state.favoriteShow}
                 </Typography>
                 <Typography variant="body1">
-                  Artist: {this.state.favoriteArtist}
+                  <Music /> Artist: {this.state.favoriteArtist}
                 </Typography>
               </CardContent>
             </Card>
