@@ -96,14 +96,14 @@ class courseView extends Component {
         <br />
         <GridList cols={3} spacing={20} cellHeight="auto">
           {indexArray.map((index) => (
-            <GridListTile item sm>
+            <GridListTile item component="Card" sm>
               <Card
                 raised
                 style={{
                   borderStyle: "solid",
                   borderWidth: "3px",
                   borderColor: "red",
-                  height: 400,
+                  height: "100%",
                 }}
                 align="center"
               >

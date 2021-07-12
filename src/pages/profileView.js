@@ -552,15 +552,15 @@ class profileView extends Component {
                   Class of {this.state.class}
                 </Typography>
                 <Typography variant="body1">
-                  Concentration(s): {this.state.majors[0]}
-                  {this.state.majors[1] && `, ${this.state.majors[1]}`}
-                  {this.state.majors[2] && `, ${this.state.majors[2]}`}
+                  Concentration(s): {this.state.majorOne}
+                  {this.state.majorTwo && `, ${this.state.majorTwo}`}
+                  {this.state.majorThree && `, ${this.state.majorThree}`}
                 </Typography>
-                {this.state.varsitySports[0] && (
+                {this.state.varsitySportOne && (
                   <Typography variant="body1">
-                    Sport(s): {this.state.varsitySports[0]}
-                    {this.state.varsitySports[1] &&
-                      `, ${this.state.varsitySports[1]}`}
+                    Sport(s): {this.state.varsitySportOne}
+                    {this.state.varsitySportTwo &&
+                      `, ${this.state.varsitySportTwo}`}
                   </Typography>
                 )}
                 {this.state.greekLife && (
