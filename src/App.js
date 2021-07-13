@@ -20,6 +20,7 @@ import coursesView from "./pages/coursesView";
 import messageView from "./pages/messageView";
 import courseView from "./pages/courseView";
 import studentView from "./pages/studentView";
+import messagesView from "./pages/messagesView";
 
 const theme = createTheme(themeFile);
 

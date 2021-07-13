@@ -10,13 +10,43 @@ function SendMessage({ scroll }) {
     e.preventDefault();
     let uid = localStorage.emailId;
     let photoUrl = localStorage.photoUrl;
+    let course = localStorage.courseCode;
+    let recipient = localStorage.studentId;
+    let roomId;
 
-    await db.collection("messages").add({
-      text: msg,
-      photoUrl,
-      uid,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+    if (uid < recipient) {
+      roomId = `${uid} ${recipient}`;
+    } else roomId = `${recipient} ${uid}`;
+
+    await Promise.all([
+      db
+        .collection("courses")
+        .doc(course)
+        .collection("imessages")
+        .doc(roomId)
+        .collection("messages")
+        .add({
+          text: msg,
+          photoUrl,
+          uid,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        }),
+
+      db
+        .collection("profiles")
+        .doc(uid + "@brown.edu")
+        .collection("messages")
+        .doc(roomId)
+        .set({ course }),
+
+      db
+        .collection("profiles")
+        .doc(recipient + "@brown.edu")
+        .collection("messages")
+        .doc(roomId)
+        .set({ course }),
+    ]);
+
     setMsg("");
     scroll.current.scrollIntoView({ behavior: "smooth" });
   }

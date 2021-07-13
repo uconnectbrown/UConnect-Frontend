@@ -8,7 +8,7 @@ import Chat from "../components/Chat";
 export class messageView extends Component {
   render() {
     return (
-      <div>
+      <div align="center">
         <NavBar />
         <Chat />
       </div>

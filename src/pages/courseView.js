@@ -58,7 +58,10 @@ class courseView extends Component {
 
   handleClickOpen = (index) => {
     this.setState({ open: true });
-    localStorage.setItem("studentId", this.state.students[index].email);
+    localStorage.setItem(
+      "studentId",
+      this.state.students[index].email.split("@")[0]
+    );
     this.props.history.push("/studentView");
   };
 

@@ -14,7 +14,7 @@ function Chat() {
       });
   }, []);
   return (
-    <div>
+    <div className="msgs">
       {messages.map(({ id, text, photoUrl, uid }) => (
         <div>
           <div
@@ -23,7 +23,17 @@ function Chat() {
               uid == localStorage.emailId ? "sent" : "received"
             }`}
           >
-            <img src={photoUrl} alt="" style={{ height: 100 }}></img>
+            <img
+              src={photoUrl}
+              alt=""
+              style={{
+                borderRadius: "10%",
+                height: "45px",
+                width: "45px",
+                objectFit: "cover",
+                marginTop: "-20px",
+              }}
+            ></img>
             <p>{text}</p>
           </div>
         </div>

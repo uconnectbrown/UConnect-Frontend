@@ -15,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import BackIcon from "@material-ui/icons/ArrowBack";
+import MessageIcon from "@material-ui/icons/Sms";
 
 class studentView extends Component {
   state = {
@@ -70,6 +71,14 @@ class studentView extends Component {
     this.props.history.push("/courseView");
   };
 
+  handleMessage = () => {
+    this.props.history.push("/messageView");
+    localStorage.setItem(
+      "studentName",
+      this.state.firstName + " " + this.state.lastName
+    );
+  };
+
   render() {
     let courseCode0 = this.state.courses[0].courseCode;
     let courseCode1 = this.state.courses[1].courseCode;
@@ -96,12 +105,29 @@ class studentView extends Component {
             <IconButton
               edge="start"
               color="inherit"
-              aria-label="close"
+              aria-label="back"
               onClick={this.handleBack}
             >
               <BackIcon />
             </IconButton>
             <Typography variant="h6">Back</Typography>
+            <div
+              style={{
+                marginLeft: "auto",
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <Typography variant="h6">Message</Typography>
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label="message"
+                onClick={this.handleMessage}
+              >
+                <MessageIcon />
+              </IconButton>
+            </div>
           </Toolbar>
         </AppBar>
         <Card raised>
