@@ -37,21 +37,7 @@ class profileBuild extends Component {
     this.setState({
       loading: true,
     });
-    if (Object.keys(this.state.courseOne).length === 0) {
-      this.setState.courseOne = { courseCode: "", courseName: "" };
-    }
-    if (Object.keys(this.state.courseTwo).length === 0) {
-      this.setState.courseTwo = { courseCode: "", courseName: "" };
-    }
-    if (Object.keys(this.state.courseThree).length === 0) {
-      this.setState.courseThree = { courseCode: "", courseName: "" };
-    }
-    if (Object.keys(this.state.courseFour).length === 0) {
-      this.setState.courseFour = { courseCode: "", courseName: "" };
-    }
-    if (Object.keys(this.state.courseFive).length === 0) {
-      this.setState.courseFive = { courseCode: "", courseName: "" };
-    }
+
     const newUserData = {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -83,6 +69,12 @@ class profileBuild extends Component {
         this.state.courseFive,
       ],
     };
+
+    for (let i = 0; i < 5; i++) {
+      if (Object.keys(newUserData.courses[i]).length === 0) {
+        newUserData.courses[i] = { courseCode: "", courseName: "" };
+      }
+    }
 
     if (!validProfile(newUserData)) {
       this.setState({
@@ -608,7 +600,7 @@ class profileBuild extends Component {
               start of the numbers if it less than 1000.
             </body>
             <br />
-            
+
             <body>
               The course name refers to the name listed on either C@B or Canvas
               for the course (e.g. Principles of Economics). Note: this name is
