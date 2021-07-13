@@ -12,7 +12,10 @@ function SendMessage({ scroll }) {
     let photoUrl = localStorage.photoUrl;
     let course = localStorage.courseCode;
     let recipient = localStorage.studentId;
+    let name = localStorage.studentName;
+    let profileName = localStorage.profileName;
     let roomId;
+    let studentImage = localStorage.studentImage;
 
     if (uid < recipient) {
       roomId = `${uid} ${recipient}`;
@@ -37,14 +40,14 @@ function SendMessage({ scroll }) {
         .doc(uid + "@brown.edu")
         .collection("messages")
         .doc(roomId)
-        .set({ course }),
+        .set({ course, name, image: studentImage }),
 
       db
         .collection("profiles")
         .doc(recipient + "@brown.edu")
         .collection("messages")
         .doc(roomId)
-        .set({ course }),
+        .set({ course, name: profileName, image: photoUrl }),
     ]);
 
     setMsg("");

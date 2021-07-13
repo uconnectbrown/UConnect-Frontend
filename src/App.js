@@ -67,6 +67,7 @@ function App() {
               <Route exact path="/messageView" component={messageView} />
               <Route exact path="/courseView" component={courseView} />
               <Route exact path="/studentView" component={studentView} />
+              <Route exact path="/messagesView" component={messagesView} />
             </Switch>
           </div>
         </Router>

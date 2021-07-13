@@ -18,7 +18,7 @@ class NavBar extends Component {
           <Button color="inherit" component={Link} to="/coursesView">
             Courses
           </Button>
-          <Button color="inherit" component={Link} to="/messageView">
+          <Button color="inherit" component={Link} to="/messagesView">
             Messages
           </Button>
         </Toolbar>

@@ -77,6 +77,7 @@ class studentView extends Component {
       "studentName",
       this.state.firstName + " " + this.state.lastName
     );
+    localStorage.setItem("studentImage", this.state.imageUrl);
   };
 
   render() {

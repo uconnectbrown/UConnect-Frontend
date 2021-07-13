@@ -127,6 +127,10 @@ class profileView extends Component {
           varsitySportTwo: res.data.user.varsitySports[1],
         });
         localStorage.setItem("photoUrl", res.data.user.imageUrl);
+        localStorage.setItem(
+          "profileName",
+          res.data.user.firstName + " " + res.data.user.lastName
+        );
         return axios.get("/update");
       })
       .catch((err) => console.log(err));
