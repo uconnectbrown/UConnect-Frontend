@@ -934,17 +934,24 @@ class profileView extends Component {
                 </Typography>
                 <hr />
                 <br />
+                <Book />
                 <Typography variant="body1">
-                  <Book /> Book: {this.state.favoriteBook}
+                  Book: {this.state.favoriteBook}
                 </Typography>
+                <br /> 
+                < Movie /> 
                 <Typography variant="body1">
-                  < Movie /> Movie: {this.state.favoriteMovie}
+                  Movie: {this.state.favoriteMovie}
                 </Typography>
+                <br />
+                <Tv /> 
                 <Typography variant="body1">
-                  <Tv /> Show: {this.state.favoriteShow}
+                  Show: {this.state.favoriteShow}
                 </Typography>
+                <br />
+                <Music /> 
                 <Typography variant="body1">
-                  <Music /> Artist: {this.state.favoriteArtist}
+                  Artist: {this.state.favoriteArtist}
                 </Typography>
               </CardContent>
             </Card>

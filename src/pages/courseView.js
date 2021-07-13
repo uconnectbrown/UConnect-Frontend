@@ -121,17 +121,31 @@ class courseView extends Component {
               size={"small"}
             >
               <MenuItem key="firstName" value="firstName">
-                first name
+                First Name
               </MenuItem>
               <MenuItem key="classYear" value="classYear">
-                class
+                Graduating Class
               </MenuItem>
               <MenuItem key="majors" value="majors">
-                major
+                Concentration
               </MenuItem>
               <MenuItem key="interests" value="interests">
-                interests
+                General Interests
               </MenuItem>
+              {/* Will need to edit updateCourses function call in the backend to include more fields 
+              in the userDataCard element to get these other tabs to work. */}
+              {/* <MenuItem key="groups" value="groups">
+                Groups
+              </MenuItem>
+              <MenuItem key="varsitySports" value="varsitySports">
+                Varsity Sport
+              </MenuItem>
+              <MenuItem key="affinitySports" value="affinitySports">
+                Athletic Interests
+              </MenuItem>
+              <MenuItem key="greekLife" value="greekLife">
+                Greek Organization
+              </MenuItem> */}
             </TextField>
       
           <input type="text" 
@@ -145,7 +159,7 @@ class courseView extends Component {
             onChange={this.handleSearch}
           />
         </Typography> 
-        {this.state.searchCriteria !== "" && (console.log(this.state.searchCriteria))}
+        {this.state.searchCriteria !== "" && console.log(students[0][`${this.state.searchCriteria}`])}
         <br />
         <br />
         <GridList cols={3} spacing={20} cellHeight="auto">
