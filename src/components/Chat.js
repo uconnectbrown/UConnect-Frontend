@@ -2,11 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import { db } from "../firebase";
 import SendMessage from "./SendMessage";
 
-function Chat() {
+function Chat(props) {
   const scroll = useRef();
   const [messages, setMessages] = useState([]);
   useEffect(() => {
-    db.collection("messages")
+    const course = localStorage.courseCode;
+    let uid = localStorage.emailId;
+    let recipient = localStorage.studentId;
+    let roomId;
+    if (uid < recipient) {
+      roomId = `${uid} ${recipient}`;
+    } else roomId = `${recipient} ${uid}`;
+    db.collection("courses")
+      .doc(course)
+      .collection("imessages")
+      .doc(roomId)
+      .collection("messages")
       .orderBy("createdAt")
       .limit(50)
       .onSnapshot((snapshot) => {

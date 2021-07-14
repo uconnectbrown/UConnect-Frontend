@@ -52,8 +52,8 @@ class courseView extends Component {
 
   handleBack = () => {
     localStorage.removeItem("courseCode");
-    localStorage.removeItem("code");
-    localStorage.removeItem("name");
+    localStorage.removeItem("codeSpace");
+    localStorage.removeItem("courseName");
   };
 
   handleClickOpen = (index) => {
@@ -71,8 +71,8 @@ class courseView extends Component {
   };
 
   render() {
-    const code = localStorage.code;
-    const name = localStorage.name;
+    const code = localStorage.codeSpace;
+    const name = localStorage.courseName;
     const numStudents = this.state.students.length;
     let indexArray = [];
     for (let i = 0; i < numStudents; i++) {

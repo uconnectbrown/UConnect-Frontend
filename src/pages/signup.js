@@ -32,6 +32,10 @@ class signup extends Component {
     };
   }
 
+  componentDidMount() {
+    localStorage.clear();
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({

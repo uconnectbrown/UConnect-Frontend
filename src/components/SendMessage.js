@@ -32,22 +32,36 @@ function SendMessage({ scroll }) {
           text: msg,
           photoUrl,
           uid,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          createdAt: new Date().toISOString(),
         }),
 
       db
         .collection("profiles")
         .doc(uid + "@brown.edu")
-        .collection("messages")
+        .collection(`${course} messages`)
         .doc(roomId)
-        .set({ course, name, image: studentImage }),
+        .set({
+          course,
+          name,
+          image: studentImage,
+          roomId,
+          recipientId: recipient,
+          mostRecent: new Date().toISOString(),
+        }),
 
       db
         .collection("profiles")
         .doc(recipient + "@brown.edu")
-        .collection("messages")
+        .collection(`${course} messages`)
         .doc(roomId)
-        .set({ course, name: profileName, image: photoUrl }),
+        .set({
+          course,
+          name: profileName,
+          image: photoUrl,
+          roomId,
+          recipientId: uid,
+          mostRecent: firebase.firestore.FieldValue.serverTimestamp(),
+        }),
     ]);
 
     setMsg("");

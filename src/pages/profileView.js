@@ -90,58 +90,99 @@ class profileView extends Component {
     const FBIdToken = localStorage.FBIdToken;
     axios.defaults.headers.common["Authorization"] = FBIdToken;
     const emailId = localStorage.emailId;
-    axios
-      .get(`/user/${emailId}`)
-      .then((res) => {
-        this.setState({
-          affinitySportOne: res.data.user.affinitySports[0],
-          affinitySportTwo: res.data.user.affinitySports[1],
-          affinitySportThree: res.data.user.affinitySports[2],
-          bio: res.data.user.bio,
-          class: res.data.user.class,
-          courses: res.data.user.courses,
-          createdAt: res.data.user.createdAt,
-          email: res.data.user.email,
-          favoriteBook: res.data.user.favorites.book,
-          favoriteMovie: res.data.user.favorites.movie,
-          favoriteShow: res.data.user.favorites.tvShow,
-          favoriteArtist: res.data.user.favorites.artist,
-          firstName: res.data.user.firstName,
-          greekLife: res.data.user.greekLife,
-          groupOne: res.data.user.groups[0],
-          groupTwo: res.data.user.groups[1],
-          groupThree: res.data.user.groups[2],
-          imageUrl: res.data.user.imageUrl,
-          interestOne: res.data.user.interests[0],
-          interestTwo: res.data.user.interests[1],
-          interestThree: res.data.user.interests[2],
-          interestFour: res.data.user.interests[3],
-          interestFive: res.data.user.interests[4],
-          lastName: res.data.user.lastName,
-          majorOne: res.data.user.majors[0],
-          majorTwo: res.data.user.majors[1],
-          majorThree: res.data.user.majors[2],
-          preferredPronouns: res.data.user.preferredPronouns,
-          userId: res.data.user.userId,
-          varsitySportOne: res.data.user.varsitySports[0],
-          varsitySportTwo: res.data.user.varsitySports[1],
+    if (FBIdToken) {
+      axios
+        .get(`/user/${emailId}`)
+        .then((res) => {
+          this.setState({
+            affinitySportOne: res.data.user.affinitySports[0],
+            affinitySportTwo: res.data.user.affinitySports[1],
+            affinitySportThree: res.data.user.affinitySports[2],
+            bio: res.data.user.bio,
+            class: res.data.user.class,
+            courses: res.data.user.courses,
+            createdAt: res.data.user.createdAt,
+            email: res.data.user.email,
+            favoriteBook: res.data.user.favorites.book,
+            favoriteMovie: res.data.user.favorites.movie,
+            favoriteShow: res.data.user.favorites.tvShow,
+            favoriteArtist: res.data.user.favorites.artist,
+            firstName: res.data.user.firstName,
+            greekLife: res.data.user.greekLife,
+            groupOne: res.data.user.groups[0],
+            groupTwo: res.data.user.groups[1],
+            groupThree: res.data.user.groups[2],
+            imageUrl: res.data.user.imageUrl,
+            interestOne: res.data.user.interests[0],
+            interestTwo: res.data.user.interests[1],
+            interestThree: res.data.user.interests[2],
+            interestFour: res.data.user.interests[3],
+            interestFive: res.data.user.interests[4],
+            lastName: res.data.user.lastName,
+            majorOne: res.data.user.majors[0],
+            majorTwo: res.data.user.majors[1],
+            majorThree: res.data.user.majors[2],
+            preferredPronouns: res.data.user.preferredPronouns,
+            userId: res.data.user.userId,
+            varsitySportOne: res.data.user.varsitySports[0],
+            varsitySportTwo: res.data.user.varsitySports[1],
+          });
+          localStorage.setItem("photoUrl", res.data.user.imageUrl);
+          localStorage.setItem(
+            "profileName",
+            res.data.user.firstName + " " + res.data.user.lastName
+          );
+          localStorage.setItem(
+            "course1",
+            res.data.user.courses[0].courseCode.replace(/\s/g, "")
+          );
+          localStorage.setItem(
+            "course2",
+            res.data.user.courses[1].courseCode.replace(/\s/g, "")
+          );
+          localStorage.setItem(
+            "course3",
+            res.data.user.courses[2].courseCode.replace(/\s/g, "")
+          );
+          localStorage.setItem(
+            "course4",
+            res.data.user.courses[3].courseCode.replace(/\s/g, "")
+          );
+          localStorage.setItem(
+            "course5",
+            res.data.user.courses[4].courseCode.replace(/\s/g, "")
+          );
+          localStorage.removeItem("courseCode");
+          localStorage.removeItem("courseName");
+          localStorage.removeItem("codeSpace");
+          localStorage.removeItem("studentId");
+          localStorage.removeItem("studentName");
+          localStorage.removeItem("studentImage");
+          localStorage.removeItem("roomId");
+          return axios.get("/update");
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        localStorage.setItem("photoUrl", res.data.user.imageUrl);
-        localStorage.setItem(
-          "profileName",
-          res.data.user.firstName + " " + res.data.user.lastName
-        );
-        return axios.get("/update");
-      })
-      .catch((err) => console.log(err));
+    }
   }
 
   logoutUser = () => {
     localStorage.removeItem("emailId");
     localStorage.removeItem("FBIdToken");
     localStorage.removeItem("courseCode");
+    localStorage.removeItem("profileName");
+    localStorage.removeItem("photoUrl");
+    localStorage.removeItem("codeSpace");
+    localStorage.removeItem("courseCode");
+    localStorage.removeItem("courseName");
+    localStorage.removeItem("course1");
+    localStorage.removeItem("course2");
+    localStorage.removeItem("course3");
+    localStorage.removeItem("course4");
+    localStorage.removeItem("course5");
+
     delete axios.defaults.headers.common["Authorization"];
-    this.props.history.push("/");
   };
 
   // attempting to implement edit user image function

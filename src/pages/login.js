@@ -30,6 +30,9 @@ class login extends Component {
       errors: {},
     };
   }
+  componentDidMount() {
+    localStorage.clear();
+  }
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({

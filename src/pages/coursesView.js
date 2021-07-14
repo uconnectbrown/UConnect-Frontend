@@ -22,7 +22,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
-import { CodeRounded } from "@material-ui/icons"
+import { CodeRounded } from "@material-ui/icons";
 
 export class coursesView extends Component {
   state = {
@@ -35,6 +35,13 @@ export class coursesView extends Component {
   };
 
   componentDidMount() {
+    localStorage.removeItem("studentName");
+    localStorage.removeItem("studentId");
+    localStorage.removeItem("courseCode");
+    localStorage.removeItem("studentImage");
+    localStorage.removeItem("roomId");
+    localStorage.removeItem("courseName");
+    localStorage.removeItem("codeSpace");
     const emailId = localStorage.emailId;
     let indexArray = [];
     let currentIndex = 0;
@@ -106,8 +113,8 @@ export class coursesView extends Component {
   handleClick = (code, name) => {
     const courseCode = code.replace(/\s/g, "");
     localStorage.setItem("courseCode", courseCode);
-    localStorage.setItem("code", code);
-    localStorage.setItem("name", name);
+    localStorage.setItem("codeSpace", code);
+    localStorage.setItem("courseName", name);
     this.props.history.push({
       pathname: "/courseView",
     });
