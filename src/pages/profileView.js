@@ -29,11 +29,18 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
+import MenuItem from "@material-ui/core/MenuItem";
 
 import Book from '@material-ui/icons/MenuBook';
 import Movie from '@material-ui/icons/Movie';
 import Tv from '@material-ui/icons/Tv';
 import Music from '@material-ui/icons/MusicNote';
+
+// Import Data
+import majorList from "../resources/majors";
+import varsitySports from "../resources/varsitySports";
+import emptyProfile from "../resources/emptyProfile";
+import greekLife from "../resources/greekLife";
 
 class profileView extends Component {
   state = {
@@ -420,6 +427,7 @@ class profileView extends Component {
                     name="firstName"
                     label="First Name"
                     defaultValue={this.state.firstName}
+                    required
                     fullWidth
                     type="text"
                     onChange={this.handleChange}
@@ -431,6 +439,7 @@ class profileView extends Component {
                     name="lastName"
                     label="Last Name"
                     defaultValue={this.state.lastName}
+                    required
                     fullWidth
                     type="text"
                     onChange={this.handleChange}
@@ -440,90 +449,157 @@ class profileView extends Component {
                     margin="dense"
                     id="preferredPronouns"
                     name="preferredPronouns"
+                    select
+                    fullWidth
                     label="Preferred Pronouns"
                     defaultValue={this.state.preferredPronouns}
-                    fullWidth
-                    type="text"
                     onChange={this.handleChange}
-                  />
+                  >
+                    <MenuItem key="he/him" value="he/him">
+                      he/him
+                    </MenuItem>
+                    <MenuItem key="she/her" value="she/her">
+                      she/her
+                    </MenuItem>
+                    <MenuItem key="they/them" value="they/them">
+                      they/them
+                    </MenuItem>
+                    <MenuItem key="ze/hir" value="ze/hir">
+                      ze/hir
+                    </MenuItem>
+                    <MenuItem key="other" value="other">
+                      other
+                    </MenuItem>
+                  </TextField>
                   <TextField
                     autofocus
                     margin="dense"
                     id="class"
                     name="class"
+                    select
                     label="Graduating Class"
                     defaultValue={this.state.class}
-                    fullWidth
-                    type="text"
                     onChange={this.handleChange}
-                  />
+                    required
+                    fullWidth
+                  >
+                    <MenuItem key="2021.5" value="2021.5">
+                      2021.5
+                    </MenuItem>
+                    <MenuItem key="2022" value="2022">
+                      2022
+                    </MenuItem>
+                    <MenuItem key="2022.5" value="2022.5">
+                      2022.5
+                    </MenuItem>
+                    <MenuItem key="2023" value="2023">
+                      2023
+                    </MenuItem>
+                    <MenuItem key="2023.5" value="2023.5">
+                      2023.5
+                    </MenuItem>
+                    <MenuItem key="2024" value="2024">
+                      2024
+                    </MenuItem>
+                    <MenuItem key="2024.5" value="2024.5">
+                      2024.5
+                    </MenuItem>
+                    <MenuItem key="2025" value="2025">
+                      2025
+                    </MenuItem>
+                  </TextField>
                   <TextField
                     autofocus
                     margin="dense"
-                    id="majorOne"
                     name="majorOne"
-                    label="First Major"
+                    label="First Concentration"
                     defaultValue={this.state.majorOne}
                     fullWidth
-                    type="text"
+                    required
                     onChange={this.handleChange}
+                    InputProps={{
+                      endAdornment: majorList,
+                      inputProps: {
+                        list: "majors",
+                      },
+                    }}
                   />
                   <TextField
                     autofocus
                     margin="dense"
-                    id="majorTwo"
                     name="majorTwo"
-                    label="Second Major"
+                    label="Second Concentration"
                     defaultValue={this.state.majorTwo}
                     fullWidth
-                    type="text"
                     onChange={this.handleChange}
+                    InputProps={{
+                      endAdornment: majorList,
+                      inputProps: {
+                        list: "majors",
+                      },
+                    }}
                   />
                   <TextField
                     autofocus
                     margin="dense"
-                    id="majorThree"
                     name="majorThree"
-                    label="Third Major"
+                    label="Third Concentration"
                     defaultValue={this.state.majorThree}
                     fullWidth
-                    type="text"
                     onChange={this.handleChange}
+                    InputProps={{
+                      endAdornment: majorList,
+                      inputProps: {
+                        list: "majors",
+                      },
+                    }}
                   />
                   <TextField
                     autofocus
                     margin="dense"
-                    id="varsitySportOne"
                     name="varsitySportOne"
                     label="First Varsity Sport"
                     defaultValue={this.state.varsitySportOne}
                     fullWidth
-                    type="text"
                     onChange={this.handleChange}
+                    InputProps={{
+                      endAdornment: varsitySports,
+                      inputProps: {
+                        list: "varsitySports",
+                      },
+                    }}
                   />
                   <TextField
                     autofocus
                     margin="dense"
-                    id="varsitySportTwo"
                     name="varsitySportTwo"
                     label="Second Varsity Sport"
                     defaultValue={this.state.varsitySportTwo}
                     fullWidth
-                    type="text"
                     onChange={this.handleChange}
+                    InputProps={{
+                      endAdornment: varsitySports,
+                      inputProps: {
+                        list: "varsitySports",
+                      },
+                    }}
                   />
                   <TextField
                     autofocus
                     margin="dense"
-                    id="greekLife"
                     name="greekLife"
                     label="Greek Organization"
                     defaultValue={this.state.greekLife}
                     fullWidth
-                    type="text"
                     onChange={this.handleChange}
+                    InputProps={{
+                      endAdornment: greekLife,
+                      inputProps: {
+                        list: "greekLife",
+                      },
+                    }}
                   />
-                  <TextField
+                  {/* <TextField
                     autofocus
                     margin="dense"
                     id="bio"
@@ -533,11 +609,23 @@ class profileView extends Component {
                     fullWidth
                     type="text"
                     onChange={this.handleChange}
+                  /> */}
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="bio"
+                    name="bio"
+                    label="Bio"
+                    defaultValue={this.state.bio}
+                    multiline
+                    onChange={this.handleChange}
+                    rows={2}
+                    fullWidth
                   />
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={this.handleSubmitBasic} color="secondary">
-                    Edit
+                    Save Changes
                   </Button>
                 </DialogActions>
               </Dialog>
@@ -650,7 +738,7 @@ class profileView extends Component {
                         onClick={this.handleSubmitGroups}
                         color="secondary"
                       >
-                        Edit
+                        Save Changes
                       </Button>
                     </DialogActions>
                   </Dialog>
@@ -692,6 +780,7 @@ class profileView extends Component {
                       Edit Interests
                     </DialogTitle>
                     <DialogContent>
+                      <Typography variant="h5">General</Typography>
                       <TextField
                         autofocus
                         margin="dense"
@@ -700,6 +789,7 @@ class profileView extends Component {
                         label="First General Interest"
                         defaultValue={this.state.interestOne}
                         fullWidth
+                        required
                         type="text"
                         onChange={this.handleChange}
                       />
@@ -711,6 +801,7 @@ class profileView extends Component {
                         label="Second General Interest"
                         defaultValue={this.state.interestTwo}
                         fullWidth
+                        required
                         type="text"
                         onChange={this.handleChange}
                       />
@@ -722,6 +813,7 @@ class profileView extends Component {
                         label="Third General Interest"
                         defaultValue={this.state.interestThree}
                         fullWidth
+                        required
                         type="text"
                         onChange={this.handleChange}
                       />
@@ -747,6 +839,9 @@ class profileView extends Component {
                         type="text"
                         onChange={this.handleChange}
                       />
+                      <br />
+                      <br />
+                      <Typography variant="h5">Athletic</Typography>
                       <TextField
                         autofocus
                         margin="dense"
@@ -786,7 +881,7 @@ class profileView extends Component {
                         onClick={this.handleSubmitInterests}
                         color="secondary"
                       >
-                        Edit
+                        Save Changes
                       </Button>
                     </DialogActions>
                   </Dialog>
@@ -885,6 +980,7 @@ class profileView extends Component {
                         label="Book"
                         defaultValue={this.state.favoriteBook}
                         fullWidth
+                        required
                         type="text"
                         onChange={this.handleChange}
                       />
@@ -896,6 +992,7 @@ class profileView extends Component {
                         label="Movie"
                         defaultValue={this.state.favoriteMovie}
                         fullWidth
+                        required
                         type="text"
                         onChange={this.handleChange}
                       />
@@ -907,6 +1004,7 @@ class profileView extends Component {
                         label="Show"
                         defaultValue={this.state.favoriteShow}
                         fullWidth
+                        required
                         type="text"
                         onChange={this.handleChange}
                       />
@@ -918,6 +1016,7 @@ class profileView extends Component {
                         label="Artist"
                         defaultValue={this.state.favoriteArtist}
                         fullWidth
+                        required
                         type="text"
                         onChange={this.handleChange}
                       />
@@ -927,7 +1026,7 @@ class profileView extends Component {
                         onClick={this.handleSubmitFavorites}
                         color="secondary"
                       >
-                        Edit
+                        Save Changes
                       </Button>
                     </DialogActions>
                   </Dialog>

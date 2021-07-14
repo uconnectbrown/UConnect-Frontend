@@ -20,18 +20,26 @@ import CardContent from "@material-ui/core/CardContent";
 class welcome extends Component {
   render() {
     return (
-      <div
+      <div 
         style={{
-          width: "100%",
-          backgroundPosition: "center",
           backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: "cover",
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          width: '100%',
+          height: '100%',
         }}
       >
-        <Grid container align="center">
+        <Grid container align="center"
+          style={{
+            marginTop: "0px",
+          }}>
           <Grid item sm />
           <Grid item sm />
           <Grid item sm>
+            <br />
+            <br />
+            <br />
             <br />
             <br />
             <br />
@@ -73,24 +81,6 @@ class welcome extends Component {
                 </Button>
               </CardContent>
             </Card>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
             <br />
             <br />
           </Grid>

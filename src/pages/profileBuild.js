@@ -586,6 +586,7 @@ class profileBuild extends Component {
             />
 
             <h2>Courses</h2>
+            
             <body1>
               In order to give you access to the profiles of all of your
               classmates, we will need you to provide us with your current

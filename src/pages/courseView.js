@@ -34,6 +34,12 @@ import IconButton from "@material-ui/core/IconButton";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import Slide from "@material-ui/core/Slide";
 
+// Import Data
+import majorList from "../resources/majors";
+import varsitySports from "../resources/varsitySports";
+import emptyProfile from "../resources/emptyProfile";
+import greekLife from "../resources/greekLife";
+
 class courseView extends Component {
   state = {
     students: [],
@@ -41,6 +47,7 @@ class courseView extends Component {
     email: "",
     searchTerm: "",
     searchCriteria: "",
+    sortBy: "firstName",
   };
 
   componentDidMount() {
@@ -83,6 +90,10 @@ class courseView extends Component {
     this.setState({ searchTerm: event.target.value });
   }
 
+  handleSort = (event) => {
+    this.setState({ sortBy: event.target.value });
+  }
+
   render() {
     const code = localStorage.code;
     const name = localStorage.name;
@@ -92,6 +103,11 @@ class courseView extends Component {
       indexArray.push(i);
     }
     let students = this.state.students;
+    if (this.state.sortBy == "firstName" || this.state.sortBy == "lastName") {
+      students.sort((a,b) => (a[`${this.state.sortBy}`] > b[`${this.state.sortBy}`]) ? 1 : ((b[`${this.state.sortBy}`] > a[`${this.state.sortBy}`]) ? -1 : 0))
+    } else if (this.state.sortBy == "classYear") {
+      students.sort((a,b) => (a[`${this.state.sortBy}`] < b[`${this.state.sortBy}`]) ? 1 : ((b[`${this.state.sortBy}`] < a[`${this.state.sortBy}`]) ? -1 : 0))
+    }
 
     return (
       <div>
@@ -120,8 +136,8 @@ class courseView extends Component {
               helperText="Please select a search criteria"
               size={"small"}
             >
-              <MenuItem key="firstName" value="firstName">
-                First Name
+              <MenuItem key="name" value="name">
+                Name
               </MenuItem>
               <MenuItem key="classYear" value="classYear">
                 Graduating Class
@@ -147,25 +163,147 @@ class courseView extends Component {
                 Greek Organization
               </MenuItem> */}
             </TextField>
-      
-          <input type="text" 
-            placeholder="Search..."
-            align="center" 
-            style={{ 
-              width: "240px", 
-              height: "40px", 
-              textAlign: "center", 
-              fontSize: "18px" }}
-            onChange={this.handleSearch}
-          />
+
+            {this.state.searchCriteria == "name" && (
+              <TextField
+                id="name"
+                name="name"
+                type="text"
+                label="Name"
+                value={this.state.searchTerm}
+                onChange={this.handleSearch}
+                variant="outlined"
+                helperText="Please search a name"
+                size={"small"}
+              />
+            )}
+            {this.state.searchCriteria == "classYear" && (
+              <TextField
+              id="classYear"
+              name="classYear"
+              select
+              label="Graduating Class"
+              value={this.state.searchTerm}
+              onChange={this.handleSearch}
+              variant="outlined"
+              helperText="Please select a graduating class"
+              size={"small"}
+            >
+              <MenuItem key="2021.5" value="2021.5">
+                2021.5
+              </MenuItem>
+              <MenuItem key="2022" value="2022">
+                2022
+              </MenuItem>
+              <MenuItem key="2022.5" value="2022.5">
+                2022.5
+              </MenuItem>
+              <MenuItem key="2023" value="2023">
+                2023
+              </MenuItem>
+              <MenuItem key="2023.5" value="2023.5">
+                2023.5
+              </MenuItem>
+              <MenuItem key="2024" value="2024">
+                2024
+              </MenuItem>
+              <MenuItem key="2024.5" value="2024.5">
+                2024.5
+              </MenuItem>
+              <MenuItem key="2025" value="2025">
+                2025
+              </MenuItem>
+            </TextField>
+            )}
+            {this.state.searchCriteria == "majors" && (
+              <TextField
+                variant="outlined"
+                name="majors"
+                size={"small"}
+                label="Concentration"
+                helperText="Please search a concentration"
+                onChange={this.handleSearch}
+                InputProps={{
+                  endAdornment: majorList,
+                  inputProps: {
+                    list: "majors",
+                  },
+                }}
+              />
+            )}
+            {this.state.searchCriteria == "interests" && (
+              <TextField
+                id="interests"
+                name="interests"
+                type="text"
+                label="General Interest"
+                value={this.state.searchTerm}
+                onChange={this.handleSearch}
+                helperText="Please search an interest"
+                variant="outlined"
+                size={"small"}
+              />
+            )}
+
+            {this.state.searchCriteria == "" && (
+              <span style={{
+                marginRight: "400px",
+              }}/>
+            )}
+            {this.state.searchCriteria == "name" && (
+              <span style={{
+                marginRight: "206px",
+              }}/>
+            )}
+            {this.state.searchCriteria == "classYear" && (
+              <span style={{
+                marginRight: "187px",
+              }}/>
+            )}
+            {this.state.searchCriteria == "majors" && (
+              <span style={{
+                marginRight: "199px",
+              }}/>
+            )}
+            {this.state.searchCriteria == "interests" && (
+              <span style={{
+                marginRight: "206px",
+              }}/>
+            )}
+
+            <TextField
+              id="sortBy"
+              name="sortBy"
+              select
+              label="Sort by..."
+              value={this.state.sortBy}
+              onChange={this.handleSort}
+              variant="outlined"
+              helperText="Please select a sorting criteria"
+              size={"small"}
+            >
+              <MenuItem key="firstName" value="firstName">
+                First Name: Alphabetical (A-Z)
+              </MenuItem>
+              <MenuItem key="lastName" value="lastName">
+                Last Name: Alphabetical (A-Z)
+              </MenuItem>
+              <MenuItem key="classYear" value="classYear">
+                Graduating Class: (2025-2021.5)
+              </MenuItem>
+            </TextField>
         </Typography> 
         {this.state.searchCriteria !== "" && console.log(students[0][`${this.state.searchCriteria}`])}
         <br />
         <br />
         <GridList cols={3} spacing={20} cellHeight="auto">
           {indexArray.filter((index) => {
-            if (this.state.searchTerm == "" || this.state.searchCriteria == "") {
+            if (this.state.searchCriteria == "") {
                return index
+            } else if (this.state.searchCriteria == "name") {
+              if (((`${students[index]['firstName']} ${students[index]['lastName']}`).toString().toLowerCase()).includes(this.state.searchTerm.toString().toLowerCase())) {
+                return index
+            }
             } else if (((students[index][`${this.state.searchCriteria}`]).toString().toLowerCase()).includes(this.state.searchTerm.toString().toLowerCase())) {
               return index
             }}).map((index) => (
