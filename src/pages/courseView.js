@@ -169,7 +169,7 @@ class courseView extends Component {
                 id="name"
                 name="name"
                 type="text"
-                label="Name"
+                label="Search..."
                 value={this.state.searchTerm}
                 onChange={this.handleSearch}
                 variant="outlined"
@@ -182,7 +182,7 @@ class courseView extends Component {
               id="classYear"
               name="classYear"
               select
-              label="Graduating Class"
+              label="Search..."
               value={this.state.searchTerm}
               onChange={this.handleSearch}
               variant="outlined"
@@ -220,7 +220,7 @@ class courseView extends Component {
                 variant="outlined"
                 name="majors"
                 size={"small"}
-                label="Concentration"
+                label="Search..."
                 helperText="Please search a concentration"
                 onChange={this.handleSearch}
                 InputProps={{
@@ -236,38 +236,64 @@ class courseView extends Component {
                 id="interests"
                 name="interests"
                 type="text"
-                label="General Interest"
+                label="Search..."
                 value={this.state.searchTerm}
                 onChange={this.handleSearch}
-                helperText="Please search an interest"
+                helperText="Please search a general interest"
                 variant="outlined"
                 size={"small"}
               />
             )}
 
-            {this.state.searchCriteria == "" && (
+            {(this.state.searchCriteria == "" && this.state.sortBy !== "classYear") && (
               <span style={{
                 marginRight: "400px",
               }}/>
             )}
-            {this.state.searchCriteria == "name" && (
+            {(this.state.searchCriteria == "name" && this.state.sortBy !== "classYear") && (
               <span style={{
                 marginRight: "206px",
               }}/>
             )}
-            {this.state.searchCriteria == "classYear" && (
+            {(this.state.searchCriteria == "classYear" && this.state.sortBy !== "classYear") && (
               <span style={{
                 marginRight: "187px",
               }}/>
             )}
-            {this.state.searchCriteria == "majors" && (
+            {(this.state.searchCriteria == "majors" && this.state.sortBy !== "classYear") && (
               <span style={{
                 marginRight: "199px",
               }}/>
             )}
-            {this.state.searchCriteria == "interests" && (
+            {(this.state.searchCriteria == "interests" && this.state.sortBy !== "classYear") && (
               <span style={{
-                marginRight: "206px",
+                marginRight: "187px",
+              }}/>
+            )}
+
+            {(this.state.searchCriteria == "" && this.state.sortBy == "classYear") && (
+              <span style={{
+                marginRight: "381px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "name" && this.state.sortBy == "classYear") && (
+              <span style={{
+                marginRight: "187px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "classYear" && this.state.sortBy == "classYear") && (
+              <span style={{
+                marginRight: "168px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "majors" && this.state.sortBy == "classYear") && (
+              <span style={{
+                marginRight: "180px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "interests" && this.state.sortBy == "classYear") && (
+              <span style={{
+                marginRight: "168px",
               }}/>
             )}
 
