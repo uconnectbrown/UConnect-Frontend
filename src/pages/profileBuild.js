@@ -585,6 +585,7 @@ class profileBuild extends Component {
             />
 
             <h2>Courses</h2>
+            
             <body1>
               In order to give you access to the profiles of all of your
               classmates, we will need you to provide us with your current
@@ -599,7 +600,7 @@ class profileBuild extends Component {
               start of the numbers if it less than 1000.
             </body>
             <br />
-            <br />
+
             <body>
               The course name refers to the name listed on either C@B or Canvas
               for the course (e.g. Principles of Economics). Note: this name is

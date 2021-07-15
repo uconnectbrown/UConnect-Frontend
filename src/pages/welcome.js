@@ -23,15 +23,14 @@ class welcome extends Component {
   }
   render() {
     return (
-      <div
-        style={{
-          width: "100%",
-          // backgroundPosition: "center",
-          // backgroundImage: `url(${backgroundImage})`,
-          // backgroundSize: "cover",
-        }}
-      >
-        <Grid container align="center">
+      <div>
+        <Grid
+          container
+          align="center"
+          style={{
+            marginTop: "0px",
+          }}
+        >
           <Grid item sm />
           <Grid item sm>
             <Card raised>

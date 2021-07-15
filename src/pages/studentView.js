@@ -17,6 +17,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import MessageIcon from "@material-ui/icons/Sms";
 
+import Book from "@material-ui/icons/MenuBook";
+import Movie from "@material-ui/icons/Movie";
+import Tv from "@material-ui/icons/Tv";
+import Music from "@material-ui/icons/MusicNote";
+
 class studentView extends Component {
   state = {
     affinitySports: [],
@@ -110,6 +115,7 @@ class studentView extends Component {
               onClick={this.handleBack}
             >
               <BackIcon />
+              <Typography variant="h6">Back</Typography>
             </IconButton>
             <Typography variant="h6">Back</Typography>
             <div
@@ -133,7 +139,18 @@ class studentView extends Component {
         </AppBar>
         <Card raised>
           <CardContent align="center">
-            <img src={this.state.imageUrl} width={450} />
+            <img
+              src={this.state.imageUrl}
+              style={{
+                width: 400,
+                height: 400,
+                objectFit: "cover",
+                borderRadius: "10%",
+                borderStyle: "solid",
+                borderColor: "red",
+                borderWidth: "2px",
+              }}
+            />
             <input
               type="file"
               id="imageInput"
@@ -194,8 +211,8 @@ class studentView extends Component {
         </Card>
         <br />
         <Grid container spacing={2}>
-          <Grid item sm>
-            <Card raised>
+          <Grid item component="Card" sm>
+            <Card raised style={{ height: "100%" }}>
               <CardContent align="center">
                 <Typography variant="h3">Groups</Typography>
                 <hr />
@@ -206,8 +223,8 @@ class studentView extends Component {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item sm>
-            <Card raised>
+          <Grid item component="Card" sm>
+            <Card raised style={{ height: "100%" }}>
               <CardContent align="center">
                 <Typography variant="h3">Interests</Typography>
                 <hr />
@@ -271,21 +288,28 @@ class studentView extends Component {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item sm>
-            <Card raised>
+          <Grid item component="Card" sm>
+            <Card raised style={{ height: "100%" }}>
               <CardContent align="center">
                 <Typography variant="h3">Favorites</Typography>
                 <hr />
                 <br />
+                <Book />
                 <Typography variant="body1">
                   Book: {this.state.favorites.book}
                 </Typography>
+                <br />
+                <Movie />
                 <Typography variant="body1">
                   Movie: {this.state.favorites.movie}
                 </Typography>
+                <br />
+                <Tv />
                 <Typography variant="body1">
                   Show: {this.state.favorites.tvShow}
                 </Typography>
+                <br />
+                <Music />
                 <Typography variant="body1">
                   Artist: {this.state.favorites.artist}
                 </Typography>

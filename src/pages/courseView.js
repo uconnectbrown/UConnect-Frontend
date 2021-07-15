@@ -12,6 +12,8 @@ import axios from "axios";
 import NavBar from "../components/NavBar";
 
 // MUI Stuff
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 import Grid from "@material-ui/core/Grid";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -32,11 +34,20 @@ import IconButton from "@material-ui/core/IconButton";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import Slide from "@material-ui/core/Slide";
 
+// Import Data
+import majorList from "../resources/majors";
+import varsitySports from "../resources/varsitySports";
+import emptyProfile from "../resources/emptyProfile";
+import greekLife from "../resources/greekLife";
+
 class courseView extends Component {
   state = {
     students: [],
     open: false,
     email: "",
+    searchTerm: "",
+    searchCriteria: "",
+    sortBy: "firstName",
   };
 
   componentDidMount() {
@@ -70,6 +81,22 @@ class courseView extends Component {
     localStorage.removeItem("studentId");
   };
 
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  handleCriteria = (event) => {
+    this.setState({ searchCriteria: event.target.value });
+  }
+
+  handleSearch = (event) => {
+    this.setState({ searchTerm: event.target.value });
+  }
+
+  handleSort = (event) => {
+    this.setState({ sortBy: event.target.value });
+  }
+
   render() {
     const code = localStorage.codeSpace;
     const name = localStorage.courseName;
@@ -79,6 +106,11 @@ class courseView extends Component {
       indexArray.push(i);
     }
     let students = this.state.students;
+    if (this.state.sortBy == "firstName" || this.state.sortBy == "lastName") {
+      students.sort((a,b) => (a[`${this.state.sortBy}`] > b[`${this.state.sortBy}`]) ? 1 : ((b[`${this.state.sortBy}`] > a[`${this.state.sortBy}`]) ? -1 : 0))
+    } else if (this.state.sortBy == "classYear") {
+      students.sort((a,b) => (a[`${this.state.sortBy}`] < b[`${this.state.sortBy}`]) ? 1 : ((b[`${this.state.sortBy}`] < a[`${this.state.sortBy}`]) ? -1 : 0))
+    }
 
     return (
       <div>
@@ -95,10 +127,215 @@ class courseView extends Component {
         >
           Back
         </Button>
+        <Typography align="center">
+            <TextField
+              id="searchCriteria"
+              name="searchCriteria"
+              select
+              label="Filter by..."
+              value={this.state.searchCriteria}
+              onChange={this.handleCriteria}
+              variant="outlined"
+              helperText="Please select a search criteria"
+              size={"small"}
+            >
+              <MenuItem key="name" value="name">
+                Name
+              </MenuItem>
+              <MenuItem key="classYear" value="classYear">
+                Graduating Class
+              </MenuItem>
+              <MenuItem key="majors" value="majors">
+                Concentration
+              </MenuItem>
+              <MenuItem key="interests" value="interests">
+                General Interests
+              </MenuItem>
+              {/* Will need to edit updateCourses function call in the backend to include more fields 
+              in the userDataCard element to get these other tabs to work. */}
+              {/* <MenuItem key="groups" value="groups">
+                Groups
+              </MenuItem>
+              <MenuItem key="varsitySports" value="varsitySports">
+                Varsity Sport
+              </MenuItem>
+              <MenuItem key="affinitySports" value="affinitySports">
+                Athletic Interests
+              </MenuItem>
+              <MenuItem key="greekLife" value="greekLife">
+                Greek Organization
+              </MenuItem> */}
+            </TextField>
+
+            {this.state.searchCriteria == "name" && (
+              <TextField
+                id="name"
+                name="name"
+                type="text"
+                label="Search..."
+                value={this.state.searchTerm}
+                onChange={this.handleSearch}
+                variant="outlined"
+                helperText="Please search a name"
+                size={"small"}
+              />
+            )}
+            {this.state.searchCriteria == "classYear" && (
+              <TextField
+              id="classYear"
+              name="classYear"
+              select
+              label="Search..."
+              value={this.state.searchTerm}
+              onChange={this.handleSearch}
+              variant="outlined"
+              helperText="Please select a graduating class"
+              size={"small"}
+            >
+              <MenuItem key="2021.5" value="2021.5">
+                2021.5
+              </MenuItem>
+              <MenuItem key="2022" value="2022">
+                2022
+              </MenuItem>
+              <MenuItem key="2022.5" value="2022.5">
+                2022.5
+              </MenuItem>
+              <MenuItem key="2023" value="2023">
+                2023
+              </MenuItem>
+              <MenuItem key="2023.5" value="2023.5">
+                2023.5
+              </MenuItem>
+              <MenuItem key="2024" value="2024">
+                2024
+              </MenuItem>
+              <MenuItem key="2024.5" value="2024.5">
+                2024.5
+              </MenuItem>
+              <MenuItem key="2025" value="2025">
+                2025
+              </MenuItem>
+            </TextField>
+            )}
+            {this.state.searchCriteria == "majors" && (
+              <TextField
+                variant="outlined"
+                name="majors"
+                size={"small"}
+                label="Search..."
+                helperText="Please search a concentration"
+                onChange={this.handleSearch}
+                InputProps={{
+                  endAdornment: majorList,
+                  inputProps: {
+                    list: "majors",
+                  },
+                }}
+              />
+            )}
+            {this.state.searchCriteria == "interests" && (
+              <TextField
+                id="interests"
+                name="interests"
+                type="text"
+                label="Search..."
+                value={this.state.searchTerm}
+                onChange={this.handleSearch}
+                helperText="Please search a general interest"
+                variant="outlined"
+                size={"small"}
+              />
+            )}
+
+            {(this.state.searchCriteria == "" && this.state.sortBy !== "classYear") && (
+              <span style={{
+                marginRight: "400px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "name" && this.state.sortBy !== "classYear") && (
+              <span style={{
+                marginRight: "206px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "classYear" && this.state.sortBy !== "classYear") && (
+              <span style={{
+                marginRight: "187px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "majors" && this.state.sortBy !== "classYear") && (
+              <span style={{
+                marginRight: "199px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "interests" && this.state.sortBy !== "classYear") && (
+              <span style={{
+                marginRight: "187px",
+              }}/>
+            )}
+
+            {(this.state.searchCriteria == "" && this.state.sortBy == "classYear") && (
+              <span style={{
+                marginRight: "381px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "name" && this.state.sortBy == "classYear") && (
+              <span style={{
+                marginRight: "187px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "classYear" && this.state.sortBy == "classYear") && (
+              <span style={{
+                marginRight: "168px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "majors" && this.state.sortBy == "classYear") && (
+              <span style={{
+                marginRight: "180px",
+              }}/>
+            )}
+            {(this.state.searchCriteria == "interests" && this.state.sortBy == "classYear") && (
+              <span style={{
+                marginRight: "168px",
+              }}/>
+            )}
+
+            <TextField
+              id="sortBy"
+              name="sortBy"
+              select
+              label="Sort by..."
+              value={this.state.sortBy}
+              onChange={this.handleSort}
+              variant="outlined"
+              helperText="Please select a sorting criteria"
+              size={"small"}
+            >
+              <MenuItem key="firstName" value="firstName">
+                First Name: Alphabetical (A-Z)
+              </MenuItem>
+              <MenuItem key="lastName" value="lastName">
+                Last Name: Alphabetical (A-Z)
+              </MenuItem>
+              <MenuItem key="classYear" value="classYear">
+                Graduating Class: (2025-2021.5)
+              </MenuItem>
+            </TextField>
+        </Typography> 
+        {this.state.searchCriteria !== "" && console.log(students[0][`${this.state.searchCriteria}`])}
         <br />
         <br />
         <GridList cols={3} spacing={20} cellHeight="auto">
-          {indexArray.map((index) => (
+          {indexArray.filter((index) => {
+            if (this.state.searchCriteria == "") {
+               return index
+            } else if (this.state.searchCriteria == "name") {
+              if (((`${students[index]['firstName']} ${students[index]['lastName']}`).toString().toLowerCase()).includes(this.state.searchTerm.toString().toLowerCase())) {
+                return index
+            }
+            } else if (((students[index][`${this.state.searchCriteria}`]).toString().toLowerCase()).includes(this.state.searchTerm.toString().toLowerCase())) {
+              return index
+            }}).map((index) => (
             <GridListTile item component="Card" sm>
               <Card
                 raised
@@ -106,11 +343,11 @@ class courseView extends Component {
                   borderStyle: "solid",
                   borderWidth: "3px",
                   borderColor: "red",
-                  height: "100%",
+                  borderRadius: "5%",
+                  height: "97%",
                 }}
                 align="center"
               >
-                {/* <ButtonBase onClick={this.handleClickOpen}> */}
                 <CardContent>
                   <ButtonBase
                     size="large"
@@ -124,7 +361,10 @@ class courseView extends Component {
                           width: 150,
                           height: 150,
                           objectFit: "cover",
-                          borderRadius: "50%",
+                          borderRadius: "10%",
+                          borderStyle: "solid",
+                          borderColor: "red",
+                          borderWidth: "2px",
                         }}
                       />
 
@@ -156,7 +396,6 @@ class courseView extends Component {
                     </div>
                   </ButtonBase>
                 </CardContent>
-                {/* </ButtonBase> */}
               </Card>
             </GridListTile>
           ))}
