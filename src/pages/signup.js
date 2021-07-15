@@ -1,5 +1,3 @@
-// TO-DO: Replace logo
-
 // Setup
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -65,11 +63,10 @@ class signup extends Component {
         { courseCode: "", courseName: "" },
       ],
     };
+
     axios
       .post("/signup", newUserData)
       .then((res) => {
-        const emailId = this.state.email.split("@")[0];
-        localStorage.setItem("emailId", emailId);
         const FBIdToken = `Bearer ${res.data.token}`;
         localStorage.setItem("FBIdToken", FBIdToken);
         axios.defaults.headers.common["Authorization"] = FBIdToken;
@@ -78,7 +75,6 @@ class signup extends Component {
         });
         this.props.history.push({
           pathname: "/profileBuild",
-          state: { email: this.state.email },
         });
       })
       .catch((err) => {

@@ -11,6 +11,9 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/AddCircle";
+import Tooltip from "@material-ui/core/Tooltip";
 
 // Import Data
 import majorList from "../resources/majors";
@@ -89,7 +92,6 @@ class profileBuild extends Component {
       .then(() => {
         this.setState({
           loading: false,
-          email: this.props.location.state.email,
           validProfile: true,
         });
         this.props.history.push({
@@ -168,20 +170,38 @@ class profileBuild extends Component {
     });
   };
 
+  handleSecondMajor = () => {
+    this.setState({ secondMajor: true });
+  };
+
+  handleThirdMajor = () => {
+    this.setState({ thirdMajor: true });
+  };
+
+  handleVarsity = () => {
+    this.setState({ secondVarsitySport: true });
+  };
+
+  handleFifthCourse = () => {
+    this.setState({ fifthCourse: true });
+  };
+
   render() {
     const { classes } = this.props;
     const { errors, loading } = this.state;
     return (
-      <Grid container className={classes.form}>
-        <Grid item sm />
-        <Grid item sm>
-          <Typography variant="h2" className={classes.pageTitle}>
-            Build Profile
-          </Typography>
-          <form noValidate onSubmit={this.handleSubmit}>
+      <form noValidate onSubmit={this.handleSubmit}>
+        <Grid container className={classes.form}>
+          <Grid item sm />
+          <Grid item sm>
+            <Typography variant="h2" className={classes.pageTitle}>
+              Build Profile
+            </Typography>
+
             <h2>Basic Info</h2>
             <TextField
               id="firstName"
+              autoComplete="off"
               name="firstName"
               type="text"
               label="First Name"
@@ -196,6 +216,7 @@ class profileBuild extends Component {
             <br />
             <TextField
               id="lastName"
+              autoComplete="off"
               name="lastName"
               type="text"
               label="Last Name"
@@ -247,58 +268,80 @@ class profileBuild extends Component {
             </TextField>
             <br />
             <body1>
-              What is your intended major? Feel free to put Undecided if you
-              don't know at this point.
+              What is your intended major? Feel free to type out an independent
+              major or put "Undecided" if you don't know at this point.
             </body1>
-            <TextField
-              variant="outlined"
-              name="majorOne"
-              size={"small"}
-              label="Major"
-              className={classes.textField}
-              fullWidth
-              required
-              onChange={this.handleChange}
-              InputProps={{
-                endAdornment: majorList,
-                inputProps: {
-                  list: "majors",
-                },
-              }}
-            />
-            <body1>
-              If you have more than one major, please list the others below.
-            </body1>
-            <TextField
-              variant="outlined"
-              name="majorTwo"
-              size={"small"}
-              label="Second Major"
-              className={classes.textField}
-              fullWidth
-              onChange={this.handleChange}
-              InputProps={{
-                endAdornment: majorList,
-                inputProps: {
-                  list: "majors",
-                },
-              }}
-            />
-            <TextField
-              variant="outlined"
-              name="majorThree"
-              size={"small"}
-              label="Third Major"
-              className={classes.textField}
-              fullWidth
-              onChange={this.handleChange}
-              InputProps={{
-                endAdornment: majorList,
-                inputProps: {
-                  list: "majors",
-                },
-              }}
-            />
+            <br />
+            <span>
+              <TextField
+                variant="outlined"
+                name="majorOne"
+                size={"small"}
+                label="Major"
+                className={classes.textField}
+                required
+                onChange={this.handleChange}
+                InputProps={{
+                  endAdornment: majorList,
+                  inputProps: {
+                    list: "majors",
+                  },
+                }}
+              />
+              {!this.state.secondMajor && (
+                <Tooltip title="Add Second Major" placement="top">
+                  <IconButton onClick={this.handleSecondMajor}>
+                    <AddIcon color="secondary" />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </span>
+
+            <span>
+              {this.state.secondMajor && (
+                <TextField
+                  variant="outlined"
+                  name="majorTwo"
+                  size={"small"}
+                  label="Second Major"
+                  className={classes.textField}
+                  onChange={this.handleChange}
+                  InputProps={{
+                    endAdornment: majorList,
+                    inputProps: {
+                      list: "majors",
+                    },
+                  }}
+                />
+              )}
+              {this.state.secondMajor && !this.state.thirdMajor && (
+                <Tooltip title="Add Third Major" placement="top">
+                  <IconButton onClick={this.handleThirdMajor}>
+                    <AddIcon color="secondary" />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </span>
+
+            {this.state.thirdMajor && (
+              <TextField
+                variant="outlined"
+                name="majorThree"
+                size={"small"}
+                label="Third Major"
+                className={classes.textField}
+                onChange={this.handleChange}
+                InputProps={{
+                  endAdornment: majorList,
+                  inputProps: {
+                    list: "majors",
+                  },
+                }}
+              />
+            )}
+
+            <br />
+
             <TextField
               id="preferredPronouns"
               name="preferredPronouns"
@@ -330,11 +373,12 @@ class profileBuild extends Component {
 
             <h2>Interests</h2>
             <body1>
-              Please list between 3 and 5 areas of interest you have.
+              Please list between 3 and 5 areas of interests you have.
             </body1>
             <TextField
               id="interestOne"
               name="interestOne"
+              autoComplete="off"
               type="text"
               label="First Interest"
               className={classes.textField}
@@ -346,6 +390,7 @@ class profileBuild extends Component {
             <TextField
               id="interestTwo"
               name="interestTwo"
+              autoComplete="off"
               type="text"
               label="Second Interest"
               className={classes.textField}
@@ -357,6 +402,7 @@ class profileBuild extends Component {
             <TextField
               id="interestThree"
               name="interestThree"
+              autoComplete="off"
               type="text"
               label="Third Interest"
               className={classes.textField}
@@ -368,6 +414,7 @@ class profileBuild extends Component {
             <TextField
               id="interestFour"
               name="interestFour"
+              autoComplete="off"
               type="text"
               label="Fourth Interest"
               className={classes.textField}
@@ -378,6 +425,7 @@ class profileBuild extends Component {
             <TextField
               id="interestFive"
               name="interestFive"
+              autoComplete="off"
               type="text"
               label="Fifth Interest"
               className={classes.textField}
@@ -394,6 +442,7 @@ class profileBuild extends Component {
             <TextField
               id="groupOne"
               name="groupOne"
+              autoComplete="off"
               type="text"
               label="First Group"
               className={classes.textField}
@@ -404,6 +453,7 @@ class profileBuild extends Component {
             <TextField
               id="groupTwo"
               name="groupTwo"
+              autoComplete="off"
               type="text"
               label="Second Group"
               className={classes.textField}
@@ -414,6 +464,7 @@ class profileBuild extends Component {
             <TextField
               id="groupThree"
               name="groupThree"
+              autoComplete="off"
               type="text"
               label="Third Group"
               className={classes.textField}
@@ -427,36 +478,49 @@ class profileBuild extends Component {
               If you are a member of any varsity sports teams, please indicate
               which ones below.
             </body1>
-            <TextField
-              variant="outlined"
-              name="varsitySportOne"
-              size={"small"}
-              label="First Varsity Sport"
-              className={classes.textField}
-              fullWidth
-              onChange={this.handleChange}
-              InputProps={{
-                endAdornment: varsitySports,
-                inputProps: {
-                  list: "varsitySports",
-                },
-              }}
-            />
-            <TextField
-              variant="outlined"
-              name="varsitySportTwo"
-              size={"small"}
-              label="Second Varsity Sport"
-              className={classes.textField}
-              fullWidth
-              onChange={this.handleChange}
-              InputProps={{
-                endAdornment: varsitySports,
-                inputProps: {
-                  list: "varsitySports",
-                },
-              }}
-            />
+            <br />
+            <span>
+              <TextField
+                variant="outlined"
+                name="varsitySportOne"
+                size={"small"}
+                label="First Varsity Sport"
+                className={classes.textField}
+                onChange={this.handleChange}
+                InputProps={{
+                  endAdornment: varsitySports,
+                  inputProps: {
+                    list: "varsitySports",
+                  },
+                }}
+              />
+
+              {!this.state.secondVarsitySport && (
+                <Tooltip title="Add Second Varsity Sport" placement="top">
+                  <IconButton onClick={this.handleVarsity}>
+                    <AddIcon color="secondary" />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </span>
+
+            {this.state.secondVarsitySport && (
+              <TextField
+                variant="outlined"
+                name="varsitySportTwo"
+                size={"small"}
+                label="Second Varsity Sport"
+                className={classes.textField}
+                onChange={this.handleChange}
+                InputProps={{
+                  endAdornment: varsitySports,
+                  inputProps: {
+                    list: "varsitySports",
+                  },
+                }}
+              />
+            )}
+            <br />
             <body1>
               If you are not on a varsity sports team but still enjoy playing
               and competing in sports, please indicate which ones below.
@@ -464,6 +528,7 @@ class profileBuild extends Component {
             <TextField
               id="affinitySportOne"
               name="affinitySportOne"
+              autoComplete="off"
               type="text"
               label="First Sport"
               className={classes.textField}
@@ -474,6 +539,7 @@ class profileBuild extends Component {
             <TextField
               id="affinitySportTwo"
               name="affinitySportTwo"
+              autoComplete="off"
               type="text"
               label="Second Sport"
               className={classes.textField}
@@ -484,6 +550,7 @@ class profileBuild extends Component {
             <TextField
               id="affinitySportThree"
               name="affinitySportThree"
+              autoComplete="off"
               type="text"
               label="Third Sport"
               className={classes.textField}
@@ -518,54 +585,65 @@ class profileBuild extends Component {
               Feel free to share your favorite book, movie, tv show, and artist
               below.
             </body1>
-            <TextField
-              id="book"
-              name="favorites"
-              type="text"
-              label="Favorite Book"
-              className={classes.textField}
-              value={this.state.favorites.book}
-              onChange={this.handleFavorites}
-              fullWidth
-              required
-              size={"small"}
-            />
-            <TextField
-              id="movie"
-              name="favorites"
-              type="text"
-              label="Favorite Movie"
-              className={classes.textField}
-              value={this.state.favorites.movie}
-              onChange={this.handleFavorites}
-              fullWidth
-              required
-              size={"small"}
-            />
-            <TextField
-              id="tvShow"
-              name="favorites"
-              type="text"
-              label="Favorite Show"
-              className={classes.textField}
-              value={this.state.favorites.tvShow}
-              onChange={this.handleFavorites}
-              fullWidth
-              required
-              size={"small"}
-            />
-            <TextField
-              id="artist"
-              name="favorites"
-              type="text"
-              label="Favorite Artist"
-              className={classes.textField}
-              value={this.state.favorites.artist}
-              onChange={this.handleFavorites}
-              fullWidth
-              required
-              size={"small"}
-            />
+            <br />
+            <span>
+              <TextField
+                id="book"
+                name="favorites"
+                type="text"
+                label="Book"
+                autoComplete="off"
+                style={{ width: 150 }}
+                className={classes.textField}
+                value={this.state.favorites.book}
+                onChange={this.handleFavorites}
+                required
+                size={"small"}
+              />
+              {"   "}
+              <TextField
+                id="movie"
+                name="favorites"
+                type="text"
+                label="Movie"
+                autoComplete="off"
+                style={{ width: 150 }}
+                className={classes.textField}
+                value={this.state.favorites.movie}
+                onChange={this.handleFavorites}
+                required
+                size={"small"}
+              />
+            </span>
+            <span>
+              <TextField
+                id="tvShow"
+                name="favorites"
+                type="text"
+                label="Show"
+                autoComplete="off"
+                style={{ width: 150 }}
+                className={classes.textField}
+                value={this.state.favorites.tvShow}
+                onChange={this.handleFavorites}
+                required
+                size={"small"}
+              />
+              {"   "}
+              <TextField
+                id="artist"
+                name="favorites"
+                type="text"
+                label="Artist/Band"
+                autoComplete="off"
+                style={{ width: 150 }}
+                className={classes.textField}
+                value={this.state.favorites.artist}
+                onChange={this.handleFavorites}
+                required
+                size={"small"}
+              />
+            </span>
 
             <h2>Bio</h2>
             <body1>
@@ -577,6 +655,7 @@ class profileBuild extends Component {
             <TextField
               id="bio"
               name="bio"
+              autoComplete="off"
               multiline
               onChange={this.handleChange}
               rows={4}
@@ -585,32 +664,38 @@ class profileBuild extends Component {
             />
 
             <h2>Courses</h2>
-            
-            <body1>
-              In order to give you access to the profiles of all of your
-              classmates, we will need you to provide us with your current
-              courses in the fields below.
-            </body1>
-            <br />
-            <br />
-            <body>
-              The course code refers to the unique string identifier listed on
-              C@B for the course (e.g. ECON 0110). Note: please include the
-              space between the capital letters and the numbers and the 0 at the
-              start of the numbers if it less than 1000.
-            </body>
-            <br />
+          </Grid>
+          <Grid item sm />
+        </Grid>
+        <div align="center">
+          <body>
+            In order to give you access to the profiles of all of your
+            classmates, we will need you to provide us with your current courses
+            in the fields below.
+          </body>
+          <br />
+          <body>
+            The course code refers to the unique string identifier listed on C@B
+            for the course (e.g. ECON 0110). Note: please include the space
+            between the capital letters and the numbers and the 0 at the start
+            of the numbers if it less than 1000.
+          </body>
+          <br />
 
-            <body>
-              The course name refers to the name listed on either C@B or Canvas
-              for the course (e.g. Principles of Economics). Note: this name is
-              just meant to help you easily recognize the class, so don't worry
-              about formatting it in a particular way.
-            </body>
+          <body>
+            The course name refers to the name listed on either C@B or Canvas
+            for the course (e.g. Principles of Economics). Note: this name is
+            just meant to help you easily recognize the class, so don't worry
+            about formatting it in a particular way.
+          </body>
+        </div>
+        <Grid container className={classes.form} align="center" spacing={2}>
+          <Grid item sm>
             <h3>Course #1</h3>
             <TextField
               id="courseCode"
               name="courseCode"
+              autoComplete="off"
               type="text"
               label="Course Code"
               className={classes.textField}
@@ -625,6 +710,7 @@ class profileBuild extends Component {
             <TextField
               id="courseName"
               name="courseName"
+              autoComplete="off"
               type="text"
               label="Course Name"
               className={classes.textField}
@@ -633,11 +719,14 @@ class profileBuild extends Component {
               fullWidth
               required
               size={"small"}
-            />
+            />{" "}
+          </Grid>
+          <Grid item sm>
             <h3>Course #2</h3>
             <TextField
               id="courseCode"
               name="courseCode"
+              autoComplete="off"
               type="text"
               label="Course Code"
               className={classes.textField}
@@ -652,6 +741,7 @@ class profileBuild extends Component {
             <TextField
               id="courseName"
               name="courseName"
+              autoComplete="off"
               type="text"
               label="Course Name"
               className={classes.textField}
@@ -661,10 +751,13 @@ class profileBuild extends Component {
               required
               size={"small"}
             />
+          </Grid>
+          <Grid item sm>
             <h3>Course #3</h3>
             <TextField
               id="courseCode"
               name="courseCode"
+              autoComplete="off"
               type="text"
               label="Course Code"
               className={classes.textField}
@@ -673,25 +766,27 @@ class profileBuild extends Component {
               value={this.state.courseCode}
               onChange={this.handleCourseThree}
               size={"small"}
-              required
               variant="outlined"
             />
             <TextField
               id="courseName"
               name="courseName"
+              autoComplete="off"
               type="text"
               label="Course Name"
               className={classes.textField}
               value={this.state.courseName}
               onChange={this.handleCourseThree}
               fullWidth
-              required
               size={"small"}
             />
+          </Grid>
+          <Grid item sm>
             <h3>Course #4</h3>
             <TextField
               id="courseCode"
               name="courseCode"
+              autoComplete="off"
               type="text"
               label="Course Code"
               className={classes.textField}
@@ -705,6 +800,7 @@ class profileBuild extends Component {
             <TextField
               id="courseName"
               name="courseName"
+              autoComplete="off"
               type="text"
               label="Course Name"
               className={classes.textField}
@@ -713,34 +809,54 @@ class profileBuild extends Component {
               fullWidth
               size={"small"}
             />
-            <h3>Course #5</h3>
-            <TextField
-              id="courseCode"
-              name="courseCode"
-              type="text"
-              label="Course Code"
-              className={classes.textField}
-              helperText={errors.courseCode}
-              error={errors.courseCode ? true : false}
-              value={this.state.courseCode}
-              onChange={this.handleCourseFive}
-              size={"small"}
-              variant="outlined"
-            />
-            <TextField
-              id="courseName"
-              name="courseName"
-              type="text"
-              label="Course Name"
-              className={classes.textField}
-              value={this.state.courseName}
-              onChange={this.handleCourseFive}
-              fullWidth
-              size={"small"}
-            />
+          </Grid>
+
+          {!this.state.fifthCourse && (
+            <Tooltip title="Add Fifth Course" placement="top">
+              <IconButton onClick={this.handleFifthCourse}>
+                <AddIcon color="secondary" />
+              </IconButton>
+            </Tooltip>
+          )}
+
+          {this.state.fifthCourse && (
+            <Grid item sm>
+              <h3>Course #5</h3>
+              <TextField
+                id="courseCode"
+                name="courseCode"
+                autoComplete="off"
+                type="text"
+                label="Course Code"
+                className={classes.textField}
+                helperText={errors.courseCode}
+                error={errors.courseCode ? true : false}
+                value={this.state.courseCode}
+                onChange={this.handleCourseFive}
+                size={"small"}
+                variant="outlined"
+              />
+              <TextField
+                id="courseName"
+                name="courseName"
+                autoComplete="off"
+                type="text"
+                label="Course Name"
+                className={classes.textField}
+                value={this.state.courseName}
+                onChange={this.handleCourseFive}
+                fullWidth
+                size={"small"}
+              />
+            </Grid>
+          )}
+        </Grid>
+        <Grid container align="center">
+          <Grid item sm />
+          <Grid item sm>
             <h3>
               Thank you for taking the time to build your profile and welcome to
-              Uconnect!
+              UConnect!
             </h3>
 
             {errors.general && (
@@ -768,10 +884,10 @@ class profileBuild extends Component {
             )}
             <br />
             <br />
-          </form>
+          </Grid>
+          <Grid item sm />
         </Grid>
-        <Grid item sm />
-      </Grid>
+      </form>
     );
   }
 }

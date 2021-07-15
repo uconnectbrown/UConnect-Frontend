@@ -10,7 +10,7 @@ exports.validProfile = (profile) => {
     profile.favorites.tvShow &&
     profile.favorites.artist &&
     profile.courses.filter((course) => Object.keys(course).length > 1).length >
-      2
+      1
   ) {
     return true;
   }

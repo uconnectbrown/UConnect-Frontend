@@ -48,7 +48,6 @@ const majors = (
     <option value="Hispanic Literatures and Cultures" />
     <option value="History" />
     <option value="History of Art and Architecture" />
-    <option value="Independent Concentration" />
     <option value="International and Public Affairs" />
     <option value="International Relations" />
     <option value="Italian Studies" />

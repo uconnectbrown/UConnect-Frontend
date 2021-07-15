@@ -1,5 +1,3 @@
-// TO-DO: Replace logo
-
 // Imports
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -20,6 +18,7 @@ const styles = (theme) => ({
   ...theme.spreadThis,
 });
 
+// Body
 class login extends Component {
   constructor() {
     super();
@@ -30,9 +29,11 @@ class login extends Component {
       errors: {},
     };
   }
+
   componentDidMount() {
     localStorage.clear();
   }
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
@@ -45,8 +46,6 @@ class login extends Component {
     axios
       .post("/login", userData)
       .then((res) => {
-        const emailId = this.state.email.split("@")[0];
-        localStorage.setItem("emailId", emailId);
         const FBIdToken = `Bearer ${res.data.token}`;
         localStorage.setItem("FBIdToken", FBIdToken);
         axios.defaults.headers.common["Authorization"] = FBIdToken;
@@ -64,11 +63,13 @@ class login extends Component {
         });
       });
   };
+
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
   };
+
   render() {
     const { classes } = this.props;
     const { errors, loading } = this.state;

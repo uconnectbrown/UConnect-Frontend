@@ -1,15 +1,7 @@
-// TO-DO F:
-// 1. Fix reloading issue (doesn't allow logout unless reload)
-
-// TO-DO S:
-// 1. Make a logo and spruce up the page a little
-// 2. Space the welcome box properly without using line breaks
-
 // Setup
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import backgroundImage from "../images/Gates.jpg";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
@@ -17,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 
+// Body
 class welcome extends Component {
   componentDidMount() {
     localStorage.clear();

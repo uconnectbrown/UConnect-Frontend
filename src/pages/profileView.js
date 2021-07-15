@@ -1,10 +1,4 @@
-// add more photos and clean up their display
-// add chosen color theme to page
-// handle pronouns better
-// color code courses
-
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 // Components
@@ -28,7 +22,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import Book from "@material-ui/icons/MenuBook";
@@ -39,7 +32,6 @@ import Music from "@material-ui/icons/MusicNote";
 // Import Data
 import majorList from "../resources/majors";
 import varsitySports from "../resources/varsitySports";
-import emptyProfile from "../resources/emptyProfile";
 import greekLife from "../resources/greekLife";
 
 class profileView extends Component {
@@ -96,10 +88,9 @@ class profileView extends Component {
   componentDidMount() {
     const FBIdToken = localStorage.FBIdToken;
     axios.defaults.headers.common["Authorization"] = FBIdToken;
-    const emailId = localStorage.emailId;
     if (FBIdToken) {
       axios
-        .get(`/user/${emailId}`)
+        .get("/user")
         .then((res) => {
           this.setState({
             affinitySportOne: res.data.user.affinitySports[0],
@@ -134,7 +125,10 @@ class profileView extends Component {
             varsitySportOne: res.data.user.varsitySports[0],
             varsitySportTwo: res.data.user.varsitySports[1],
           });
+
+          // TO-DO: reconsider passing in photoURL and course data through local storage
           localStorage.setItem("photoUrl", res.data.user.imageUrl);
+          localStorage.setItem("emailId", res.data.user.email.split("@")[0]);
           localStorage.setItem(
             "profileName",
             res.data.user.firstName + " " + res.data.user.lastName
@@ -166,6 +160,7 @@ class profileView extends Component {
           localStorage.removeItem("studentName");
           localStorage.removeItem("studentImage");
           localStorage.removeItem("roomId");
+          // TO-DO: reconsider localStorage
           return axios.get("/update");
         })
         .catch((err) => {
@@ -174,26 +169,6 @@ class profileView extends Component {
     }
   }
 
-  logoutUser = () => {
-    localStorage.removeItem("emailId");
-    localStorage.removeItem("FBIdToken");
-    localStorage.removeItem("courseCode");
-    localStorage.removeItem("profileName");
-    localStorage.removeItem("photoUrl");
-    localStorage.removeItem("codeSpace");
-    localStorage.removeItem("courseCode");
-    localStorage.removeItem("courseName");
-    localStorage.removeItem("course1");
-    localStorage.removeItem("course2");
-    localStorage.removeItem("course3");
-    localStorage.removeItem("course4");
-    localStorage.removeItem("course5");
-
-    delete axios.defaults.headers.common["Authorization"];
-  };
-
-  // attempting to implement edit user image function
-  // think i'm using the backend post request wrong
   handleImageChange = (event) => {
     event.preventDefault();
     const image = event.target.files[0];
@@ -420,6 +395,7 @@ class profileView extends Component {
         <Card raised>
           <CardContent align="center">
             <img
+              alt="Profile"
               src={this.state.imageUrl}
               style={{
                 width: 400,
@@ -443,11 +419,6 @@ class profileView extends Component {
                 <PhotoIcon color="primary" />
               </IconButton>
             </Tooltip>
-            {/* <Button onClick={this.handleEditPicture}>
-              <EditIcon color="primary" />
-            </Button> */}
-            <br />
-
             <br />
             <Typography variant="h3" align="center">
               {this.state.firstName} {this.state.lastName}{" "}
@@ -647,17 +618,6 @@ class profileView extends Component {
                       },
                     }}
                   />
-                  {/* <TextField
-                    autofocus
-                    margin="dense"
-                    id="bio"
-                    name="bio"
-                    label="Bio"
-                    defaultValue={this.state.bio}
-                    fullWidth
-                    type="text"
-                    onChange={this.handleChange}
-                  /> */}
                   <TextField
                     autofocus
                     margin="dense"
@@ -1228,18 +1188,6 @@ class profileView extends Component {
             </Grid>
           </CardContent>
         </Card>
-        <br />
-        <Grid contained align="center">
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={this.logoutUser}
-            component={Link}
-            to="/"
-          >
-            <Typography variant="body1">Logout</Typography>
-          </Button>
-        </Grid>
         <br />
       </div>
     );

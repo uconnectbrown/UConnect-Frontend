@@ -36,6 +36,10 @@ const emptyProfile = {
   loading: false,
   errors: {},
   validProfile: true,
+  secondMajor: false,
+  thirdMajor: false,
+  secondVarsitySport: false,
+  fifthCourse: false,
 };
 
 export default emptyProfile;
