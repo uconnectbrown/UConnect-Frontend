@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
+import ImageCropper from "../components/ImageCropper";
+import Avatar from "../components/Avatar";
+import MyEditor from "../components/MyEditor";
+import AvatarEditor from 'react-avatar-editor'
 
 // Components
 import NavBar from "../components/NavBar";
@@ -83,6 +87,7 @@ class profileView extends Component {
     basicOpen: false,
     interestsOpen: false,
     favoritesOpen: false,
+    imageOpen: false,
   };
 
   componentDidMount() {
@@ -178,6 +183,9 @@ class profileView extends Component {
       .post("/image", formData)
       .then((data) => {
         this.setState({ imageUrl: data.data.imageUrl });
+
+        // new test code
+        this.setState({ imageOpen: true })
       })
       .catch((err) => {
         console.log(err);
@@ -187,6 +195,9 @@ class profileView extends Component {
     const fileInput = document.getElementById("imageInput");
     fileInput.click();
   };
+  handleImageClose = () => {
+    this.setState({ imageOpen: false });
+  }
 
   handleAddOpen = () => {
     this.setState({ addOpen: true });
@@ -419,6 +430,31 @@ class profileView extends Component {
                 <PhotoIcon color="primary" />
               </IconButton>
             </Tooltip>
+            {/* new test code */}
+            {/* <Dialog
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    open={this.state.imageOpen}
+                    onClose={this.handleImageClose}
+                  >
+                    <DialogTitle
+                      style={{ cursor: "move" }}
+                      id="draggable-dialog-title"
+                    >
+                      Crop Image
+                    </DialogTitle>
+                    <DialogContent>
+                      fill in with cropping mechanism
+                      <MyEditor />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        // onClick={this.handleSubmitImage}
+                        color="secondary"
+                      >
+                        Save Crop
+                      </Button>
+                    </DialogActions>
+                  </Dialog> */}
             <br />
             <Typography variant="h3" align="center">
               {this.state.firstName} {this.state.lastName}{" "}
@@ -794,7 +830,7 @@ class profileView extends Component {
                         margin="dense"
                         id="interestOne"
                         name="interestOne"
-                        label="First General Interest"
+                        label="1st Interest"
                         defaultValue={this.state.interestOne}
                         fullWidth
                         required
@@ -806,7 +842,7 @@ class profileView extends Component {
                         margin="dense"
                         id="interestTwo"
                         name="interestTwo"
-                        label="Second General Interest"
+                        label="2nd Interest"
                         defaultValue={this.state.interestTwo}
                         fullWidth
                         required
@@ -818,7 +854,7 @@ class profileView extends Component {
                         margin="dense"
                         id="interestThree"
                         name="interestThree"
-                        label="Third General Interest"
+                        label="3rd Interest"
                         defaultValue={this.state.interestThree}
                         fullWidth
                         required
@@ -830,7 +866,7 @@ class profileView extends Component {
                         margin="dense"
                         id="interestFour"
                         name="interestFour"
-                        label="Fourth General Interest"
+                        label="4th Interest"
                         defaultValue={this.state.interestFour}
                         fullWidth
                         type="text"
@@ -841,7 +877,7 @@ class profileView extends Component {
                         margin="dense"
                         id="interestFive"
                         name="interestFive"
-                        label="Fifth General Interest"
+                        label="5th Interest"
                         defaultValue={this.state.interestFive}
                         fullWidth
                         type="text"
@@ -855,7 +891,7 @@ class profileView extends Component {
                         margin="dense"
                         id="affinitySportOne"
                         name="affinitySportOne"
-                        label="First Athletic Interest"
+                        label="1st Interest"
                         defaultValue={this.state.affinitySportOne}
                         fullWidth
                         type="text"
@@ -866,7 +902,7 @@ class profileView extends Component {
                         margin="dense"
                         id="affinitySportTwo"
                         name="affinitySportTwo"
-                        label="Second Athletic Interest"
+                        label="2nd Interest"
                         defaultValue={this.state.affinitySportTwo}
                         fullWidth
                         type="text"
@@ -877,7 +913,7 @@ class profileView extends Component {
                         margin="dense"
                         id="affinitySportThree"
                         name="affinitySportThree"
-                        label="Third Athletic Interest"
+                        label="3rd Interest"
                         defaultValue={this.state.affinitySportThree}
                         fullWidth
                         type="text"

@@ -277,7 +277,7 @@ class profileBuild extends Component {
                 variant="outlined"
                 name="majorOne"
                 size={"small"}
-                label="Major"
+                label="Concentration"
                 className={classes.textField}
                 required
                 onChange={this.handleChange}
@@ -289,7 +289,7 @@ class profileBuild extends Component {
                 }}
               />
               {!this.state.secondMajor && (
-                <Tooltip title="Add Second Major" placement="top">
+                <Tooltip title="Add Second Concentration" placement="top">
                   <IconButton onClick={this.handleSecondMajor}>
                     <AddIcon color="secondary" />
                   </IconButton>
@@ -303,7 +303,7 @@ class profileBuild extends Component {
                   variant="outlined"
                   name="majorTwo"
                   size={"small"}
-                  label="Second Major"
+                  label="Second Concentration"
                   className={classes.textField}
                   onChange={this.handleChange}
                   InputProps={{
@@ -315,7 +315,7 @@ class profileBuild extends Component {
                 />
               )}
               {this.state.secondMajor && !this.state.thirdMajor && (
-                <Tooltip title="Add Third Major" placement="top">
+                <Tooltip title="Add Third Concentration" placement="top">
                   <IconButton onClick={this.handleThirdMajor}>
                     <AddIcon color="secondary" />
                   </IconButton>
@@ -328,7 +328,7 @@ class profileBuild extends Component {
                 variant="outlined"
                 name="majorThree"
                 size={"small"}
-                label="Third Major"
+                label="Third Concentration"
                 className={classes.textField}
                 onChange={this.handleChange}
                 InputProps={{
