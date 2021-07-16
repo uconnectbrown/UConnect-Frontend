@@ -1,65 +1,65 @@
+// Set Up
 import React, { useState } from "react";
 import { db } from "../firebase";
 import firebase from "firebase";
 import { Input, Button } from "@material-ui/core";
 
-function SendMessage({ scroll }) {
+// Body
+function SendMessage({
+  scroll,
+  studentImage,
+  studentName,
+  studentId,
+  courseCode,
+  profileName,
+  imageUrl,
+  roomId,
+  emailId,
+}) {
   const [msg, setMsg] = useState("");
 
   async function sendMessage(e) {
     e.preventDefault();
-    let uid = localStorage.emailId;
-    let photoUrl = localStorage.photoUrl;
-    let course = localStorage.courseCode;
-    let recipient = localStorage.studentId;
-    let name = localStorage.studentName;
-    let profileName = localStorage.profileName;
-    let roomId;
-    let studentImage = localStorage.studentImage;
-
-    if (uid < recipient) {
-      roomId = `${uid} ${recipient}`;
-    } else roomId = `${recipient} ${uid}`;
 
     await Promise.all([
       db
         .collection("courses")
-        .doc(course)
+        .doc(courseCode)
         .collection("imessages")
         .doc(roomId)
         .collection("messages")
         .add({
           text: msg,
-          photoUrl,
-          uid,
+          imageUrl,
+          emailId,
           createdAt: new Date().toISOString(),
         }),
 
       db
         .collection("profiles")
-        .doc(uid + "@brown.edu")
-        .collection(`${course} messages`)
+        .doc(emailId + "@brown.edu")
+        .collection(`${courseCode} messages`)
         .doc(roomId)
         .set({
-          course,
-          name,
+          course: courseCode,
+          name: studentName,
           image: studentImage,
           roomId,
-          recipientId: recipient,
+          recipientId: studentId,
           mostRecent: new Date().toISOString(),
         }),
 
       db
         .collection("profiles")
-        .doc(recipient + "@brown.edu")
-        .collection(`${course} messages`)
+        .doc(studentId + "@brown.edu")
+        .collection(`${courseCode} messages`)
         .doc(roomId)
         .set({
-          course,
+          course: courseCode,
           name: profileName,
-          image: photoUrl,
+          image: imageUrl,
           roomId,
-          recipientId: uid,
+          recipientId: emailId,
           mostRecent: firebase.firestore.FieldValue.serverTimestamp(),
         }),
     ]);

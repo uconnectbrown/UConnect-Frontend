@@ -1,20 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import { db } from "../firebase";
 import SendMessage from "./SendMessage";
+import axios from "axios";
 
 function Chat(props) {
   const scroll = useRef();
   const [messages, setMessages] = useState([]);
+  const studentName = props.studentName;
+  const studentImage = props.studentImage;
+  const studentId = props.studentId;
+  const courseCode = props.courseCode;
+  const emailId = props.emailId;
+  const imageUrl = props.imageUrl;
+  const profileName = props.profileName;
+  const roomId = props.roomId;
   useEffect(() => {
-    const course = localStorage.courseCode;
-    let uid = localStorage.emailId;
-    let recipient = localStorage.studentId;
-    let roomId;
-    if (uid < recipient) {
-      roomId = `${uid} ${recipient}`;
-    } else roomId = `${recipient} ${uid}`;
+    const studentName = props.studentName;
+    const studentImage = props.studentImage;
+    const studentId = props.studentId;
+    const courseCode = props.courseCode;
+    const emailId = props.emailId;
+    const imageUrl = props.imageUrl;
+    const profileName = props.profileName;
+    const roomId = props.roomId;
     db.collection("courses")
-      .doc(course)
+      .doc(courseCode)
       .collection("imessages")
       .doc(roomId)
       .collection("messages")
@@ -26,16 +36,16 @@ function Chat(props) {
   }, []);
   return (
     <div className="msgs">
-      {messages.map(({ id, text, photoUrl, uid }) => (
+      {messages.map(({ id, text, imageUrl, emailId }) => (
         <div>
           <div
             key={id}
             className={`msg ${
-              uid == localStorage.emailId ? "sent" : "received"
+              emailId == localStorage.emailId ? "sent" : "received"
             }`}
           >
             <img
-              src={photoUrl}
+              src={imageUrl}
               alt=""
               style={{
                 borderRadius: "10%",
@@ -49,7 +59,17 @@ function Chat(props) {
           </div>
         </div>
       ))}
-      <SendMessage scroll={scroll} />
+      <SendMessage
+        scroll={scroll}
+        studentName={studentName}
+        studentImage={studentImage}
+        studentId={studentId}
+        courseCode={courseCode}
+        emailId={emailId}
+        profileName={profileName}
+        imageUrl={imageUrl}
+        roomId={roomId}
+      />
       <div ref={scroll}></div>
     </div>
   );

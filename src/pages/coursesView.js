@@ -1,28 +1,19 @@
-// make cards taller to fill up the page better
-// include a place for general info or to do for the course
-// have the cards be color coded
-// consider what else people would find most pertinent to a landing page
-
 // Setup
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 // Components
 import NavBar from "../components/NavBar";
 
 // MUI Stuff
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
-import { CodeRounded } from "@material-ui/icons";
 
 export class coursesView extends Component {
   state = {
@@ -42,15 +33,14 @@ export class coursesView extends Component {
     localStorage.removeItem("roomId");
     localStorage.removeItem("courseName");
     localStorage.removeItem("codeSpace");
-    const emailId = localStorage.emailId;
     let indexArray = [];
     let currentIndex = 0;
     axios
       .get("/update")
       .then(() => {
-        return axios.get(`/user/${emailId}`).then((res) => {
+        return axios.get("/user/courses").then((res) => {
           this.setState({
-            courses: res.data.user.courses,
+            courses: res.data,
           });
         });
       })
@@ -68,7 +58,7 @@ export class coursesView extends Component {
         console.log(indexArray);
         for (let i = 0; i < 5; i++) {
           if (indexArray.includes(i))
-            promises.push(axios.get(`/course/${courseCodes[i]}`));
+            promises.push(axios.get(`/avatars/${courseCodes[i]}`));
         }
         return promises;
       })
@@ -111,17 +101,14 @@ export class coursesView extends Component {
   }
 
   handleClick = (code, name) => {
-    const courseCode = code.replace(/\s/g, "");
-    localStorage.setItem("courseCode", courseCode);
-    localStorage.setItem("codeSpace", code);
-    localStorage.setItem("courseName", name);
     this.props.history.push({
       pathname: "/courseView",
+      state: { courseInfo: [code, name] },
     });
   };
 
   render() {
-    let studentList = [
+    let avatarList = [
       this.state.students0,
       this.state.students1,
       this.state.students2,
@@ -170,8 +157,8 @@ export class coursesView extends Component {
                     <br />
                     {/* Proof of concept styling idea */}
                     <AvatarGroup max={6}>
-                      {studentList[index].map((student) => (
-                        <Avatar src={student.imageUrl} />
+                      {avatarList[index].map((url) => (
+                        <Avatar src={url} />
                       ))}
                     </AvatarGroup>
                   </CardContent>

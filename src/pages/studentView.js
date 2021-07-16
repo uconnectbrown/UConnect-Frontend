@@ -24,6 +24,8 @@ import Music from "@material-ui/icons/MusicNote";
 
 class studentView extends Component {
   state = {
+    courseInfo: this.props.location.state.studentInfo[0],
+    studentId: this.props.location.state.studentInfo[1],
     affinitySports: [],
     bio: "",
     class: "",
@@ -44,7 +46,7 @@ class studentView extends Component {
   };
 
   componentDidMount() {
-    const emailId = localStorage.studentId.split("@")[0];
+    const emailId = this.state.studentId;
     axios
       .get(`/user/${emailId}`)
       .then((res) => {
@@ -72,17 +74,24 @@ class studentView extends Component {
   }
 
   handleBack = () => {
-    localStorage.removeItem("studentId");
-    this.props.history.push("/courseView");
+    this.props.history.push({
+      pathname: "/courseView",
+      state: { courseInfo: this.state.courseInfo },
+    });
   };
 
   handleMessage = () => {
-    this.props.history.push("/messageView");
-    localStorage.setItem(
-      "studentName",
-      this.state.firstName + " " + this.state.lastName
-    );
-    localStorage.setItem("studentImage", this.state.imageUrl);
+    this.props.history.push({
+      pathname: "/messageView",
+      state: {
+        studentInfo: [
+          this.state.firstName + " " + this.state.lastName,
+          this.state.imageUrl,
+          this.state.studentId,
+          this.state.courseInfo[0].replace(/\s/g, ""),
+        ],
+      },
+    });
   };
 
   render() {
@@ -117,7 +126,6 @@ class studentView extends Component {
               <BackIcon />
               <Typography variant="h6">Back</Typography>
             </IconButton>
-            <Typography variant="h6">Back</Typography>
             <div
               style={{
                 marginLeft: "auto",

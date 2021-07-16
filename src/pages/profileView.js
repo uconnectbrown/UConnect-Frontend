@@ -3,7 +3,7 @@ import axios from "axios";
 import ImageCropper from "../components/ImageCropper";
 import Avatar from "../components/Avatar";
 import MyEditor from "../components/MyEditor";
-import AvatarEditor from 'react-avatar-editor'
+// import AvatarEditor from 'react-avatar-editor'
 
 // Components
 import NavBar from "../components/NavBar";
@@ -185,7 +185,7 @@ class profileView extends Component {
         this.setState({ imageUrl: data.data.imageUrl });
 
         // new test code
-        this.setState({ imageOpen: true })
+        this.setState({ imageOpen: true });
       })
       .catch((err) => {
         console.log(err);
@@ -197,7 +197,7 @@ class profileView extends Component {
   };
   handleImageClose = () => {
     this.setState({ imageOpen: false });
-  }
+  };
 
   handleAddOpen = () => {
     this.setState({ addOpen: true });
