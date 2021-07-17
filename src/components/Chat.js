@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { db } from "../firebase";
 import SendMessage from "./SendMessage";
-import axios from "axios";
 
 function Chat(props) {
   const scroll = useRef();
@@ -14,15 +13,11 @@ function Chat(props) {
   const imageUrl = props.imageUrl;
   const profileName = props.profileName;
   const roomId = props.roomId;
+
   useEffect(() => {
-    const studentName = props.studentName;
-    const studentImage = props.studentImage;
-    const studentId = props.studentId;
     const courseCode = props.courseCode;
-    const emailId = props.emailId;
-    const imageUrl = props.imageUrl;
-    const profileName = props.profileName;
     const roomId = props.roomId;
+    {console.log(roomId)}
     db.collection("courses")
       .doc(courseCode)
       .collection("imessages")
@@ -34,6 +29,7 @@ function Chat(props) {
         setMessages(snapshot.docs.map((doc) => doc.data()));
       });
   }, []);
+
   return (
     <div className="msgs">
       {messages.map(({ id, text, imageUrl, emailId }) => (
@@ -59,6 +55,7 @@ function Chat(props) {
           </div>
         </div>
       ))}
+
       <SendMessage
         scroll={scroll}
         studentName={studentName}

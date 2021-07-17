@@ -244,6 +244,64 @@ class courseView extends Component {
               size={"small"}
             />
           )}
+          {this.state.searchCriteria === "groups" && (
+            <TextField
+              id="groups"
+              name="groups"
+              type="text"
+              label="Search..."
+              value={this.state.searchTerm}
+              onChange={this.handleSearch}
+              helperText="Please search a group"
+              variant="outlined"
+              size={"small"}
+            />
+          )}
+          {this.state.searchCriteria === "varsitySports" && (
+            <TextField
+              variant="outlined"
+              name="varsitySports"
+              size={"small"}
+              label="Search..."
+              helperText="Please search a varsity sport"
+              onChange={this.handleSearch}
+              InputProps={{
+                endAdornment: varsitySports,
+                inputProps: {
+                  list: "varsitySports",
+                },
+              }}
+            />
+          )}
+          {this.state.searchCriteria === "affinitySports" && (
+            <TextField
+              id="affinitySports"
+              name="affinitySports"
+              type="text"
+              label="Search..."
+              value={this.state.searchTerm}
+              onChange={this.handleSearch}
+              helperText="Please search an athletic interest"
+              variant="outlined"
+              size={"small"}
+            />
+          )}
+          {this.state.searchCriteria === "greekLife" && (
+            <TextField
+              variant="outlined"
+              name="greekLife"
+              size={"small"}
+              label="Search..."
+              helperText="Please search a greek organization"
+              onChange={this.handleSearch}
+              InputProps={{
+                endAdornment: greekLife,
+                inputProps: {
+                  list: "greekLife",
+                },
+              }}
+            />
+          )}
 
           {this.state.searchCriteria === "" &&
             this.state.sortBy !== "classYear" && (
@@ -282,6 +340,39 @@ class courseView extends Component {
               <span
                 style={{
                   marginRight: "187px",
+                }}
+              />
+            )}
+          {/* new additional criteria */}
+          {this.state.searchCriteria === "groups" &&
+            this.state.sortBy !== "classYear" && (
+              <span
+                style={{
+                  marginRight: "206px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "varsitySports" &&
+            this.state.sortBy !== "classYear" && (
+              <span
+                style={{
+                  marginRight: "206px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "affinitySports" &&
+            this.state.sortBy !== "classYear" && (
+              <span
+                style={{
+                  marginRight: "182px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "greekLife" &&
+            this.state.sortBy !== "classYear" && (
+              <span
+                style={{
+                  marginRight: "170px",
                 }}
               />
             )}
@@ -326,6 +417,38 @@ class courseView extends Component {
                 }}
               />
             )}
+          {this.state.searchCriteria === "groups" &&
+            this.state.sortBy === "classYear" && (
+              <span
+                style={{
+                  marginRight: "187px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "varsitySports" &&
+            this.state.sortBy === "classYear" && (
+              <span
+                style={{
+                  marginRight: "187px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "affinitySports" &&
+            this.state.sortBy === "classYear" && (
+              <span
+                style={{
+                  marginRight: "163px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "greekLife" &&
+            this.state.sortBy === "classYear" && (
+              <span
+                style={{
+                  marginRight: "151px",
+                }}
+              />
+            )}
 
           <TextField
             id="sortBy"
@@ -349,8 +472,6 @@ class courseView extends Component {
             </MenuItem>
           </TextField>
         </Typography>
-        {this.state.searchCriteria !== "" &&
-          console.log(students[0][`${this.state.searchCriteria}`])}
         <br />
         <br />
         <GridList cols={3} spacing={20} cellHeight="auto">
@@ -396,6 +517,7 @@ class courseView extends Component {
                       onClick={() => this.handleClickOpen(index)}
                     >
                       <div>
+                        {/* <Typography>{index}</Typography> */}
                         <img
                           alt="student"
                           src={students[index].imageUrl}

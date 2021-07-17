@@ -12,10 +12,10 @@ import IconButton from "@material-ui/core/IconButton";
 
 export class messageView extends Component {
   state = {
-    studentName: this.props.location.state.studentInfo[0],
-    studentImage: this.props.location.state.studentInfo[1],
-    studentId: this.props.location.state.studentInfo[2],
-    courseCode: this.props.location.state.studentInfo[3],
+    studentName: "",
+    studentImage: "",
+    studentId: "",
+    courseCode: "",
     emailId: "",
     imageUrl: "",
     profileName: "",
@@ -23,26 +23,37 @@ export class messageView extends Component {
   };
 
   componentDidMount() {
-    axios
+    this.setState({
+      studentName: this.props.location.state.studentInfo[0],
+      studentImage: this.props.location.state.studentInfo[1],
+      studentId: this.props.location.state.studentInfo[2],
+      courseCode: this.props.location.state.studentInfo[3],
+    })
+    const FBIdToken = localStorage.FBIdToken;
+    axios.defaults.headers.common["Authorization"] = FBIdToken;
+    if (FBIdToken) {
+      axios
       .get("/senderInfo")
       .then((res) => {
-        this.setState({ emailId: res.data.emailId });
-        this.setState({ imageUrl: res.data.imageUrl });
-        this.setState({
+        this.setState({ 
+          emailId: res.data.emailId, 
+          imageUrl: res.data.imageUrl, 
           profileName: res.data.firstName + " " + res.data.lastName,
         });
-        console.log(this.state.emailId);
+        if (this.state.emailId < this.state.studentId) {
+          this.setState({
+            roomId: `${this.state.emailId} ${this.state.studentId}`,
+          });
+        } else
+          this.setState({
+            roomId: ` ${this.state.studentId} ${this.state.emailId}`,
+          });
+        {console.log(this.state.emailId)}
+        {console.log(this.state.studentId)}
+        {console.log(this.state.roomId)}
       })
       .catch((err) => console.error(err));
-
-    if (this.state.emailId < this.state.studentId) {
-      this.setState({
-        roomId: `${this.state.emailId} ${this.state.studentId}`,
-      });
-    } else
-      this.setState({
-        roomId: ` ${this.state.studentId} ${this.state.emailId}`,
-      });
+    }
   }
 
   handleBack = () => {

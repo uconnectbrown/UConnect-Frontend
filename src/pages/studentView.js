@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import axios from "axios";
 
 // Components
-import NavBar from "../components/NavBar";
+// import NavBar from "../components/NavBar";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import AppBar from "@material-ui/core/AppBar";
@@ -133,13 +133,13 @@ class studentView extends Component {
                 flexDirection: "row",
               }}
             >
-              <Typography variant="h6">Message</Typography>
               <IconButton
                 edge="end"
                 color="inherit"
                 aria-label="message"
                 onClick={this.handleMessage}
               >
+                <Typography variant="h6">Message</Typography>
                 <MessageIcon />
               </IconButton>
             </div>
