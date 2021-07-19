@@ -133,32 +133,32 @@ class profileView extends Component {
           });
 
           // TO-DO: reconsider passing in photoURL and course data through local storage
-          localStorage.setItem("photoUrl", res.data.user.imageUrl);
-          localStorage.setItem("emailId", res.data.user.email.split("@")[0]);
-          localStorage.setItem(
-            "profileName",
-            res.data.user.firstName + " " + res.data.user.lastName
-          );
-          localStorage.setItem(
-            "course1",
-            res.data.user.courses[0].courseCode.replace(/\s/g, "")
-          );
-          localStorage.setItem(
-            "course2",
-            res.data.user.courses[1].courseCode.replace(/\s/g, "")
-          );
-          localStorage.setItem(
-            "course3",
-            res.data.user.courses[2].courseCode.replace(/\s/g, "")
-          );
-          localStorage.setItem(
-            "course4",
-            res.data.user.courses[3].courseCode.replace(/\s/g, "")
-          );
-          localStorage.setItem(
-            "course5",
-            res.data.user.courses[4].courseCode.replace(/\s/g, "")
-          );
+          // localStorage.setItem("photoUrl", res.data.user.imageUrl);
+          // localStorage.setItem("emailId", res.data.user.email.split("@")[0]);
+          // localStorage.setItem(
+          //   "profileName",
+          //   res.data.user.firstName + " " + res.data.user.lastName
+          // );
+          // localStorage.setItem(
+          //   "course1",
+          //   res.data.user.courses[0].courseCode.replace(/\s/g, "")
+          // );
+          // localStorage.setItem(
+          //   "course2",
+          //   res.data.user.courses[1].courseCode.replace(/\s/g, "")
+          // );
+          // localStorage.setItem(
+          //   "course3",
+          //   res.data.user.courses[2].courseCode.replace(/\s/g, "")
+          // );
+          // localStorage.setItem(
+          //   "course4",
+          //   res.data.user.courses[3].courseCode.replace(/\s/g, "")
+          // );
+          // localStorage.setItem(
+          //   "course5",
+          //   res.data.user.courses[4].courseCode.replace(/\s/g, "")
+          // );
           localStorage.removeItem("courseCode");
           localStorage.removeItem("courseName");
           localStorage.removeItem("codeSpace");
@@ -280,6 +280,7 @@ class profileView extends Component {
     });
     this.setState({ addOpen: false });
   };
+  
   handleSubmitGroups = () => {
     let groupList = [
       this.state.groupOne,
@@ -676,6 +677,9 @@ class profileView extends Component {
                   />
                 </DialogContent>
                 <DialogActions>
+                  <Button onClick={this.handleBasicClose} color="secondary">
+                    Cancel
+                  </Button>
                   <Button onClick={this.handleSubmitBasic} color="secondary" 
                   disabled={this.state.firstName === "" || this.state.lastName === "" || this.state.majorOne === "" || this.state.class === ""}>
                     Save Changes
@@ -787,6 +791,9 @@ class profileView extends Component {
                       />
                     </DialogContent>
                     <DialogActions>
+                      <Button onClick={this.handleGroupsClose} color="secondary">
+                        Cancel
+                      </Button>
                       <Button
                         onClick={this.handleSubmitGroups}
                         color="secondary"
@@ -930,6 +937,9 @@ class profileView extends Component {
                       />
                     </DialogContent>
                     <DialogActions>
+                      <Button onClick={this.handleInterestsClose} color="secondary">
+
+                      </Button>
                       <Button
                         onClick={this.handleSubmitInterests}
                         color="secondary"
@@ -1076,6 +1086,9 @@ class profileView extends Component {
                       />
                     </DialogContent>
                     <DialogActions>
+                      <Button onClick={this.handleFavoritesClose} color="secondary">
+                        Cancel
+                      </Button>
                       <Button
                         onClick={this.handleSubmitFavorites}
                         color="secondary"

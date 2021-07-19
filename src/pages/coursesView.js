@@ -36,6 +36,9 @@ export class coursesView extends Component {
     localStorage.removeItem("codeSpace");
     let indexArray = [];
     let currentIndex = 0;
+    const FBIdToken = localStorage.FBIdToken;
+    axios.defaults.headers.common["Authorization"] = FBIdToken;
+    if (FBIdToken) {
     axios
       .get("/update")
       .then(() => {
@@ -100,6 +103,7 @@ export class coursesView extends Component {
         this.setState({loading: false})
       })
       .catch((err) => console.log(err));
+    }
   }
 
   handleClick = (code, name) => {

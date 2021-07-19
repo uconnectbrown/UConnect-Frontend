@@ -54,6 +54,7 @@ function a11yProps(index) {
 
 class messagesView extends Component {
   state = {
+    courses: [{}, {}, {}, {}, {}],
     messages1: [],
     messages2: [],
     messages3: [],
@@ -69,14 +70,15 @@ class messagesView extends Component {
     localStorage.removeItem("studentId");
     localStorage.removeItem("studentName");
     localStorage.removeItem("studentImage");
+    const FBIdToken = localStorage.FBIdToken;
+    axios.defaults.headers.common["Authorization"] = FBIdToken;
+    let courseCodes = [];
+    if (FBIdToken) {
+    axios.get("/user/courses").then((res) => {
+      courseCodes = (res.data.map((course) => course.courseCode.replace(/\s/g, "")));
+    })
+    .then(() => {
     let promises = [];
-    let courseCodes = [
-      localStorage.course1,
-      localStorage.course2,
-      localStorage.course3,
-      localStorage.course4,
-      localStorage.course5,
-    ];
     let indexArray = [];
     let currentIndex = 0;
     for (let i = 0; i < 5; i++) {
@@ -88,7 +90,7 @@ class messagesView extends Component {
 
     Promise.all(promises)
       .then((results) => {
-        console.log(results[0]);
+        // console.log(results[0]);
         if (indexArray.includes(0)) {
           this.setState({
             messages1: results[currentIndex].data,
@@ -120,8 +122,11 @@ class messagesView extends Component {
           currentIndex++;
         }
       })
-      .catch((err) => console.log(err));
-  }
+      .catch(err => console.log(err));
+    }
+  )
+}}
+
 
   handleMessage = (roomId, name, image, id, code) => {
     localStorage.setItem("roomId", roomId);
