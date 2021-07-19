@@ -676,7 +676,8 @@ class profileView extends Component {
                   />
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={this.handleSubmitBasic} color="secondary" disabled={this.state.firstName === ""}>
+                  <Button onClick={this.handleSubmitBasic} color="secondary" 
+                  disabled={this.state.firstName === "" || this.state.lastName === "" || this.state.majorOne === "" || this.state.class === ""}>
                     Save Changes
                   </Button>
                 </DialogActions>
@@ -932,6 +933,7 @@ class profileView extends Component {
                       <Button
                         onClick={this.handleSubmitInterests}
                         color="secondary"
+                        disabled={this.state.interestOne === "" || this.state.interestTwo === "" || this.state.interestThree === ""}
                       >
                         Save Changes
                       </Button>
@@ -1077,6 +1079,7 @@ class profileView extends Component {
                       <Button
                         onClick={this.handleSubmitFavorites}
                         color="secondary"
+                        disabled={this.state.favoriteBook === "" || this.state.favoriteMovie === "" || this.state.favoriteShow === "" || this.state.favoriteArtist === ""}
                       >
                         Save Changes
                       </Button>
