@@ -16,6 +16,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import MessageIcon from "@material-ui/icons/Sms";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Book from "@material-ui/icons/MenuBook";
 import Movie from "@material-ui/icons/Movie";
@@ -43,6 +44,7 @@ class studentView extends Component {
     preferredPronouns: "",
     userId: "",
     varsitySports: [],
+    loading: true,
   };
 
   componentDidMount() {
@@ -69,6 +71,9 @@ class studentView extends Component {
           userId: res.data.user.userId,
           varsitySports: res.data.user.varsitySports,
         });
+      })
+      .then(() => {
+        this.setState({loading: false})
       })
       .catch((err) => console.log(err));
   }
@@ -115,6 +120,47 @@ class studentView extends Component {
     }
     return (
       <div>
+        {this.state.loading && (
+          <div align="center">
+            <AppBar>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="back"
+              onClick={this.handleBack}
+            >
+              <BackIcon />
+              <Typography variant="h6">Back</Typography>
+            </IconButton>
+            <div
+              style={{
+                marginLeft: "auto",
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label="message"
+                onClick={this.handleMessage}
+              >
+                <Typography variant="h6">Message</Typography>
+                <MessageIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+        </AppBar>
+            <br />
+            <CircularProgress size={100} />
+            <br />
+            <br />
+            <Typography variant="h4">Fetching user data...</Typography>
+          </div>
+        )}
+        {!this.state.loading && (
+          <div>
         <AppBar>
           <Toolbar>
             <IconButton
@@ -358,6 +404,8 @@ class studentView extends Component {
         </Card>
         <br />
         <br />
+      </div>
+        )}
       </div>
     );
   }

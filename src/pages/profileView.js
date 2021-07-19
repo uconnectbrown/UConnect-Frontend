@@ -27,6 +27,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Book from "@material-ui/icons/MenuBook";
 import Movie from "@material-ui/icons/Movie";
@@ -280,7 +281,7 @@ class profileView extends Component {
     });
     this.setState({ addOpen: false });
   };
-  
+
   handleSubmitGroups = () => {
     let groupList = [
       this.state.groupOne,
@@ -407,7 +408,14 @@ class profileView extends Component {
     return (
       <div>
       {loading && (
-        <Typography variant="h4" align="center">Fetching user data...</Typography>
+        <div align="center">
+          <NavBar />
+          <br />
+          <CircularProgress size={100} />
+          <br />
+          <br />
+          <Typography variant="h4">Fetching user data...</Typography>
+        </div>
       )}
       {!loading && (
       <div>

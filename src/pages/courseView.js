@@ -21,6 +21,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import ButtonBase from "@material-ui/core/ButtonBase";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Import Data
 import majorList from "../resources/majors";
@@ -36,6 +37,7 @@ class courseView extends Component {
     searchTerm: "",
     searchCriteria: "",
     sortBy: "firstName",
+    loading: true,
   };
 
   componentDidMount() {
@@ -47,6 +49,9 @@ class courseView extends Component {
       .then((res) => {
         this.setState({ students: [...this.state.students, ...res.data] });
         console.log(this.state.students);
+      })
+      .then(() => {
+        this.setState({loading: false})
       })
       .catch((err) => console.log(err));
   }
@@ -474,6 +479,15 @@ class courseView extends Component {
         </Typography>
         <br />
         <br />
+        {this.state.loading && (
+          <div align="center">
+            <CircularProgress size={100} />
+            <br />
+            <br />
+            <Typography variant="h4">Fetching students' data...</Typography>
+          </div>
+        )}
+        {!this.state.loading && (
         <GridList cols={3} spacing={20} cellHeight="auto">
           {indexArray
             .filter((index) => {
@@ -568,6 +582,7 @@ class courseView extends Component {
               </GridListTile>
             ))}
         </GridList>
+        )}
       </div>
     );
   }

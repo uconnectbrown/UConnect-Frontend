@@ -14,6 +14,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export class coursesView extends Component {
   state = {
@@ -164,7 +165,12 @@ export class coursesView extends Component {
                     <br />
                     {/* Proof of concept styling idea */}
                     {loading && (
-                      <Typography variant="body1" align="center" style={{marginBottom: "5px"}}>Fetching course data...</Typography>
+                      <div>
+                        <span>
+                          <Typography variant="body1" align="center" style={{marginBottom: "5px"}}>Fetching course data...</Typography>
+                          <CircularProgress />
+                        </span>
+                      </div>
                     )}
                     {!loading && (
                       <AvatarGroup max={6}>

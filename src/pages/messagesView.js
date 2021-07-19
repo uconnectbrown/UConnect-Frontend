@@ -18,6 +18,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -64,6 +65,7 @@ class messagesView extends Component {
     ownImage: "",
     ownEmailId: "",
     tabIndex: 0,
+    loading: true,
   };
 
   componentDidMount() {
@@ -129,7 +131,9 @@ class messagesView extends Component {
                 });
                 currentIndex++;
               }
-              console.log(this.state.messages2);
+            })
+            .then(() => {
+              this.setState({loading: false});
             })
             .catch((err) => console.log(err));
         });
@@ -156,6 +160,19 @@ class messagesView extends Component {
     }
 
     return (
+      <div>
+      {this.state.loading && (
+        <div align="center">
+          <NavBar />
+          <br />
+          <CircularProgress size={100}/>
+          <br />
+          <br />
+          <Typography variant="h4">Fetching messages...</Typography>
+        </div>
+      )}
+
+      {!this.state.loading && (
       <div>
         <NavBar />
         <AppBar position="static" color="secondary">
@@ -214,6 +231,8 @@ class messagesView extends Component {
           <Messages messages={messages[3]} />
           <Messages messages={messages[4]} />
         </TabPanel>
+      </div>
+      )}
       </div>
     );
   }

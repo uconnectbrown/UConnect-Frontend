@@ -9,6 +9,8 @@ import Chat from "../components/Chat";
 // MUI Stuff
 import BackIcon from "@material-ui/icons/ArrowBack";
 import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export class messageView extends Component {
   state = {
@@ -20,6 +22,7 @@ export class messageView extends Component {
     imageUrl: "",
     profileName: "",
     roomId: "",
+    loading: true,
   };
 
   componentDidMount() {
@@ -50,6 +53,8 @@ export class messageView extends Component {
               roomId: ` ${this.state.studentId} ${res.data.emailId}`,
             });
           }
+        })
+        .then(() => {
           console.log(this.state.roomId);
           this.setState({ loading: false });
         })
@@ -68,6 +73,18 @@ export class messageView extends Component {
   render() {
     return (
       <div>
+      {this.state.loading && (
+        <div align="center">
+          <NavBar />
+          <br />
+          <CircularProgress size={100} />
+          <br />
+          <br />
+          <Typography variant="h4">Fetching messages...</Typography>
+        </div>
+      )}
+      {(!this.state.loading) && (
+        <div>
         <NavBar />
         <IconButton
           edge="start"
@@ -87,6 +104,8 @@ export class messageView extends Component {
           profileName={this.state.profileName}
           roomId={this.state.roomId}
         />
+      </div>
+      )}
       </div>
     );
   }
