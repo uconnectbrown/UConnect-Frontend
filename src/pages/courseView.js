@@ -510,12 +510,15 @@ class courseView extends Component {
                   }}
                   align="center"
                 >
-                  <CardContent>
-                    <ButtonBase
+                  {/* switched the order of buttonBase and cardContent since it worked in coursesView */}
+                  <ButtonBase
                       size="large"
                       color="primary"
                       onClick={() => this.handleClickOpen(index)}
+                      style={{width:"100%"}}
                     >
+                  <CardContent>
+                    
                       <div>
                         {/* <Typography>{index}</Typography> */}
                         <img
@@ -558,8 +561,9 @@ class courseView extends Component {
                           • {students[index].interests[2]}
                         </Typography>
                       </div>
-                    </ButtonBase>
+                    
                   </CardContent>
+                  </ButtonBase>
                 </Card>
               </GridListTile>
             ))}

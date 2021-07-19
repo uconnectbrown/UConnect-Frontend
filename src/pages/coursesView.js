@@ -23,6 +23,7 @@ export class coursesView extends Component {
     students2: [],
     students3: [],
     students4: [],
+    loading: true,
   };
 
   componentDidMount() {
@@ -96,6 +97,7 @@ export class coursesView extends Component {
           });
           currentIndex++;
         }
+        this.setState({loading: false})
       })
       .catch((err) => console.log(err));
   }
@@ -121,6 +123,7 @@ export class coursesView extends Component {
         indexArray.push(j);
       }
     }
+    let loading = this.state.loading;
     return (
       <div align="center">
         <NavBar />
@@ -133,9 +136,8 @@ export class coursesView extends Component {
                 raised
                 style={{
                   borderStyle: "solid",
-                  borderWidth: "3px",
+                  borderWidth: "4px",
                   borderColor: "red",
-                  height: 200,
                 }}
               >
                 <ButtonBase
@@ -145,6 +147,7 @@ export class coursesView extends Component {
                       this.state.courses[index].courseName
                     )
                   }
+                  style={{width: "100%", height: "100%"}}
                 >
                   <CardContent align="center">
                     <Typography variant="h4">
@@ -156,11 +159,16 @@ export class coursesView extends Component {
                     <hr />
                     <br />
                     {/* Proof of concept styling idea */}
-                    <AvatarGroup max={6}>
+                    {loading && (
+                      <Typography variant="body1" align="center" style={{marginBottom: "5px"}}>Fetching course data...</Typography>
+                    )}
+                    {!loading && (
+                      <AvatarGroup max={6}>
                       {avatarList[index].map((url) => (
-                        <Avatar src={url} />
+                        <Avatar src={url} style={{marginBottom: "5px"}}/>
                       ))}
-                    </AvatarGroup>
+                      </AvatarGroup>
+                    )}
                   </CardContent>
                 </ButtonBase>
               </Card>

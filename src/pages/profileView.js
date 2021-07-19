@@ -88,6 +88,7 @@ class profileView extends Component {
     interestsOpen: false,
     favoritesOpen: false,
     imageOpen: false,
+    loading: true,
   };
 
   componentDidMount() {
@@ -165,6 +166,7 @@ class profileView extends Component {
           localStorage.removeItem("studentName");
           localStorage.removeItem("studentImage");
           localStorage.removeItem("roomId");
+          this.setState({loading: false})
           // TO-DO: reconsider localStorage
           return axios.get("/update");
         })
@@ -382,6 +384,7 @@ class profileView extends Component {
   };
 
   render() {
+    let loading = this.state.loading;
     let courseCode0 = this.state.courses[0].courseCode;
     let courseCode1 = this.state.courses[1].courseCode;
     let courseCode2 = this.state.courses[2].courseCode;
@@ -401,6 +404,11 @@ class profileView extends Component {
       }
     }
     return (
+      <div>
+      {loading && (
+        <Typography variant="h4" align="center">Fetching user data...</Typography>
+      )}
+      {!loading && (
       <div>
         <NavBar />
         <Card raised>
@@ -668,7 +676,7 @@ class profileView extends Component {
                   />
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={this.handleSubmitBasic} color="secondary">
+                  <Button onClick={this.handleSubmitBasic} color="secondary" disabled={this.state.firstName === ""}>
                     Save Changes
                   </Button>
                 </DialogActions>
@@ -1225,6 +1233,8 @@ class profileView extends Component {
           </CardContent>
         </Card>
         <br />
+      </div>
+      )}
       </div>
     );
   }
