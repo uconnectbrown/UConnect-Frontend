@@ -10,13 +10,10 @@ function Messages(props) {
   dayjs.extend(relativeTime);
   const history = useHistory();
   const handleMessage = (roomId, name, image, id, code) => {
-    localStorage.setItem("roomId", roomId);
-    localStorage.setItem("studentName", name);
-    localStorage.setItem("studentImage", image);
-    localStorage.setItem("studentId", id);
-    localStorage.setItem("courseCode", code);
-
-    history.push("/messageView");
+    history.push({
+      pathname: "/messageView",
+      state: { studentInfo: [name, image, id, code] },
+    });
   };
   return (
     <div>

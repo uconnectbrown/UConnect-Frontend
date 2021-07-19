@@ -54,88 +54,87 @@ function a11yProps(index) {
 
 class messagesView extends Component {
   state = {
-    courses: [{}, {}, {}, {}, {}],
+    courseCodes: [],
     messages1: [],
     messages2: [],
     messages3: [],
     messages4: [],
     messages5: [],
+    ownName: "",
+    ownImage: "",
+    ownEmailId: "",
     tabIndex: 0,
   };
 
   componentDidMount() {
-    localStorage.removeItem("courseCode");
-    localStorage.removeItem("courseName");
-    localStorage.removeItem("codeSpace");
-    localStorage.removeItem("studentId");
-    localStorage.removeItem("studentName");
-    localStorage.removeItem("studentImage");
     const FBIdToken = localStorage.FBIdToken;
     axios.defaults.headers.common["Authorization"] = FBIdToken;
     let courseCodes = [];
     if (FBIdToken) {
-    axios.get("/user/courses").then((res) => {
-      courseCodes = (res.data.map((course) => course.courseCode.replace(/\s/g, "")));
-    })
-    .then(() => {
-    let promises = [];
-    let indexArray = [];
-    let currentIndex = 0;
-    for (let i = 0; i < 5; i++) {
-      if (courseCodes[i]) {
-        promises.push(axios.get(`/messages/${courseCodes[i]}`));
-        indexArray.push(i);
-      }
+      axios
+        .get("/senderInfo")
+        .then((res) => {
+          this.setState({
+            courseCodes: res.data.courses.map((course) =>
+              course.courseCode.replace(/\s/g, "")
+            ),
+            ownName: res.data.firstName + " " + res.data.lastName,
+            ownEmailId: res.data.emailId,
+            ownImage: res.data.imageUrl,
+          });
+        })
+        .then(() => {
+          let promises = [];
+          let indexArray = [];
+          let currentIndex = 0;
+          for (let i = 0; i < 5; i++) {
+            if (this.state.courseCodes[i]) {
+              promises.push(
+                axios.get(`/messages/${this.state.courseCodes[i]}`)
+              );
+              indexArray.push(i);
+            }
+          }
+
+          Promise.all(promises)
+            .then((results) => {
+              // console.log(results[0]);
+              if (indexArray.includes(0)) {
+                this.setState({
+                  messages1: results[currentIndex].data,
+                });
+                currentIndex++;
+              }
+              if (indexArray.includes(1)) {
+                this.setState({
+                  messages2: results[currentIndex].data,
+                });
+                currentIndex++;
+              }
+              if (indexArray.includes(2)) {
+                this.setState({
+                  messages3: results[currentIndex].data,
+                });
+                currentIndex++;
+              }
+              if (indexArray.includes(3)) {
+                this.setState({
+                  messages4: results[currentIndex].data,
+                });
+                currentIndex++;
+              }
+              if (indexArray.includes(4)) {
+                this.setState({
+                  messages5: results[currentIndex].data,
+                });
+                currentIndex++;
+              }
+              console.log(this.state.messages2);
+            })
+            .catch((err) => console.log(err));
+        });
     }
-
-    Promise.all(promises)
-      .then((results) => {
-        // console.log(results[0]);
-        if (indexArray.includes(0)) {
-          this.setState({
-            messages1: results[currentIndex].data,
-          });
-          currentIndex++;
-        }
-        if (indexArray.includes(1)) {
-          this.setState({
-            messages2: results[currentIndex].data,
-          });
-          currentIndex++;
-        }
-        if (indexArray.includes(2)) {
-          this.setState({
-            messages3: results[currentIndex].data,
-          });
-          currentIndex++;
-        }
-        if (indexArray.includes(3)) {
-          this.setState({
-            messages4: results[currentIndex].data,
-          });
-          currentIndex++;
-        }
-        if (indexArray.includes(4)) {
-          this.setState({
-            messages5: results[currentIndex].data,
-          });
-          currentIndex++;
-        }
-      })
-      .catch(err => console.log(err));
-    }
-  )
-}}
-
-
-  handleMessage = (roomId, name, image, id, code) => {
-    localStorage.setItem("roomId", roomId);
-    localStorage.setItem("studentName", name);
-    localStorage.setItem("studentImage", image);
-    localStorage.setItem("studentId", id);
-    localStorage.setItem("courseCode", code);
-    this.props.history.push("/messageView");
-  };
+  }
 
   handleChange = (event, value) => {
     this.setState({ tabIndex: value });
@@ -165,45 +164,45 @@ class messagesView extends Component {
             onChange={this.handleChange}
             aria-label="simple tabs example"
           >
-            {localStorage.course1 && (
-              <Tab label={localStorage.course1} {...a11yProps(0)} />
+            {this.state.courseCodes[0] && (
+              <Tab label={this.state.courseCodes[0]} {...a11yProps(0)} />
             )}
-            {localStorage.course2 && (
-              <Tab label={localStorage.course2} {...a11yProps(1)} />
+            {this.state.courseCodes[1] && (
+              <Tab label={this.state.courseCodes[1]} {...a11yProps(1)} />
             )}
-            {localStorage.course3 && (
-              <Tab label={localStorage.course3} {...a11yProps(2)} />
+            {this.state.courseCodes[2] && (
+              <Tab label={this.state.courseCodes[2]} {...a11yProps(2)} />
             )}
-            {localStorage.course4 && (
-              <Tab label={localStorage.course4} {...a11yProps(3)} />
+            {this.state.courseCodes[3] && (
+              <Tab label={this.state.courseCodes[3]} {...a11yProps(3)} />
             )}
-            {localStorage.course5 && (
-              <Tab label={localStorage.course5} {...a11yProps(4)} />
+            {this.state.courseCodes[4] && (
+              <Tab label={this.state.courseCodes[4]} {...a11yProps(4)} />
             )}
             <Tab label="All Messages" {...a11yProps(numMessages)} />
           </Tabs>
         </AppBar>
-        {localStorage.course1 && (
+        {this.state.courseCodes[0] && (
           <TabPanel value={this.state.tabIndex} index={0}>
             <Messages messages={messages[0]} />
           </TabPanel>
         )}
-        {localStorage.course2 && (
+        {this.state.courseCodes[1] && (
           <TabPanel value={this.state.tabIndex} index={1}>
             <Messages messages={messages[1]} />
           </TabPanel>
         )}
-        {localStorage.course3 && (
+        {this.state.courseCodes[2] && (
           <TabPanel value={this.state.tabIndex} index={2}>
             <Messages messages={messages[2]} />
           </TabPanel>
         )}
-        {localStorage.course4 && (
+        {this.state.courseCodes[3] && (
           <TabPanel value={this.state.tabIndex} index={3}>
             <Messages messages={messages[3]} />
           </TabPanel>
         )}
-        {localStorage.course5 && (
+        {this.state.courseCodes[4] && (
           <TabPanel value={this.state.tabIndex} index={4}>
             <Messages messages={messages[4]} />
           </TabPanel>

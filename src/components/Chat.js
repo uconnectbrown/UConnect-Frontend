@@ -17,7 +17,9 @@ function Chat(props) {
   useEffect(() => {
     const courseCode = props.courseCode;
     const roomId = props.roomId;
-    {console.log(roomId)}
+    {
+      console.log(roomId);
+    }
     db.collection("courses")
       .doc(courseCode)
       .collection("imessages")
@@ -36,9 +38,7 @@ function Chat(props) {
         <div>
           <div
             key={id}
-            className={`msg ${
-              emailId == localStorage.emailId ? "sent" : "received"
-            }`}
+            className={`msg ${emailId == emailId ? "sent" : "received"}`}
           >
             <img
               src={imageUrl}
