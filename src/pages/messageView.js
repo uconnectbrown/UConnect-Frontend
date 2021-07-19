@@ -36,16 +36,16 @@ export class messageView extends Component {
       })
       .catch((err) => console.error(err));
     this.setState({ loading: false });
-    this.setState({ roomId: "colby_zarle ethan_huang1" });
+    // this.setState({ roomId: "colby_zarle ethan_huang1" });
 
-    // if (this.state.emailId < this.state.studentId) {
-    //   this.setState({
-    //     roomId: `${this.state.emailId} ${this.state.studentId}`,
-    //   });
-    // } else
-    //   this.setState({
-    //     roomId: ` ${this.state.studentId} ${this.state.emailId}`,
-    //   });
+    if (this.state.emailId < this.state.studentId) {
+      this.setState({
+        roomId: `${this.state.emailId} ${this.state.studentId}`,
+      });
+    } else
+      this.setState({
+        roomId: ` ${this.state.studentId} ${this.state.emailId}`,
+      });
   }
 
   handleBack = () => {
