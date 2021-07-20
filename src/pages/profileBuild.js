@@ -75,7 +75,7 @@ class profileBuild extends Component {
 
     for (let i = 0; i < 5; i++) {
       if (Object.keys(newUserData.courses[i]).length === 0) {
-        newUserData.courses[i] = { courseCode: "", courseName: "" };
+        newUserData.courses[i] = { courseCode: "", courseName: "", courseColor: "" };
       }
     }
 
@@ -189,6 +189,7 @@ class profileBuild extends Component {
   render() {
     const { classes } = this.props;
     const { errors, loading } = this.state;
+    let palette = ["#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50", "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6"];
     return (
       <form noValidate onSubmit={this.handleSubmit}>
         <Grid container className={classes.form}>
@@ -299,7 +300,10 @@ class profileBuild extends Component {
 
             <span>
               {this.state.secondMajor && (
+                <div>
+                <br />
                 <TextField
+                  style={{marginTop: "-10px"}}
                   variant="outlined"
                   name="majorTwo"
                   size={"small"}
@@ -313,6 +317,7 @@ class profileBuild extends Component {
                     },
                   }}
                 />
+                </div>
               )}
               {this.state.secondMajor && !this.state.thirdMajor && (
                 <Tooltip title="Add Third Concentration" placement="top">
@@ -324,7 +329,10 @@ class profileBuild extends Component {
             </span>
 
             {this.state.thirdMajor && (
+              <div>
+              <br />
               <TextField
+                style={{marginTop: "-10px"}}
                 variant="outlined"
                 name="majorThree"
                 size={"small"}
@@ -338,6 +346,7 @@ class profileBuild extends Component {
                   },
                 }}
               />
+              </div>
             )}
 
             <br />
@@ -505,7 +514,10 @@ class profileBuild extends Component {
             </span>
 
             {this.state.secondVarsitySport && (
+              <div>
+              <br />
               <TextField
+                style={{marginTop: "-10px"}}
                 variant="outlined"
                 name="varsitySportTwo"
                 size={"small"}
@@ -519,6 +531,7 @@ class profileBuild extends Component {
                   },
                 }}
               />
+              </div>
             )}
             <br />
             <body1>
@@ -719,7 +732,25 @@ class profileBuild extends Component {
               fullWidth
               required
               size={"small"}
-            />{" "}
+            />
+            <TextField
+              id="courseColor"
+              name="courseColor"
+              select
+              label="Course Color"
+              className={classes.textField}
+              value={this.state.courseColor}
+              onChange={this.handleCourseOne}
+              variant="outlined"
+              size={"small"}
+              helperText="Please select a course color"
+            >
+              {palette.map((color) => (
+                <MenuItem key={color} value={color}>
+                  <Typography variant="h6" style={{backgroundColor: color}}>{color}</Typography>
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
           <Grid item sm>
             <h3>Course #2</h3>
@@ -751,6 +782,24 @@ class profileBuild extends Component {
               required
               size={"small"}
             />
+            <TextField
+              id="courseColor"
+              name="courseColor"
+              select
+              label="Course Color"
+              className={classes.textField}
+              value={this.state.courseColor}
+              onChange={this.handleCourseTwo}
+              variant="outlined"
+              size={"small"}
+              helperText="Please select a course color"
+            >
+              {palette.map((color) => (
+                <MenuItem key={color} value={color}>
+                  <Typography variant="h6" style={{backgroundColor: color}}>{color}</Typography>
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
           <Grid item sm>
             <h3>Course #3</h3>
@@ -780,6 +829,24 @@ class profileBuild extends Component {
               fullWidth
               size={"small"}
             />
+            <TextField
+              id="courseColor"
+              name="courseColor"
+              select
+              label="Course Color"
+              className={classes.textField}
+              value={this.state.courseColor}
+              onChange={this.handleCourseThree}
+              variant="outlined"
+              size={"small"}
+              helperText="Please select a course color"
+            >
+              {palette.map((color) => (
+                <MenuItem key={color} value={color}>
+                  <Typography variant="h6" style={{backgroundColor: color}}>{color}</Typography>
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
           <Grid item sm>
             <h3>Course #4</h3>
@@ -809,6 +876,24 @@ class profileBuild extends Component {
               fullWidth
               size={"small"}
             />
+            <TextField
+              id="courseColor"
+              name="courseColor"
+              select
+              label="Course Color"
+              className={classes.textField}
+              value={this.state.courseColor}
+              onChange={this.handleCourseFour}
+              variant="outlined"
+              size={"small"}
+              helperText="Please select a course color"
+            >
+              {palette.map((color) => (
+                <MenuItem key={color} value={color}>
+                  <Typography variant="h6" style={{backgroundColor: color}}>{color}</Typography>
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
 
           {!this.state.fifthCourse && (
@@ -848,6 +933,24 @@ class profileBuild extends Component {
                 fullWidth
                 size={"small"}
               />
+              <TextField
+              id="courseColor"
+              name="courseColor"
+              select
+              label="Course Color"
+              className={classes.textField}
+              value={this.state.courseColor}
+              onChange={this.handleCourseFive}
+              variant="outlined"
+              size={"small"}
+              helperText="Please select a course color"
+            >
+              {palette.map((color) => (
+                <MenuItem key={color} value={color}>
+                  <Typography variant="h6" style={{backgroundColor: color}}>{color}</Typography>
+                </MenuItem>
+              ))}
+            </TextField>
             </Grid>
           )}
         </Grid>

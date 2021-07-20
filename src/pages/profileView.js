@@ -1144,8 +1144,9 @@ class profileView extends Component {
                   <Card
                     style={{
                       borderStyle: "solid",
-                      borderWidth: "1px",
-                      borderColor: "red",
+                      borderWidth: "3px",
+                      // borderColor: `${this.state.courses[index].courseColor}`,
+                      borderColor: `${this.state.courses[index].undefined}`,
                       height: 125,
                     }}
                   >

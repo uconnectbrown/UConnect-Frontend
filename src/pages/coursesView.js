@@ -107,10 +107,10 @@ export class coursesView extends Component {
     }
   }
 
-  handleClick = (code, name) => {
+  handleClick = (code, name, color) => {
     this.props.history.push({
       pathname: "/courseView",
-      state: { courseInfo: [code, name] },
+      state: { courseInfo: [code, name, color] },
     });
   };
 
@@ -142,14 +142,17 @@ export class coursesView extends Component {
                 style={{
                   borderStyle: "solid",
                   borderWidth: "4px",
-                  borderColor: "red",
+                  // borderColor: `${this.state.courses[index].courseColor}`,
+                  borderColor: `${this.state.courses[index].undefined}`,
                 }}
               >
                 <ButtonBase
                   onClick={() =>
                     this.handleClick(
                       this.state.courses[index].courseCode,
-                      this.state.courses[index].courseName
+                      this.state.courses[index].courseName,
+                      // this.state.courses[index].courseName,
+                      this.state.courses[index].undefined,
                     )
                   }
                   style={{width: "100%", height: "100%"}}

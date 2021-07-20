@@ -93,6 +93,7 @@ class courseView extends Component {
   render() {
     const code = this.state.courseInfo[0];
     const name = this.state.courseInfo[1];
+    const color = this.state.courseInfo[2];
     const numStudents = this.state.students.length;
     let indexArray = [];
     for (let i = 0; i < numStudents; i++) {
@@ -517,8 +518,8 @@ class courseView extends Component {
                   raised
                   style={{
                     borderStyle: "solid",
-                    borderWidth: "3px",
-                    borderColor: "red",
+                    borderWidth: "4px",
+                    borderColor: `${color}`,
                     borderRadius: "5%",
                     height: "97%",
                   }}
@@ -544,7 +545,7 @@ class courseView extends Component {
                             objectFit: "cover",
                             borderRadius: "10%",
                             borderStyle: "solid",
-                            borderColor: "red",
+                            borderColor: `${color}`,
                             borderWidth: "2px",
                           }}
                         />
