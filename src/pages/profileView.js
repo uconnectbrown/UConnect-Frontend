@@ -1147,11 +1147,11 @@ class profileView extends Component {
                       borderWidth: "3px",
                       // borderColor: `${this.state.courses[index].courseColor}`,
                       borderColor: `${this.state.courses[index].undefined}`,
-                      height: 125,
+                      height: "100%",
                     }}
                   >
                     <CardContent>
-                      <Typography variant="h5">
+                      <Typography variant="h5" style={{color: `${this.state.courses[index].undefined}`}}>
                         {this.state.courses[index].courseCode}
                       </Typography>
                       <Typography variant="body1">
@@ -1173,14 +1173,15 @@ class profileView extends Component {
               <Grid item sm>
                 {numCourses < 5 && (
                   <div>
-                    <Button
+                    <Tooltip title="Add course" placement="right">
+                    <IconButton
                       variant="contained"
                       color="secondary"
-                      startIcon={<AddIcon />}
                       onClick={this.handleAddOpen}
                     >
-                      Add Course
-                    </Button>
+                      Add <span style={{marginRight: "5px"}}/> <AddIcon />
+                    </IconButton>
+                    </Tooltip>
                     <Dialog
                       overlayStyle={{ backgroundColor: "transparent" }}
                       open={this.state.addOpen}
@@ -1233,14 +1234,16 @@ class profileView extends Component {
                 {numCourses > 0 && (
                   <div>
                     {!this.state.delete && (
-                      <Button
+                      <Tooltip title="Remove course" placement="right">
+                      <IconButton
                         variant="contained"
                         color="primary"
-                        startIcon={<DeleteIcon />}
                         onClick={this.toggleDelete}
+                        style={{marginTop: "-25px"}}
                       >
-                        Remove Course
-                      </Button>
+                        Remove <span style={{marginRight: "5px"}}/> <DeleteIcon />
+                      </IconButton>
+                      </Tooltip>
                     )}
                     {this.state.delete && (
                       <Button

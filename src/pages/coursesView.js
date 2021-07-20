@@ -158,7 +158,7 @@ export class coursesView extends Component {
                   style={{width: "100%", height: "100%"}}
                 >
                   <CardContent align="center">
-                    <Typography variant="h4">
+                    <Typography variant="h4" style={{color: `${this.state.courses[index].undefined}`}}>
                       {this.state.courses[index].courseCode}
                     </Typography>
                     <Typography variant="h5">

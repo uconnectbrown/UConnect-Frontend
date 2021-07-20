@@ -99,6 +99,7 @@ class courseView extends Component {
     for (let i = 0; i < numStudents; i++) {
       indexArray.push(i);
     }
+    let newIndexArray = [];
     let students = this.state.students;
     if (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") {
       students.sort((a, b) =>
@@ -121,7 +122,7 @@ class courseView extends Component {
     return (
       <div>
         <NavBar />
-        <Typography variant="h3" align="center">
+        <Typography variant="h3" align="center" style={{color: `${color}`}}>
           {code}: {name}
         </Typography>
         <Button
@@ -490,7 +491,7 @@ class courseView extends Component {
         )}
         {!this.state.loading && (
         <GridList cols={3} spacing={20} cellHeight="auto">
-          {indexArray
+          {newIndexArray = indexArray
             .filter((index) => {
               if (this.state.searchCriteria === "") {
                 return index;
@@ -511,8 +512,9 @@ class courseView extends Component {
               ) {
                 return index;
               }
-            })
-            .map((index) => (
+            })}
+
+            {newIndexArray.map((index) => (
               <GridListTile item component="Card" sm>
                 <Card
                   raised
@@ -546,7 +548,7 @@ class courseView extends Component {
                             borderRadius: "10%",
                             borderStyle: "solid",
                             borderColor: `${color}`,
-                            borderWidth: "2px",
+                            borderWidth: "3px",
                           }}
                         />
 
