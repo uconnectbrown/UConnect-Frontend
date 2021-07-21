@@ -385,13 +385,13 @@ class studentView extends Component {
                   <Card
                     style={{
                       borderStyle: "solid",
-                      borderWidth: "1px",
-                      borderColor: "red",
-                      height: 125,
+                      borderWidth: "3px",
+                      borderColor: `${this.state.courses[index].undefined}`,
+                      height: "100%",
                     }}
                   >
                     <CardContent>
-                      <Typography variant="h5">
+                      <Typography variant="h5" style={{color: `${this.state.courses[index].undefined}`}}>
                         {this.state.courses[index].courseCode}
                       </Typography>
                       <Typography variant="body1">

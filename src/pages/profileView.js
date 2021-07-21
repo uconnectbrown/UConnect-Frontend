@@ -28,7 +28,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import Dots from "@material-ui/icons/MoreHoriz";
 
 import Book from "@material-ui/icons/MenuBook";
 import Movie from "@material-ui/icons/Movie";
@@ -49,7 +49,9 @@ class profileView extends Component {
     affinitySportTwo: "",
     affinitySportThree: "",
     bio: "",
+    bio_: "",
     class: "",
+    class_: "",
     courses: [{}, {}, {}, {}, {}],
     createdAt: "",
     delete: false,
@@ -61,6 +63,8 @@ class profileView extends Component {
     favoriteArtist: "",
     firstName: "",
     greekLife: "",
+    firstName_: "",
+    greekLife_: "",
     groups: [],
     groupOne: "",
     groupTwo: "",
@@ -73,24 +77,32 @@ class profileView extends Component {
     interestFour: "",
     interestFive: "",
     lastName: "",
+    lastName_: "",
     majors: [],
     majorOne: "",
     majorTwo: "",
     majorThree: "",
+    major1: "",
+    major2: "",
+    major3: "",
     addOpen: false,
     removeOpen: false,
     deleteCourse: false,
     preferredPronouns: "",
+    preferredPronouns_: "",
     userId: "",
     varsitySports: [],
     varsitySportOne: "",
     varsitySportTwo: "",
+    varsitySport1: "",
+    varsitySport2: "",
     groupOpen: false,
     basicOpen: false,
     interestsOpen: false,
     favoritesOpen: false,
     imageOpen: false,
     loading: true,
+    colorOpen: false,
   };
 
   componentDidMount() {
@@ -108,7 +120,9 @@ class profileView extends Component {
             affinitySport2: res.data.user.affinitySports[1],
             affinitySport3: res.data.user.affinitySports[2],
             bio: res.data.user.bio,
+            bio_: res.data.user.bio,
             class: res.data.user.class,
+            class_: res.data.user.class,
             courses: res.data.user.courses,
             createdAt: res.data.user.createdAt,
             email: res.data.user.email,
@@ -122,6 +136,8 @@ class profileView extends Component {
             favArtist: res.data.user.favorites.artist,
             firstName: res.data.user.firstName,
             greekLife: res.data.user.greekLife,
+            firstName_: res.data.user.firstName,
+            greekLife_: res.data.user.greekLife,
             groupOne: res.data.user.groups[0],
             groupTwo: res.data.user.groups[1],
             groupThree: res.data.user.groups[2],
@@ -144,9 +160,16 @@ class profileView extends Component {
             majorTwo: res.data.user.majors[1],
             majorThree: res.data.user.majors[2],
             preferredPronouns: res.data.user.preferredPronouns,
+            lastName_: res.data.user.lastName,
+            major1: res.data.user.majors[0],
+            major2: res.data.user.majors[1],
+            major3: res.data.user.majors[2],
+            preferredPronouns_: res.data.user.preferredPronouns,
             userId: res.data.user.userId,
             varsitySportOne: res.data.user.varsitySports[0],
             varsitySportTwo: res.data.user.varsitySports[1],
+            varsitySport1: res.data.user.varsitySports[0],
+            varsitySport2: res.data.user.varsitySports[1],
           });
 
           // TO-DO: reconsider passing in photoURL and course data through local storage
@@ -197,8 +220,10 @@ class profileView extends Component {
   handleImageChange = (event) => {
     event.preventDefault();
     const image = event.target.files[0];
+    console.log(image)
     const formData = new FormData();
     formData.append("image", image, image.name);
+    console.log(formData)
     axios
       .post("/image", formData)
       .then((data) => {
@@ -218,6 +243,22 @@ class profileView extends Component {
   handleImageClose = () => {
     this.setState({ imageOpen: false });
   };
+  // handleCropImage = (croppedImage) => {
+  //   const image = croppedImage;
+  //   const formData = new FormData();
+  //   formData.append("image", image, image.name);
+  //   axios
+  //     .post("/image", formData)
+  //     .then((data) => {
+  //       this.setState({ imageUrl: data.data.imageUrl });
+
+  //       // new test code
+  //       this.setState({ imageOpen: true });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
   handleAddOpen = () => {
     this.setState({ addOpen: true });
@@ -234,6 +275,9 @@ class profileView extends Component {
   handleFavoritesOpen = () => {
     this.setState({ favoritesOpen: true });
   };
+  handleColorOpen = () => {
+    this.setState({ colorOpen: true });
+  };
 
   handleRemoveOpen = (deleteIndex) => {
     this.setState({ removeOpen: true });
@@ -241,7 +285,7 @@ class profileView extends Component {
     let deleteCourse;
     for (let i = 0; i < 5; i++) {
       if (i === deleteIndex) {
-        courseList.push({ courseCode: "", courseName: "" });
+        courseList.push({ courseCode: "", courseName: "", courseColor: "" });
         deleteCourse = this.state.courses[i].courseCode.replace(/\s/g, "");
       } else courseList.push(this.state.courses[i]);
     }
@@ -286,8 +330,25 @@ class profileView extends Component {
       favoriteArtist: this.state.favArtist });
   };
   handleBasicClose = () => {
-    this.setState({ basicOpen: false });
+    this.setState({ basicOpen: false,
+    firstName: this.state.firstName_,
+    lastName: this.state.lastName_,
+    preferredPronouns: this.state.preferredPronouns_,
+    class: this.state.class_,
+    majorOne: this.state.major1,
+    majorTwo: this.state.major2,
+    majorThree: this.state.major3,
+    varsitySportOne: this.state.varsitySport1,
+    varsitySportTwo: this.state.varsitySport2,
+    greekLife: this.state.greekLife_,
+    bio: this.state.bio_ });
   };
+
+  handleColorClose = () => {
+    this.setState({
+      colorOpen: false,
+    })
+  }
 
   handleSubmitCourses = () => {
     let firstIndex;
@@ -406,6 +467,19 @@ class profileView extends Component {
     this.setState({ favoritesOpen: false });
   };
   handleSubmitBasic = () => {
+    this.setState({
+      firstName_: this.state.firstName,
+      lastName_: this.state.lastName,
+      preferredPronouns_: this.state.preferredPronouns,
+      class_: this.state.class,
+      major1: this.state.majorOne,
+      major2: this.state.majorTwo,
+      major3: this.state.majorThree,
+      varsitySport1: this.state.varsitySportOne,
+      varsitySport2: this.state.varsitySportTwo,
+      greekLife_: this.state.greekLife,
+      bio_: this.state.bio,
+    })
     let newBasicInfo = {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -434,12 +508,27 @@ class profileView extends Component {
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
+  // handleColorChange = (event, index) => {
+  //   this.setState({ [this.state.courses[index].undefined]: event.target.value })
+  // }
 
   toggleDelete = () => {
     this.setState({ delete: !this.state.delete });
   };
 
   render() {
+    let palette = [
+      "#16a085",
+      "#27ae60",
+      "#2980b9",
+      "#8e44ad",
+      "#2c3e50",
+      "#f1c40f",
+      "#e67e22",
+      "#e74c3c",
+      "#ecf0f1",
+      "#95a5a6",
+    ];
     let loading = this.state.loading;
     let courseCode0 = this.state.courses[0].courseCode;
     let courseCode1 = this.state.courses[1].courseCode;
@@ -478,7 +567,7 @@ class profileView extends Component {
           <CardContent align="center">
             <Grid container spacing={1}>
               <Grid item sm>
-              <img
+              {/* <img
               alt="Profile"
               src={this.state.imageUrl}
               style={{
@@ -498,16 +587,16 @@ class profileView extends Component {
               onChange={this.handleImageChange}
             />
             <br />
-            <Tooltip title="Edit profile picture" placement="top">
+            <Tooltip title="Edit profile picture" placement="right">
               <IconButton onClick={this.handleEditPicture} className="button">
-                <PhotoIcon color="primary" />
+                <PhotoIcon color="secondary" />
               </IconButton>
             </Tooltip>
             {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
               <div>
                 <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
               </div>
-            )}
+            )} */}
               </Grid>
               <Grid item sm>
               <img
@@ -530,9 +619,9 @@ class profileView extends Component {
               onChange={this.handleImageChange}
             />
             <br />
-            <Tooltip title="Edit profile picture" placement="top">
+            <Tooltip title="Edit profile picture" placement="right">
               <IconButton onClick={this.handleEditPicture} className="button">
-                <PhotoIcon color="primary" />
+                <PhotoIcon color="secondary" />
               </IconButton>
             </Tooltip>
             {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
@@ -542,7 +631,7 @@ class profileView extends Component {
             )}
               </Grid>
               <Grid item sm>
-              <img
+              {/* <img
               alt="Profile"
               src={this.state.imageUrl}
               style={{
@@ -562,16 +651,16 @@ class profileView extends Component {
               onChange={this.handleImageChange}
             />
             <br />
-            <Tooltip title="Edit profile picture" placement="top">
+            <Tooltip title="Edit profile picture" placement="right">
               <IconButton onClick={this.handleEditPicture} className="button">
-                <PhotoIcon color="primary" />
+                <PhotoIcon color="secondary" />
               </IconButton>
             </Tooltip>
             {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
               <div>
                 <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
               </div>
-            )}
+            )} */}
               </Grid>
             </Grid>
             
@@ -593,7 +682,7 @@ class profileView extends Component {
                     </DialogContent>
                     <DialogActions>
                       <Button
-                        // onClick={this.handleSubmitImage}
+                        // onClick={this.handleCropImage}
                         color="secondary"
                       >
                         Save Crop
@@ -603,9 +692,9 @@ class profileView extends Component {
             <br />
             <Typography variant="h3" align="center">
               {this.state.firstName} {this.state.lastName}{" "}
-              <Tooltip title="Edit basic info" placement="top">
+              <Tooltip title="Edit basic info" placement="right">
                 <IconButton onClick={this.handleBasicOpen} className="button">
-                  <EditIcon color="primary" />
+                  <EditIcon color="secondary" />
                 </IconButton>
               </Tooltip>
               <Dialog
@@ -880,12 +969,12 @@ class profileView extends Component {
               <CardContent align="center">
                 <Typography variant="h3">
                   Groups{" "}
-                  <Tooltip title="Edit groups" placement="top">
+                  <Tooltip title="Edit groups" placement="right">
                     <IconButton
                       onClick={this.handleGroupsOpen}
                       className="button"
                     >
-                      <EditIcon color="primary" />
+                      <EditIcon color="secondary" />
                     </IconButton>
                   </Tooltip>
                   <Dialog
@@ -966,12 +1055,12 @@ class profileView extends Component {
               <CardContent align="center">
                 <Typography variant="h3">
                   Interests{" "}
-                  <Tooltip title="Edit interests" placement="top">
+                  <Tooltip title="Edit interests" placement="right">
                     <IconButton
                       onClick={this.handleInterestsOpen}
                       className="button"
                     >
-                      <EditIcon color="primary" />
+                      <EditIcon color="secondary" />
                     </IconButton>
                   </Tooltip>
                   <Dialog
@@ -1171,12 +1260,12 @@ class profileView extends Component {
               <CardContent align="center">
                 <Typography variant="h3">
                   Favorites{" "}
-                  <Tooltip title="Edit favorites" placement="top">
+                  <Tooltip title="Edit favorites" placement="right">
                     <IconButton
                       onClick={this.handleFavoritesOpen}
                       className="button"
                     >
-                      <EditIcon color="primary" />
+                      <EditIcon color="secondary" />
                     </IconButton>
                   </Tooltip>
                   <Dialog
@@ -1306,9 +1395,63 @@ class profileView extends Component {
                       <Typography variant="h5" style={{color: `${this.state.courses[index].undefined}`}}>
                         {this.state.courses[index].courseCode}
                       </Typography>
-                      <Typography variant="body1" style={{marginBottom: "-20px"}}>
+                      <Typography variant="body1" >
                         {this.state.courses[index].courseName}
                       </Typography>
+                      <Tooltip title="Change color" placement="right">
+                        <IconButton 
+                          onClick={this.handleColorOpen} 
+                          style={{marginBottom: "-20px"}}>
+                          <Dots color="secondary" />
+                        </IconButton>
+                      </Tooltip>
+                      <Dialog
+                        overlayStyle={{ backgroundColor: "transparent" }}
+                        open={this.state.colorOpen}
+                      >
+                        <DialogTitle
+                          style={{ cursor: "move" }}
+                          id="draggable-dialog-title"
+                        >
+                          Edit Course Color
+                        </DialogTitle>
+                        <DialogContent>
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="courseColor"
+                            name="courseColor"
+                            autoComplete="off"
+                            select
+                            label="Course Color"
+                            defaultValue={this.state.courses[index].undefined}
+                            // onChange={this.handleColorChange(index)}
+                            helperText="Please select a course color"
+                          >
+                            {palette.map((color) => (
+                              <MenuItem key={color} value={color}>
+                                <Typography
+                                  variant="h6"
+                                  style={{ backgroundColor: color, color: color }}
+                                >
+                                  Color
+                                </Typography>
+                              </MenuItem>
+                            ))}
+                          </TextField>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={this.handleColorClose} color="secondary">
+                            Cancel
+                          </Button>
+                          <Button
+                            // onClick={() => this.handleColorSave(index)}
+                            color="secondary"
+                          >
+                            Save Changes
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                       {this.state.delete && (
                         <IconButton
                           size="large"
