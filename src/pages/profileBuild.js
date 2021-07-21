@@ -29,6 +29,7 @@ const styles = (theme) => ({
 // Validators
 const { validProfile } = require("../util/validators");
 
+// Body
 class profileBuild extends Component {
   constructor() {
     super();
@@ -75,7 +76,11 @@ class profileBuild extends Component {
 
     for (let i = 0; i < 5; i++) {
       if (Object.keys(newUserData.courses[i]).length === 0) {
-        newUserData.courses[i] = { courseCode: "", courseName: "", courseColor: "" };
+        newUserData.courses[i] = {
+          courseCode: "",
+          courseName: "",
+          courseColor: "",
+        };
       }
     }
 
@@ -189,7 +194,18 @@ class profileBuild extends Component {
   render() {
     const { classes } = this.props;
     const { errors, loading } = this.state;
-    let palette = ["#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50", "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6"];
+    let palette = [
+      "#16a085",
+      "#27ae60",
+      "#2980b9",
+      "#8e44ad",
+      "#2c3e50",
+      "#f1c40f",
+      "#e67e22",
+      "#e74c3c",
+      "#ecf0f1",
+      "#95a5a6",
+    ];
     return (
       <form noValidate onSubmit={this.handleSubmit}>
         <Grid container className={classes.form}>
@@ -291,7 +307,11 @@ class profileBuild extends Component {
                 }}
               />
               {!this.state.secondMajor && (
-                <Tooltip title="Add Second Concentration" placement="top" style={{marginTop: "5px"}}>
+                <Tooltip
+                  title="Add Second Concentration"
+                  placement="top"
+                  style={{ marginTop: "5px" }}
+                >
                   <IconButton onClick={this.handleSecondMajor}>
                     <AddIcon color="secondary" />
                   </IconButton>
@@ -302,23 +322,23 @@ class profileBuild extends Component {
             <span>
               {this.state.secondMajor && (
                 <div>
-                <br />
-                <TextField
-                  style={{marginTop: "-10px"}}
-                  variant="outlined"
-                  name="majorTwo"
-                  autoComplete="off"
-                  size={"small"}
-                  label="Second Concentration"
-                  className={classes.textField}
-                  onChange={this.handleChange}
-                  InputProps={{
-                    endAdornment: majorList,
-                    inputProps: {
-                      list: "majors",
-                    },
-                  }}
-                />
+                  <br />
+                  <TextField
+                    style={{ marginTop: "-10px" }}
+                    variant="outlined"
+                    name="majorTwo"
+                    autoComplete="off"
+                    size={"small"}
+                    label="Second Concentration"
+                    className={classes.textField}
+                    onChange={this.handleChange}
+                    InputProps={{
+                      endAdornment: majorList,
+                      inputProps: {
+                        list: "majors",
+                      },
+                    }}
+                  />
                 </div>
               )}
               {this.state.secondMajor && !this.state.thirdMajor && (
@@ -332,23 +352,23 @@ class profileBuild extends Component {
 
             {this.state.thirdMajor && (
               <div>
-              <br />
-              <TextField
-                style={{marginTop: "-10px", marginBottom: "-10px"}}
-                variant="outlined"
-                name="majorThree"
-                autoComplete="off"
-                size={"small"}
-                label="Third Concentration"
-                className={classes.textField}
-                onChange={this.handleChange}
-                InputProps={{
-                  endAdornment: majorList,
-                  inputProps: {
-                    list: "majors",
-                  },
-                }}
-              />
+                <br />
+                <TextField
+                  style={{ marginTop: "-10px", marginBottom: "-10px" }}
+                  variant="outlined"
+                  name="majorThree"
+                  autoComplete="off"
+                  size={"small"}
+                  label="Third Concentration"
+                  className={classes.textField}
+                  onChange={this.handleChange}
+                  InputProps={{
+                    endAdornment: majorList,
+                    inputProps: {
+                      list: "majors",
+                    },
+                  }}
+                />
               </div>
             )}
 
@@ -509,7 +529,11 @@ class profileBuild extends Component {
               />
 
               {!this.state.secondVarsitySport && (
-                <Tooltip title="Add Second Varsity Sport" placement="top" style={{marginTop: "5px"}}>
+                <Tooltip
+                  title="Add Second Varsity Sport"
+                  placement="top"
+                  style={{ marginTop: "5px" }}
+                >
                   <IconButton onClick={this.handleVarsity}>
                     <AddIcon color="secondary" />
                   </IconButton>
@@ -519,23 +543,23 @@ class profileBuild extends Component {
 
             {this.state.secondVarsitySport && (
               <div>
-              <br />
-              <TextField
-                style={{marginTop: "-10px"}}
-                variant="outlined"
-                name="varsitySportTwo"
-                autoComplete="off"
-                size={"small"}
-                label="Second Varsity Sport"
-                className={classes.textField}
-                onChange={this.handleChange}
-                InputProps={{
-                  endAdornment: varsitySports,
-                  inputProps: {
-                    list: "varsitySports",
-                  },
-                }}
-              />
+                <br />
+                <TextField
+                  style={{ marginTop: "-10px" }}
+                  variant="outlined"
+                  name="varsitySportTwo"
+                  autoComplete="off"
+                  size={"small"}
+                  label="Second Varsity Sport"
+                  className={classes.textField}
+                  onChange={this.handleChange}
+                  InputProps={{
+                    endAdornment: varsitySports,
+                    inputProps: {
+                      list: "varsitySports",
+                    },
+                  }}
+                />
               </div>
             )}
             <br />
@@ -754,7 +778,12 @@ class profileBuild extends Component {
             >
               {palette.map((color) => (
                 <MenuItem key={color} value={color}>
-                  <Typography variant="h6" style={{backgroundColor: color, color: color}}>Color</Typography>
+                  <Typography
+                    variant="h6"
+                    style={{ backgroundColor: color, color: color }}
+                  >
+                    Color
+                  </Typography>
                 </MenuItem>
               ))}
             </TextField>
@@ -804,7 +833,12 @@ class profileBuild extends Component {
             >
               {palette.map((color) => (
                 <MenuItem key={color} value={color}>
-                  <Typography variant="h6" style={{backgroundColor: color, color: color}}>Color</Typography>
+                  <Typography
+                    variant="h6"
+                    style={{ backgroundColor: color, color: color }}
+                  >
+                    Color
+                  </Typography>
                 </MenuItem>
               ))}
             </TextField>
@@ -852,7 +886,12 @@ class profileBuild extends Component {
             >
               {palette.map((color) => (
                 <MenuItem key={color} value={color}>
-                  <Typography variant="h6" style={{backgroundColor: color, color: color}}>Color</Typography>
+                  <Typography
+                    variant="h6"
+                    style={{ backgroundColor: color, color: color }}
+                  >
+                    Color
+                  </Typography>
                 </MenuItem>
               ))}
             </TextField>
@@ -900,7 +939,12 @@ class profileBuild extends Component {
             >
               {palette.map((color) => (
                 <MenuItem key={color} value={color}>
-                  <Typography variant="h6" style={{backgroundColor: color, color: color}}>Color</Typography>
+                  <Typography
+                    variant="h6"
+                    style={{ backgroundColor: color, color: color }}
+                  >
+                    Color
+                  </Typography>
                 </MenuItem>
               ))}
             </TextField>
@@ -944,24 +988,29 @@ class profileBuild extends Component {
                 size={"small"}
               />
               <TextField
-              id="courseColor"
-              name="courseColor"
-              autoComplete="off"
-              select
-              label="Course Color"
-              className={classes.textField}
-              value={this.state.courseColor}
-              onChange={this.handleCourseFive}
-              variant="outlined"
-              size={"small"}
-              helperText="Please select a course color"
-            >
-              {palette.map((color) => (
-                <MenuItem key={color} value={color}>
-                  <Typography variant="h6" style={{backgroundColor: color, color: color}}>Color</Typography>
-                </MenuItem>
-              ))}
-            </TextField>
+                id="courseColor"
+                name="courseColor"
+                autoComplete="off"
+                select
+                label="Course Color"
+                className={classes.textField}
+                value={this.state.courseColor}
+                onChange={this.handleCourseFive}
+                variant="outlined"
+                size={"small"}
+                helperText="Please select a course color"
+              >
+                {palette.map((color) => (
+                  <MenuItem key={color} value={color}>
+                    <Typography
+                      variant="h6"
+                      style={{ backgroundColor: color, color: color }}
+                    >
+                      Color
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
           )}
         </Grid>
