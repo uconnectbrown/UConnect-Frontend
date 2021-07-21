@@ -277,6 +277,7 @@ class profileBuild extends Component {
               <TextField
                 variant="outlined"
                 name="majorOne"
+                autoComplete="off"
                 size={"small"}
                 label="Concentration"
                 className={classes.textField}
@@ -290,7 +291,7 @@ class profileBuild extends Component {
                 }}
               />
               {!this.state.secondMajor && (
-                <Tooltip title="Add Second Concentration" placement="top">
+                <Tooltip title="Add Second Concentration" placement="top" style={{marginTop: "5px"}}>
                   <IconButton onClick={this.handleSecondMajor}>
                     <AddIcon color="secondary" />
                   </IconButton>
@@ -306,6 +307,7 @@ class profileBuild extends Component {
                   style={{marginTop: "-10px"}}
                   variant="outlined"
                   name="majorTwo"
+                  autoComplete="off"
                   size={"small"}
                   label="Second Concentration"
                   className={classes.textField}
@@ -332,9 +334,10 @@ class profileBuild extends Component {
               <div>
               <br />
               <TextField
-                style={{marginTop: "-10px"}}
+                style={{marginTop: "-10px", marginBottom: "-10px"}}
                 variant="outlined"
                 name="majorThree"
+                autoComplete="off"
                 size={"small"}
                 label="Third Concentration"
                 className={classes.textField}
@@ -492,6 +495,7 @@ class profileBuild extends Component {
               <TextField
                 variant="outlined"
                 name="varsitySportOne"
+                autoComplete="off"
                 size={"small"}
                 label="First Varsity Sport"
                 className={classes.textField}
@@ -505,7 +509,7 @@ class profileBuild extends Component {
               />
 
               {!this.state.secondVarsitySport && (
-                <Tooltip title="Add Second Varsity Sport" placement="top">
+                <Tooltip title="Add Second Varsity Sport" placement="top" style={{marginTop: "5px"}}>
                   <IconButton onClick={this.handleVarsity}>
                     <AddIcon color="secondary" />
                   </IconButton>
@@ -520,6 +524,7 @@ class profileBuild extends Component {
                 style={{marginTop: "-10px"}}
                 variant="outlined"
                 name="varsitySportTwo"
+                autoComplete="off"
                 size={"small"}
                 label="Second Varsity Sport"
                 className={classes.textField}
@@ -580,6 +585,7 @@ class profileBuild extends Component {
             <TextField
               variant="outlined"
               name="greekLife"
+              autoComplete="off"
               size={"small"}
               label="Greek Organization"
               className={classes.textField}
@@ -736,6 +742,7 @@ class profileBuild extends Component {
             <TextField
               id="courseColor"
               name="courseColor"
+              autoComplete="off"
               select
               label="Course Color"
               className={classes.textField}
@@ -747,7 +754,7 @@ class profileBuild extends Component {
             >
               {palette.map((color) => (
                 <MenuItem key={color} value={color}>
-                  <Typography variant="h6" style={{backgroundColor: color}}>{color}</Typography>
+                  <Typography variant="h6" style={{backgroundColor: color, color: color}}>Color</Typography>
                 </MenuItem>
               ))}
             </TextField>
@@ -785,6 +792,7 @@ class profileBuild extends Component {
             <TextField
               id="courseColor"
               name="courseColor"
+              autoComplete="off"
               select
               label="Course Color"
               className={classes.textField}
@@ -796,7 +804,7 @@ class profileBuild extends Component {
             >
               {palette.map((color) => (
                 <MenuItem key={color} value={color}>
-                  <Typography variant="h6" style={{backgroundColor: color}}>{color}</Typography>
+                  <Typography variant="h6" style={{backgroundColor: color, color: color}}>Color</Typography>
                 </MenuItem>
               ))}
             </TextField>
@@ -832,6 +840,7 @@ class profileBuild extends Component {
             <TextField
               id="courseColor"
               name="courseColor"
+              autoComplete="off"
               select
               label="Course Color"
               className={classes.textField}
@@ -843,7 +852,7 @@ class profileBuild extends Component {
             >
               {palette.map((color) => (
                 <MenuItem key={color} value={color}>
-                  <Typography variant="h6" style={{backgroundColor: color}}>{color}</Typography>
+                  <Typography variant="h6" style={{backgroundColor: color, color: color}}>Color</Typography>
                 </MenuItem>
               ))}
             </TextField>
@@ -879,6 +888,7 @@ class profileBuild extends Component {
             <TextField
               id="courseColor"
               name="courseColor"
+              autoComplete="off"
               select
               label="Course Color"
               className={classes.textField}
@@ -890,7 +900,7 @@ class profileBuild extends Component {
             >
               {palette.map((color) => (
                 <MenuItem key={color} value={color}>
-                  <Typography variant="h6" style={{backgroundColor: color}}>{color}</Typography>
+                  <Typography variant="h6" style={{backgroundColor: color, color: color}}>Color</Typography>
                 </MenuItem>
               ))}
             </TextField>
@@ -936,6 +946,7 @@ class profileBuild extends Component {
               <TextField
               id="courseColor"
               name="courseColor"
+              autoComplete="off"
               select
               label="Course Color"
               className={classes.textField}
@@ -947,7 +958,7 @@ class profileBuild extends Component {
             >
               {palette.map((color) => (
                 <MenuItem key={color} value={color}>
-                  <Typography variant="h6" style={{backgroundColor: color}}>{color}</Typography>
+                  <Typography variant="h6" style={{backgroundColor: color, color: color}}>Color</Typography>
                 </MenuItem>
               ))}
             </TextField>

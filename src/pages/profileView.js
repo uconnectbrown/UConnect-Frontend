@@ -29,6 +29,7 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+
 import Book from "@material-ui/icons/MenuBook";
 import Movie from "@material-ui/icons/Movie";
 import Tv from "@material-ui/icons/Tv";
@@ -103,6 +104,9 @@ class profileView extends Component {
             affinitySportOne: res.data.user.affinitySports[0],
             affinitySportTwo: res.data.user.affinitySports[1],
             affinitySportThree: res.data.user.affinitySports[2],
+            affinitySport1: res.data.user.affinitySports[0],
+            affinitySport2: res.data.user.affinitySports[1],
+            affinitySport3: res.data.user.affinitySports[2],
             bio: res.data.user.bio,
             class: res.data.user.class,
             courses: res.data.user.courses,
@@ -112,17 +116,29 @@ class profileView extends Component {
             favoriteMovie: res.data.user.favorites.movie,
             favoriteShow: res.data.user.favorites.tvShow,
             favoriteArtist: res.data.user.favorites.artist,
+            favBook: res.data.user.favorites.book,
+            favMovie: res.data.user.favorites.movie,
+            favShow: res.data.user.favorites.tvShow,
+            favArtist: res.data.user.favorites.artist,
             firstName: res.data.user.firstName,
             greekLife: res.data.user.greekLife,
             groupOne: res.data.user.groups[0],
             groupTwo: res.data.user.groups[1],
             groupThree: res.data.user.groups[2],
+            group1: res.data.user.groups[0],
+            group2: res.data.user.groups[1],
+            group3: res.data.user.groups[2],
             imageUrl: res.data.user.imageUrl,
             interestOne: res.data.user.interests[0],
             interestTwo: res.data.user.interests[1],
             interestThree: res.data.user.interests[2],
             interestFour: res.data.user.interests[3],
             interestFive: res.data.user.interests[4],
+            interest1: res.data.user.interests[0],
+            interest2: res.data.user.interests[1],
+            interest3: res.data.user.interests[2],
+            interest4: res.data.user.interests[3],
+            interest5: res.data.user.interests[4],
             lastName: res.data.user.lastName,
             majorOne: res.data.user.majors[0],
             majorTwo: res.data.user.majors[1],
@@ -160,6 +176,7 @@ class profileView extends Component {
           //   "course5",
           //   res.data.user.courses[4].courseCode.replace(/\s/g, "")
           // );
+          
           localStorage.removeItem("courseCode");
           localStorage.removeItem("courseName");
           localStorage.removeItem("codeSpace");
@@ -243,14 +260,30 @@ class profileView extends Component {
   handleRemoveClose = () => {
     this.setState({ removeOpen: false });
   };
+
   handleGroupsClose = () => {
-    this.setState({ groupOpen: false });
+    this.setState({ groupOpen: false, 
+      groupOne: this.state.group1, 
+      groupTwo: this.state.group2, 
+      groupThree: this.state.group3 });
   };
   handleInterestsClose = () => {
-    this.setState({ interestsOpen: false });
+    this.setState({ interestsOpen: false, 
+      interestOne: this.state.interest1,
+      interestTwo: this.state.interest2,
+      interestThree: this.state.interest3,
+      interestFour: this.state.interest4,
+      interestFive: this.state.interest5,
+      affinitySportOne: this.state.affinitySport1,
+      affinitySportTwo: this.state.affinitySport2,
+      affinitySportThree: this.state.affinitySport3 });
   };
   handleFavoritesClose = () => {
-    this.setState({ favoritesOpen: false });
+    this.setState({ favoritesOpen: false, 
+      favoriteBook: this.state.favBook,
+      favoriteMovie: this.state.favMovie,
+      favoriteShow: this.state.favShow,
+      favoriteArtist: this.state.favArtist });
   };
   handleBasicClose = () => {
     this.setState({ basicOpen: false });
@@ -422,12 +455,14 @@ class profileView extends Component {
         <NavBar />
         <Card raised>
           <CardContent align="center">
-            <img
+            <Grid container spacing={1}>
+              <Grid item sm>
+              <img
               alt="Profile"
               src={this.state.imageUrl}
               style={{
-                width: 400,
-                height: 400,
+                width: 375,
+                height: 375,
                 objectFit: "cover",
                 borderRadius: "10%",
                 borderStyle: "solid",
@@ -447,6 +482,78 @@ class profileView extends Component {
                 <PhotoIcon color="primary" />
               </IconButton>
             </Tooltip>
+            {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
+              <div>
+                <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
+              </div>
+            )}
+              </Grid>
+              <Grid item sm>
+              <img
+              alt="Profile"
+              src={this.state.imageUrl}
+              style={{
+                width: 375,
+                height: 375,
+                objectFit: "cover",
+                borderRadius: "10%",
+                borderStyle: "solid",
+                borderColor: "red",
+                borderWidth: "2px",
+              }}
+            />
+            <input
+              type="file"
+              id="imageInput"
+              hidden="hidden"
+              onChange={this.handleImageChange}
+            />
+            <br />
+            <Tooltip title="Edit profile picture" placement="top">
+              <IconButton onClick={this.handleEditPicture} className="button">
+                <PhotoIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+            {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
+              <div>
+                <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
+              </div>
+            )}
+              </Grid>
+              <Grid item sm>
+              <img
+              alt="Profile"
+              src={this.state.imageUrl}
+              style={{
+                width: 375,
+                height: 375,
+                objectFit: "cover",
+                borderRadius: "10%",
+                borderStyle: "solid",
+                borderColor: "red",
+                borderWidth: "2px",
+              }}
+            />
+            <input
+              type="file"
+              id="imageInput"
+              hidden="hidden"
+              onChange={this.handleImageChange}
+            />
+            <br />
+            <Tooltip title="Edit profile picture" placement="top">
+              <IconButton onClick={this.handleEditPicture} className="button">
+                <PhotoIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+            {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
+              <div>
+                <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
+              </div>
+            )}
+              </Grid>
+            </Grid>
+            
             {/* new test code */}
             {/* <Dialog
                     overlayStyle={{ backgroundColor: "transparent" }}
@@ -495,6 +602,7 @@ class profileView extends Component {
                     autofocus
                     margin="dense"
                     id="firstName"
+                    autoComplete="off"
                     name="firstName"
                     label="First Name"
                     defaultValue={this.state.firstName}
@@ -507,6 +615,7 @@ class profileView extends Component {
                     autofocus
                     margin="dense"
                     id="lastName"
+                    autoComplete="off"
                     name="lastName"
                     label="Last Name"
                     defaultValue={this.state.lastName}
@@ -583,6 +692,7 @@ class profileView extends Component {
                     autofocus
                     margin="dense"
                     name="majorOne"
+                    autoComplete="off"
                     label="First Concentration"
                     defaultValue={this.state.majorOne}
                     fullWidth
@@ -599,6 +709,7 @@ class profileView extends Component {
                     autofocus
                     margin="dense"
                     name="majorTwo"
+                    autoComplete="off"
                     label="Second Concentration"
                     defaultValue={this.state.majorTwo}
                     fullWidth
@@ -614,6 +725,7 @@ class profileView extends Component {
                     autofocus
                     margin="dense"
                     name="majorThree"
+                    autoComplete="off"
                     label="Third Concentration"
                     defaultValue={this.state.majorThree}
                     fullWidth
@@ -629,6 +741,7 @@ class profileView extends Component {
                     autofocus
                     margin="dense"
                     name="varsitySportOne"
+                    autoComplete="off"
                     label="First Varsity Sport"
                     defaultValue={this.state.varsitySportOne}
                     fullWidth
@@ -644,6 +757,7 @@ class profileView extends Component {
                     autofocus
                     margin="dense"
                     name="varsitySportTwo"
+                    autoComplete="off"
                     label="Second Varsity Sport"
                     defaultValue={this.state.varsitySportTwo}
                     fullWidth
@@ -659,6 +773,7 @@ class profileView extends Component {
                     autofocus
                     margin="dense"
                     name="greekLife"
+                    autoComplete="off"
                     label="Greek Organization"
                     defaultValue={this.state.greekLife}
                     fullWidth
@@ -767,6 +882,7 @@ class profileView extends Component {
                         autofocus
                         margin="dense"
                         id="groupOne"
+                        autoComplete="off"
                         name="groupOne"
                         label="Group 1"
                         defaultValue={this.state.groupOne}
@@ -778,6 +894,7 @@ class profileView extends Component {
                         autofocus
                         margin="dense"
                         id="groupTwo"
+                        autoComplete="off"
                         name="groupTwo"
                         label="Group 2"
                         defaultValue={this.state.groupTwo}
@@ -789,6 +906,7 @@ class profileView extends Component {
                         autofocus
                         margin="dense"
                         id="groupThree"
+                        autoComplete="off"
                         name="groupThree"
                         label="Group 3"
                         defaultValue={this.state.groupThree}
@@ -852,6 +970,7 @@ class profileView extends Component {
                         margin="dense"
                         id="interestOne"
                         name="interestOne"
+                        autoComplete="off"
                         label="1st Interest"
                         defaultValue={this.state.interestOne}
                         fullWidth
@@ -864,6 +983,7 @@ class profileView extends Component {
                         margin="dense"
                         id="interestTwo"
                         name="interestTwo"
+                        autoComplete="off"
                         label="2nd Interest"
                         defaultValue={this.state.interestTwo}
                         fullWidth
@@ -876,6 +996,7 @@ class profileView extends Component {
                         margin="dense"
                         id="interestThree"
                         name="interestThree"
+                        autoComplete="off"
                         label="3rd Interest"
                         defaultValue={this.state.interestThree}
                         fullWidth
@@ -888,6 +1009,7 @@ class profileView extends Component {
                         margin="dense"
                         id="interestFour"
                         name="interestFour"
+                        autoComplete="off"
                         label="4th Interest"
                         defaultValue={this.state.interestFour}
                         fullWidth
@@ -899,6 +1021,7 @@ class profileView extends Component {
                         margin="dense"
                         id="interestFive"
                         name="interestFive"
+                        autoComplete="off"
                         label="5th Interest"
                         defaultValue={this.state.interestFive}
                         fullWidth
@@ -913,6 +1036,7 @@ class profileView extends Component {
                         margin="dense"
                         id="affinitySportOne"
                         name="affinitySportOne"
+                        autoComplete="off"
                         label="1st Interest"
                         defaultValue={this.state.affinitySportOne}
                         fullWidth
@@ -924,6 +1048,7 @@ class profileView extends Component {
                         margin="dense"
                         id="affinitySportTwo"
                         name="affinitySportTwo"
+                        autoComplete="off"
                         label="2nd Interest"
                         defaultValue={this.state.affinitySportTwo}
                         fullWidth
@@ -935,6 +1060,7 @@ class profileView extends Component {
                         margin="dense"
                         id="affinitySportThree"
                         name="affinitySportThree"
+                        autoComplete="off"
                         label="3rd Interest"
                         defaultValue={this.state.affinitySportThree}
                         fullWidth
@@ -1048,6 +1174,7 @@ class profileView extends Component {
                         margin="dense"
                         id="favoriteBook"
                         name="favoriteBook"
+                        autoComplete="off"
                         label="Book"
                         defaultValue={this.state.favoriteBook}
                         fullWidth
@@ -1060,6 +1187,7 @@ class profileView extends Component {
                         margin="dense"
                         id="favoriteMovie"
                         name="favoriteMovie"
+                        autoComplete="off"
                         label="Movie"
                         defaultValue={this.state.favoriteMovie}
                         fullWidth
@@ -1072,6 +1200,7 @@ class profileView extends Component {
                         margin="dense"
                         id="favoriteShow"
                         name="favoriteShow"
+                        autoComplete="off"
                         label="Show"
                         defaultValue={this.state.favoriteShow}
                         fullWidth
@@ -1084,6 +1213,7 @@ class profileView extends Component {
                         margin="dense"
                         id="favoriteArtist"
                         name="favoriteArtist"
+                        autoComplete="off"
                         label="Artist"
                         defaultValue={this.state.favoriteArtist}
                         fullWidth
