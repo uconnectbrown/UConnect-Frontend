@@ -316,6 +316,11 @@ class profileView extends Component {
   };
 
   handleSubmitGroups = () => {
+    this.setState({
+      group1: this.state.groupOne,
+      group2: this.state.groupTwo,
+      group3: this.state.groupThree,
+    })
     let groupList = [
       this.state.groupOne,
       this.state.groupTwo,
@@ -334,6 +339,16 @@ class profileView extends Component {
     this.setState({ groupOpen: false });
   };
   handleSubmitInterests = () => {
+    this.setState({
+      interest1: this.state.interestOne,
+      interest2: this.state.interestTwo,
+      interest3: this.state.interestThree,
+      interest4: this.state.interestFour,
+      interest5: this.state.interestFive,
+      affinitySport1: this.state.affinitySportOne,
+      affinitySport2: this.state.affinitySportTwo,
+      affinitySport3: this.state.affinitySportThree,
+    })
     let interestsList = [
       this.state.interestOne,
       this.state.interestTwo,
@@ -365,6 +380,12 @@ class profileView extends Component {
     this.setState({ interestsOpen: false });
   };
   handleSubmitFavorites = () => {
+    this.setState({
+      favBook: this.state.favoriteBook,
+      favMovie: this.state.favoriteMovie,
+      favShow: this.state.favoriteShow,
+      favArtist: this.state.favoriteArtist,
+    })
     let favorites = {
       book: this.state.favoriteBook,
       movie: this.state.favoriteMovie,
