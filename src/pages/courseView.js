@@ -175,6 +175,7 @@ class courseView extends Component {
             <TextField
               id="name"
               name="name"
+              autoComplete="off"
               type="text"
               label="Search..."
               value={this.state.searchTerm}
@@ -226,6 +227,7 @@ class courseView extends Component {
             <TextField
               variant="outlined"
               name="majors"
+              autoComplete="off"
               size={"small"}
               label="Search..."
               helperText="Please search a concentration"
@@ -242,6 +244,7 @@ class courseView extends Component {
             <TextField
               id="interests"
               name="interests"
+              autoComplete="off"
               type="text"
               label="Search..."
               value={this.state.searchTerm}
@@ -255,6 +258,7 @@ class courseView extends Component {
             <TextField
               id="groups"
               name="groups"
+              autoComplete="off"
               type="text"
               label="Search..."
               value={this.state.searchTerm}
@@ -268,6 +272,7 @@ class courseView extends Component {
             <TextField
               variant="outlined"
               name="varsitySports"
+              autoComplete="off"
               size={"small"}
               label="Search..."
               helperText="Please search a varsity sport"
@@ -284,6 +289,7 @@ class courseView extends Component {
             <TextField
               id="affinitySports"
               name="affinitySports"
+              autoComplete="off"
               type="text"
               label="Search..."
               value={this.state.searchTerm}
@@ -297,6 +303,7 @@ class courseView extends Component {
             <TextField
               variant="outlined"
               name="greekLife"
+              autoComplete="off"
               size={"small"}
               label="Search..."
               helperText="Please search a greek organization"

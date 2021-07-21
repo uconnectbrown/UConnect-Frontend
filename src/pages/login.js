@@ -85,6 +85,7 @@ class login extends Component {
             <TextField
               id="email"
               name="email"
+              autoComplete="off"
               type="email"
               label="Email"
               className={classes.textField}
@@ -97,6 +98,7 @@ class login extends Component {
             <TextField
               id="password"
               name="password"
+              autoComplete="off"
               type="password"
               label="Password"
               className={classes.textField}
