@@ -15,5 +15,3 @@ const AuthRoute = ({ component: Component, authenticated, ...rest }) => (
 );
 
 export default AuthRoute;
-
-// this might not be relevant since we probably aren't going to have a NavBar the same way

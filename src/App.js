@@ -8,7 +8,7 @@ import { createTheme } from "@material-ui/core/styles";
 import themeFile from "./util/theme";
 
 // Components
-import AuthRoute from "./util/AuthRoute";
+import AuthRoute from "./util/AuthRoute"; // auth => send to profileView, else send to component
 
 // Pages
 import welcome from "./pages/welcome";
@@ -24,19 +24,23 @@ import messagesView from "./pages/messagesView";
 
 const theme = createTheme(themeFile);
 
-let authenticated;
+let auth;
 const token = localStorage.FBIdToken;
 if (token) {
   const decodedToken = jwtDecode(token);
   if (decodedToken.exp * 1000 < Date.now()) {
     window.location.href = "/login";
-    authenticated = false;
+    auth = false;
   } else {
-    authenticated = true;
+    auth = true;
   }
 }
 
-function App() {
+function App(props) {
+  let authenticated = auth;
+  if (!props.authenticated) {
+    authenticated = props.authenticated;
+  }
   return (
     <MuiThemeProvider theme={theme}>
       <div className="App">
@@ -61,13 +65,48 @@ function App() {
                 component={signup}
                 authenticated={authenticated}
               />
-              <Route exact path="/profileBuild" component={profileBuild} />
-              <Route exact path="/profileView" component={profileView} />
-              <Route exact path="/coursesView" component={coursesView} />
-              <Route exact path="/messageView" component={messageView} />
-              <Route exact path="/courseView" component={courseView} />
-              <Route exact path="/studentView" component={studentView} />
-              <Route exact path="/messagesView" component={messagesView} />
+              <Route
+                exact
+                path="/profileBuild"
+                component={profileBuild}
+                authenticated={authenticated}
+              />
+              <Route
+                exact
+                path="/profileView"
+                component={profileView}
+                authenticated={authenticated}
+              />
+              <Route
+                exact
+                path="/coursesView"
+                component={coursesView}
+                authenticated={authenticated}
+              />
+              <Route
+                exact
+                path="/messageView"
+                component={messageView}
+                authenticated={authenticated}
+              />
+              <Route
+                exact
+                path="/courseView"
+                component={courseView}
+                authenticated={authenticated}
+              />
+              <Route
+                exact
+                path="/studentView"
+                component={studentView}
+                authenticated={authenticated}
+              />
+              <Route
+                exact
+                path="/messagesView"
+                component={messagesView}
+                authenticated={authenticated}
+              />
             </Switch>
           </div>
         </Router>

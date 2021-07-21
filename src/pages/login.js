@@ -6,6 +6,9 @@ import AppIcon from "../images/BrownCrest.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+// Components
+import App from "../App.js";
+
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";

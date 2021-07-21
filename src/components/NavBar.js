@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import App from "../App.js";
 
 // MUI Stuff
 import AppBar from "@material-ui/core/AppBar";
@@ -13,6 +14,7 @@ class NavBar extends Component {
   logoutUser = () => {
     localStorage.clear();
     delete axios.defaults.headers.common["Authorization"];
+    <App authenticated={false} />;
   };
 
   render() {
