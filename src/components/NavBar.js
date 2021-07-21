@@ -10,7 +10,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 
 class NavBar extends Component {
-  // TO-DO: figure out reloading bug
   logoutUser = () => {
     localStorage.clear();
     delete axios.defaults.headers.common["Authorization"];

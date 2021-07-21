@@ -22,8 +22,10 @@ import courseView from "./pages/courseView";
 import studentView from "./pages/studentView";
 import messagesView from "./pages/messagesView";
 
+// Styling
 const theme = createTheme(themeFile);
 
+// Body
 let auth;
 const token = localStorage.FBIdToken;
 if (token) {
