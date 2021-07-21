@@ -492,7 +492,7 @@ class courseView extends Component {
         {!this.state.loading && (
         <GridList cols={3} spacing={20} cellHeight="auto">
           {newIndexArray = indexArray
-            .filter((index) => {
+            .map((index) => {
               if (this.state.searchCriteria === "") {
                 return index;
               } else if (this.state.searchCriteria === "name") {
@@ -512,8 +512,9 @@ class courseView extends Component {
               ) {
                 return index;
               }
-            })}
-
+            }).filter((index) => {return index !== undefined;})}
+            {console.log(indexArray)};
+            {console.log(newIndexArray)};
             {newIndexArray.map((index) => (
               <GridListTile item component="Card" sm>
                 <Card

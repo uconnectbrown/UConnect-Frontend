@@ -483,7 +483,6 @@ class profileView extends Component {
               <Dialog
                 overlayStyle={{ backgroundColor: "transparent" }}
                 open={this.state.basicOpen}
-                onClose={this.handleBasicClose}
               >
                 <DialogTitle
                   style={{ cursor: "move" }}
@@ -685,7 +684,8 @@ class profileView extends Component {
                   />
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={this.handleBasicClose} color="secondary">
+                  <Button onClick={this.handleBasicClose} color="secondary"
+                  disabled={this.state.firstName === "" || this.state.lastName === "" || this.state.majorOne === "" || this.state.class === ""}>
                     Cancel
                   </Button>
                   <Button onClick={this.handleSubmitBasic} color="secondary" 
@@ -755,7 +755,6 @@ class profileView extends Component {
                   <Dialog
                     overlayStyle={{ backgroundColor: "transparent" }}
                     open={this.state.groupOpen}
-                    onClose={this.handleGroupsClose}
                   >
                     <DialogTitle
                       style={{ cursor: "move" }}
@@ -839,7 +838,6 @@ class profileView extends Component {
                   <Dialog
                     overlayStyle={{ backgroundColor: "transparent" }}
                     open={this.state.interestsOpen}
-                    onClose={this.handleInterestsClose}
                   >
                     <DialogTitle
                       style={{ cursor: "move" }}
@@ -945,8 +943,10 @@ class profileView extends Component {
                       />
                     </DialogContent>
                     <DialogActions>
-                      <Button onClick={this.handleInterestsClose} color="secondary">
-
+                      <Button onClick={this.handleInterestsClose} color="secondary"
+                      disabled={this.state.interestOne === "" || this.state.interestTwo === "" || this.state.interestThree === ""}
+                      >
+                        Cancel
                       </Button>
                       <Button
                         onClick={this.handleSubmitInterests}
@@ -1035,7 +1035,6 @@ class profileView extends Component {
                   <Dialog
                     overlayStyle={{ backgroundColor: "transparent" }}
                     open={this.state.favoritesOpen}
-                    onClose={this.handleFavoritesClose}
                   >
                     <DialogTitle
                       style={{ cursor: "move" }}
@@ -1094,7 +1093,9 @@ class profileView extends Component {
                       />
                     </DialogContent>
                     <DialogActions>
-                      <Button onClick={this.handleFavoritesClose} color="secondary">
+                      <Button onClick={this.handleFavoritesClose} color="secondary"
+                      disabled={this.state.favoriteBook === "" || this.state.favoriteMovie === "" || this.state.favoriteShow === "" || this.state.favoriteArtist === ""}
+                      >
                         Cancel
                       </Button>
                       <Button
@@ -1154,7 +1155,7 @@ class profileView extends Component {
                       <Typography variant="h5" style={{color: `${this.state.courses[index].undefined}`}}>
                         {this.state.courses[index].courseCode}
                       </Typography>
-                      <Typography variant="body1">
+                      <Typography variant="body1" style={{marginBottom: "-20px"}}>
                         {this.state.courses[index].courseName}
                       </Typography>
                       {this.state.delete && (
@@ -1162,6 +1163,7 @@ class profileView extends Component {
                           size="large"
                           color="primary"
                           onClick={() => this.handleRemoveOpen(index)}
+                          style={{marginBottom: "-30px", marginTop: "10px"}}
                         >
                           <DeleteIcon fontSize="large" />
                         </IconButton>
