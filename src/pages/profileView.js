@@ -107,12 +107,14 @@ class profileView extends Component {
     favoritesOpen: false,
     imageOpen: false,
     loading: true,
-    colorOpen: false,
-    colorOpen0: false,
-    colorOpen1: false,
-    colorOpen2: false,
-    colorOpen3: false,
-    colorOpen4: false,
+    colorOpen: [
+      false,
+      false,
+      false,
+      false,
+      false,
+    ],
+    courseColor: "",
     courseColor0: "",
     courseColor1: "",
     courseColor2: "",
@@ -296,8 +298,10 @@ class profileView extends Component {
     this.setState({ favoritesOpen: true });
   };
 
-  handleColorOpen = () => {
-    this.setState({ colorOpen: true });
+  handleColorOpen = (index) => {
+    let newColorOpen = [...this.state.colorOpen]
+    newColorOpen[index] = true
+    this.setState({ colorOpen: newColorOpen });
   };
   handleColorOpen0 = () => {
     this.setState({ colorOpen0: true });
@@ -436,6 +440,26 @@ class profileView extends Component {
       return axios.get("/update");
     });
     this.setState({ addOpen: false });
+  };
+
+  handleColorSave = (index) => {
+    let courseList = [];
+    let newCourse = {
+      courseCode: this.state.courses[index].courseCode,
+      courseName: this.state.courses[index].courseName,
+      courseColor: this.state.courseColor
+    };
+    for (let j = 0; j < 5; j++) {
+      if (j !== index) {
+        courseList.push(this.state.courses[j]);
+      } else courseList.push(newCourse);
+    }
+    let newCourses = { courses: courseList };
+    axios.post("/edit", newCourses).then(() => {
+      this.setState({ courses: courseList });
+      return axios.get("/update");
+    });
+    this.setState({ colorOpen: false });
   };
 
   handleSubmitGroups = () => {
@@ -1476,14 +1500,14 @@ class profileView extends Component {
                       </Typography>
                       <Tooltip title="Change color" placement="right">
                         <IconButton 
-                          onClick={this.handleColorOpen} 
+                          onClick={() => this.handleColorOpen(index)} 
                           style={{marginBottom: "-20px"}}>
                           <Dots color="secondary" />
                         </IconButton>
                       </Tooltip>
                       <Dialog
                         overlayStyle={{ backgroundColor: "transparent" }}
-                        open={this.state.colorOpen}
+                        open={this.state.colorOpen[index]}
                       >
                         <DialogTitle
                           style={{ cursor: "move" }}
@@ -1501,7 +1525,7 @@ class profileView extends Component {
                             select
                             label="Course Color"
                             defaultValue={this.state.courses[index].courseColor}
-                            // onChange={this.handleColorChange`${index}`}
+                            onChange={this.handleChange}
                             helperText="Please select a course color"
                           >
                             {palette.map((color) => (
@@ -1521,7 +1545,7 @@ class profileView extends Component {
                             Cancel
                           </Button>
                           <Button
-                            // onClick={() => this.handleColorSave(index)}
+                            onClick={() => this.handleColorSave(index)}
                             color="secondary"
                           >
                             Save Changes

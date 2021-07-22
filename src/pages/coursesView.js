@@ -16,94 +16,88 @@ import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+// Body
 export class coursesView extends Component {
   state = {
     courses: [{}, {}, {}, {}, {}],
-    students0: [],
-    students1: [],
-    students2: [],
-    students3: [],
-    students4: [],
+    avatars0: [],
+    avatars1: [],
+    avatars2: [],
+    avatars3: [],
+    avatars4: [],
     loading: true,
   };
 
   componentDidMount() {
-    localStorage.removeItem("studentName");
-    localStorage.removeItem("studentId");
-    localStorage.removeItem("courseCode");
-    localStorage.removeItem("studentImage");
-    localStorage.removeItem("roomId");
-    localStorage.removeItem("courseName");
-    localStorage.removeItem("codeSpace");
     let indexArray = [];
     let currentIndex = 0;
     const FBIdToken = localStorage.FBIdToken;
     axios.defaults.headers.common["Authorization"] = FBIdToken;
     if (FBIdToken) {
-    axios
-      .get("/update")
-      .then(() => {
-        return axios.get("/user/courses").then((res) => {
-          this.setState({
-            courses: res.data,
+      axios
+        .get("/update")
+        .then(() => {
+          return axios.get("/user/courses").then((res) => {
+            this.setState({
+              courses: res.data,
+            });
           });
-        });
-      })
-      .then(() => {
-        for (let j = 0; j < 5; j++) {
-          if (this.state.courses[j].courseCode) {
-            indexArray.push(j);
+        })
+        .then(() => {
+          for (let j = 0; j < 5; j++) {
+            if (this.state.courses[j].courseCode) {
+              indexArray.push(j);
+            }
           }
-        }
-        let courseCodes = this.state.courses.map((course) =>
-          course.courseCode.replace(/\s/g, "")
-        );
-        // pull students to obtain avatars
-        let promises = [];
-        console.log(indexArray);
-        for (let i = 0; i < 5; i++) {
-          if (indexArray.includes(i))
-            promises.push(axios.get(`/avatars/${courseCodes[i]}`));
-        }
-        return promises;
-      })
-      .then((promises) => {
-        return Promise.all(promises);
-      })
-      .then((results) => {
-        if (indexArray.includes(0)) {
-          this.setState({
-            students0: results[currentIndex].data,
-          });
-          currentIndex++;
-        }
-        if (indexArray.includes(1)) {
-          this.setState({
-            students1: results[currentIndex].data,
-          });
-          currentIndex++;
-        }
-        if (indexArray.includes(2)) {
-          this.setState({
-            students2: results[currentIndex].data,
-          });
-          currentIndex++;
-        }
-        if (indexArray.includes(3)) {
-          this.setState({
-            students3: results[currentIndex].data,
-          });
-          currentIndex++;
-        }
-        if (indexArray.includes(4)) {
-          this.setState({
-            students4: results[currentIndex].data,
-          });
-          currentIndex++;
-        }
-        this.setState({loading: false})
-      })
-      .catch((err) => console.log(err));
+          let courseCodes = this.state.courses.map((course) =>
+            course.courseCode.replace(/\s/g, "")
+          );
+          // pull students to obtain avatars
+          let promises = [];
+          console.log(indexArray);
+          for (let i = 0; i < 5; i++) {
+            if (indexArray.includes(i))
+              promises.push(axios.get(`/avatars/${courseCodes[i]}`));
+          }
+          return promises;
+        })
+        .then((promises) => {
+          return Promise.all(promises);
+        })
+        .then((results) => {
+          if (indexArray.includes(0)) {
+            this.setState({
+              avatars0: results[currentIndex].data,
+            });
+            currentIndex++;
+          }
+          if (indexArray.includes(1)) {
+            this.setState({
+              avatars1: results[currentIndex].data,
+            });
+            currentIndex++;
+          }
+          if (indexArray.includes(2)) {
+            this.setState({
+              avatars2: results[currentIndex].data,
+            });
+            currentIndex++;
+          }
+          if (indexArray.includes(3)) {
+            this.setState({
+              avatars3: results[currentIndex].data,
+            });
+            currentIndex++;
+          }
+          if (indexArray.includes(4)) {
+            this.setState({
+              avatars4: results[currentIndex].data,
+            });
+            currentIndex++;
+          }
+          this.setState({ loading: false });
+        })
+        .catch((err) => console.log(err));
     }
   }
 
@@ -116,11 +110,11 @@ export class coursesView extends Component {
 
   render() {
     let avatarList = [
-      this.state.students0,
-      this.state.students1,
-      this.state.students2,
-      this.state.students3,
-      this.state.students4,
+      this.state.avatars0,
+      this.state.avatars1,
+      this.state.avatars2,
+      this.state.avatars3,
+      this.state.avatars4,
     ];
     let indexArray = [];
     for (let j = 0; j < 5; j++) {
@@ -155,7 +149,7 @@ export class coursesView extends Component {
                       // this.state.courses[index].undefined,
                     )
                   }
-                  style={{width: "100%", height: "100%"}}
+                  style={{ width: "100%", height: "100%" }}
                 >
                   <CardContent align="center">
                     <Typography variant="h4" style={{color: `${this.state.courses[index].courseColor}`}}>
@@ -170,16 +164,22 @@ export class coursesView extends Component {
                     {loading && (
                       <div>
                         <span>
-                          <Typography variant="body1" align="center" style={{marginBottom: "5px"}}>Fetching course data...</Typography>
+                          <Typography
+                            variant="body1"
+                            align="center"
+                            style={{ marginBottom: "5px" }}
+                          >
+                            Fetching course data...
+                          </Typography>
                           <CircularProgress />
                         </span>
                       </div>
                     )}
                     {!loading && (
                       <AvatarGroup max={6}>
-                      {avatarList[index].map((url) => (
-                        <Avatar src={url} style={{marginBottom: "5px"}}/>
-                      ))}
+                        {avatarList[index].map((url) => (
+                          <Avatar src={url} style={{ marginBottom: "5px" }} />
+                        ))}
                       </AvatarGroup>
                     )}
                   </CardContent>

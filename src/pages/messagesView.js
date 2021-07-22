@@ -133,7 +133,8 @@ class messagesView extends Component {
               }
             })
             .then(() => {
-              this.setState({loading: false});
+              this.setState({ loading: false });
+              console.log(this.state.messages3);
             })
             .catch((err) => console.log(err));
         });
@@ -152,87 +153,82 @@ class messagesView extends Component {
       this.state.messages4,
       this.state.messages5,
     ];
-    let numMessages = 0;
-    for (let i = 0; i < 5; i++) {
-      if (Object.keys(messages[i]).length !== 0) {
-        numMessages++;
-      }
-    }
+    let numCourses = this.state.courseCodes.filter(Boolean).length;
 
     return (
       <div>
-      {this.state.loading && (
-        <div align="center">
-          <NavBar />
-          <br />
-          <CircularProgress size={100}/>
-          <br />
-          <br />
-          <Typography variant="h4">Fetching messages...</Typography>
-        </div>
-      )}
+        {this.state.loading && (
+          <div align="center">
+            <NavBar />
+            <br />
+            <CircularProgress size={100} />
+            <br />
+            <br />
+            <Typography variant="h4">Fetching messages...</Typography>
+          </div>
+        )}
 
-      {!this.state.loading && (
-      <div>
-        <NavBar />
-        <AppBar position="static" color="secondary">
-          <Tabs
-            value={this.state.tabIndex}
-            onChange={this.handleChange}
-            aria-label="simple tabs example"
-          >
+        {!this.state.loading && (
+          <div>
+            <NavBar />
+            <AppBar position="static" color="secondary">
+              <Tabs
+                value={this.state.tabIndex}
+                onChange={this.handleChange}
+                aria-label="simple tabs example"
+              >
+                {this.state.courseCodes[0] && (
+                  <Tab label={this.state.courseCodes[0]} {...a11yProps(0)} />
+                )}
+                {this.state.courseCodes[1] && (
+                  <Tab label={this.state.courseCodes[1]} {...a11yProps(1)} />
+                )}
+                {this.state.courseCodes[2] && (
+                  <Tab label={this.state.courseCodes[2]} {...a11yProps(2)} />
+                )}
+                {this.state.courseCodes[3] && (
+                  <Tab label={this.state.courseCodes[3]} {...a11yProps(3)} />
+                )}
+                {this.state.courseCodes[4] && (
+                  <Tab label={this.state.courseCodes[4]} {...a11yProps(4)} />
+                )}
+                <Tab label="All Messages" {...a11yProps(numCourses)} />
+              </Tabs>
+            </AppBar>
             {this.state.courseCodes[0] && (
-              <Tab label={this.state.courseCodes[0]} {...a11yProps(0)} />
+              <TabPanel value={this.state.tabIndex} index={0}>
+                <Messages messages={messages[0]} />
+              </TabPanel>
             )}
             {this.state.courseCodes[1] && (
-              <Tab label={this.state.courseCodes[1]} {...a11yProps(1)} />
+              <TabPanel value={this.state.tabIndex} index={1}>
+                <Messages messages={messages[1]} />
+              </TabPanel>
             )}
             {this.state.courseCodes[2] && (
-              <Tab label={this.state.courseCodes[2]} {...a11yProps(2)} />
+              <TabPanel value={this.state.tabIndex} index={2}>
+                <Messages messages={messages[2]} />
+              </TabPanel>
             )}
             {this.state.courseCodes[3] && (
-              <Tab label={this.state.courseCodes[3]} {...a11yProps(3)} />
+              <TabPanel value={this.state.tabIndex} index={3}>
+                <Messages messages={messages[3]} />
+              </TabPanel>
             )}
             {this.state.courseCodes[4] && (
-              <Tab label={this.state.courseCodes[4]} {...a11yProps(4)} />
+              <TabPanel value={this.state.tabIndex} index={4}>
+                <Messages messages={messages[4]} />
+              </TabPanel>
             )}
-            <Tab label="All Messages" {...a11yProps(numMessages)} />
-          </Tabs>
-        </AppBar>
-        {this.state.courseCodes[0] && (
-          <TabPanel value={this.state.tabIndex} index={0}>
-            <Messages messages={messages[0]} />
-          </TabPanel>
+            <TabPanel value={this.state.tabIndex} index={numCourses}>
+              <Messages messages={messages[0]} />
+              <Messages messages={messages[1]} />
+              <Messages messages={messages[2]} />
+              <Messages messages={messages[3]} />
+              <Messages messages={messages[4]} />
+            </TabPanel>
+          </div>
         )}
-        {this.state.courseCodes[1] && (
-          <TabPanel value={this.state.tabIndex} index={1}>
-            <Messages messages={messages[1]} />
-          </TabPanel>
-        )}
-        {this.state.courseCodes[2] && (
-          <TabPanel value={this.state.tabIndex} index={2}>
-            <Messages messages={messages[2]} />
-          </TabPanel>
-        )}
-        {this.state.courseCodes[3] && (
-          <TabPanel value={this.state.tabIndex} index={3}>
-            <Messages messages={messages[3]} />
-          </TabPanel>
-        )}
-        {this.state.courseCodes[4] && (
-          <TabPanel value={this.state.tabIndex} index={4}>
-            <Messages messages={messages[4]} />
-          </TabPanel>
-        )}
-        <TabPanel value={this.state.tabIndex} index={numMessages}>
-          <Messages messages={messages[0]} />
-          <Messages messages={messages[1]} />
-          <Messages messages={messages[2]} />
-          <Messages messages={messages[3]} />
-          <Messages messages={messages[4]} />
-        </TabPanel>
-      </div>
-      )}
       </div>
     );
   }

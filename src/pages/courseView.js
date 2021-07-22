@@ -1,8 +1,3 @@
-// think about place for the back button
-// color code cards based on chosen theme
-// make cards a little more sleek in design
-// add filter bar and consider how to work search
-
 // Setup
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
@@ -43,17 +38,20 @@ class courseView extends Component {
   componentDidMount() {
     const code = this.state.courseInfo[0];
     const codeNS = code.replace(/\s/g, "");
-
-    axios
-      .get(`/students/${codeNS}`)
-      .then((res) => {
-        this.setState({ students: [...this.state.students, ...res.data] });
-        console.log(this.state.students);
-      })
-      .then(() => {
-        this.setState({loading: false})
-      })
-      .catch((err) => console.log(err));
+    const FBIdToken = localStorage.FBIdToken;
+    axios.defaults.headers.common["Authorization"] = FBIdToken;
+    if (FBIdToken) {
+      axios
+        .get(`/students/${codeNS}`)
+        .then((res) => {
+          this.setState({ students: [...this.state.students, ...res.data] });
+          console.log(this.state.students);
+        })
+        .then(() => {
+          this.setState({ loading: false });
+        })
+        .catch((err) => console.log(err));
+    }
   }
 
   handleClickOpen = (index) => {
@@ -71,7 +69,6 @@ class courseView extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
-    localStorage.removeItem("studentId");
   };
 
   handleChange = (event) => {
@@ -122,7 +119,7 @@ class courseView extends Component {
     return (
       <div>
         <NavBar />
-        <Typography variant="h3" align="center" style={{color: `${color}`}}>
+        <Typography variant="h3" align="center" style={{ color: `${color}` }}>
           {code}: {name}
         </Typography>
         <Button
@@ -497,31 +494,37 @@ class courseView extends Component {
           </div>
         )}
         {!this.state.loading && (
-        <GridList cols={3} spacing={20} cellHeight="auto">
-          {newIndexArray = indexArray
-            .map((index) => {
-              if (this.state.searchCriteria === "") {
-                return index;
-              } else if (this.state.searchCriteria === "name") {
-                if (
-                  `${students[index]["firstName"]} ${students[index]["lastName"]}`
-                    .toString()
-                    .toLowerCase()
-                    .includes(this.state.searchTerm.toString().toLowerCase())
-                ) {
-                  return index;
-                }
-              } else if (
-                students[index][`${this.state.searchCriteria}`]
-                  .toString()
-                  .toLowerCase()
-                  .includes(this.state.searchTerm.toString().toLowerCase())
-              ) {
-                return index;
-              }
-            }).filter((index) => {return index !== undefined;})}
-            {console.log(indexArray)};
-            {console.log(newIndexArray)};
+          <GridList cols={3} spacing={20} cellHeight="auto">
+            {
+              (newIndexArray = indexArray
+                .map((index) => {
+                  if (this.state.searchCriteria === "") {
+                    return index;
+                  } else if (this.state.searchCriteria === "name") {
+                    if (
+                      `${students[index]["firstName"]} ${students[index]["lastName"]}`
+                        .toString()
+                        .toLowerCase()
+                        .includes(
+                          this.state.searchTerm.toString().toLowerCase()
+                        )
+                    ) {
+                      return index;
+                    }
+                  } else if (
+                    students[index][`${this.state.searchCriteria}`]
+                      .toString()
+                      .toLowerCase()
+                      .includes(this.state.searchTerm.toString().toLowerCase())
+                  ) {
+                    return index;
+                  }
+                })
+                .filter((index) => {
+                  return index !== undefined;
+                }))
+            }
+            {console.log(indexArray)};{console.log(newIndexArray)};
             {newIndexArray.map((index) => (
               <GridListTile item component="Card" sm>
                 <Card
@@ -537,13 +540,12 @@ class courseView extends Component {
                 >
                   {/* switched the order of buttonBase and cardContent since it worked in coursesView */}
                   <ButtonBase
-                      size="large"
-                      color="primary"
-                      onClick={() => this.handleClickOpen(index)}
-                      style={{width:"100%"}}
-                    >
-                  <CardContent>
-                    
+                    size="large"
+                    color="primary"
+                    onClick={() => this.handleClickOpen(index)}
+                    style={{ width: "100%" }}
+                  >
+                    <CardContent>
                       <div>
                         {/* <Typography>{index}</Typography> */}
                         <img
@@ -586,13 +588,12 @@ class courseView extends Component {
                           • {students[index].interests[2]}
                         </Typography>
                       </div>
-                    
-                  </CardContent>
+                    </CardContent>
                   </ButtonBase>
                 </Card>
               </GridListTile>
             ))}
-        </GridList>
+          </GridList>
         )}
       </div>
     );
