@@ -60,7 +60,7 @@ function SendMessage({
           image: imageUrl,
           roomId,
           recipientId: emailId,
-          mostRecent: firebase.firestore.FieldValue.serverTimestamp(),
+          mostRecent: new Date().toISOString(),
         }),
     ]);
 

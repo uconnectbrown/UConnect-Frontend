@@ -9,7 +9,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 function Messages(props) {
   dayjs.extend(relativeTime);
   const history = useHistory();
-  const handleMessage = (roomId, name, image, id, code) => {
+  const handleMessage = (name, image, id, code) => {
     history.push({
       pathname: "/messageView",
       state: { studentInfo: [name, image, id, code] },
@@ -26,7 +26,6 @@ function Messages(props) {
                 color="primary"
                 onClick={() =>
                   handleMessage(
-                    message.roomId,
                     message.name,
                     message.image,
                     message.recipientId,
