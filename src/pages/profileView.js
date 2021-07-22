@@ -8,6 +8,7 @@ import Cropper from 'react-easy-crop'
 // import AvatarEditor from 'react-avatar-editor'
 import { useState, useCallback } from 'react'
 import getCroppedImg from '../components/cropImage'
+import update from 'react-addons-update';
 
 // Components
 import NavBar from "../components/NavBar";
@@ -299,9 +300,17 @@ class profileView extends Component {
   };
 
   handleColorOpen = (index) => {
-    let newColorOpen = [...this.state.colorOpen]
+    let newColorOpen = this.state.colorOpen.slice()
     newColorOpen[index] = true
     this.setState({ colorOpen: newColorOpen });
+    
+    // this.setState(update(this.state, {
+    //   courseColor: {
+    //     [index]: {
+    //       $set: true
+    //     }
+    //   }
+    // }))
   };
   handleColorOpen0 = () => {
     this.setState({ colorOpen0: true });
@@ -386,7 +395,13 @@ class profileView extends Component {
 
   handleColorClose = () => {
     this.setState({
-      colorOpen: false,
+      colorOpen: [
+        false,
+        false,
+        false,
+        false,
+        false,
+      ]
     })
   }
   handleColorClose0 = () => {
@@ -459,7 +474,13 @@ class profileView extends Component {
       this.setState({ courses: courseList });
       return axios.get("/update");
     });
-    this.setState({ colorOpen: false });
+    this.setState({ colorOpen: [
+      false,
+      false,
+      false,
+      false,
+      false,
+    ] });
   };
 
   handleSubmitGroups = () => {
