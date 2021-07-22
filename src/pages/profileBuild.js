@@ -127,7 +127,7 @@ class profileBuild extends Component {
 
   handleCourseOne = (event) => {
     let input = event.target.value;
-    let subfield = event.target.id;
+    let subfield = event.target.name;
     this.setState((prevState) => {
       let courseOne = Object.assign({}, prevState.courseOne);
       courseOne[subfield] = input;
@@ -137,7 +137,7 @@ class profileBuild extends Component {
 
   handleCourseTwo = (event) => {
     let input = event.target.value;
-    let subfield = event.target.id;
+    let subfield = event.target.name;
     this.setState((prevState) => {
       let courseTwo = Object.assign({}, prevState.courseTwo);
       courseTwo[subfield] = input;
@@ -147,7 +147,7 @@ class profileBuild extends Component {
 
   handleCourseThree = (event) => {
     let input = event.target.value;
-    let subfield = event.target.id;
+    let subfield = event.target.name;
     this.setState((prevState) => {
       let courseThree = Object.assign({}, prevState.courseThree);
       courseThree[subfield] = input;
@@ -157,7 +157,7 @@ class profileBuild extends Component {
 
   handleCourseFour = (event) => {
     let input = event.target.value;
-    let subfield = event.target.id;
+    let subfield = event.target.name;
     this.setState((prevState) => {
       let courseFour = Object.assign({}, prevState.courseFour);
       courseFour[subfield] = input;
@@ -167,7 +167,7 @@ class profileBuild extends Component {
 
   handleCourseFive = (event) => {
     let input = event.target.value;
-    let subfield = event.target.id;
+    let subfield = event.target.name;
     this.setState((prevState) => {
       let courseFive = Object.assign({}, prevState.courseFive);
       courseFive[subfield] = input;

@@ -3,7 +3,11 @@ import axios from "axios";
 import ImageCropper from "../components/ImageCropper";
 import Avatar from "../components/Avatar";
 import MyEditor from "../components/MyEditor";
+import Crop from "../components/Crop";
+import Cropper from 'react-easy-crop'
 // import AvatarEditor from 'react-avatar-editor'
+import { useState, useCallback } from 'react'
+import getCroppedImg from '../components/cropImage'
 
 // Components
 import NavBar from "../components/NavBar";
@@ -44,6 +48,7 @@ class profileView extends Component {
   state = {
     addCourseCode: "",
     addCourseName: "",
+    addCourseColor: "",
     affinitySports: [],
     affinitySportOne: "",
     affinitySportTwo: "",
@@ -103,6 +108,16 @@ class profileView extends Component {
     imageOpen: false,
     loading: true,
     colorOpen: false,
+    colorOpen0: false,
+    colorOpen1: false,
+    colorOpen2: false,
+    colorOpen3: false,
+    colorOpen4: false,
+    courseColor0: "",
+    courseColor1: "",
+    courseColor2: "",
+    courseColor3: "",
+    courseColor4: "",
   };
 
   componentDidMount() {
@@ -124,6 +139,11 @@ class profileView extends Component {
             class: res.data.user.class,
             class_: res.data.user.class,
             courses: res.data.user.courses,
+            // courseColor0: res.data.user.courses['courseColor'][0],
+            // courseColor1: res.data.user.courses['courseColor'][1],
+            // courseColor2: res.data.user.courses['courseColor'][2],
+            // courseColor3: res.data.user.courses['courseColor'][3],
+            // courseColor4: res.data.user.courses['courseColor'][4],
             createdAt: res.data.user.createdAt,
             email: res.data.user.email,
             favoriteBook: res.data.user.favorites.book,
@@ -275,8 +295,24 @@ class profileView extends Component {
   handleFavoritesOpen = () => {
     this.setState({ favoritesOpen: true });
   };
+
   handleColorOpen = () => {
     this.setState({ colorOpen: true });
+  };
+  handleColorOpen0 = () => {
+    this.setState({ colorOpen0: true });
+  };
+  handleColorOpen1 = () => {
+    this.setState({ colorOpen1: true });
+  };
+  handleColorOpen2 = () => {
+    this.setState({ colorOpen2: true });
+  };
+  handleColorOpen3 = () => {
+    this.setState({ colorOpen3: true });
+  };
+  handleColorOpen4 = () => {
+    this.setState({ colorOpen4: true });
   };
 
   handleRemoveOpen = (deleteIndex) => {
@@ -349,6 +385,31 @@ class profileView extends Component {
       colorOpen: false,
     })
   }
+  handleColorClose0 = () => {
+    this.setState({
+      colorOpen0: false,
+    })
+  }
+  handleColorClose1 = () => {
+    this.setState({
+      colorOpen1: false,
+    })
+  }
+  handleColorClose2 = () => {
+    this.setState({
+      colorOpen2: false,
+    })
+  }
+  handleColorClose3 = () => {
+    this.setState({
+      colorOpen3: false,
+    })
+  }
+  handleColorClose4 = () => {
+    this.setState({
+      colorOpen4: false,
+    })
+  }
 
   handleSubmitCourses = () => {
     let firstIndex;
@@ -362,6 +423,7 @@ class profileView extends Component {
     let newCourse = {
       courseCode: this.state.addCourseCode,
       courseName: this.state.addCourseName,
+      courseColor: this.state.addCourseColor
     };
     for (let j = 0; j < 5; j++) {
       if (j !== firstIndex) {
@@ -508,8 +570,20 @@ class profileView extends Component {
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  // handleColorChange = (event, index) => {
-  //   this.setState({ [this.state.courses[index].undefined]: event.target.value })
+  // handleColorChange0 = (event) => {
+  //   this.setState({ courseColor0: event.target.value })
+  // }
+  // handleColorChange1 = (event) => {
+  //   this.setState({ courseColor1: event.target.value })
+  // }
+  // handleColorChange2 = (event) => {
+  //   this.setState({ courseColor2: event.target.value })
+  // }
+  // handleColorChange3 = (event) => {
+  //   this.setState({ courseColor3: event.target.value })
+  // }
+  // handleColorChange4 = (event) => {
+  //   this.setState({ courseColor4: event.target.value })
   // }
 
   toggleDelete = () => {
@@ -548,6 +622,7 @@ class profileView extends Component {
         indexArray.push(j);
       }
     }
+
     return (
       <div>
       {loading && (
@@ -665,10 +740,9 @@ class profileView extends Component {
             </Grid>
             
             {/* new test code */}
-            {/* <Dialog
+            <Dialog
                     overlayStyle={{ backgroundColor: "transparent" }}
                     open={this.state.imageOpen}
-                    onClose={this.handleImageClose}
                   >
                     <DialogTitle
                       style={{ cursor: "move" }}
@@ -676,19 +750,21 @@ class profileView extends Component {
                     >
                       Crop Image
                     </DialogTitle>
-                    <DialogContent>
-                      fill in with cropping mechanism
-                      <MyEditor />
+                    <DialogContent style={{height: "600px", width: "600px"}}>
+                    
+                      <Crop img={this.state.imageUrl} />
+                      {/* <MyEditor /> */}
                     </DialogContent>
                     <DialogActions>
                       <Button
                         // onClick={this.handleCropImage}
+                        onClick={this.handleImageClose}
                         color="secondary"
                       >
-                        Save Crop
+                        Cancel
                       </Button>
                     </DialogActions>
-                  </Dialog> */}
+                  </Dialog>
             <br />
             <Typography variant="h3" align="center">
               {this.state.firstName} {this.state.lastName}{" "}
@@ -1386,13 +1462,13 @@ class profileView extends Component {
                     style={{
                       borderStyle: "solid",
                       borderWidth: "3px",
-                      // borderColor: `${this.state.courses[index].courseColor}`,
-                      borderColor: `${this.state.courses[index].undefined}`,
+                      borderColor: `${this.state.courses[index].courseColor}`,
+                      // borderColor: `${this.state.courses[index].undefined}`,
                       height: "100%",
                     }}
                   >
                     <CardContent>
-                      <Typography variant="h5" style={{color: `${this.state.courses[index].undefined}`}}>
+                      <Typography variant="h5" style={{color: `${this.state.courses[index].courseColor}`}}>
                         {this.state.courses[index].courseCode}
                       </Typography>
                       <Typography variant="body1" >
@@ -1424,8 +1500,8 @@ class profileView extends Component {
                             autoComplete="off"
                             select
                             label="Course Color"
-                            defaultValue={this.state.courses[index].undefined}
-                            // onChange={this.handleColorChange(index)}
+                            defaultValue={this.state.courses[index].courseColor}
+                            // onChange={this.handleColorChange`${index}`}
                             helperText="Please select a course color"
                           >
                             {palette.map((color) => (
@@ -1513,6 +1589,28 @@ class profileView extends Component {
                           fullWidth
                           onChange={this.handleChange}
                         />
+                        <TextField
+                            autofocus
+                            margin="dense"
+                            id="courseColor"
+                            name="addCourseColor"
+                            autoComplete="off"
+                            select
+                            label="Course Color"
+                            onChange={this.handleChange}
+                            helperText="Please select a course color"
+                          >
+                            {palette.map((color) => (
+                              <MenuItem key={color} value={color}>
+                                <Typography
+                                  variant="h6"
+                                  style={{ backgroundColor: color, color: color }}
+                                >
+                                  Color
+                                </Typography>
+                              </MenuItem>
+                            ))}
+                          </TextField>
                       </DialogContent>
                       <DialogActions>
                         <Button

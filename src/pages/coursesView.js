@@ -142,8 +142,8 @@ export class coursesView extends Component {
                 style={{
                   borderStyle: "solid",
                   borderWidth: "4px",
-                  // borderColor: `${this.state.courses[index].courseColor}`,
-                  borderColor: `${this.state.courses[index].undefined}`,
+                  borderColor: `${this.state.courses[index].courseColor}`,
+                  // borderColor: `${this.state.courses[index].undefined}`,
                 }}
               >
                 <ButtonBase
@@ -151,14 +151,14 @@ export class coursesView extends Component {
                     this.handleClick(
                       this.state.courses[index].courseCode,
                       this.state.courses[index].courseName,
-                      // this.state.courses[index].courseName,
-                      this.state.courses[index].undefined,
+                      this.state.courses[index].courseColor,
+                      // this.state.courses[index].undefined,
                     )
                   }
                   style={{width: "100%", height: "100%"}}
                 >
                   <CardContent align="center">
-                    <Typography variant="h4" style={{color: `${this.state.courses[index].undefined}`}}>
+                    <Typography variant="h4" style={{color: `${this.state.courses[index].courseColor}`}}>
                       {this.state.courses[index].courseCode}
                     </Typography>
                     <Typography variant="h5">
