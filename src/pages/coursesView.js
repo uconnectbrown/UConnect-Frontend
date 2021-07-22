@@ -185,7 +185,7 @@ export class coursesView extends Component {
                   }
                   // disabled={!this.state.overlayOn}
                   style={{ width: "100%", height: "100%", position: "relative" }}
-                  
+                  Zindex="0"
                 >
                   <CardContent align="center">
                     <Typography variant="h4" style={{color: `${this.state.courses[index].courseColor}`}}>
@@ -222,7 +222,7 @@ export class coursesView extends Component {
                       // onMouseEnter={() => {this.setState({overlayOn: false})}}
                       // onMouseOut={() => {this.setState({overlayOn: true})}}
                       >
-                      <IconButton style={{marginBottom: "-10px", position: "relative"}} 
+                      <IconButton Zindex="10" style={{marginBottom: "-10px", position: "relative"}} 
                         onClick={(event) => {
                           event.stopPropagation();
                           event.preventDefault();
@@ -248,9 +248,8 @@ export class coursesView extends Component {
                           autoComplete="off"
                           multiline
                           // onChange={this.handleChange}
-                          rows={4}
+                          rows={10}
                           variant="outlined"
-                          fullWidth
                         />
                         </DialogContent>
                         <DialogActions>
