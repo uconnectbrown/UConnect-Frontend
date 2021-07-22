@@ -131,6 +131,7 @@ class studentView extends Component {
               onClick={this.handleBack}
             >
               <BackIcon />
+              <span style={{marginRight: "5px"}} />
               <Typography variant="h6">Back</Typography>
             </IconButton>
             <div
@@ -147,6 +148,7 @@ class studentView extends Component {
                 onClick={this.handleMessage}
               >
                 <Typography variant="h6">Message</Typography>
+                <span style={{marginRight: "5px"}} />
                 <MessageIcon />
               </IconButton>
             </div>

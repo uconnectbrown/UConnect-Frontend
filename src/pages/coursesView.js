@@ -24,6 +24,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Menu from "@material-ui/icons/Menu";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
+import Fab from "@material-ui/core/Fab";
 
 // Body
 export class coursesView extends Component {
@@ -42,6 +43,7 @@ export class coursesView extends Component {
       false,
       false,
     ],
+    overlayOn: true,
   };
 
   componentDidMount() {
@@ -126,7 +128,7 @@ export class coursesView extends Component {
 
   handleNotesOpen = (index) => {
     let newNotesOpen = this.state.notesOpen.slice()
-    newNotesOpen = true
+    newNotesOpen[index] = true
     this.setState({ notesOpen: newNotesOpen });
   };
 
@@ -181,7 +183,9 @@ export class coursesView extends Component {
                       // this.state.courses[index].undefined,
                     )
                   }
-                  style={{ width: "100%", height: "100%" }}
+                  // disabled={!this.state.overlayOn}
+                  style={{ width: "100%", height: "100%", position: "relative" }}
+                  
                 >
                   <CardContent align="center">
                     <Typography variant="h4" style={{color: `${this.state.courses[index].courseColor}`}}>
@@ -214,8 +218,16 @@ export class coursesView extends Component {
                         ))}
                       </AvatarGroup>
                     )}
-                    <Tooltip title="Course notes" placement="right">
-                      <IconButton style={{marginBottom: "-10px"}}>
+                    <Tooltip title="Course notes" placement="right"
+                      // onMouseEnter={() => {this.setState({overlayOn: false})}}
+                      // onMouseOut={() => {this.setState({overlayOn: true})}}
+                      >
+                      <IconButton style={{marginBottom: "-10px", position: "relative"}} 
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          event.preventDefault();
+                          this.handleNotesOpen(index);
+                        }}>
                         <Menu />
                       </IconButton>
                     </Tooltip>

@@ -14,7 +14,9 @@ import GridListTile from "@material-ui/core/GridListTile";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
+import BackIcon from "@material-ui/icons/ArrowBack";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -122,14 +124,14 @@ class courseView extends Component {
         <Typography variant="h3" align="center" style={{ color: `${color}` }}>
           {code}: {name}
         </Typography>
-        <Button
+        <IconButton
           variant="contained"
-          color="secondary"
+          style={{color: `${color}`}}
           component={Link}
           to="/coursesView"
         >
-          Back
-        </Button>
+          <BackIcon style={{marginRight: "3px"}} />Back
+        </IconButton>
         <Typography align="center">
           <TextField
             id="searchCriteria"
