@@ -303,7 +303,7 @@ class profileView extends Component {
     let newColorOpen = this.state.colorOpen.slice()
     newColorOpen[index] = true
     this.setState({ colorOpen: newColorOpen });
-    
+
     // this.setState(update(this.state, {
     //   courseColor: {
     //     [index]: {
@@ -344,7 +344,7 @@ class profileView extends Component {
       return axios.get(`delete/${deleteCourse}`);
     });
     this.setState({ removeOpen: false });
-    this.setState({ delete: false });
+    // this.setState({ delete: false });
   };
 
   handleAddClose = () => {
@@ -1574,14 +1574,17 @@ class profileView extends Component {
                         </DialogActions>
                       </Dialog>
                       {this.state.delete && (
+                        <div>
+                        <br />
                         <IconButton
                           size="large"
                           color="primary"
                           onClick={() => this.handleRemoveOpen(index)}
-                          style={{marginBottom: "-30px", marginTop: "10px"}}
+                          style={{marginBottom: "-30px", marginTop: "-15px"}}
                         >
                           <DeleteIcon fontSize="large" />
                         </IconButton>
+                        </div>
                       )}
                     </CardContent>
                   </Card>
@@ -1595,6 +1598,7 @@ class profileView extends Component {
                       variant="contained"
                       color="secondary"
                       onClick={this.handleAddOpen}
+                      style={{marginTop: "10px"}}
                     >
                       Add <span style={{marginRight: "5px"}}/> <AddIcon />
                     </IconButton>
@@ -1670,9 +1674,16 @@ class profileView extends Component {
                 )}
                 <br />
 
-                {numCourses > 0 && (
+                {numCourses > 2 && (
                   <div>
+                    {numCourses === 5 && (
+                      <div>
+                        <br />
+                        <br />
+                      </div>
+                    )}
                     {!this.state.delete && (
+                      <div>
                       <Tooltip title="Remove course" placement="right">
                       <IconButton
                         variant="contained"
@@ -1683,6 +1694,7 @@ class profileView extends Component {
                         Remove <span style={{marginRight: "5px"}}/> <DeleteIcon />
                       </IconButton>
                       </Tooltip>
+                      </div>
                     )}
                     {this.state.delete && (
                       <Button
