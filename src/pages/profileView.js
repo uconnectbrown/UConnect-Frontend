@@ -3,12 +3,12 @@ import axios from "axios";
 import ImageCropper from "../components/ImageCropper";
 import Avatar from "../components/Avatar";
 import MyEditor from "../components/MyEditor";
-import Crop from "../components/Crop";
-import Cropper from 'react-easy-crop'
+// import Crop from "../components/Crop";
+// import Cropper from "react-easy-crop";
 // import AvatarEditor from 'react-avatar-editor'
-import { useState, useCallback } from 'react'
-import getCroppedImg from '../components/cropImage'
-import update from 'react-addons-update';
+import { useState, useCallback } from "react";
+import getCroppedImg from "../components/cropImage";
+// import update from "react-addons-update";
 
 // Components
 import NavBar from "../components/NavBar";
@@ -108,13 +108,7 @@ class profileView extends Component {
     favoritesOpen: false,
     imageOpen: false,
     loading: true,
-    colorOpen: [
-      false,
-      false,
-      false,
-      false,
-      false,
-    ],
+    colorOpen: [false, false, false, false, false],
     courseColor: "",
     courseColor0: "",
     courseColor1: "",
@@ -222,7 +216,7 @@ class profileView extends Component {
           //   "course5",
           //   res.data.user.courses[4].courseCode.replace(/\s/g, "")
           // );
-          
+
           localStorage.removeItem("courseCode");
           localStorage.removeItem("courseName");
           localStorage.removeItem("codeSpace");
@@ -230,7 +224,7 @@ class profileView extends Component {
           localStorage.removeItem("studentName");
           localStorage.removeItem("studentImage");
           localStorage.removeItem("roomId");
-          this.setState({loading: false})
+          this.setState({ loading: false });
           // TO-DO: reconsider localStorage
           return axios.get("/update");
         })
@@ -243,10 +237,10 @@ class profileView extends Component {
   handleImageChange = (event) => {
     event.preventDefault();
     const image = event.target.files[0];
-    console.log(image)
+    console.log(image);
     const formData = new FormData();
     formData.append("image", image, image.name);
-    console.log(formData)
+    console.log(formData);
     axios
       .post("/image", formData)
       .then((data) => {
@@ -300,8 +294,8 @@ class profileView extends Component {
   };
 
   handleColorOpen = (index) => {
-    let newColorOpen = this.state.colorOpen.slice()
-    newColorOpen[index] = true
+    let newColorOpen = this.state.colorOpen.slice();
+    newColorOpen[index] = true;
     this.setState({ colorOpen: newColorOpen });
 
     // this.setState(update(this.state, {
@@ -355,13 +349,16 @@ class profileView extends Component {
   };
 
   handleGroupsClose = () => {
-    this.setState({ groupOpen: false, 
-      groupOne: this.state.group1, 
-      groupTwo: this.state.group2, 
-      groupThree: this.state.group3 });
+    this.setState({
+      groupOpen: false,
+      groupOne: this.state.group1,
+      groupTwo: this.state.group2,
+      groupThree: this.state.group3,
+    });
   };
   handleInterestsClose = () => {
-    this.setState({ interestsOpen: false, 
+    this.setState({
+      interestsOpen: false,
       interestOne: this.state.interest1,
       interestTwo: this.state.interest2,
       interestThree: this.state.interest3,
@@ -369,66 +366,65 @@ class profileView extends Component {
       interestFive: this.state.interest5,
       affinitySportOne: this.state.affinitySport1,
       affinitySportTwo: this.state.affinitySport2,
-      affinitySportThree: this.state.affinitySport3 });
+      affinitySportThree: this.state.affinitySport3,
+    });
   };
   handleFavoritesClose = () => {
-    this.setState({ favoritesOpen: false, 
+    this.setState({
+      favoritesOpen: false,
       favoriteBook: this.state.favBook,
       favoriteMovie: this.state.favMovie,
       favoriteShow: this.state.favShow,
-      favoriteArtist: this.state.favArtist });
+      favoriteArtist: this.state.favArtist,
+    });
   };
   handleBasicClose = () => {
-    this.setState({ basicOpen: false,
-    firstName: this.state.firstName_,
-    lastName: this.state.lastName_,
-    preferredPronouns: this.state.preferredPronouns_,
-    class: this.state.class_,
-    majorOne: this.state.major1,
-    majorTwo: this.state.major2,
-    majorThree: this.state.major3,
-    varsitySportOne: this.state.varsitySport1,
-    varsitySportTwo: this.state.varsitySport2,
-    greekLife: this.state.greekLife_,
-    bio: this.state.bio_ });
+    this.setState({
+      basicOpen: false,
+      firstName: this.state.firstName_,
+      lastName: this.state.lastName_,
+      preferredPronouns: this.state.preferredPronouns_,
+      class: this.state.class_,
+      majorOne: this.state.major1,
+      majorTwo: this.state.major2,
+      majorThree: this.state.major3,
+      varsitySportOne: this.state.varsitySport1,
+      varsitySportTwo: this.state.varsitySport2,
+      greekLife: this.state.greekLife_,
+      bio: this.state.bio_,
+    });
   };
 
   handleColorClose = () => {
     this.setState({
-      colorOpen: [
-        false,
-        false,
-        false,
-        false,
-        false,
-      ]
-    })
-  }
+      colorOpen: [false, false, false, false, false],
+    });
+  };
   handleColorClose0 = () => {
     this.setState({
       colorOpen0: false,
-    })
-  }
+    });
+  };
   handleColorClose1 = () => {
     this.setState({
       colorOpen1: false,
-    })
-  }
+    });
+  };
   handleColorClose2 = () => {
     this.setState({
       colorOpen2: false,
-    })
-  }
+    });
+  };
   handleColorClose3 = () => {
     this.setState({
       colorOpen3: false,
-    })
-  }
+    });
+  };
   handleColorClose4 = () => {
     this.setState({
       colorOpen4: false,
-    })
-  }
+    });
+  };
 
   handleSubmitCourses = () => {
     let firstIndex;
@@ -442,7 +438,7 @@ class profileView extends Component {
     let newCourse = {
       courseCode: this.state.addCourseCode,
       courseName: this.state.addCourseName,
-      courseColor: this.state.addCourseColor
+      courseColor: this.state.addCourseColor,
     };
     for (let j = 0; j < 5; j++) {
       if (j !== firstIndex) {
@@ -462,7 +458,7 @@ class profileView extends Component {
     let newCourse = {
       courseCode: this.state.courses[index].courseCode,
       courseName: this.state.courses[index].courseName,
-      courseColor: this.state.courseColor
+      courseColor: this.state.courseColor,
     };
     for (let j = 0; j < 5; j++) {
       if (j !== index) {
@@ -474,13 +470,7 @@ class profileView extends Component {
       this.setState({ courses: courseList });
       return axios.get("/update");
     });
-    this.setState({ colorOpen: [
-      false,
-      false,
-      false,
-      false,
-      false,
-    ] });
+    this.setState({ colorOpen: [false, false, false, false, false] });
   };
 
   handleSubmitGroups = () => {
@@ -488,7 +478,7 @@ class profileView extends Component {
       group1: this.state.groupOne,
       group2: this.state.groupTwo,
       group3: this.state.groupThree,
-    })
+    });
     let groupList = [
       this.state.groupOne,
       this.state.groupTwo,
@@ -516,7 +506,7 @@ class profileView extends Component {
       affinitySport1: this.state.affinitySportOne,
       affinitySport2: this.state.affinitySportTwo,
       affinitySport3: this.state.affinitySportThree,
-    })
+    });
     let interestsList = [
       this.state.interestOne,
       this.state.interestTwo,
@@ -553,7 +543,7 @@ class profileView extends Component {
       favMovie: this.state.favoriteMovie,
       favShow: this.state.favoriteShow,
       favArtist: this.state.favoriteArtist,
-    })
+    });
     let favorites = {
       book: this.state.favoriteBook,
       movie: this.state.favoriteMovie,
@@ -586,7 +576,7 @@ class profileView extends Component {
       varsitySport2: this.state.varsitySportTwo,
       greekLife_: this.state.greekLife,
       bio_: this.state.bio,
-    })
+    });
     let newBasicInfo = {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -670,24 +660,24 @@ class profileView extends Component {
 
     return (
       <div>
-      {loading && (
-        <div align="center">
-          <NavBar />
-          <br />
-          <CircularProgress size={100} />
-          <br />
-          <br />
-          <Typography variant="h4">Fetching user data...</Typography>
-        </div>
-      )}
-      {!loading && (
-      <div>
-        <NavBar />
-        <Card raised>
-          <CardContent align="center">
-            <Grid container spacing={1}>
-              <Grid item sm>
-              {/* <img
+        {loading && (
+          <div align="center">
+            <NavBar />
+            <br />
+            <CircularProgress size={100} />
+            <br />
+            <br />
+            <Typography variant="h4">Fetching user data...</Typography>
+          </div>
+        )}
+        {!loading && (
+          <div>
+            <NavBar />
+            <Card raised>
+              <CardContent align="center">
+                <Grid container spacing={1}>
+                  <Grid item sm>
+                    {/* <img
               alt="Profile"
               src={this.state.imageUrl}
               style={{
@@ -717,382 +707,115 @@ class profileView extends Component {
                 <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
               </div>
             )} */}
-              </Grid>
-              <Grid item sm>
-              <img
-              alt="Profile"
-              src={this.state.imageUrl}
-              style={{
-                width: 375,
-                height: 375,
-                objectFit: "cover",
-                borderRadius: "10%",
-                borderStyle: "solid",
-                borderColor: "red",
-                borderWidth: "2px",
-              }}
-            />
-            <input
-              type="file"
-              id="imageInput"
-              hidden="hidden"
-              onChange={this.handleImageChange}
-            />
-            <br />
-            <Tooltip title="Edit profile picture" placement="right">
-              <IconButton onClick={this.handleEditPicture} className="button">
-                <PhotoIcon color="secondary" />
-              </IconButton>
-            </Tooltip>
-            {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
-              <div>
-                <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
-              </div>
-            )}
-              </Grid>
-              <Grid item sm>
-              {/* <img
-              alt="Profile"
-              src={this.state.imageUrl}
-              style={{
-                width: 375,
-                height: 375,
-                objectFit: "cover",
-                borderRadius: "10%",
-                borderStyle: "solid",
-                borderColor: "red",
-                borderWidth: "2px",
-              }}
-            />
-            <input
-              type="file"
-              id="imageInput"
-              hidden="hidden"
-              onChange={this.handleImageChange}
-            />
-            <br />
-            <Tooltip title="Edit profile picture" placement="right">
-              <IconButton onClick={this.handleEditPicture} className="button">
-                <PhotoIcon color="secondary" />
-              </IconButton>
-            </Tooltip>
-            {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
-              <div>
-                <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
-              </div>
-            )} */}
-              </Grid>
-            </Grid>
-            
-            {/* new test code */}
-            <Dialog
-                    overlayStyle={{ backgroundColor: "transparent" }}
-                    open={this.state.imageOpen}
-                  >
-                    <DialogTitle
-                      style={{ cursor: "move" }}
-                      id="draggable-dialog-title"
-                    >
-                      Crop Image
-                    </DialogTitle>
-                    <DialogContent style={{height: "600px", width: "600px"}}>
-                    
-                      <Crop img={this.state.imageUrl} />
-                      {/* <MyEditor /> */}
-                    </DialogContent>
-                    <DialogActions>
-                      <Button
-                        // onClick={this.handleCropImage}
-                        onClick={this.handleImageClose}
-                        color="secondary"
+                  </Grid>
+                  <Grid item sm>
+                    <img
+                      alt="Profile"
+                      src={this.state.imageUrl}
+                      style={{
+                        width: 375,
+                        height: 375,
+                        objectFit: "cover",
+                        borderRadius: "10%",
+                        borderStyle: "solid",
+                        borderColor: "red",
+                        borderWidth: "2px",
+                      }}
+                    />
+                    <input
+                      type="file"
+                      id="imageInput"
+                      hidden="hidden"
+                      onChange={this.handleImageChange}
+                    />
+                    <br />
+                    <Tooltip title="Edit profile picture" placement="right">
+                      <IconButton
+                        onClick={this.handleEditPicture}
+                        className="button"
                       >
-                        Cancel
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
+                        <PhotoIcon color="secondary" />
+                      </IconButton>
+                    </Tooltip>
+                    {this.state.imageUrl ===
+                      "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
+                      <div>
+                        <Typography
+                          bold
+                          variant="h5"
+                          align="center"
+                          color="primary"
+                        >
+                          Please add an image to complete your profile.
+                        </Typography>
+                      </div>
+                    )}
+                  </Grid>
+                  <Grid item sm>
+                    {/* <img
+              alt="Profile"
+              src={this.state.imageUrl}
+              style={{
+                width: 375,
+                height: 375,
+                objectFit: "cover",
+                borderRadius: "10%",
+                borderStyle: "solid",
+                borderColor: "red",
+                borderWidth: "2px",
+              }}
+            />
+            <input
+              type="file"
+              id="imageInput"
+              hidden="hidden"
+              onChange={this.handleImageChange}
+            />
             <br />
-            <Typography variant="h3" align="center">
-              {this.state.firstName} {this.state.lastName}{" "}
-              <Tooltip title="Edit basic info" placement="right">
-                <IconButton onClick={this.handleBasicOpen} className="button">
-                  <EditIcon color="secondary" />
-                </IconButton>
-              </Tooltip>
-              <Dialog
-                overlayStyle={{ backgroundColor: "transparent" }}
-                open={this.state.basicOpen}
-              >
-                <DialogTitle
-                  style={{ cursor: "move" }}
-                  id="draggable-dialog-title"
+            <Tooltip title="Edit profile picture" placement="right">
+              <IconButton onClick={this.handleEditPicture} className="button">
+                <PhotoIcon color="secondary" />
+              </IconButton>
+            </Tooltip>
+            {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
+              <div>
+                <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
+              </div>
+            )} */}
+                  </Grid>
+                </Grid>
+
+                {/* new test code */}
+                <Dialog
+                  overlayStyle={{ backgroundColor: "transparent" }}
+                  open={this.state.imageOpen}
                 >
-                  Edit Basic Info
-                </DialogTitle>
-                <DialogContent>
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    id="firstName"
-                    autoComplete="off"
-                    name="firstName"
-                    label="First Name"
-                    defaultValue={this.state.firstName}
-                    required
-                    fullWidth
-                    type="text"
-                    onChange={this.handleChange}
-                  />
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    id="lastName"
-                    autoComplete="off"
-                    name="lastName"
-                    label="Last Name"
-                    defaultValue={this.state.lastName}
-                    required
-                    fullWidth
-                    type="text"
-                    onChange={this.handleChange}
-                  />
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    id="preferredPronouns"
-                    name="preferredPronouns"
-                    select
-                    fullWidth
-                    label="Preferred Pronouns"
-                    defaultValue={this.state.preferredPronouns}
-                    onChange={this.handleChange}
+                  <DialogTitle
+                    style={{ cursor: "move" }}
+                    id="draggable-dialog-title"
                   >
-                    <MenuItem key="he/him" value="he/him">
-                      he/him
-                    </MenuItem>
-                    <MenuItem key="she/her" value="she/her">
-                      she/her
-                    </MenuItem>
-                    <MenuItem key="they/them" value="they/them">
-                      they/them
-                    </MenuItem>
-                    <MenuItem key="ze/hir" value="ze/hir">
-                      ze/hir
-                    </MenuItem>
-                    <MenuItem key="other" value="other">
-                      other
-                    </MenuItem>
-                  </TextField>
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    id="class"
-                    name="class"
-                    select
-                    label="Graduating Class"
-                    defaultValue={this.state.class}
-                    onChange={this.handleChange}
-                    required
-                    fullWidth
-                  >
-                    <MenuItem key="2021.5" value="2021.5">
-                      2021.5
-                    </MenuItem>
-                    <MenuItem key="2022" value="2022">
-                      2022
-                    </MenuItem>
-                    <MenuItem key="2022.5" value="2022.5">
-                      2022.5
-                    </MenuItem>
-                    <MenuItem key="2023" value="2023">
-                      2023
-                    </MenuItem>
-                    <MenuItem key="2023.5" value="2023.5">
-                      2023.5
-                    </MenuItem>
-                    <MenuItem key="2024" value="2024">
-                      2024
-                    </MenuItem>
-                    <MenuItem key="2024.5" value="2024.5">
-                      2024.5
-                    </MenuItem>
-                    <MenuItem key="2025" value="2025">
-                      2025
-                    </MenuItem>
-                  </TextField>
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    name="majorOne"
-                    autoComplete="off"
-                    label="First Concentration"
-                    defaultValue={this.state.majorOne}
-                    fullWidth
-                    required
-                    onChange={this.handleChange}
-                    InputProps={{
-                      endAdornment: majorList,
-                      inputProps: {
-                        list: "majors",
-                      },
-                    }}
-                  />
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    name="majorTwo"
-                    autoComplete="off"
-                    label="Second Concentration"
-                    defaultValue={this.state.majorTwo}
-                    fullWidth
-                    onChange={this.handleChange}
-                    InputProps={{
-                      endAdornment: majorList,
-                      inputProps: {
-                        list: "majors",
-                      },
-                    }}
-                  />
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    name="majorThree"
-                    autoComplete="off"
-                    label="Third Concentration"
-                    defaultValue={this.state.majorThree}
-                    fullWidth
-                    onChange={this.handleChange}
-                    InputProps={{
-                      endAdornment: majorList,
-                      inputProps: {
-                        list: "majors",
-                      },
-                    }}
-                  />
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    name="varsitySportOne"
-                    autoComplete="off"
-                    label="First Varsity Sport"
-                    defaultValue={this.state.varsitySportOne}
-                    fullWidth
-                    onChange={this.handleChange}
-                    InputProps={{
-                      endAdornment: varsitySports,
-                      inputProps: {
-                        list: "varsitySports",
-                      },
-                    }}
-                  />
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    name="varsitySportTwo"
-                    autoComplete="off"
-                    label="Second Varsity Sport"
-                    defaultValue={this.state.varsitySportTwo}
-                    fullWidth
-                    onChange={this.handleChange}
-                    InputProps={{
-                      endAdornment: varsitySports,
-                      inputProps: {
-                        list: "varsitySports",
-                      },
-                    }}
-                  />
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    name="greekLife"
-                    autoComplete="off"
-                    label="Greek Organization"
-                    defaultValue={this.state.greekLife}
-                    fullWidth
-                    onChange={this.handleChange}
-                    InputProps={{
-                      endAdornment: greekLife,
-                      inputProps: {
-                        list: "greekLife",
-                      },
-                    }}
-                  />
-                  <TextField
-                    autofocus
-                    margin="dense"
-                    id="bio"
-                    name="bio"
-                    label="Bio"
-                    defaultValue={this.state.bio}
-                    multiline
-                    onChange={this.handleChange}
-                    rows={2}
-                    fullWidth
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={this.handleBasicClose} color="secondary"
-                  disabled={this.state.firstName === "" || this.state.lastName === "" || this.state.majorOne === "" || this.state.class === ""}>
-                    Cancel
-                  </Button>
-                  <Button onClick={this.handleSubmitBasic} color="secondary" 
-                  disabled={this.state.firstName === "" || this.state.lastName === "" || this.state.majorOne === "" || this.state.class === ""}>
-                    Save Changes
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </Typography>
-            <Typography variant="h5">
-              {this.state.preferredPronouns &&
-                `(${this.state.preferredPronouns})`}
-            </Typography>
-            <br />
-            <Card
-              variant="outlined"
-              style={{
-                maxWidth: 450,
-                borderStyle: "solid",
-                borderWidth: "2px",
-                borderColor: "red",
-              }}
-            >
-              <CardContent>
-                <Typography variant="body1">
-                  Class of {this.state.class}
-                </Typography>
-                <Typography variant="body1">
-                  Concentration(s): {this.state.majorOne}
-                  {this.state.majorTwo && `, ${this.state.majorTwo}`}
-                  {this.state.majorThree && `, ${this.state.majorThree}`}
-                </Typography>
-                {this.state.varsitySportOne && (
-                  <Typography variant="body1">
-                    Sport(s): {this.state.varsitySportOne}
-                    {this.state.varsitySportTwo &&
-                      `, ${this.state.varsitySportTwo}`}
-                  </Typography>
-                )}
-                {this.state.greekLife && (
-                  <Typography variant="body1">
-                    Greek Organization: {this.state.greekLife}
-                  </Typography>
-                )}
+                    Crop Image
+                  </DialogTitle>
+                  <DialogContent style={{ height: "600px", width: "600px" }}>
+                    {/* <Crop img={this.state.imageUrl} /> */}
+                    {/* <MyEditor /> */}
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      // onClick={this.handleCropImage}
+                      onClick={this.handleImageClose}
+                      color="secondary"
+                    >
+                      Cancel
+                    </Button>
+                  </DialogActions>
+                </Dialog>
                 <br />
-                <Typography variant="body1">{this.state.bio}</Typography>
-              </CardContent>
-            </Card>
-            <br />
-          </CardContent>
-        </Card>
-        <br />
-        <Grid container spacing={2}>
-          <Grid item component="Card" sm>
-            <Card raised style={{ height: "100%" }}>
-              <CardContent align="center">
-                <Typography variant="h3">
-                  Groups{" "}
-                  <Tooltip title="Edit groups" placement="right">
+                <Typography variant="h3" align="center">
+                  {this.state.firstName} {this.state.lastName}{" "}
+                  <Tooltip title="Edit basic info" placement="right">
                     <IconButton
-                      onClick={this.handleGroupsOpen}
+                      onClick={this.handleBasicOpen}
                       className="button"
                     >
                       <EditIcon color="secondary" />
@@ -1100,23 +823,24 @@ class profileView extends Component {
                   </Tooltip>
                   <Dialog
                     overlayStyle={{ backgroundColor: "transparent" }}
-                    open={this.state.groupOpen}
+                    open={this.state.basicOpen}
                   >
                     <DialogTitle
                       style={{ cursor: "move" }}
                       id="draggable-dialog-title"
                     >
-                      Edit Groups
+                      Edit Basic Info
                     </DialogTitle>
                     <DialogContent>
                       <TextField
                         autofocus
                         margin="dense"
-                        id="groupOne"
+                        id="firstName"
                         autoComplete="off"
-                        name="groupOne"
-                        label="Group 1"
-                        defaultValue={this.state.groupOne}
+                        name="firstName"
+                        label="First Name"
+                        defaultValue={this.state.firstName}
+                        required
                         fullWidth
                         type="text"
                         onChange={this.handleChange}
@@ -1124,11 +848,12 @@ class profileView extends Component {
                       <TextField
                         autofocus
                         margin="dense"
-                        id="groupTwo"
+                        id="lastName"
                         autoComplete="off"
-                        name="groupTwo"
-                        label="Group 2"
-                        defaultValue={this.state.groupTwo}
+                        name="lastName"
+                        label="Last Name"
+                        defaultValue={this.state.lastName}
+                        required
                         fullWidth
                         type="text"
                         onChange={this.handleChange}
@@ -1136,584 +861,926 @@ class profileView extends Component {
                       <TextField
                         autofocus
                         margin="dense"
-                        id="groupThree"
-                        autoComplete="off"
-                        name="groupThree"
-                        label="Group 3"
-                        defaultValue={this.state.groupThree}
+                        id="preferredPronouns"
+                        name="preferredPronouns"
+                        select
                         fullWidth
-                        type="text"
+                        label="Preferred Pronouns"
+                        defaultValue={this.state.preferredPronouns}
                         onChange={this.handleChange}
+                      >
+                        <MenuItem key="he/him" value="he/him">
+                          he/him
+                        </MenuItem>
+                        <MenuItem key="she/her" value="she/her">
+                          she/her
+                        </MenuItem>
+                        <MenuItem key="they/them" value="they/them">
+                          they/them
+                        </MenuItem>
+                        <MenuItem key="ze/hir" value="ze/hir">
+                          ze/hir
+                        </MenuItem>
+                        <MenuItem key="other" value="other">
+                          other
+                        </MenuItem>
+                      </TextField>
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="class"
+                        name="class"
+                        select
+                        label="Graduating Class"
+                        defaultValue={this.state.class}
+                        onChange={this.handleChange}
+                        required
+                        fullWidth
+                      >
+                        <MenuItem key="2021.5" value="2021.5">
+                          2021.5
+                        </MenuItem>
+                        <MenuItem key="2022" value="2022">
+                          2022
+                        </MenuItem>
+                        <MenuItem key="2022.5" value="2022.5">
+                          2022.5
+                        </MenuItem>
+                        <MenuItem key="2023" value="2023">
+                          2023
+                        </MenuItem>
+                        <MenuItem key="2023.5" value="2023.5">
+                          2023.5
+                        </MenuItem>
+                        <MenuItem key="2024" value="2024">
+                          2024
+                        </MenuItem>
+                        <MenuItem key="2024.5" value="2024.5">
+                          2024.5
+                        </MenuItem>
+                        <MenuItem key="2025" value="2025">
+                          2025
+                        </MenuItem>
+                      </TextField>
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        name="majorOne"
+                        autoComplete="off"
+                        label="First Concentration"
+                        defaultValue={this.state.majorOne}
+                        fullWidth
+                        required
+                        onChange={this.handleChange}
+                        InputProps={{
+                          endAdornment: majorList,
+                          inputProps: {
+                            list: "majors",
+                          },
+                        }}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        name="majorTwo"
+                        autoComplete="off"
+                        label="Second Concentration"
+                        defaultValue={this.state.majorTwo}
+                        fullWidth
+                        onChange={this.handleChange}
+                        InputProps={{
+                          endAdornment: majorList,
+                          inputProps: {
+                            list: "majors",
+                          },
+                        }}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        name="majorThree"
+                        autoComplete="off"
+                        label="Third Concentration"
+                        defaultValue={this.state.majorThree}
+                        fullWidth
+                        onChange={this.handleChange}
+                        InputProps={{
+                          endAdornment: majorList,
+                          inputProps: {
+                            list: "majors",
+                          },
+                        }}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        name="varsitySportOne"
+                        autoComplete="off"
+                        label="First Varsity Sport"
+                        defaultValue={this.state.varsitySportOne}
+                        fullWidth
+                        onChange={this.handleChange}
+                        InputProps={{
+                          endAdornment: varsitySports,
+                          inputProps: {
+                            list: "varsitySports",
+                          },
+                        }}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        name="varsitySportTwo"
+                        autoComplete="off"
+                        label="Second Varsity Sport"
+                        defaultValue={this.state.varsitySportTwo}
+                        fullWidth
+                        onChange={this.handleChange}
+                        InputProps={{
+                          endAdornment: varsitySports,
+                          inputProps: {
+                            list: "varsitySports",
+                          },
+                        }}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        name="greekLife"
+                        autoComplete="off"
+                        label="Greek Organization"
+                        defaultValue={this.state.greekLife}
+                        fullWidth
+                        onChange={this.handleChange}
+                        InputProps={{
+                          endAdornment: greekLife,
+                          inputProps: {
+                            list: "greekLife",
+                          },
+                        }}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="bio"
+                        name="bio"
+                        label="Bio"
+                        defaultValue={this.state.bio}
+                        multiline
+                        onChange={this.handleChange}
+                        rows={2}
+                        fullWidth
                       />
                     </DialogContent>
                     <DialogActions>
-                      <Button onClick={this.handleGroupsClose} color="secondary">
+                      <Button
+                        onClick={this.handleBasicClose}
+                        color="secondary"
+                        disabled={
+                          this.state.firstName === "" ||
+                          this.state.lastName === "" ||
+                          this.state.majorOne === "" ||
+                          this.state.class === ""
+                        }
+                      >
                         Cancel
                       </Button>
                       <Button
-                        onClick={this.handleSubmitGroups}
+                        onClick={this.handleSubmitBasic}
                         color="secondary"
+                        disabled={
+                          this.state.firstName === "" ||
+                          this.state.lastName === "" ||
+                          this.state.majorOne === "" ||
+                          this.state.class === ""
+                        }
                       >
                         Save Changes
                       </Button>
                     </DialogActions>
                   </Dialog>
                 </Typography>
-                <hr />
-                <br />
-                {[
-                  this.state.groupOne,
-                  this.state.groupTwo,
-                  this.state.groupThree,
-                ].map((group) => (
-                  <Typography variant="body1">{group}</Typography>
-                ))}
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item component="Card" sm>
-            <Card raised style={{ height: "100%" }}>
-              <CardContent align="center">
-                <Typography variant="h3">
-                  Interests{" "}
-                  <Tooltip title="Edit interests" placement="right">
-                    <IconButton
-                      onClick={this.handleInterestsOpen}
-                      className="button"
-                    >
-                      <EditIcon color="secondary" />
-                    </IconButton>
-                  </Tooltip>
-                  <Dialog
-                    overlayStyle={{ backgroundColor: "transparent" }}
-                    open={this.state.interestsOpen}
-                  >
-                    <DialogTitle
-                      style={{ cursor: "move" }}
-                      id="draggable-dialog-title"
-                    >
-                      Edit Interests
-                    </DialogTitle>
-                    <DialogContent>
-                      <Typography variant="h5">General</Typography>
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="interestOne"
-                        name="interestOne"
-                        autoComplete="off"
-                        label="1st Interest"
-                        defaultValue={this.state.interestOne}
-                        fullWidth
-                        required
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="interestTwo"
-                        name="interestTwo"
-                        autoComplete="off"
-                        label="2nd Interest"
-                        defaultValue={this.state.interestTwo}
-                        fullWidth
-                        required
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="interestThree"
-                        name="interestThree"
-                        autoComplete="off"
-                        label="3rd Interest"
-                        defaultValue={this.state.interestThree}
-                        fullWidth
-                        required
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="interestFour"
-                        name="interestFour"
-                        autoComplete="off"
-                        label="4th Interest"
-                        defaultValue={this.state.interestFour}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="interestFive"
-                        name="interestFive"
-                        autoComplete="off"
-                        label="5th Interest"
-                        defaultValue={this.state.interestFive}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <br />
-                      <br />
-                      <Typography variant="h5">Athletic</Typography>
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="affinitySportOne"
-                        name="affinitySportOne"
-                        autoComplete="off"
-                        label="1st Interest"
-                        defaultValue={this.state.affinitySportOne}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="affinitySportTwo"
-                        name="affinitySportTwo"
-                        autoComplete="off"
-                        label="2nd Interest"
-                        defaultValue={this.state.affinitySportTwo}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="affinitySportThree"
-                        name="affinitySportThree"
-                        autoComplete="off"
-                        label="3rd Interest"
-                        defaultValue={this.state.affinitySportThree}
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleInterestsClose} color="secondary"
-                      disabled={this.state.interestOne === "" || this.state.interestTwo === "" || this.state.interestThree === ""}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={this.handleSubmitInterests}
-                        color="secondary"
-                        disabled={this.state.interestOne === "" || this.state.interestTwo === "" || this.state.interestThree === ""}
-                      >
-                        Save Changes
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
+                <Typography variant="h5">
+                  {this.state.preferredPronouns &&
+                    `(${this.state.preferredPronouns})`}
                 </Typography>
-                <hr />
                 <br />
-
-                <Typography variant="h5">General</Typography>
-                <Grid container>
-                  <Grid item sm>
+                <Card
+                  variant="outlined"
+                  style={{
+                    maxWidth: 450,
+                    borderStyle: "solid",
+                    borderWidth: "2px",
+                    borderColor: "red",
+                  }}
+                >
+                  <CardContent>
                     <Typography variant="body1">
-                      • {this.state.interestOne}
+                      Class of {this.state.class}
                     </Typography>
                     <Typography variant="body1">
-                      • {this.state.interestThree}
+                      Concentration(s): {this.state.majorOne}
+                      {this.state.majorTwo && `, ${this.state.majorTwo}`}
+                      {this.state.majorThree && `, ${this.state.majorThree}`}
                     </Typography>
-                    {this.state.interestFive && (
+                    {this.state.varsitySportOne && (
                       <Typography variant="body1">
-                        • {this.state.interestFive}
+                        Sport(s): {this.state.varsitySportOne}
+                        {this.state.varsitySportTwo &&
+                          `, ${this.state.varsitySportTwo}`}
                       </Typography>
                     )}
-                  </Grid>
-                  <Grid item sm>
-                    <Typography variant="body1">
-                      • {this.state.interestTwo}
-                    </Typography>
-                    {this.state.interestFour && (
+                    {this.state.greekLife && (
                       <Typography variant="body1">
-                        • {this.state.interestFour}
+                        Greek Organization: {this.state.greekLife}
                       </Typography>
                     )}
-                  </Grid>
-                </Grid>
-
+                    <br />
+                    <Typography variant="body1">{this.state.bio}</Typography>
+                  </CardContent>
+                </Card>
                 <br />
-
-                {(this.state.affinitySportOne ||
-                  this.state.affinitySportTwo ||
-                  this.state.affinitySportThree) && (
-                  <Typography variant="h5">Athletic</Typography>
-                )}
-                <Grid container>
-                  <Grid item sm>
-                    {this.state.affinitySportOne && (
-                      <Typography variant="body1">
-                        • {this.state.affinitySportOne}
-                      </Typography>
-                    )}
-                    {this.state.affinitySportThree && (
-                      <Typography variant="body1">
-                        • {this.state.affinitySportThree}
-                      </Typography>
-                    )}
-                  </Grid>
-                  <Grid item sm>
-                    {this.state.affinitySportTwo && (
-                      <Typography variant="body1">
-                        • {this.state.affinitySportTwo}
-                      </Typography>
-                    )}
-                  </Grid>
-                </Grid>
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item component="Card" sm>
-            <Card raised style={{ height: "100%" }}>
-              <CardContent align="center">
-                <Typography variant="h3">
-                  Favorites{" "}
-                  <Tooltip title="Edit favorites" placement="right">
-                    <IconButton
-                      onClick={this.handleFavoritesOpen}
-                      className="button"
-                    >
-                      <EditIcon color="secondary" />
-                    </IconButton>
-                  </Tooltip>
-                  <Dialog
-                    overlayStyle={{ backgroundColor: "transparent" }}
-                    open={this.state.favoritesOpen}
-                  >
-                    <DialogTitle
-                      style={{ cursor: "move" }}
-                      id="draggable-dialog-title"
-                    >
-                      Edit Favorites
-                    </DialogTitle>
-                    <DialogContent>
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="favoriteBook"
-                        name="favoriteBook"
-                        autoComplete="off"
-                        label="Book"
-                        defaultValue={this.state.favoriteBook}
-                        fullWidth
-                        required
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="favoriteMovie"
-                        name="favoriteMovie"
-                        autoComplete="off"
-                        label="Movie"
-                        defaultValue={this.state.favoriteMovie}
-                        fullWidth
-                        required
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="favoriteShow"
-                        name="favoriteShow"
-                        autoComplete="off"
-                        label="Show"
-                        defaultValue={this.state.favoriteShow}
-                        fullWidth
-                        required
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="favoriteArtist"
-                        name="favoriteArtist"
-                        autoComplete="off"
-                        label="Artist"
-                        defaultValue={this.state.favoriteArtist}
-                        fullWidth
-                        required
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleFavoritesClose} color="secondary"
-                      disabled={this.state.favoriteBook === "" || this.state.favoriteMovie === "" || this.state.favoriteShow === "" || this.state.favoriteArtist === ""}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={this.handleSubmitFavorites}
-                        color="secondary"
-                        disabled={this.state.favoriteBook === "" || this.state.favoriteMovie === "" || this.state.favoriteShow === "" || this.state.favoriteArtist === ""}
-                      >
-                        Save Changes
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </Typography>
-                <hr />
-                <br />
-                <Book />
-                <Typography variant="body1">
-                  Book: {this.state.favoriteBook}
-                </Typography>
-                <br />
-                <Movie />
-                <Typography variant="body1">
-                  Movie: {this.state.favoriteMovie}
-                </Typography>
-                <br />
-                <Tv />
-                <Typography variant="body1">
-                  Show: {this.state.favoriteShow}
-                </Typography>
-                <br />
-                <Music />
-                <Typography variant="body1">
-                  Artist: {this.state.favoriteArtist}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-        <br />
-        <Card raised>
-          <CardContent align="center">
-            <Typography variant="h3">Courses</Typography>
-            <hr />
             <br />
             <Grid container spacing={2}>
-              {indexArray.map((index) => (
-                <Grid item sm>
-                  <Card
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "3px",
-                      borderColor: `${this.state.courses[index].courseColor}`,
-                      // borderColor: `${this.state.courses[index].undefined}`,
-                      height: "100%",
-                    }}
-                  >
-                    <CardContent>
-                      <Typography variant="h5" style={{color: `${this.state.courses[index].courseColor}`}}>
-                        {this.state.courses[index].courseCode}
-                      </Typography>
-                      <Typography variant="body1" >
-                        {this.state.courses[index].courseName}
-                      </Typography>
-                      <Tooltip title="Change color" placement="right">
-                        <IconButton 
-                          onClick={() => this.handleColorOpen(index)} 
-                          style={{marginBottom: "-20px"}}>
-                          <Dots color="secondary" />
+              <Grid item component="Card" sm>
+                <Card raised style={{ height: "100%" }}>
+                  <CardContent align="center">
+                    <Typography variant="h3">
+                      Groups{" "}
+                      <Tooltip title="Edit groups" placement="right">
+                        <IconButton
+                          onClick={this.handleGroupsOpen}
+                          className="button"
+                        >
+                          <EditIcon color="secondary" />
                         </IconButton>
                       </Tooltip>
                       <Dialog
                         overlayStyle={{ backgroundColor: "transparent" }}
-                        open={this.state.colorOpen[index]}
+                        open={this.state.groupOpen}
                       >
                         <DialogTitle
                           style={{ cursor: "move" }}
                           id="draggable-dialog-title"
                         >
-                          Edit Course Color
+                          Edit Groups
                         </DialogTitle>
                         <DialogContent>
                           <TextField
                             autofocus
                             margin="dense"
-                            id="courseColor"
-                            name="courseColor"
+                            id="groupOne"
                             autoComplete="off"
-                            select
-                            label="Course Color"
-                            defaultValue={this.state.courses[index].courseColor}
+                            name="groupOne"
+                            label="Group 1"
+                            defaultValue={this.state.groupOne}
+                            fullWidth
+                            type="text"
                             onChange={this.handleChange}
-                            helperText="Please select a course color"
-                          >
-                            {palette.map((color) => (
-                              <MenuItem key={color} value={color}>
-                                <Typography
-                                  variant="h6"
-                                  style={{ backgroundColor: color, color: color }}
-                                >
-                                  Color
-                                </Typography>
-                              </MenuItem>
-                            ))}
-                          </TextField>
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="groupTwo"
+                            autoComplete="off"
+                            name="groupTwo"
+                            label="Group 2"
+                            defaultValue={this.state.groupTwo}
+                            fullWidth
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="groupThree"
+                            autoComplete="off"
+                            name="groupThree"
+                            label="Group 3"
+                            defaultValue={this.state.groupThree}
+                            fullWidth
+                            type="text"
+                            onChange={this.handleChange}
+                          />
                         </DialogContent>
                         <DialogActions>
-                          <Button onClick={this.handleColorClose} color="secondary">
+                          <Button
+                            onClick={this.handleGroupsClose}
+                            color="secondary"
+                          >
                             Cancel
                           </Button>
                           <Button
-                            onClick={() => this.handleColorSave(index)}
+                            onClick={this.handleSubmitGroups}
                             color="secondary"
                           >
                             Save Changes
                           </Button>
                         </DialogActions>
                       </Dialog>
-                      {this.state.delete && (
-                        <div>
-                        <br />
+                    </Typography>
+                    <hr />
+                    <br />
+                    {[
+                      this.state.groupOne,
+                      this.state.groupTwo,
+                      this.state.groupThree,
+                    ].map((group) => (
+                      <Typography variant="body1">{group}</Typography>
+                    ))}
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item component="Card" sm>
+                <Card raised style={{ height: "100%" }}>
+                  <CardContent align="center">
+                    <Typography variant="h3">
+                      Interests{" "}
+                      <Tooltip title="Edit interests" placement="right">
                         <IconButton
-                          size="large"
-                          color="primary"
-                          onClick={() => this.handleRemoveOpen(index)}
-                          style={{marginBottom: "-30px", marginTop: "-15px"}}
+                          onClick={this.handleInterestsOpen}
+                          className="button"
                         >
-                          <DeleteIcon fontSize="large" />
+                          <EditIcon color="secondary" />
                         </IconButton>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-              <Grid item sm>
-                {numCourses < 5 && (
-                  <div>
-                    <Tooltip title="Add course" placement="right">
-                    <IconButton
-                      variant="contained"
-                      color="secondary"
-                      onClick={this.handleAddOpen}
-                      style={{marginTop: "10px"}}
-                    >
-                      Add <span style={{marginRight: "5px"}}/> <AddIcon />
-                    </IconButton>
-                    </Tooltip>
-                    <Dialog
-                      overlayStyle={{ backgroundColor: "transparent" }}
-                      open={this.state.addOpen}
-                      onClose={this.handleAddClose}
-                    >
-                      <DialogTitle
-                        style={{ cursor: "move" }}
-                        id="draggable-dialog-title"
+                      </Tooltip>
+                      <Dialog
+                        overlayStyle={{ backgroundColor: "transparent" }}
+                        open={this.state.interestsOpen}
                       >
-                        Add Course
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText>
-                          Please enter the course code and course name below:
-                        </DialogContentText>
-                        <TextField
-                          autofocus
-                          margin="dense"
-                          id="courseCode"
-                          name="addCourseCode"
-                          label="Course Code (e.g. ECON 0110)"
-                          fullWidth
-                          type="text"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          autofocus
-                          type="text"
-                          margin="dense"
-                          id="courseName"
-                          name="addCourseName"
-                          label="Course Name (e.g. Principles of Economics)"
-                          fullWidth
-                          onChange={this.handleChange}
-                        />
-                        <TextField
+                        <DialogTitle
+                          style={{ cursor: "move" }}
+                          id="draggable-dialog-title"
+                        >
+                          Edit Interests
+                        </DialogTitle>
+                        <DialogContent>
+                          <Typography variant="h5">General</Typography>
+                          <TextField
                             autofocus
                             margin="dense"
-                            id="courseColor"
-                            name="addCourseColor"
+                            id="interestOne"
+                            name="interestOne"
                             autoComplete="off"
-                            select
-                            label="Course Color"
+                            label="1st Interest"
+                            defaultValue={this.state.interestOne}
+                            fullWidth
+                            required
+                            type="text"
                             onChange={this.handleChange}
-                            helperText="Please select a course color"
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="interestTwo"
+                            name="interestTwo"
+                            autoComplete="off"
+                            label="2nd Interest"
+                            defaultValue={this.state.interestTwo}
+                            fullWidth
+                            required
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="interestThree"
+                            name="interestThree"
+                            autoComplete="off"
+                            label="3rd Interest"
+                            defaultValue={this.state.interestThree}
+                            fullWidth
+                            required
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="interestFour"
+                            name="interestFour"
+                            autoComplete="off"
+                            label="4th Interest"
+                            defaultValue={this.state.interestFour}
+                            fullWidth
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="interestFive"
+                            name="interestFive"
+                            autoComplete="off"
+                            label="5th Interest"
+                            defaultValue={this.state.interestFive}
+                            fullWidth
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <br />
+                          <br />
+                          <Typography variant="h5">Athletic</Typography>
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="affinitySportOne"
+                            name="affinitySportOne"
+                            autoComplete="off"
+                            label="1st Interest"
+                            defaultValue={this.state.affinitySportOne}
+                            fullWidth
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="affinitySportTwo"
+                            name="affinitySportTwo"
+                            autoComplete="off"
+                            label="2nd Interest"
+                            defaultValue={this.state.affinitySportTwo}
+                            fullWidth
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="affinitySportThree"
+                            name="affinitySportThree"
+                            autoComplete="off"
+                            label="3rd Interest"
+                            defaultValue={this.state.affinitySportThree}
+                            fullWidth
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            onClick={this.handleInterestsClose}
+                            color="secondary"
+                            disabled={
+                              this.state.interestOne === "" ||
+                              this.state.interestTwo === "" ||
+                              this.state.interestThree === ""
+                            }
                           >
-                            {palette.map((color) => (
-                              <MenuItem key={color} value={color}>
-                                <Typography
-                                  variant="h6"
-                                  style={{ backgroundColor: color, color: color }}
-                                >
-                                  Color
-                                </Typography>
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button
-                          onClick={this.handleSubmitCourses}
-                          color="primary"
-                        >
-                          Add
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </div>
-                )}
-                <br />
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={this.handleSubmitInterests}
+                            color="secondary"
+                            disabled={
+                              this.state.interestOne === "" ||
+                              this.state.interestTwo === "" ||
+                              this.state.interestThree === ""
+                            }
+                          >
+                            Save Changes
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </Typography>
+                    <hr />
+                    <br />
 
-                {numCourses > 2 && (
-                  <div>
-                    {numCourses === 5 && (
-                      <div>
-                        <br />
-                        <br />
-                      </div>
+                    <Typography variant="h5">General</Typography>
+                    <Grid container>
+                      <Grid item sm>
+                        <Typography variant="body1">
+                          • {this.state.interestOne}
+                        </Typography>
+                        <Typography variant="body1">
+                          • {this.state.interestThree}
+                        </Typography>
+                        {this.state.interestFive && (
+                          <Typography variant="body1">
+                            • {this.state.interestFive}
+                          </Typography>
+                        )}
+                      </Grid>
+                      <Grid item sm>
+                        <Typography variant="body1">
+                          • {this.state.interestTwo}
+                        </Typography>
+                        {this.state.interestFour && (
+                          <Typography variant="body1">
+                            • {this.state.interestFour}
+                          </Typography>
+                        )}
+                      </Grid>
+                    </Grid>
+
+                    <br />
+
+                    {(this.state.affinitySportOne ||
+                      this.state.affinitySportTwo ||
+                      this.state.affinitySportThree) && (
+                      <Typography variant="h5">Athletic</Typography>
                     )}
-                    {!this.state.delete && (
-                      <div>
-                      <Tooltip title="Remove course" placement="right">
-                      <IconButton
-                        variant="contained"
-                        color="primary"
-                        onClick={this.toggleDelete}
-                        style={{marginTop: "-25px"}}
-                      >
-                        Remove <span style={{marginRight: "5px"}}/> <DeleteIcon />
-                      </IconButton>
+                    <Grid container>
+                      <Grid item sm>
+                        {this.state.affinitySportOne && (
+                          <Typography variant="body1">
+                            • {this.state.affinitySportOne}
+                          </Typography>
+                        )}
+                        {this.state.affinitySportThree && (
+                          <Typography variant="body1">
+                            • {this.state.affinitySportThree}
+                          </Typography>
+                        )}
+                      </Grid>
+                      <Grid item sm>
+                        {this.state.affinitySportTwo && (
+                          <Typography variant="body1">
+                            • {this.state.affinitySportTwo}
+                          </Typography>
+                        )}
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item component="Card" sm>
+                <Card raised style={{ height: "100%" }}>
+                  <CardContent align="center">
+                    <Typography variant="h3">
+                      Favorites{" "}
+                      <Tooltip title="Edit favorites" placement="right">
+                        <IconButton
+                          onClick={this.handleFavoritesOpen}
+                          className="button"
+                        >
+                          <EditIcon color="secondary" />
+                        </IconButton>
                       </Tooltip>
-                      </div>
-                    )}
-                    {this.state.delete && (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.toggleDelete}
+                      <Dialog
+                        overlayStyle={{ backgroundColor: "transparent" }}
+                        open={this.state.favoritesOpen}
                       >
-                        Cancel
-                      </Button>
-                    )}
-                  </div>
-                )}
+                        <DialogTitle
+                          style={{ cursor: "move" }}
+                          id="draggable-dialog-title"
+                        >
+                          Edit Favorites
+                        </DialogTitle>
+                        <DialogContent>
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="favoriteBook"
+                            name="favoriteBook"
+                            autoComplete="off"
+                            label="Book"
+                            defaultValue={this.state.favoriteBook}
+                            fullWidth
+                            required
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="favoriteMovie"
+                            name="favoriteMovie"
+                            autoComplete="off"
+                            label="Movie"
+                            defaultValue={this.state.favoriteMovie}
+                            fullWidth
+                            required
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="favoriteShow"
+                            name="favoriteShow"
+                            autoComplete="off"
+                            label="Show"
+                            defaultValue={this.state.favoriteShow}
+                            fullWidth
+                            required
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="favoriteArtist"
+                            name="favoriteArtist"
+                            autoComplete="off"
+                            label="Artist"
+                            defaultValue={this.state.favoriteArtist}
+                            fullWidth
+                            required
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            onClick={this.handleFavoritesClose}
+                            color="secondary"
+                            disabled={
+                              this.state.favoriteBook === "" ||
+                              this.state.favoriteMovie === "" ||
+                              this.state.favoriteShow === "" ||
+                              this.state.favoriteArtist === ""
+                            }
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={this.handleSubmitFavorites}
+                            color="secondary"
+                            disabled={
+                              this.state.favoriteBook === "" ||
+                              this.state.favoriteMovie === "" ||
+                              this.state.favoriteShow === "" ||
+                              this.state.favoriteArtist === ""
+                            }
+                          >
+                            Save Changes
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </Typography>
+                    <hr />
+                    <br />
+                    <Book />
+                    <Typography variant="body1">
+                      Book: {this.state.favoriteBook}
+                    </Typography>
+                    <br />
+                    <Movie />
+                    <Typography variant="body1">
+                      Movie: {this.state.favoriteMovie}
+                    </Typography>
+                    <br />
+                    <Tv />
+                    <Typography variant="body1">
+                      Show: {this.state.favoriteShow}
+                    </Typography>
+                    <br />
+                    <Music />
+                    <Typography variant="body1">
+                      Artist: {this.state.favoriteArtist}
+                    </Typography>
+                  </CardContent>
+                </Card>
               </Grid>
             </Grid>
-          </CardContent>
-        </Card>
-        <br />
-      </div>
-      )}
+            <br />
+            <Card raised>
+              <CardContent align="center">
+                <Typography variant="h3">Courses</Typography>
+                <hr />
+                <br />
+                <Grid container spacing={2}>
+                  {indexArray.map((index) => (
+                    <Grid item sm>
+                      <Card
+                        style={{
+                          borderStyle: "solid",
+                          borderWidth: "3px",
+                          borderColor: `${this.state.courses[index].courseColor}`,
+                          // borderColor: `${this.state.courses[index].undefined}`,
+                          height: "100%",
+                        }}
+                      >
+                        <CardContent>
+                          <Typography
+                            variant="h5"
+                            style={{
+                              color: `${this.state.courses[index].courseColor}`,
+                            }}
+                          >
+                            {this.state.courses[index].courseCode}
+                          </Typography>
+                          <Typography variant="body1">
+                            {this.state.courses[index].courseName}
+                          </Typography>
+                          <Tooltip title="Change color" placement="right">
+                            <IconButton
+                              onClick={() => this.handleColorOpen(index)}
+                              style={{ marginBottom: "-20px" }}
+                            >
+                              <Dots color="secondary" />
+                            </IconButton>
+                          </Tooltip>
+                          <Dialog
+                            overlayStyle={{ backgroundColor: "transparent" }}
+                            open={this.state.colorOpen[index]}
+                          >
+                            <DialogTitle
+                              style={{ cursor: "move" }}
+                              id="draggable-dialog-title"
+                            >
+                              Edit Course Color
+                            </DialogTitle>
+                            <DialogContent>
+                              <TextField
+                                autofocus
+                                margin="dense"
+                                id="courseColor"
+                                name="courseColor"
+                                autoComplete="off"
+                                select
+                                label="Course Color"
+                                defaultValue={
+                                  this.state.courses[index].courseColor
+                                }
+                                onChange={this.handleChange}
+                                helperText="Please select a course color"
+                              >
+                                {palette.map((color) => (
+                                  <MenuItem key={color} value={color}>
+                                    <Typography
+                                      variant="h6"
+                                      style={{
+                                        backgroundColor: color,
+                                        color: color,
+                                      }}
+                                    >
+                                      Color
+                                    </Typography>
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            </DialogContent>
+                            <DialogActions>
+                              <Button
+                                onClick={this.handleColorClose}
+                                color="secondary"
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                onClick={() => this.handleColorSave(index)}
+                                color="secondary"
+                              >
+                                Save Changes
+                              </Button>
+                            </DialogActions>
+                          </Dialog>
+                          {this.state.delete && (
+                            <div>
+                              <br />
+                              <IconButton
+                                size="large"
+                                color="primary"
+                                onClick={() => this.handleRemoveOpen(index)}
+                                style={{
+                                  marginBottom: "-30px",
+                                  marginTop: "-15px",
+                                }}
+                              >
+                                <DeleteIcon fontSize="large" />
+                              </IconButton>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                  <Grid item sm>
+                    {numCourses < 5 && (
+                      <div>
+                        <Tooltip title="Add course" placement="right">
+                          <IconButton
+                            variant="contained"
+                            color="secondary"
+                            onClick={this.handleAddOpen}
+                            style={{ marginTop: "10px" }}
+                          >
+                            Add <span style={{ marginRight: "5px" }} />{" "}
+                            <AddIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Dialog
+                          overlayStyle={{ backgroundColor: "transparent" }}
+                          open={this.state.addOpen}
+                          onClose={this.handleAddClose}
+                        >
+                          <DialogTitle
+                            style={{ cursor: "move" }}
+                            id="draggable-dialog-title"
+                          >
+                            Add Course
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText>
+                              Please enter the course code and course name
+                              below:
+                            </DialogContentText>
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              id="courseCode"
+                              name="addCourseCode"
+                              label="Course Code (e.g. ECON 0110)"
+                              fullWidth
+                              type="text"
+                              onChange={this.handleChange}
+                            />
+                            <TextField
+                              autofocus
+                              type="text"
+                              margin="dense"
+                              id="courseName"
+                              name="addCourseName"
+                              label="Course Name (e.g. Principles of Economics)"
+                              fullWidth
+                              onChange={this.handleChange}
+                            />
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              id="courseColor"
+                              name="addCourseColor"
+                              autoComplete="off"
+                              select
+                              label="Course Color"
+                              onChange={this.handleChange}
+                              helperText="Please select a course color"
+                            >
+                              {palette.map((color) => (
+                                <MenuItem key={color} value={color}>
+                                  <Typography
+                                    variant="h6"
+                                    style={{
+                                      backgroundColor: color,
+                                      color: color,
+                                    }}
+                                  >
+                                    Color
+                                  </Typography>
+                                </MenuItem>
+                              ))}
+                            </TextField>
+                          </DialogContent>
+                          <DialogActions>
+                            <Button
+                              onClick={this.handleSubmitCourses}
+                              color="primary"
+                            >
+                              Add
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </div>
+                    )}
+                    <br />
+
+                    {numCourses > 2 && (
+                      <div>
+                        {numCourses === 5 && (
+                          <div>
+                            <br />
+                            <br />
+                          </div>
+                        )}
+                        {!this.state.delete && (
+                          <div>
+                            <Tooltip title="Remove course" placement="right">
+                              <IconButton
+                                variant="contained"
+                                color="primary"
+                                onClick={this.toggleDelete}
+                                style={{ marginTop: "-25px" }}
+                              >
+                                Remove <span style={{ marginRight: "5px" }} />{" "}
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                        )}
+                        {this.state.delete && (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.toggleDelete}
+                          >
+                            Cancel
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+            <br />
+          </div>
+        )}
       </div>
     );
   }

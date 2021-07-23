@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 // Components
 import NavBar from "../components/NavBar";
 import Messages from "../components/Messages";
+import CourseFeed from "../components/CourseFeed";
 
 // MUI Stuff
 import Card from "@material-ui/core/Card";
@@ -61,9 +62,10 @@ class messagesView extends Component {
     messages3: [],
     messages4: [],
     messages5: [],
+    cf1: {},
     ownName: "",
     ownImage: "",
-    ownEmailId: "",
+    ownId: "",
     tabIndex: 0,
     loading: true,
   };
@@ -81,7 +83,7 @@ class messagesView extends Component {
               course.courseCode.replace(/\s/g, "")
             ),
             ownName: res.data.firstName + " " + res.data.lastName,
-            ownEmailId: res.data.emailId,
+            ownId: res.data.emailId,
             ownImage: res.data.imageUrl,
           });
         })
@@ -134,7 +136,6 @@ class messagesView extends Component {
             })
             .then(() => {
               this.setState({ loading: false });
-              console.log(this.state.messages3);
             })
             .catch((err) => console.log(err));
         });
@@ -197,26 +198,36 @@ class messagesView extends Component {
             </AppBar>
             {this.state.courseCodes[0] && (
               <TabPanel value={this.state.tabIndex} index={0}>
+                <CourseFeed code={this.state.courseCodes[0]}></CourseFeed>
+                <br />
                 <Messages messages={messages[0]} />
               </TabPanel>
             )}
             {this.state.courseCodes[1] && (
               <TabPanel value={this.state.tabIndex} index={1}>
+                <CourseFeed code={this.state.courseCodes[1]}></CourseFeed>
+                <br />
                 <Messages messages={messages[1]} />
               </TabPanel>
             )}
             {this.state.courseCodes[2] && (
               <TabPanel value={this.state.tabIndex} index={2}>
+                <CourseFeed code={this.state.courseCodes[2]}></CourseFeed>
+                <br />
                 <Messages messages={messages[2]} />
               </TabPanel>
             )}
             {this.state.courseCodes[3] && (
               <TabPanel value={this.state.tabIndex} index={3}>
+                <CourseFeed code={this.state.courseCodes[3]}></CourseFeed>
+                <br />
                 <Messages messages={messages[3]} />
               </TabPanel>
             )}
             {this.state.courseCodes[4] && (
               <TabPanel value={this.state.tabIndex} index={4}>
+                <CourseFeed code={this.state.courseCodes[4]}></CourseFeed>
+                <br />
                 <Messages messages={messages[4]} />
               </TabPanel>
             )}

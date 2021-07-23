@@ -9,10 +9,24 @@ import relativeTime from "dayjs/plugin/relativeTime";
 function Messages(props) {
   dayjs.extend(relativeTime);
   const history = useHistory();
-  const handleMessage = (name, image, id, code) => {
+  const handleMessage = (
+    recipientName,
+    recipientImage,
+    recipientId,
+    courseCode,
+    roomId
+  ) => {
     history.push({
       pathname: "/messageView",
-      state: { studentInfo: [name, image, id, code] },
+      state: {
+        recipientInfo: [
+          recipientName,
+          recipientImage,
+          recipientId,
+          courseCode,
+          roomId,
+        ],
+      },
     });
   };
   return (
@@ -26,15 +40,16 @@ function Messages(props) {
                 color="primary"
                 onClick={() =>
                   handleMessage(
-                    message.name,
-                    message.image,
+                    message.recipientName,
+                    message.recipientImage,
                     message.recipientId,
-                    message.course
+                    message.course,
+                    message.roomId
                   )
                 }
               >
-                <img src={message.image} width={50}></img>
-                {message.name} {message.course} ||
+                <img src={message.recipientImage} width={50}></img>
+                {message.recipietName} {message.course} ||
                 <span>{dayjs(message.mostRecent).fromNow()}</span>
               </ButtonBase>
             </CardContent>

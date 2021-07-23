@@ -21,6 +21,7 @@ import messageView from "./pages/messageView";
 import courseView from "./pages/courseView";
 import studentView from "./pages/studentView";
 import messagesView from "./pages/messagesView";
+import feedView from "./pages/feedView";
 
 // Styling
 const theme = createTheme(themeFile);
@@ -107,6 +108,12 @@ function App(props) {
                 exact
                 path="/messagesView"
                 component={messagesView}
+                authenticated={authenticated}
+              />
+              <Route
+                exact
+                path="/feedView"
+                component={feedView}
                 authenticated={authenticated}
               />
             </Switch>

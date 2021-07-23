@@ -7,14 +7,14 @@ import { Input, Button } from "@material-ui/core";
 // Body
 function SendMessage({
   scroll,
-  studentImage,
-  studentName,
-  studentId,
+  recipientImage,
+  recipientName,
+  recipientId,
   courseCode,
-  profileName,
-  imageUrl,
+  ownName,
+  ownImage,
   roomId,
-  emailId,
+  ownId,
 }) {
   const [msg, setMsg] = useState("");
 
@@ -25,41 +25,41 @@ function SendMessage({
       db
         .collection("courses")
         .doc(courseCode)
-        .collection("imessages")
+        .collection("allMessages")
         .doc(roomId)
         .collection("messages")
         .add({
           text: msg,
-          imageUrl,
-          emailId,
+          ownImage,
+          ownId,
           createdAt: new Date().toISOString(),
         }),
 
       db
         .collection("profiles")
-        .doc(emailId + "@brown.edu")
+        .doc(ownId + "@brown.edu")
         .collection(`${courseCode} messages`)
         .doc(roomId)
         .set({
           course: courseCode,
-          name: studentName,
-          image: studentImage,
+          recipientName: recipientName,
+          recipientImage: recipientImage,
           roomId,
-          recipientId: studentId,
+          recipientId: recipientId,
           mostRecent: new Date().toISOString(),
         }),
 
       db
         .collection("profiles")
-        .doc(studentId + "@brown.edu")
+        .doc(recipientId + "@brown.edu")
         .collection(`${courseCode} messages`)
         .doc(roomId)
         .set({
           course: courseCode,
-          name: profileName,
-          image: imageUrl,
+          recipientName: ownName,
+          recipientImage: ownImage,
           roomId,
-          recipientId: emailId,
+          recipientId: ownId,
           mostRecent: new Date().toISOString(),
         }),
     ]);

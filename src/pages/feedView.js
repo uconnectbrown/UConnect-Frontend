@@ -1,37 +1,27 @@
 // Setup
 import React, { Component } from "react";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 
 // Components
 import NavBar from "../components/NavBar";
-import Chat from "../components/Chat";
+import Feed from "../components/Feed";
 
 // MUI Stuff
 import BackIcon from "@material-ui/icons/ArrowBack";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
-export class messageView extends Component {
+export class feedView extends Component {
   state = {
-    recipientName: "",
-    recipientImage: "",
-    recipientId: "",
     courseCode: "",
     ownId: "",
     ownImage: "",
     ownName: "",
-    roomId: "",
     loading: true,
   };
 
   componentDidMount() {
     this.setState({
-      recipientName: this.props.location.state.recipientInfo[0],
-      recipientImage: this.props.location.state.recipientInfo[1],
-      recipientId: this.props.location.state.recipientInfo[2],
-      courseCode: this.props.location.state.recipientInfo[3],
+      courseCode: this.props.location.state.courseCode,
     });
     const FBIdToken = localStorage.FBIdToken;
     axios.defaults.headers.common["Authorization"] = FBIdToken;
@@ -44,13 +34,6 @@ export class messageView extends Component {
             ownImage: res.data.imageUrl,
             ownName: res.data.firstName + " " + res.data.lastName,
           });
-          if (this.props.location.state.recipientInfo[4]) {
-            this.setState({
-              roomId: this.props.location.state.recipientInfo[4],
-            });
-          } else {
-            this.setState({ roomId: uuidv4() });
-          }
         })
         .then(() => {
           this.setState({ loading: false });
@@ -66,16 +49,6 @@ export class messageView extends Component {
   render() {
     return (
       <div>
-        {this.state.loading && (
-          <div align="center">
-            <NavBar />
-            <br />
-            <CircularProgress size={100} />
-            <br />
-            <br />
-            <Typography variant="h4">Fetching messages...</Typography>
-          </div>
-        )}
         {!this.state.loading && (
           <div>
             <NavBar />
@@ -87,15 +60,11 @@ export class messageView extends Component {
             >
               <BackIcon />
             </IconButton>
-            <Chat
-              recipientName={this.state.recipientName}
-              recipientImage={this.state.recipientImage}
-              recipientId={this.state.recipientId}
+            <Feed
               courseCode={this.state.courseCode}
               ownId={this.state.ownId}
               ownImage={this.state.ownImage}
               ownName={this.state.ownName}
-              roomId={this.state.roomId}
             />
           </div>
         )}
@@ -104,4 +73,4 @@ export class messageView extends Component {
   }
 }
 
-export default messageView;
+export default feedView;
