@@ -25,6 +25,8 @@ import Menu from "@material-ui/icons/Menu";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import MenuItem from "@material-ui/core/MenuItem";
 
 // Body
 export class coursesView extends Component {
@@ -44,6 +46,15 @@ export class coursesView extends Component {
       false,
     ],
     overlayOn: true,
+    assignmentsOpen: [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ],
   };
 
   componentDidMount() {
@@ -126,6 +137,23 @@ export class coursesView extends Component {
     });
   };
 
+  handleAssignmentsOpen = (index) => {
+    let newAssignmentsOpen = this.state.assignmentsOpen.slice()
+    newAssignmentsOpen[index] = true
+    this.setState({ assignmentsOpen: newAssignmentsOpen });
+  }
+  handleAssignmentsClose = () => {
+    this.setState({ assignmentsOpen: [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ]})
+  }
+
   handleNotesOpen = (index) => {
     let newNotesOpen = this.state.notesOpen.slice()
     newNotesOpen[index] = true
@@ -156,13 +184,15 @@ export class coursesView extends Component {
         indexArray.push(j);
       }
     }
+    let numCourses = indexArray.length;
     let loading = this.state.loading;
+    let weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     return (
       <div align="center">
         <NavBar />
         <Typography variant="h2">Fall 2021</Typography>
         <br />
-        <GridList cols={3} spacing={20} cellHeight="auto">
+        <GridList cols={numCourses} spacing={20} cellHeight="auto">
           {indexArray.map((index) => (
             <GridListTile item sm>
               <Card
@@ -172,6 +202,7 @@ export class coursesView extends Component {
                   borderWidth: "4px",
                   borderColor: `${this.state.courses[index].courseColor}`,
                   // borderColor: `${this.state.courses[index].undefined}`,
+                  height: "96%"
                 }}
               >
                 <ButtonBase
@@ -212,7 +243,7 @@ export class coursesView extends Component {
                       </div>
                     )}
                     {!loading && (
-                      <AvatarGroup max={6}>
+                      <AvatarGroup max={10-numCourses}>
                         {avatarList[index].map((url) => (
                           <Avatar src={url} style={{ marginBottom: "5px" }} />
                         ))}
@@ -260,6 +291,89 @@ export class coursesView extends Component {
                       </Dialog>
                   </CardContent>
                 </ButtonBase>
+              </Card>
+            </GridListTile>
+          ))}
+        </GridList>
+        <br />
+        <GridList cols={7} spacing={20} cellHeight="auto">
+          {weekdays.map((day) => (
+            <GridListTile item sm>
+              <Card 
+                raised
+                style={{
+                  height: "96%"
+                }}>
+                <CardContent>
+                  <Typography variant="h6" align="center">
+                    {day}
+                  </Typography>
+                  <hr />
+                  <Tooltip title="Add assignment" placement="right">
+                  <IconButton onClick={() => this.handleAssignmentsOpen(day)} color="secondary" style={{marginBottom: "-15px"}}>
+                    <AddIcon />
+                  </IconButton>
+                  </Tooltip>
+                  <Dialog
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    open={this.state.assignmentsOpen[day]}
+                  >
+                    <DialogTitle
+                      style={{ cursor: "move" }}
+                      id="draggable-dialog-title"
+                    >
+                      Add Assignments
+                    </DialogTitle>
+                    <DialogContent>
+                      <Typography>What course is the assignment for?</Typography>
+                    <TextField
+                      autofocus
+                      margin="dense"
+                      id="courseCode"
+                      name="courseCode"
+                      autoComplete="off"
+                      select
+                      label="Course Code"
+                      // onChange={this.handleChange}
+                      helperText="Please select a course code"
+                    >
+                      {this.state.courses.map((course) => (
+                        <MenuItem key={course.courseCode} value={course.courseCode}>
+                          <Typography
+                            variant="h6"
+                            style={{
+                              color: course.courseColor,
+                            }}
+                          >
+                            {course.courseCode}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    <br />
+                    <br />
+                    <Typography>What is the name of the assignment?</Typography>
+                    <TextField
+                      autofocus
+                      type="text"
+                      margin="dense"
+                      id="assignment"
+                      name="addAssignment"
+                      label="Assignment Name"
+                      fullWidth
+                      // onChange={this.handleChange}
+                    />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={this.handleAssignmentsClose} color="secondary">
+                        Cancel
+                      </Button>
+                      <Button onClick={this.handleAssignmentsClose} color="secondary">
+                        Save Assignment
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </CardContent>
               </Card>
             </GridListTile>
           ))}
