@@ -49,7 +49,7 @@ function Messages(props) {
                 }
               >
                 <img src={message.recipientImage} width={50}></img>
-                {message.recipietName} {message.course} ||
+                {message.recipientName} {message.course} ||
                 <span>{dayjs(message.mostRecent).fromNow()}</span>
               </ButtonBase>
             </CardContent>
