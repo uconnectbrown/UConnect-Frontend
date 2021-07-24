@@ -154,7 +154,7 @@ class courseView extends Component {
           ? -1
           : 0
       );
-    } 
+    };
     // else if (this.state.sortBy === "courseOverlap") {
     //   students.sort((a, b) =>
     //     courseOverlap[students.indexOf(a)] < courseOverlap[students.indexOf(b)]

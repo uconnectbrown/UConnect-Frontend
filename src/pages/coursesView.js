@@ -127,10 +127,21 @@ export class coursesView extends Component {
             currentIndex++;
           }
           this.setState({ loading: false });
+          {console.log(this.state.courses[0].assignments.map((assignment) => {return assignment['name']})
+    //   .map((assignment) => {
+    //   if (assignment['day'] === 0) {
+    //     return assignment['name']
+    //   }
+    // })
+    )}
         })
         .catch((err) => console.log(err));
     }
   }
+
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
   handleClick = (code, name, color, courseCodes) => {
     this.props.history.push({
@@ -158,24 +169,28 @@ export class coursesView extends Component {
   handleSubmitAssignment = (index) => {
     let courseList = [];
     let courseIndex = this.state.courses.map((course) => (course.courseCode)).indexOf(this.state.assignCourse)
-    console.log(this.state.courses[courseIndex].assignments)
+    let newAssignments = [...this.state.courses[courseIndex].assignments];
+    console.log(newAssignments)
+    newAssignments.push({"day": index, "name": this.state.assignmentName})
+    console.log(newAssignments)
     let newCourse = {
       courseCode: this.state.courses[courseIndex].courseCode,
       courseName: this.state.courses[courseIndex].courseName,
       courseColor: this.state.courses[courseIndex].courseColor,
-      assignments: (this.state.courses[courseIndex].assignments).push({day: index, name: this.state.assignmentName})
+      assignments: newAssignments
     }
     for (let j = 0; j < 5; j++) {
       if (j !== courseIndex) {
         courseList.push(this.state.courses[j]);
       } else courseList.push(newCourse);
     }
-    let newCourses = { courses: courseList };
+    let newCourses = {courses: courseList};
+    console.log(newCourses)
     axios.post("/edit", newCourses).then(() => {
       this.setState({ courses: courseList });
       return axios.get("/update");
     });
-    this.setState({ assignmentsOpen: [false, false, false, false, false, false, false], assignCourse: false, assignmentName: false });
+    this.setState({ assignmentsOpen: [false, false, false, false, false, false, false], assignCourse: "", assignmentName: "" });
   }
 
   handleNotesOpen = (index) => {
@@ -402,7 +417,7 @@ export class coursesView extends Component {
                       <Button onClick={this.handleAssignmentsClose} color="secondary">
                         Cancel
                       </Button>
-                      <Button onClick={this.handleSubmitAssignment} color="secondary">
+                      <Button onClick={() => this.handleSubmitAssignment(index)} color="secondary">
                         Save Assignment
                       </Button>
                     </DialogActions>
