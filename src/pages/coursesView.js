@@ -127,13 +127,6 @@ export class coursesView extends Component {
             currentIndex++;
           }
           this.setState({ loading: false });
-          {console.log(this.state.courses[0].assignments.map((assignment) => {return assignment['name']})
-    //   .map((assignment) => {
-    //   if (assignment['day'] === 0) {
-    //     return assignment['name']
-    //   }
-    // })
-    )}
         })
         .catch((err) => console.log(err));
     }
@@ -353,6 +346,18 @@ export class coursesView extends Component {
                     {weekdays[index]}
                   </Typography>
                   <hr />
+                  {this.state.loading && (
+                    <CircularProgress size={10}/>
+                  )}
+                  {/* {!this.state.loading && (
+                    this.state.courses.map((course) => {
+                      course.assignments.map((assignment) => {
+                        if (assignment['day'] === index) {
+                          <Typography variant="h6" align="center" style={{color: `${course['courseColor']}`}}>{assignment['name']}</Typography>
+                        }
+                      })
+                    })
+                  )} */}
                   {/* {this.state.courses.map((course) => (
                     course.assignments[index].map((assignment) => (
                       <Typography>{assignment}</Typography>
