@@ -62,7 +62,9 @@ class courseView extends Component {
       pathname: "/studentView",
       state: {
         studentInfo: [
-          this.state.courseInfo,
+          this.state.courseInfo[0],
+          this.state.courseInfo[1],
+          this.state.courseInfo[2],
           this.state.students[index].email.split("@")[0],
         ],
       },
@@ -89,10 +91,16 @@ class courseView extends Component {
     this.setState({ sortBy: event.target.value });
   };
 
+  compare = (a1, a2) => a1.filter(v => a2.includes(v)).length;
+
   render() {
     const code = this.state.courseInfo[0];
     const name = this.state.courseInfo[1];
     const color = this.state.courseInfo[2];
+    let myCourseCodes = this.state.courseInfo[3].map((courseCode) => 
+      courseCode
+    ).filter(Boolean)
+    // console.log(myCourseCodes)
     const numStudents = this.state.students.length;
     let indexArray = [];
     for (let i = 0; i < numStudents; i++) {
@@ -100,6 +108,11 @@ class courseView extends Component {
     }
     let newIndexArray = [];
     let students = this.state.students;
+    // need to update backend to include the courses if we want to do the overlap here...
+    // let theirCourseCodes = this.state.students.map((student) => (
+    //   student.courses
+    // ))
+
     if (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") {
       students.sort((a, b) =>
         a[`${this.state.sortBy}`] > b[`${this.state.sortBy}`]
@@ -108,7 +121,7 @@ class courseView extends Component {
           ? -1
           : 0
       );
-    } else if (this.state.sortBy === "classYear") {
+    } else if (this.state.sortBy === "classYear" || this.state.sortBy === "courseOverlap") {
       students.sort((a, b) =>
         a[`${this.state.sortBy}`] < b[`${this.state.sortBy}`]
           ? 1
@@ -474,6 +487,9 @@ class courseView extends Component {
             helperText="Please select a sorting criteria"
             size={"small"}
           >
+            {/* <MenuItem key="courseOverlap" value="courseOverlap">
+              Course Overlap: Descending (5-1)
+            </MenuItem> */}
             <MenuItem key="firstName" value="firstName">
               First Name: Alphabetical (A-Z)
             </MenuItem>
@@ -481,7 +497,7 @@ class courseView extends Component {
               Last Name: Alphabetical (A-Z)
             </MenuItem>
             <MenuItem key="classYear" value="classYear">
-              Graduating Class: (2025-2021.5)
+              Graduating Class: Descending (2025-2021.5)
             </MenuItem>
           </TextField>
         </Typography>
@@ -526,7 +542,7 @@ class courseView extends Component {
                   return index !== undefined;
                 }))
             }
-            {console.log(indexArray)};{console.log(newIndexArray)};
+            {/* {console.log(indexArray)};{console.log(newIndexArray)}; */}
             {newIndexArray.map((index) => (
               <GridListTile item component="Card" sm>
                 <Card
@@ -549,7 +565,7 @@ class courseView extends Component {
                   >
                     <CardContent>
                       <div>
-                        {/* <Typography>{index}</Typography> */}
+                        {/* <Typography>`${courseOverlap[index]}/${myCourseCodes.length}`</Typography> */}
                         <img
                           alt="student"
                           src={students[index].imageUrl}

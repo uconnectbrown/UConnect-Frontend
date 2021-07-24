@@ -74,12 +74,24 @@ class profileBuild extends Component {
       ],
     };
 
+    // for (let i = 0; i < 5; i++) {
+    //   if (Object.keys(newUserData.courses[i]).length === 3) {
+    //     newUserData.courses[i] = {
+    //       courseCode: newUserData.courses[i].courseCode,
+    //       courseName: newUserData.courses[i].courseName,
+    //       courseColor: newUserData.courses[i].courseColor,
+    //       assignments: [[], [], [], [], [], [], []],
+    //     };
+    //   }
+    // }
+
     for (let i = 0; i < 5; i++) {
       if (Object.keys(newUserData.courses[i]).length === 0) {
         newUserData.courses[i] = {
           courseCode: "",
           courseName: "",
           courseColor: "",
+          // assignments: [[], [], [], [], [], [], []],
         };
       }
     }

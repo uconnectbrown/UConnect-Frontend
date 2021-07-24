@@ -439,6 +439,7 @@ class profileView extends Component {
       courseCode: this.state.addCourseCode,
       courseName: this.state.addCourseName,
       courseColor: this.state.addCourseColor,
+      // assignments: [[], [], [], [], [], [], []],
     };
     for (let j = 0; j < 5; j++) {
       if (j !== firstIndex) {
@@ -459,6 +460,7 @@ class profileView extends Component {
       courseCode: this.state.courses[index].courseCode,
       courseName: this.state.courses[index].courseName,
       courseColor: this.state.courseColor,
+      // assignments: this.state.courses[index].assignments,
     };
     for (let j = 0; j < 5; j++) {
       if (j !== index) {
@@ -704,7 +706,7 @@ class profileView extends Component {
             </Tooltip>
             {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
               <div>
-                <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
+                <Typography variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
               </div>
             )} */}
                   </Grid>
@@ -741,7 +743,6 @@ class profileView extends Component {
                       "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
                       <div>
                         <Typography
-                          bold
                           variant="h5"
                           align="center"
                           color="primary"
@@ -779,7 +780,7 @@ class profileView extends Component {
             </Tooltip>
             {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
               <div>
-                <Typography bold variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
+                <Typography variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
               </div>
             )} */}
                   </Grid>

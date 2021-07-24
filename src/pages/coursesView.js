@@ -55,6 +55,8 @@ export class coursesView extends Component {
       false,
       false,
     ],
+    assignCourse: "",
+    assignmentName: "",
   };
 
   componentDidMount() {
@@ -130,10 +132,10 @@ export class coursesView extends Component {
     }
   }
 
-  handleClick = (code, name, color) => {
+  handleClick = (code, name, color, courseCodes) => {
     this.props.history.push({
       pathname: "/courseView",
-      state: { courseInfo: [code, name, color] },
+      state: { courseInfo: [code, name, color, courseCodes] },
     });
   };
 
@@ -152,6 +154,27 @@ export class coursesView extends Component {
       false,
       false,
     ]})
+  }
+  handleSubmitAssignment = (index) => {
+    let courseList = [];
+    let courseIndex = this.state.courses.map((course) => (course.courseCode)).indexOf(this.state.assignCourse)
+    let newCourse = {
+      courseCode: this.state.courses[courseIndex].courseCode,
+      courseName: this.state.courses[courseIndex].courseName,
+      courseColor: this.state.courses[courseIndex].courseColor,
+      assignments: this.state.courses[courseIndex].assignments[index].push(this.state.assignmentName)
+    }
+    for (let j = 0; j < 5; j++) {
+      if (j !== courseIndex) {
+        courseList.push(this.state.courses[j]);
+      } else courseList.push(newCourse);
+    }
+    let newCourses = { courses: courseList };
+    axios.post("/edit", newCourses).then(() => {
+      this.setState({ courses: courseList });
+      return axios.get("/update");
+    });
+    this.setState({ assignmentsOpen: [false, false, false, false, false, false, false] });
   }
 
   handleNotesOpen = (index) => {
@@ -186,7 +209,11 @@ export class coursesView extends Component {
     }
     let numCourses = indexArray.length;
     let loading = this.state.loading;
+    let indices = [0,1,2,3,4,5,6];
     let weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    let courseCodes = this.state.courses.map((course) =>
+      course.courseCode
+    );
     return (
       <div align="center">
         <NavBar />
@@ -211,6 +238,7 @@ export class coursesView extends Component {
                       this.state.courses[index].courseCode,
                       this.state.courses[index].courseName,
                       this.state.courses[index].courseColor,
+                      courseCodes,
                       // this.state.courses[index].undefined,
                     )
                   }
@@ -297,7 +325,7 @@ export class coursesView extends Component {
         </GridList>
         <br />
         <GridList cols={7} spacing={20} cellHeight="auto">
-          {weekdays.map((day) => (
+          {indices.map((index) => (
             <GridListTile item sm>
               <Card 
                 raised
@@ -306,17 +334,22 @@ export class coursesView extends Component {
                 }}>
                 <CardContent>
                   <Typography variant="h6" align="center">
-                    {day}
+                    {weekdays[index]}
                   </Typography>
                   <hr />
+                  {/* {this.state.courses.map((course) => (
+                    course.assignments[index].map((assignment) => (
+                      <Typography>{assignment}</Typography>
+                    ))
+                  ))} */}
                   <Tooltip title="Add assignment" placement="right">
-                  <IconButton onClick={() => this.handleAssignmentsOpen(day)} color="secondary" style={{marginBottom: "-15px"}}>
+                  <IconButton onClick={() => this.handleAssignmentsOpen(index)} color="secondary" style={{marginBottom: "-15px"}}>
                     <AddIcon />
                   </IconButton>
                   </Tooltip>
                   <Dialog
                     overlayStyle={{ backgroundColor: "transparent" }}
-                    open={this.state.assignmentsOpen[day]}
+                    open={this.state.assignmentsOpen[index]}
                   >
                     <DialogTitle
                       style={{ cursor: "move" }}
@@ -329,23 +362,23 @@ export class coursesView extends Component {
                     <TextField
                       autofocus
                       margin="dense"
-                      id="courseCode"
-                      name="courseCode"
+                      id="assignCourse"
+                      name="assignCourse"
                       autoComplete="off"
                       select
                       label="Course Code"
-                      // onChange={this.handleChange}
+                      onChange={this.handleChange}
                       helperText="Please select a course code"
                     >
-                      {this.state.courses.map((course) => (
-                        <MenuItem key={course.courseCode} value={course.courseCode}>
+                      {indexArray.map((index) => (
+                        <MenuItem key={this.state.courses[index].courseCode} value={this.state.courses[index].courseCode}>
                           <Typography
                             variant="h6"
                             style={{
-                              color: course.courseColor,
+                              color: this.state.courses[index].courseColor,
                             }}
                           >
-                            {course.courseCode}
+                            {this.state.courses[index].courseCode}
                           </Typography>
                         </MenuItem>
                       ))}
@@ -357,11 +390,11 @@ export class coursesView extends Component {
                       autofocus
                       type="text"
                       margin="dense"
-                      id="assignment"
-                      name="addAssignment"
+                      id="assignmentName"
+                      name="assignmentName"
                       label="Assignment Name"
                       fullWidth
-                      // onChange={this.handleChange}
+                      onChange={this.handleChange}
                     />
                     </DialogContent>
                     <DialogActions>
