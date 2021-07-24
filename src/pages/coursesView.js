@@ -158,11 +158,12 @@ export class coursesView extends Component {
   handleSubmitAssignment = (index) => {
     let courseList = [];
     let courseIndex = this.state.courses.map((course) => (course.courseCode)).indexOf(this.state.assignCourse)
+    console.log(this.state.courses[courseIndex].assignments)
     let newCourse = {
       courseCode: this.state.courses[courseIndex].courseCode,
       courseName: this.state.courses[courseIndex].courseName,
       courseColor: this.state.courses[courseIndex].courseColor,
-      assignments: this.state.courses[courseIndex].assignments[index].push(this.state.assignmentName)
+      assignments: (this.state.courses[courseIndex].assignments).push({day: index, name: this.state.assignmentName})
     }
     for (let j = 0; j < 5; j++) {
       if (j !== courseIndex) {
@@ -174,7 +175,7 @@ export class coursesView extends Component {
       this.setState({ courses: courseList });
       return axios.get("/update");
     });
-    this.setState({ assignmentsOpen: [false, false, false, false, false, false, false] });
+    this.setState({ assignmentsOpen: [false, false, false, false, false, false, false], assignCourse: false, assignmentName: false });
   }
 
   handleNotesOpen = (index) => {
@@ -401,7 +402,7 @@ export class coursesView extends Component {
                       <Button onClick={this.handleAssignmentsClose} color="secondary">
                         Cancel
                       </Button>
-                      <Button onClick={this.handleAssignmentsClose} color="secondary">
+                      <Button onClick={this.handleSubmitAssignment} color="secondary">
                         Save Assignment
                       </Button>
                     </DialogActions>

@@ -33,7 +33,7 @@ class courseView extends Component {
     email: "",
     searchTerm: "",
     searchCriteria: "",
-    sortBy: "firstName",
+    sortBy: "courseOverlap",
     loading: true,
   };
 
@@ -48,6 +48,26 @@ class courseView extends Component {
         .then((res) => {
           this.setState({ students: [...this.state.students, ...res.data] });
           console.log(this.state.students);
+          let myCourseCodes = this.state.courseInfo[3].map((courseCode) => 
+            courseCode
+          ).filter(Boolean)
+          const numStudents = this.state.students.length;
+          let students = this.state.students;
+          let theirCourseCodes = students.map((student) => (
+            student.courses.map((course) => (
+              course.courseCode
+            ))
+          ))
+          let courseOverlap = theirCourseCodes.map((code) => this.compare(myCourseCodes, code))
+          console.log(courseOverlap)
+          let newStudents = [];
+          for (let i = 0; i < numStudents; i++) {
+            let newStudent = {...students[i]}
+            newStudent['courseOverlap'] = courseOverlap[i]
+            newStudents.push(newStudent)
+          }
+          this.setState({ students: newStudents })
+          console.log(newStudents)
         })
         .then(() => {
           this.setState({ loading: false });
@@ -65,6 +85,7 @@ class courseView extends Component {
           this.state.courseInfo[0],
           this.state.courseInfo[1],
           this.state.courseInfo[2],
+          this.state.courseInfo[3],
           this.state.students[index].email.split("@")[0],
         ],
       },
@@ -110,8 +131,12 @@ class courseView extends Component {
     let students = this.state.students;
     // need to update backend to include the courses if we want to do the overlap here...
     // let theirCourseCodes = this.state.students.map((student) => (
-    //   student.courses
+    //   student.courses.map((course) => (
+    //     course.courseCode
+    //   ))
     // ))
+    // let courseOverlap = theirCourseCodes.map((code) => this.compare(myCourseCodes, code))
+    // console.log(courseOverlap)
 
     if (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") {
       students.sort((a, b) =>
@@ -129,7 +154,23 @@ class courseView extends Component {
           ? -1
           : 0
       );
-    }
+    } 
+    // else if (this.state.sortBy === "courseOverlap") {
+    //   students.sort((a, b) =>
+    //     courseOverlap[students.indexOf(a)] < courseOverlap[students.indexOf(b)]
+    //       ? 1
+    //       : courseOverlap[students.indexOf(b)] < courseOverlap[students.indexOf(a)]
+    //       ? -1
+    //       : 0
+    //   );
+    //   courseOverlap.sort((a, b) => 
+    //     a < b
+    //     ? 1
+    //     : b < a
+    //     ? -1
+    //     : 0
+    //   );
+    // }
 
     return (
       <div>
@@ -330,7 +371,7 @@ class courseView extends Component {
           )}
 
           {this.state.searchCriteria === "" &&
-            this.state.sortBy !== "classYear" && (
+            (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") && (
               <span
                 style={{
                   marginRight: "400px",
@@ -338,7 +379,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "name" &&
-            this.state.sortBy !== "classYear" && (
+            (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") && (
               <span
                 style={{
                   marginRight: "206px",
@@ -346,7 +387,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "classYear" &&
-            this.state.sortBy !== "classYear" && (
+            (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") && (
               <span
                 style={{
                   marginRight: "187px",
@@ -354,7 +395,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "majors" &&
-            this.state.sortBy !== "classYear" && (
+            (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") && (
               <span
                 style={{
                   marginRight: "199px",
@@ -362,16 +403,16 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "interests" &&
-            this.state.sortBy !== "classYear" && (
+            (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") && (
               <span
                 style={{
                   marginRight: "187px",
                 }}
               />
             )}
-          {/* new additional criteria */}
+          
           {this.state.searchCriteria === "groups" &&
-            this.state.sortBy !== "classYear" && (
+            (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") && (
               <span
                 style={{
                   marginRight: "206px",
@@ -379,7 +420,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "varsitySports" &&
-            this.state.sortBy !== "classYear" && (
+            (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") && (
               <span
                 style={{
                   marginRight: "206px",
@@ -387,7 +428,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "affinitySports" &&
-            this.state.sortBy !== "classYear" && (
+            (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") && (
               <span
                 style={{
                   marginRight: "182px",
@@ -395,14 +436,14 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "greekLife" &&
-            this.state.sortBy !== "classYear" && (
+            (this.state.sortBy === "firstName" || this.state.sortBy === "lastName") && (
               <span
                 style={{
                   marginRight: "170px",
                 }}
               />
             )}
-
+          
           {this.state.searchCriteria === "" &&
             this.state.sortBy === "classYear" && (
               <span
@@ -475,6 +516,79 @@ class courseView extends Component {
                 }}
               />
             )}
+          
+          {this.state.searchCriteria === "" &&
+            this.state.sortBy === "courseOverlap" && (
+              <span
+                style={{
+                  marginRight: "282px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "name" &&
+            this.state.sortBy === "courseOverlap" && (
+              <span
+                style={{
+                  marginRight: "88px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "classYear" &&
+            this.state.sortBy === "courseOverlap" && (
+              <span
+                style={{
+                  marginRight: "69px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "majors" &&
+            this.state.sortBy === "courseOverlap" && (
+              <span
+                style={{
+                  marginRight: "81px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "interests" &&
+            this.state.sortBy === "courseOverlap" && (
+              <span
+                style={{
+                  marginRight: "69px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "groups" &&
+            this.state.sortBy === "courseOverlap" && (
+              <span
+                style={{
+                  marginRight: "88px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "varsitySports" &&
+            this.state.sortBy === "courseOverlap" && (
+              <span
+                style={{
+                  marginRight: "88px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "affinitySports" &&
+            this.state.sortBy === "courseOverlap" && (
+              <span
+                style={{
+                  marginRight: "64px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "greekLife" &&
+            this.state.sortBy === "courseOverlap" && (
+              <span
+                style={{
+                  marginRight: "52px",
+                }}
+              />
+            )}
 
           <TextField
             id="sortBy"
@@ -487,9 +601,9 @@ class courseView extends Component {
             helperText="Please select a sorting criteria"
             size={"small"}
           >
-            {/* <MenuItem key="courseOverlap" value="courseOverlap">
-              Course Overlap: Descending (5-1)
-            </MenuItem> */}
+            <MenuItem key="courseOverlap" value="courseOverlap">
+              Course Overlap: Descending (Highest-Lowest)
+            </MenuItem>
             <MenuItem key="firstName" value="firstName">
               First Name: Alphabetical (A-Z)
             </MenuItem>
@@ -565,7 +679,8 @@ class courseView extends Component {
                   >
                     <CardContent>
                       <div>
-                        {/* <Typography>`${courseOverlap[index]}/${myCourseCodes.length}`</Typography> */}
+                        <Typography variant="h6">Course Overlap: {students[index].courseOverlap}/{myCourseCodes.length}</Typography>
+                        <br />
                         <img
                           alt="student"
                           src={students[index].imageUrl}

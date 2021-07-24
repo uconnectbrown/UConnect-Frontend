@@ -21,8 +21,8 @@ import Music from "@material-ui/icons/MusicNote";
 // Body
 class studentView extends Component {
   state = {
-    courseInfo: this.props.location.state.studentInfo[0],
-    studentId: this.props.location.state.studentInfo[1],
+    courseInfo: [this.props.location.state.studentInfo[0],this.props.location.state.studentInfo[1],this.props.location.state.studentInfo[2],this.props.location.state.studentInfo[3],],
+    studentId: this.props.location.state.studentInfo[4],
     affinitySports: [],
     bio: "",
     class: "",

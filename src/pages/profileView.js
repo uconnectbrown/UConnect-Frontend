@@ -439,7 +439,7 @@ class profileView extends Component {
       courseCode: this.state.addCourseCode,
       courseName: this.state.addCourseName,
       courseColor: this.state.addCourseColor,
-      // assignments: [[], [], [], [], [], [], []],
+      assignments: [],
     };
     for (let j = 0; j < 5; j++) {
       if (j !== firstIndex) {
@@ -460,7 +460,7 @@ class profileView extends Component {
       courseCode: this.state.courses[index].courseCode,
       courseName: this.state.courses[index].courseName,
       courseColor: this.state.courseColor,
-      // assignments: this.state.courses[index].assignments,
+      assignments: this.state.courses[index].assignments,
     };
     for (let j = 0; j < 5; j++) {
       if (j !== index) {
