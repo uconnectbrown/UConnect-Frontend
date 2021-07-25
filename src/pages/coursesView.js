@@ -57,6 +57,7 @@ export class coursesView extends Component {
     ],
     assignCourse: "",
     assignmentName: "",
+    dailyAssignments: [[], [], [], [], [], [], []],
   };
 
   componentDidMount() {
@@ -126,6 +127,21 @@ export class coursesView extends Component {
             });
             currentIndex++;
           }
+          let newAssignments = [...this.state.dailyAssignments]
+          for (let i = 0; i < 7; i++) {
+            this.state.courses.map((course) => {
+              {course.assignments && (
+                course.assignments.map((assignment) => {
+                  if (assignment['day'] === i) {
+                    // {console.log(course['courseColor'], assignment['name'])}
+                    newAssignments[i].push({"color": course['courseColor'], "name": assignment['name']})
+                    // {console.log(newAssignments)}
+                  }
+                })
+              )}
+            })
+          }
+          this.setState({ dailyAssignments: newAssignments })
           this.setState({ loading: false });
         })
         .catch((err) => console.log(err));
@@ -223,6 +239,8 @@ export class coursesView extends Component {
     let courseCodes = this.state.courses.map((course) =>
       course.courseCode
     );
+    let dailyAssignments = this.state.dailyAssignments;
+    console.log(dailyAssignments)
     return (
       <div align="center">
         <NavBar />
@@ -333,6 +351,7 @@ export class coursesView extends Component {
           ))}
         </GridList>
         <br />
+
         <GridList cols={7} spacing={20} cellHeight="auto">
           {indices.map((index) => (
             <GridListTile item sm>
@@ -346,18 +365,19 @@ export class coursesView extends Component {
                     {weekdays[index]}
                   </Typography>
                   <hr />
-                  {this.state.loading && (
-                    <CircularProgress size={10}/>
+                  {loading && (
+                    <div>
+                    <CircularProgress size={20}/>
+                    <br />
+                    </div>
                   )}
-                  {/* {!this.state.loading && (
-                    this.state.courses.map((course) => {
-                      course.assignments.map((assignment) => {
-                        if (assignment['day'] === index) {
-                          <Typography variant="h6" align="center" style={{color: `${course['courseColor']}`}}>{assignment['name']}</Typography>
-                        }
-                      })
+                  {!loading && (
+                    dailyAssignments[index].map((assignment) => {
+                      {console.log(assignment['name'])}
+                      <Typography variant="h6" align="center">hi</Typography>
                     })
-                  )} */}
+                  )}
+                  
                   {/* {this.state.courses.map((course) => (
                     course.assignments[index].map((assignment) => (
                       <Typography>{assignment}</Typography>
@@ -432,6 +452,7 @@ export class coursesView extends Component {
             </GridListTile>
           ))}
         </GridList>
+
       </div>
     );
   }
