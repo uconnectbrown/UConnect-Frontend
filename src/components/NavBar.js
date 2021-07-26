@@ -8,6 +8,7 @@ import App from "../App.js";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
+import SignOut from "./SignOut.js";
 
 class NavBar extends Component {
   logoutUser = () => {
@@ -20,7 +21,7 @@ class NavBar extends Component {
     return (
       <AppBar>
         <Toolbar className="nav-container">
-          <Button color="inherit" component={Link} to="/profileView">
+          <Button color="inherit" component={Link} to="/">
             Profile
           </Button>
           <Button color="inherit" component={Link} to="/coursesView">
@@ -29,14 +30,8 @@ class NavBar extends Component {
           <Button color="inherit" component={Link} to="/messagesView">
             Messages
           </Button>
-          <Button
-            color="inherit"
-            onClick={this.logoutUser}
-            component={Link}
-            to="/"
-          >
-            Logout
-          </Button>
+
+          <SignOut />
         </Toolbar>
       </AppBar>
     );

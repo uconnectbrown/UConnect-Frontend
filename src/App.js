@@ -2,18 +2,27 @@
 import "./App.css";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import jwtDecode from "jwt-decode";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles/";
 import { createTheme } from "@material-ui/core/styles";
 import themeFile from "./util/theme";
 
+// MUI Stuff
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+
+// Authentication
+import { auth } from "./firebase.js";
+import { useAuthState } from "react-firebase-hooks/auth";
+
 // Components
 import AuthRoute from "./util/AuthRoute"; // auth => send to profileView, else send to component
+import SignIn from "./components/SignIn";
+import Welcome from "./components/Welcome";
 
 // Pages
-import welcome from "./pages/welcome";
-import login from "./pages/login";
-import signup from "./pages/signup";
+import test from "./pages/test";
 import profileBuild from "./pages/profileBuild";
 import profileView from "./pages/profileView";
 import coursesView from "./pages/coursesView";
@@ -27,98 +36,30 @@ import feedView from "./pages/feedView";
 const theme = createTheme(themeFile);
 
 // Body
-let auth;
-const token = localStorage.FBIdToken;
-if (token) {
-  const decodedToken = jwtDecode(token);
-  if (decodedToken.exp * 1000 < Date.now()) {
-    window.location.href = "/login";
-    auth = false;
-  } else {
-    auth = true;
-  }
-}
-
-function App(props) {
-  let authenticated = auth;
-  if (!props.authenticated) {
-    authenticated = props.authenticated;
-  }
+function App() {
+  const [user] = useAuthState(auth);
   return (
     <MuiThemeProvider theme={theme}>
       <div className="App">
-        <Router>
-          <div className="container">
-            <Switch>
-              <AuthRoute
-                exact
-                path="/"
-                component={welcome}
-                authenticated={authenticated}
-              />
-              <AuthRoute
-                exact
-                path="/login"
-                component={login}
-                authenticated={authenticated}
-              />
-              <AuthRoute
-                exact
-                path="/signup"
-                component={signup}
-                authenticated={authenticated}
-              />
-              <Route
-                exact
-                path="/profileBuild"
-                component={profileBuild}
-                authenticated={authenticated}
-              />
-              <Route
-                exact
-                path="/profileView"
-                component={profileView}
-                authenticated={authenticated}
-              />
-              <Route
-                exact
-                path="/coursesView"
-                component={coursesView}
-                authenticated={authenticated}
-              />
-              <Route
-                exact
-                path="/messageView"
-                component={messageView}
-                authenticated={authenticated}
-              />
-              <Route
-                exact
-                path="/courseView"
-                component={courseView}
-                authenticated={authenticated}
-              />
-              <Route
-                exact
-                path="/studentView"
-                component={studentView}
-                authenticated={authenticated}
-              />
-              <Route
-                exact
-                path="/messagesView"
-                component={messagesView}
-                authenticated={authenticated}
-              />
-              <Route
-                exact
-                path="/feedView"
-                component={feedView}
-                authenticated={authenticated}
-              />
-            </Switch>
-          </div>
-        </Router>
+        {user ? (
+          <Router>
+            <div className="container">
+              <Switch>
+                <Route exact path="/profileBuild" component={profileBuild} />
+                <Route exact path="/" component={profileView} />
+                <Route exact path="/test" component={test} />
+                <Route exact path="/coursesView" component={coursesView} />
+                <Route exact path="/messageView" component={messageView} />
+                <Route exact path="/courseView" component={courseView} />
+                <Route exact path="/studentView" component={studentView} />
+                <Route exact path="/messagesView" component={messagesView} />
+                <Route exact path="/feedView" component={feedView} />
+              </Switch>
+            </div>
+          </Router>
+        ) : (
+          <Welcome />
+        )}
       </div>
     </MuiThemeProvider>
   );

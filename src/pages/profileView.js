@@ -1,3 +1,4 @@
+// Setup
 import React, { Component } from "react";
 import axios from "axios";
 import ImageCropper from "../components/ImageCropper";
@@ -9,9 +10,13 @@ import MyEditor from "../components/MyEditor";
 import { useState, useCallback } from "react";
 import getCroppedImg from "../components/cropImage";
 // import update from "react-addons-update";
+import { db, auth } from "../firebase";
 
 // Components
 import NavBar from "../components/NavBar";
+
+// Resources
+import profileViewState from "../resources/profileViewState";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -34,7 +39,6 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Dots from "@material-ui/icons/MoreHoriz";
-
 import Book from "@material-ui/icons/MenuBook";
 import Movie from "@material-ui/icons/Movie";
 import Tv from "@material-ui/icons/Tv";
@@ -46,193 +50,95 @@ import varsitySports from "../resources/varsitySports";
 import greekLife from "../resources/greekLife";
 
 class profileView extends Component {
-  state = {
-    addCourseCode: "",
-    addCourseName: "",
-    addCourseColor: "",
-    affinitySports: [],
-    affinitySportOne: "",
-    affinitySportTwo: "",
-    affinitySportThree: "",
-    bio: "",
-    bio_: "",
-    class: "",
-    class_: "",
-    courses: [{}, {}, {}, {}, {}],
-    createdAt: "",
-    delete: false,
-    email: "",
-    favorites: {},
-    favoriteBook: "",
-    favoriteMovie: "",
-    favoriteShow: "",
-    favoriteArtist: "",
-    firstName: "",
-    greekLife: "",
-    firstName_: "",
-    greekLife_: "",
-    groups: [],
-    groupOne: "",
-    groupTwo: "",
-    groupThree: "",
-    imageUrl: "",
-    interests: [],
-    interestOne: "",
-    interestTwo: "",
-    interestThree: "",
-    interestFour: "",
-    interestFive: "",
-    lastName: "",
-    lastName_: "",
-    majors: [],
-    majorOne: "",
-    majorTwo: "",
-    majorThree: "",
-    major1: "",
-    major2: "",
-    major3: "",
-    addOpen: false,
-    removeOpen: false,
-    deleteCourse: false,
-    preferredPronouns: "",
-    preferredPronouns_: "",
-    userId: "",
-    varsitySports: [],
-    varsitySportOne: "",
-    varsitySportTwo: "",
-    varsitySport1: "",
-    varsitySport2: "",
-    groupOpen: false,
-    basicOpen: false,
-    interestsOpen: false,
-    favoritesOpen: false,
-    imageOpen: false,
-    loading: true,
-    colorOpen: [false, false, false, false, false],
-    courseColor: "",
-    courseColor0: "",
-    courseColor1: "",
-    courseColor2: "",
-    courseColor3: "",
-    courseColor4: "",
-  };
+  constructor() {
+    super();
+    this.state = profileViewState;
+  }
 
   componentDidMount() {
-    const FBIdToken = localStorage.FBIdToken;
-    axios.defaults.headers.common["Authorization"] = FBIdToken;
-    if (FBIdToken) {
-      axios
-        .get("/user")
-        .then((res) => {
-          this.setState({
-            affinitySportOne: res.data.user.affinitySports[0],
-            affinitySportTwo: res.data.user.affinitySports[1],
-            affinitySportThree: res.data.user.affinitySports[2],
-            affinitySport1: res.data.user.affinitySports[0],
-            affinitySport2: res.data.user.affinitySports[1],
-            affinitySport3: res.data.user.affinitySports[2],
-            bio: res.data.user.bio,
-            bio_: res.data.user.bio,
-            class: res.data.user.class,
-            class_: res.data.user.class,
-            courses: res.data.user.courses,
-            // courseColor0: res.data.user.courses['courseColor'][0],
-            // courseColor1: res.data.user.courses['courseColor'][1],
-            // courseColor2: res.data.user.courses['courseColor'][2],
-            // courseColor3: res.data.user.courses['courseColor'][3],
-            // courseColor4: res.data.user.courses['courseColor'][4],
-            createdAt: res.data.user.createdAt,
-            email: res.data.user.email,
-            favoriteBook: res.data.user.favorites.book,
-            favoriteMovie: res.data.user.favorites.movie,
-            favoriteShow: res.data.user.favorites.tvShow,
-            favoriteArtist: res.data.user.favorites.artist,
-            favBook: res.data.user.favorites.book,
-            favMovie: res.data.user.favorites.movie,
-            favShow: res.data.user.favorites.tvShow,
-            favArtist: res.data.user.favorites.artist,
-            firstName: res.data.user.firstName,
-            greekLife: res.data.user.greekLife,
-            firstName_: res.data.user.firstName,
-            greekLife_: res.data.user.greekLife,
-            groupOne: res.data.user.groups[0],
-            groupTwo: res.data.user.groups[1],
-            groupThree: res.data.user.groups[2],
-            group1: res.data.user.groups[0],
-            group2: res.data.user.groups[1],
-            group3: res.data.user.groups[2],
-            imageUrl: res.data.user.imageUrl,
-            interestOne: res.data.user.interests[0],
-            interestTwo: res.data.user.interests[1],
-            interestThree: res.data.user.interests[2],
-            interestFour: res.data.user.interests[3],
-            interestFive: res.data.user.interests[4],
-            interest1: res.data.user.interests[0],
-            interest2: res.data.user.interests[1],
-            interest3: res.data.user.interests[2],
-            interest4: res.data.user.interests[3],
-            interest5: res.data.user.interests[4],
-            lastName: res.data.user.lastName,
-            majorOne: res.data.user.majors[0],
-            majorTwo: res.data.user.majors[1],
-            majorThree: res.data.user.majors[2],
-            preferredPronouns: res.data.user.preferredPronouns,
-            lastName_: res.data.user.lastName,
-            major1: res.data.user.majors[0],
-            major2: res.data.user.majors[1],
-            major3: res.data.user.majors[2],
-            preferredPronouns_: res.data.user.preferredPronouns,
-            userId: res.data.user.userId,
-            varsitySportOne: res.data.user.varsitySports[0],
-            varsitySportTwo: res.data.user.varsitySports[1],
-            varsitySport1: res.data.user.varsitySports[0],
-            varsitySport2: res.data.user.varsitySports[1],
-          });
-
-          // TO-DO: reconsider passing in photoURL and course data through local storage
-          // localStorage.setItem("photoUrl", res.data.user.imageUrl);
-          // localStorage.setItem("emailId", res.data.user.email.split("@")[0]);
-          // localStorage.setItem(
-          //   "profileName",
-          //   res.data.user.firstName + " " + res.data.user.lastName
-          // );
-          // localStorage.setItem(
-          //   "course1",
-          //   res.data.user.courses[0].courseCode.replace(/\s/g, "")
-          // );
-          // localStorage.setItem(
-          //   "course2",
-          //   res.data.user.courses[1].courseCode.replace(/\s/g, "")
-          // );
-          // localStorage.setItem(
-          //   "course3",
-          //   res.data.user.courses[2].courseCode.replace(/\s/g, "")
-          // );
-          // localStorage.setItem(
-          //   "course4",
-          //   res.data.user.courses[3].courseCode.replace(/\s/g, "")
-          // );
-          // localStorage.setItem(
-          //   "course5",
-          //   res.data.user.courses[4].courseCode.replace(/\s/g, "")
-          // );
-
-          localStorage.removeItem("courseCode");
-          localStorage.removeItem("courseName");
-          localStorage.removeItem("codeSpace");
-          localStorage.removeItem("studentId");
-          localStorage.removeItem("studentName");
-          localStorage.removeItem("studentImage");
-          localStorage.removeItem("roomId");
-          this.setState({ loading: false });
-          // TO-DO: reconsider localStorage
-          return axios.get("/update");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    let emailId = auth.currentUser.email.split("@")[0];
+    db.doc(`/profiles/${emailId}`)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          this.loadUserData();
+        } else {
+          this.props.history.push("/profileBuild");
+        }
+      });
   }
+
+  loadUserData = () => {
+    let emailId = auth.currentUser.email.split("@")[0];
+    axios
+      .get(`/user/${emailId}`)
+      .then((res) => {
+        this.setState({
+          affinitySportOne: res.data.user.affinitySports[0],
+          affinitySportTwo: res.data.user.affinitySports[1],
+          affinitySportThree: res.data.user.affinitySports[2],
+          affinitySport1: res.data.user.affinitySports[0],
+          affinitySport2: res.data.user.affinitySports[1],
+          affinitySport3: res.data.user.affinitySports[2],
+          bio: res.data.user.bio,
+          bio_: res.data.user.bio,
+          class: res.data.user.class,
+          class_: res.data.user.class,
+          courses: res.data.user.courses,
+          createdAt: res.data.user.createdAt,
+          email: res.data.user.email,
+          favoriteBook: res.data.user.favorites.book,
+          favoriteMovie: res.data.user.favorites.movie,
+          favoriteShow: res.data.user.favorites.tvShow,
+          favoriteArtist: res.data.user.favorites.artist,
+          favBook: res.data.user.favorites.book,
+          favMovie: res.data.user.favorites.movie,
+          favShow: res.data.user.favorites.tvShow,
+          favArtist: res.data.user.favorites.artist,
+          firstName: res.data.user.firstName,
+          greekLife: res.data.user.greekLife,
+          firstName_: res.data.user.firstName,
+          greekLife_: res.data.user.greekLife,
+          groupOne: res.data.user.groups[0],
+          groupTwo: res.data.user.groups[1],
+          groupThree: res.data.user.groups[2],
+          group1: res.data.user.groups[0],
+          group2: res.data.user.groups[1],
+          group3: res.data.user.groups[2],
+          imageUrl: res.data.user.imageUrl,
+          interestOne: res.data.user.interests[0],
+          interestTwo: res.data.user.interests[1],
+          interestThree: res.data.user.interests[2],
+          interestFour: res.data.user.interests[3],
+          interestFive: res.data.user.interests[4],
+          interest1: res.data.user.interests[0],
+          interest2: res.data.user.interests[1],
+          interest3: res.data.user.interests[2],
+          interest4: res.data.user.interests[3],
+          interest5: res.data.user.interests[4],
+          lastName: res.data.user.lastName,
+          majorOne: res.data.user.majors[0],
+          majorTwo: res.data.user.majors[1],
+          majorThree: res.data.user.majors[2],
+          preferredPronouns: res.data.user.preferredPronouns,
+          lastName_: res.data.user.lastName,
+          major1: res.data.user.majors[0],
+          major2: res.data.user.majors[1],
+          major3: res.data.user.majors[2],
+          preferredPronouns_: res.data.user.preferredPronouns,
+          userId: res.data.user.userId,
+          varsitySportOne: res.data.user.varsitySports[0],
+          varsitySportTwo: res.data.user.varsitySports[1],
+          varsitySport1: res.data.user.varsitySports[0],
+          varsitySport2: res.data.user.varsitySports[1],
+        });
+        this.setState({ loading: false });
+        return axios.get(`/update/${emailId}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   handleImageChange = (event) => {
     event.preventDefault();
@@ -333,9 +239,8 @@ class profileView extends Component {
       } else courseList.push(this.state.courses[i]);
     }
     let newCourses = { courses: courseList };
-    axios.post("/edit", newCourses).then(() => {
+    axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
       this.setState({ courses: courseList });
-      return axios.get(`delete/${deleteCourse}`);
     });
     this.setState({ removeOpen: false });
     // this.setState({ delete: false });
@@ -447,10 +352,11 @@ class profileView extends Component {
       } else courseList.push(newCourse);
     }
     let newCourses = { courses: courseList };
-    axios.post("/edit", newCourses).then(() => {
-      this.setState({ courses: courseList });
-      return axios.get("/update");
-    });
+    axios
+      .post(`/edit/${auth.currentUser.email.split("@")[0]}`, newCourses)
+      .then(() => {
+        this.setState({ courses: courseList });
+      });
     this.setState({ addOpen: false });
   };
 
@@ -742,11 +648,7 @@ class profileView extends Component {
                     {this.state.imageUrl ===
                       "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
                       <div>
-                        <Typography
-                          variant="h5"
-                          align="center"
-                          color="primary"
-                        >
+                        <Typography variant="h5" align="center" color="primary">
                           Please add an image to complete your profile.
                         </Typography>
                       </div>

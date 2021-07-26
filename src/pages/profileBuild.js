@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { auth } from "../firebase";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -20,6 +21,9 @@ import majorList from "../resources/majors";
 import varsitySports from "../resources/varsitySports";
 import emptyProfile from "../resources/emptyProfile";
 import greekLife from "../resources/greekLife";
+
+// Components
+import SignOut from "../components/SignOut";
 
 // Styling
 const styles = (theme) => ({
@@ -46,6 +50,7 @@ class profileBuild extends Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       class: this.state.class,
+      email: auth.currentUser.email,
       majors: [this.state.majorOne, this.state.majorTwo, this.state.majorThree],
       preferredPronouns: this.state.preferredPronouns,
       interests: [
@@ -105,14 +110,14 @@ class profileBuild extends Component {
     }
 
     axios
-      .post("/edit", newUserData)
+      .post("/signup", newUserData)
       .then(() => {
         this.setState({
           loading: false,
           validProfile: true,
         });
         this.props.history.push({
-          pathname: "/profileView",
+          pathname: "/",
         });
       })
       .catch((err) => {
@@ -220,6 +225,7 @@ class profileBuild extends Component {
     ];
     return (
       <form noValidate onSubmit={this.handleSubmit}>
+        <SignOut />
         <Grid container className={classes.form}>
           <Grid item sm />
           <Grid item sm>
