@@ -27,6 +27,9 @@ import IconButton from "@material-ui/core/IconButton";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import MenuItem from "@material-ui/core/MenuItem";
+import MessageIcon from '@material-ui/icons/ChatBubbleOutline';
+import StarIcon from "@material-ui/icons/StarOutline";
+import Checkbox from '@material-ui/core/Checkbox';
 
 // Body
 export class coursesView extends Component {
@@ -304,7 +307,15 @@ export class coursesView extends Component {
                         ))}
                       </AvatarGroup>
                     )}
-                    <Tooltip title="Course notes" placement="right"
+                    <Tooltip title="Course feed" placement="left"
+                      // onMouseEnter={() => {this.setState({overlayOn: false})}}
+                      // onMouseOut={() => {this.setState({overlayOn: true})}}
+                      >
+                      <IconButton Zindex="10" style={{marginBottom: "-10px", position: "relative"}}>
+                        <MessageIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Course assignments" placement="bottom"
                       // onMouseEnter={() => {this.setState({overlayOn: false})}}
                       // onMouseOut={() => {this.setState({overlayOn: true})}}
                       >
@@ -325,18 +336,88 @@ export class coursesView extends Component {
                           style={{ cursor: "move" }}
                           id="draggable-dialog-title"
                         >
-                          Course Notes
+                          Course Assignments
                         </DialogTitle>
                         <DialogContent>
-                        <TextField
-                          id="courseNotes"
-                          name="courseNotes"
-                          autoComplete="off"
-                          multiline
-                          // onChange={this.handleChange}
-                          rows={10}
-                          variant="outlined"
-                        />
+                        <GridList cols={7} spacing={5} cellHeight="auto">
+                          <GridListTile item sm>
+                            <span>
+                              <Typography variant="h5" align="center">{weekdays[0]}</Typography>
+                              {this.state.courses[index].assignments.map((assignment) => {
+                              // return <Typography>{weekdays[assignment['day']]}: {assignment['name']}</Typography>
+                              if (assignment['day'] === 0) {
+                                return <span><Typography variant="h6"><Checkbox style={{color: `${this.state.courses[index].courseColor}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />{assignment['name']}</Typography></span>
+                            }
+                            })}
+                            </span>
+                          </GridListTile>
+                          <GridListTile item sm>
+                            <span>
+                              <Typography variant="h5" align="center">{weekdays[1]}</Typography>
+                              {this.state.courses[index].assignments.map((assignment) => {
+                              // return <Typography>{weekdays[assignment['day']]}: {assignment['name']}</Typography>
+                              if (assignment['day'] === 1) {
+                                return <span><Typography variant="h6"><Checkbox style={{color: `${this.state.courses[index].courseColor}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />{assignment['name']}</Typography></span>
+                            }
+                            })}
+                            </span>
+                          </GridListTile>
+                          <GridListTile item sm>
+                            <span>
+                              <Typography variant="h5" align="center">{weekdays[2]}</Typography>
+                              {this.state.courses[index].assignments.map((assignment) => {
+                              // return <Typography>{weekdays[assignment['day']]}: {assignment['name']}</Typography>
+                              if (assignment['day'] === 2) {
+                                return <span><Typography variant="h6"><Checkbox style={{color: `${this.state.courses[index].courseColor}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />{assignment['name']}</Typography></span>
+                            }
+                            })}
+                            </span>
+                          </GridListTile>
+                          <GridListTile item sm>
+                            <span>
+                              <Typography variant="h5" align="center">{weekdays[3]}</Typography>
+                              {this.state.courses[index].assignments.map((assignment) => {
+                              // return <Typography>{weekdays[assignment['day']]}: {assignment['name']}</Typography>
+                              if (assignment['day'] === 3) {
+                                return <span><Typography variant="h6"><Checkbox style={{color: `${this.state.courses[index].courseColor}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />{assignment['name']}</Typography></span>
+                            }
+                            })}
+                            </span>
+                          </GridListTile>
+                          <GridListTile item sm>
+                            <span>
+                              <Typography variant="h5" align="center">{weekdays[4]}</Typography>
+                              {this.state.courses[index].assignments.map((assignment) => {
+                              // return <Typography>{weekdays[assignment['day']]}: {assignment['name']}</Typography>
+                              if (assignment['day'] === 4) {
+                                return <span><Typography variant="h6"><Checkbox style={{color: `${this.state.courses[index].courseColor}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />{assignment['name']}</Typography></span>
+                            }
+                            })}
+                            </span>
+                            </GridListTile>
+                            <GridListTile item sm>
+                            <span>
+                              <Typography variant="h5" align="center">{weekdays[5]}</Typography>
+                              {this.state.courses[index].assignments.map((assignment) => {
+                              // return <Typography>{weekdays[assignment['day']]}: {assignment['name']}</Typography>
+                              if (assignment['day'] === 5) {
+                                return <span><Typography variant="h6"><Checkbox style={{color: `${this.state.courses[index].courseColor}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />{assignment['name']}</Typography></span>
+                            }
+                            })}
+                            </span>
+                          </GridListTile>
+                          <GridListTile item sm>
+                            <span>
+                              <Typography variant="h5" align="center">{weekdays[6]}</Typography>
+                              {this.state.courses[index].assignments.map((assignment) => {
+                              // return <Typography>{weekdays[assignment['day']]}: {assignment['name']}</Typography>
+                              if (assignment['day'] === 6) {
+                                return <span><Typography variant="h6"><Checkbox style={{color: `${this.state.courses[index].courseColor}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />{assignment['name']}</Typography></span>
+                            }
+                            })}
+                            </span>
+                          </GridListTile>
+                        </GridList>
                         </DialogContent>
                         <DialogActions>
                           <Button onClick={this.handleNotesClose} color="secondary">
@@ -344,6 +425,14 @@ export class coursesView extends Component {
                           </Button>
                         </DialogActions>
                       </Dialog>
+                      <Tooltip title="Saved profiles" placement="right"
+                      // onMouseEnter={() => {this.setState({overlayOn: false})}}
+                      // onMouseOut={() => {this.setState({overlayOn: true})}}
+                      >
+                      <IconButton Zindex="10" style={{marginBottom: "-10px", position: "relative"}}>
+                        <StarIcon />
+                      </IconButton>
+                    </Tooltip>
                   </CardContent>
                 </ButtonBase>
               </Card>
@@ -371,17 +460,17 @@ export class coursesView extends Component {
                     <br />
                     </div>
                   )}
-                  {!loading && (
+                  {/* {!loading && (
                     dailyAssignments[index].map((assignment) => {
                       {console.log(assignment['name'])}
                       <Typography variant="h6" align="center">hi</Typography>
                     })
-                  )}
+                  )} */}
                   
                   {/* {this.state.courses.map((course) => (
-                    course.assignments[index].map((assignment) => (
-                      <Typography>{assignment}</Typography>
-                    ))
+                    course.assignments[index].map((assignment) => {
+                      return <Typography>{assignment}</Typography>
+                    })
                   ))} */}
                   <Tooltip title="Add assignment" placement="right">
                   <IconButton onClick={() => this.handleAssignmentsOpen(index)} color="secondary" style={{marginBottom: "-15px"}}>

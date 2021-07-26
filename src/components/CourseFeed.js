@@ -5,6 +5,8 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import { useHistory } from "react-router";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 
 function CourseFeed(props) {
   dayjs.extend(relativeTime);
@@ -18,13 +20,25 @@ function CourseFeed(props) {
   };
   return (
     <div>
-      <Card>
-        <CardContent>
-          <ButtonBase size="large" color="primary" onClick={() => handleFeed()}>
-            Course Feed for {code}
-          </ButtonBase>
-        </CardContent>
-      </Card>
+      <Grid container>
+        <Grid item sm></Grid>
+        <Grid item sm>
+          <Card
+          raised
+          style={{
+            borderStyle: "solid",
+            borderWidth: "3px",
+            borderColor: "blue",
+          }}>
+            <CardContent align="center">
+              <ButtonBase size="large" color="primary" onClick={() => handleFeed()}>
+                <Typography variant="h5">Course Feed for {code}</Typography>
+              </ButtonBase>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item sm></Grid>
+      </Grid>
     </div>
   );
 }

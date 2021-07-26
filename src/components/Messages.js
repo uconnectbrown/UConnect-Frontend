@@ -5,6 +5,9 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import { useHistory } from "react-router";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Typography from "@material-ui/core/Typography";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
 
 function Messages(props) {
   dayjs.extend(relativeTime);
@@ -31,9 +34,18 @@ function Messages(props) {
   };
   return (
     <div>
+      <GridList cols={3} spacing={20} cellHeight="auto">
       {props.messages.map((message) => (
         <div>
-          <Card>
+          <GridListTile item sm>
+          <Card
+            raised
+            style={{
+              borderStyle: "solid",
+              borderWidth: "2px",
+              borderColor: `red`,
+              height: "97%",
+            }}>
             <CardContent>
               <ButtonBase
                 size="large"
@@ -48,15 +60,28 @@ function Messages(props) {
                   )
                 }
               >
-                <img src={message.recipientImage} width={50}></img>
-                {message.recipientName} {message.course} ||
-                <span>{dayjs(message.mostRecent).fromNow()}</span>
+                <img 
+                  src={message.recipientImage} 
+                  style={{
+                    width: 50,
+                    height: 50,
+                    objectFit: "cover",
+                    borderRadius: "10%",
+                    borderStyle: "solid",
+                    borderColor: `red`,
+                    borderWidth: "1px",
+                  }} />
+                <div>
+                <Typography variant="h6" style={{marginLeft: "10px"}} align="left">{message.recipientName}</Typography>
+                <Typography variant="body" style={{marginLeft: "10px"}}>Most recent message... || <Typography variant="caption">{dayjs(message.mostRecent).fromNow()}</Typography></Typography>
+                </div>
               </ButtonBase>
             </CardContent>
           </Card>
-          <br />
+          </GridListTile>
         </div>
       ))}
+      </GridList>
     </div>
   );
 }

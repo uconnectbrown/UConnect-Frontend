@@ -787,7 +787,7 @@ class profileView extends Component {
                 </Grid>
 
                 {/* new test code */}
-                <Dialog
+                {/* <Dialog
                   overlayStyle={{ backgroundColor: "transparent" }}
                   open={this.state.imageOpen}
                 >
@@ -798,8 +798,8 @@ class profileView extends Component {
                     Crop Image
                   </DialogTitle>
                   <DialogContent style={{ height: "600px", width: "600px" }}>
-                    {/* <Crop img={this.state.imageUrl} /> */}
-                    {/* <MyEditor /> */}
+                    <Crop img={this.state.imageUrl} />
+                    <MyEditor />
                   </DialogContent>
                   <DialogActions>
                     <Button
@@ -810,7 +810,7 @@ class profileView extends Component {
                       Cancel
                     </Button>
                   </DialogActions>
-                </Dialog>
+                </Dialog> */}
                 <br />
                 <Typography variant="h3" align="center">
                   {this.state.firstName} {this.state.lastName}{" "}
