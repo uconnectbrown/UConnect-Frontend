@@ -40,6 +40,13 @@ const emptyProfile = {
   thirdMajor: false,
   secondVarsitySport: false,
   fifthCourse: false,
+  careerOpen: false,
+  artsOpen: false,
+  fitnessOpen: false,
+  hobbiesOpen: false,
+  politicsOpen: false,
+  sportsOpen: false,
+  scienceOpen: false,
 };
 
 export default emptyProfile;

@@ -14,6 +14,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/AddCircle";
 import Tooltip from "@material-ui/core/Tooltip";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Checkbox from "@material-ui/core/Checkbox";
 
 // Import Data
 import majorList from "../resources/majors";
@@ -419,6 +425,239 @@ class profileBuild extends Component {
             <body1>
               Please list between 3 and 5 areas of interests you have.
             </body1>
+            </Grid>
+            <Grid item sm/>
+          </Grid>
+          <br />
+          <Grid container spacing={3} className={classes.form}>
+            <Grid item sm>
+              <Button variant="outlined" onClick={() => {this.setState({careerOpen: true})}} style={{color: `${palette[4]}`, borderStyle: "solid", borderWidth: "2px", borderColor: `${palette[4]}`}}>
+                <Typography variant="body1">Career & Professional</Typography>
+              </Button>
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                open={this.state.careerOpen}
+              >
+                <DialogTitle
+                  style={{ cursor: "move" }}
+                  id="draggable-dialog-title"
+                >
+                  Career & Professional Interests
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="body1"><Checkbox style={{color: `${palette[4]}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} /> Option #1</Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {this.setState({careerOpen: false})}}
+                    color="secondary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="secondary"
+                  >
+                    Save Preferences
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Grid>
+            <Grid item sm>
+              <Button variant="outlined" onClick={() => {this.setState({artsOpen: true})}} style={{color: `${palette[3]}`, borderStyle: "solid", borderWidth: "2px", borderColor: `${palette[3]}`}}>
+                <Typography variant="body1">Arts & Entertainment</Typography>
+              </Button>
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                open={this.state.artsOpen}
+              >
+                <DialogTitle
+                  style={{ cursor: "move" }}
+                  id="draggable-dialog-title"
+                >
+                  Arts & Entertainment Interests
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="body1"><Checkbox style={{color: `${palette[3]}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} /> Option #1</Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {this.setState({artsOpen: false})}}
+                    color="secondary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="secondary"
+                  >
+                    Save Preferences
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Grid>
+            <Grid item sm>
+              <Button variant="outlined" onClick={() => {this.setState({fitnessOpen: true})}} style={{color: `${palette[0]}`, borderStyle: "solid", borderWidth: "2px", borderColor: `${palette[0]}`}}>
+                <Typography variant="body1">Fitness & Nutrition</Typography>
+              </Button>
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                open={this.state.fitnessOpen}
+              >
+                <DialogTitle
+                  style={{ cursor: "move" }}
+                  id="draggable-dialog-title"
+                >
+                  Fitness & Nutrition Interests
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="body1"><Checkbox style={{color: `${palette[0]}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} /> Option #1</Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {this.setState({fitnessOpen: false})}}
+                    color="secondary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="secondary"
+                  >
+                    Save Preferences
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Grid>
+            <Grid item sm>
+              <Button variant="outlined" onClick={() => {this.setState({hobbiesOpen: true})}} style={{color: `${palette[5]}`, borderStyle: "solid", borderWidth: "2px", borderColor: `${palette[5]}`}}>
+                <Typography variant="body1">Hobbies & Activities</Typography>
+              </Button>
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                open={this.state.hobbiesOpen}
+              >
+                <DialogTitle
+                  style={{ cursor: "move" }}
+                  id="draggable-dialog-title"
+                >
+                  Hobbies & Activities Interests
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="body1"><Checkbox style={{color: `${palette[5]}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} /> Option #1</Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {this.setState({hobbiesOpen: false})}}
+                    color="secondary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="secondary"
+                  >
+                    Save Preferences
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Grid>
+            <Grid item sm>
+              <Button variant="outlined" onClick={() => {this.setState({politicsOpen: true})}} style={{color: `${palette[2]}`, borderStyle: "solid", borderWidth: "2px", borderColor: `${palette[2]}`}}>
+                <Typography variant="body1">Politics & Social</Typography>
+              </Button>
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                open={this.state.politicsOpen}
+              >
+                <DialogTitle
+                  style={{ cursor: "move" }}
+                  id="draggable-dialog-title"
+                >
+                  Politics & Social Interests
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="body1"><Checkbox style={{color: `${palette[2]}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} /> Option #1</Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {this.setState({politicsOpen: false})}}
+                    color="secondary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="secondary"
+                  >
+                    Save Preferences
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Grid>
+            <Grid item sm>
+              <Button variant="outlined" onClick={() => {this.setState({sportsOpen: true})}} style={{color: `${palette[7]}`, borderStyle: "solid", borderWidth: "2px", borderColor: `${palette[7]}`}}>
+                <Typography variant="body1">Sports & Outdoors</Typography>
+              </Button>
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                open={this.state.sportsOpen}
+              >
+                <DialogTitle
+                  style={{ cursor: "move" }}
+                  id="draggable-dialog-title"
+                >
+                  Sports & Outdoors Interests
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="body1"><Checkbox style={{color: `${palette[7]}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} /> Option #1</Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {this.setState({sportsOpen: false})}}
+                    color="secondary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="secondary"
+                  >
+                    Save Preferences
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Grid>
+            <Grid item sm>
+              <Button variant="outlined" onClick={() => {this.setState({scienceOpen: true})}} style={{color: `${palette[1]}`, borderStyle: "solid", borderWidth: "2px", borderColor: `${palette[1]}`}}>
+                <Typography variant="body1">Science & Technology</Typography>
+              </Button>
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                open={this.state.scienceOpen}
+              >
+                <DialogTitle
+                  style={{ cursor: "move" }}
+                  id="draggable-dialog-title"
+                >
+                  Science & Technology Interests
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="body1"><Checkbox style={{color: `${palette[1]}`}} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} /> Option #1</Typography>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {this.setState({scienceOpen: false})}}
+                    color="secondary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="secondary"
+                  >
+                    Save Preferences
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Grid>
+          </Grid>
+          <Grid container className={classes.form}>
+            <Grid item sm />
+            <Grid item sm>
             <TextField
               id="interestOne"
               name="interestOne"
