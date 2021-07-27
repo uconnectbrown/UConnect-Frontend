@@ -21,7 +21,7 @@ class NavBar extends Component {
     return (
       <AppBar>
         <Toolbar className="nav-container">
-          <Button color="inherit" component={Link} to="/">
+          <Button color="inherit" component={Link} to="/profileView">
             Profile
           </Button>
           <Button color="inherit" component={Link} to="/coursesView">

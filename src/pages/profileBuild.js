@@ -22,9 +22,6 @@ import varsitySports from "../resources/varsitySports";
 import emptyProfile from "../resources/emptyProfile";
 import greekLife from "../resources/greekLife";
 
-// Components
-import SignOut from "../components/SignOut";
-
 // Styling
 const styles = (theme) => ({
   ...theme.spreadThis,
@@ -225,7 +222,6 @@ class profileBuild extends Component {
     ];
     return (
       <form noValidate onSubmit={this.handleSubmit}>
-        <SignOut />
         <Grid container className={classes.form}>
           <Grid item sm />
           <Grid item sm>

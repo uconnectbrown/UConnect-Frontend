@@ -56,18 +56,17 @@ class profileView extends Component {
   }
 
   componentDidMount() {
-    if (auth.currentUser) {
-      let emailId = auth.currentUser.email.split("@")[0];
-      db.doc(`/profiles/${emailId}`)
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            this.loadUserData();
-          } else {
-            this.props.history.push("/profileBuild");
-          }
-        });
-    }
+    this.loadUserData();
+    // let emailId = auth.currentUser.email.split("@")[0];
+    // db.doc(`/profiles/${emailId}`)
+    //   .get()
+    //   .then((doc) => {
+    //     if (doc.exists) {
+    //       this.loadUserData();
+    //     } else {
+    //       this.props.history.push("/profileBuild");
+    //     }
+    //   });
   }
 
   loadUserData = () => {
@@ -954,16 +953,7 @@ class profileView extends Component {
                       />
                     </DialogContent>
                     <DialogActions>
-                      <Button
-                        onClick={this.handleBasicClose}
-                        color="secondary"
-                        disabled={
-                          this.state.firstName === "" ||
-                          this.state.lastName === "" ||
-                          this.state.majorOne === "" ||
-                          this.state.class === ""
-                        }
-                      >
+                      <Button onClick={this.handleBasicClose} color="secondary">
                         Cancel
                       </Button>
                       <Button
@@ -1246,11 +1236,6 @@ class profileView extends Component {
                           <Button
                             onClick={this.handleInterestsClose}
                             color="secondary"
-                            disabled={
-                              this.state.interestOne === "" ||
-                              this.state.interestTwo === "" ||
-                              this.state.interestThree === ""
-                            }
                           >
                             Cancel
                           </Button>
@@ -1410,12 +1395,6 @@ class profileView extends Component {
                           <Button
                             onClick={this.handleFavoritesClose}
                             color="secondary"
-                            disabled={
-                              this.state.favoriteBook === "" ||
-                              this.state.favoriteMovie === "" ||
-                              this.state.favoriteShow === "" ||
-                              this.state.favoriteArtist === ""
-                            }
                           >
                             Cancel
                           </Button>
