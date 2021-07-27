@@ -22,7 +22,6 @@ import SignIn from "./components/SignIn";
 import Welcome from "./components/Welcome";
 
 // Pages
-import test from "./pages/test";
 import profileBuild from "./pages/profileBuild";
 import profileView from "./pages/profileView";
 import coursesView from "./pages/coursesView";
@@ -46,8 +45,7 @@ function App() {
             <div className="container">
               <Switch>
                 <Route exact path="/profileBuild" component={profileBuild} />
-                <Route exact path="/" component={profileView} />
-                <Route exact path="/test" component={test} />
+                <Route exact path="/profileView" component={profileView} />
                 <Route exact path="/coursesView" component={coursesView} />
                 <Route exact path="/messageView" component={messageView} />
                 <Route exact path="/courseView" component={courseView} />
@@ -58,7 +56,13 @@ function App() {
             </div>
           </Router>
         ) : (
-          <Welcome />
+          <Router>
+            <div className="container">
+              <Switch>
+                <Route exact path="/" component={Welcome} />
+              </Switch>
+            </div>
+          </Router>
         )}
       </div>
     </MuiThemeProvider>

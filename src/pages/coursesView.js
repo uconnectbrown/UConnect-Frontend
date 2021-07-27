@@ -51,13 +51,12 @@ export class coursesView extends Component {
   };
 
   componentDidMount() {
-    let emailId = auth.currentUser.email.split("@")[0];
     let indexArray = [];
     let currentIndex = 0;
     axios
-      .get("/update")
+      .get(`/update/${auth.currentUser.email}`)
       .then(() => {
-        return axios.get(`/courses/${emailId}`).then((res) => {
+        return axios.get(`/courses/${auth.currentUser.email}`).then((res) => {
           this.setState({
             courses: res.data,
           });
@@ -74,7 +73,6 @@ export class coursesView extends Component {
         );
         // pull students to obtain avatars
         let promises = [];
-        console.log(indexArray);
         for (let i = 0; i < 5; i++) {
           if (indexArray.includes(i))
             promises.push(axios.get(`/avatars/${courseCodes[i]}`));

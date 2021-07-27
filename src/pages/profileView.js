@@ -56,16 +56,18 @@ class profileView extends Component {
   }
 
   componentDidMount() {
-    let emailId = auth.currentUser.email.split("@")[0];
-    db.doc(`/profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          this.loadUserData();
-        } else {
-          this.props.history.push("/profileBuild");
-        }
-      });
+    if (auth.currentUser) {
+      let emailId = auth.currentUser.email.split("@")[0];
+      db.doc(`/profiles/${emailId}`)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            this.loadUserData();
+          } else {
+            this.props.history.push("/profileBuild");
+          }
+        });
+    }
   }
 
   loadUserData = () => {
@@ -133,7 +135,18 @@ class profileView extends Component {
           varsitySport2: res.data.user.varsitySports[1],
         });
         this.setState({ loading: false });
-        return axios.get(`/update/${emailId}`);
+        return this.updateCourses();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  updateCourses = () => {
+    axios
+      .get(`/update/${auth.currentUser.email}`)
+      .then(() => {
+        return;
       })
       .catch((err) => {
         console.log(err);
@@ -143,12 +156,10 @@ class profileView extends Component {
   handleImageChange = (event) => {
     event.preventDefault();
     const image = event.target.files[0];
-    console.log(image);
     const formData = new FormData();
     formData.append("image", image, image.name);
-    console.log(formData);
     axios
-      .post("/image", formData)
+      .post(`/image/${auth.currentUser.email}`, formData)
       .then((data) => {
         this.setState({ imageUrl: data.data.imageUrl });
 
@@ -231,7 +242,7 @@ class profileView extends Component {
   handleRemoveOpen = (deleteIndex) => {
     this.setState({ removeOpen: true });
     let courseList = [];
-    let deleteCourse;
+    let deleteCourse = {};
     for (let i = 0; i < 5; i++) {
       if (i === deleteIndex) {
         courseList.push({ courseCode: "", courseName: "", courseColor: "" });
@@ -242,8 +253,14 @@ class profileView extends Component {
     axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
       this.setState({ courses: courseList });
     });
+    this.updateCourses();
+    axios
+      .get(`/delete/${auth.currentUser.email}/${deleteCourse}`)
+      .then(() => {
+        return;
+      })
+      .catch((err) => console.log(err));
     this.setState({ removeOpen: false });
-    // this.setState({ delete: false });
   };
 
   handleAddClose = () => {
@@ -352,11 +369,10 @@ class profileView extends Component {
       } else courseList.push(newCourse);
     }
     let newCourses = { courses: courseList };
-    axios
-      .post(`/edit/${auth.currentUser.email.split("@")[0]}`, newCourses)
-      .then(() => {
-        this.setState({ courses: courseList });
-      });
+    axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
+      this.setState({ courses: courseList });
+    });
+    this.updateCourses();
     this.setState({ addOpen: false });
   };
 
@@ -374,9 +390,8 @@ class profileView extends Component {
       } else courseList.push(newCourse);
     }
     let newCourses = { courses: courseList };
-    axios.post("/edit", newCourses).then(() => {
+    axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
       this.setState({ courses: courseList });
-      return axios.get("/update");
     });
     this.setState({ colorOpen: [false, false, false, false, false] });
   };
@@ -395,7 +410,7 @@ class profileView extends Component {
     let newGroups = {
       groups: groupList,
     };
-    axios.post("/edit", newGroups).then(() => {
+    axios.post(`/edit/${auth.currentUser.email}`, newGroups).then(() => {
       this.setState({
         groupOne: groupList[0],
         groupTwo: groupList[1],
@@ -431,7 +446,7 @@ class profileView extends Component {
       interests: interestsList,
       affinitySports: affinitySportsList,
     };
-    axios.post("/edit", newInterests).then(() => {
+    axios.post(`/edit/${auth.currentUser.email}`, newInterests).then(() => {
       this.setState({
         interestOne: interestsList[0],
         interestTwo: interestsList[1],
@@ -461,7 +476,7 @@ class profileView extends Component {
     let newFavorites = {
       favorites: favorites,
     };
-    axios.post("/edit", newFavorites).then(() => {
+    axios.post(`/edit/${auth.currentUser.email}`, newFavorites).then(() => {
       this.setState({
         favoriteBook: favorites["book"],
         favoriteMovie: favorites["movie"],
@@ -495,18 +510,21 @@ class profileView extends Component {
       greekLife: this.state.greekLife,
       bio: this.state.bio,
     };
-    axios.post("/edit", newBasicInfo).then(() => {
-      this.setState({
-        firstName: newBasicInfo["firstName"],
-        lastName: newBasicInfo["lastName"],
-        preferredPronouns: newBasicInfo["preferredPronouns"],
-        class: newBasicInfo["class"],
-        majors: newBasicInfo["majors"],
-        varsitySports: newBasicInfo["varsitySports"],
-        greekLife: newBasicInfo["greekLife"],
-        bio: newBasicInfo["bio"],
-      });
-    });
+    axios
+      .post(`/edit/${auth.currentUser.email}`, newBasicInfo)
+      .then(() => {
+        this.setState({
+          firstName: newBasicInfo["firstName"],
+          lastName: newBasicInfo["lastName"],
+          preferredPronouns: newBasicInfo["preferredPronouns"],
+          class: newBasicInfo["class"],
+          majors: newBasicInfo["majors"],
+          varsitySports: newBasicInfo["varsitySports"],
+          greekLife: newBasicInfo["greekLife"],
+          bio: newBasicInfo["bio"],
+        });
+      })
+      .catch((err) => console.log(err));
     this.setState({ basicOpen: false });
   };
 

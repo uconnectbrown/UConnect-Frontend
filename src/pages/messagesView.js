@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
+import { auth } from "../firebase";
 
 // Components
 import NavBar from "../components/NavBar";
@@ -71,75 +72,73 @@ class messagesView extends Component {
   };
 
   componentDidMount() {
-    const FBIdToken = localStorage.FBIdToken;
-    axios.defaults.headers.common["Authorization"] = FBIdToken;
     let courseCodes = [];
-    if (FBIdToken) {
-      axios
-        .get("/senderInfo")
-        .then((res) => {
-          this.setState({
-            courseCodes: res.data.courses.map((course) =>
-              course.courseCode.replace(/\s/g, "")
-            ),
-            ownName: res.data.firstName + " " + res.data.lastName,
-            ownId: res.data.emailId,
-            ownImage: res.data.imageUrl,
-          });
-        })
-        .then(() => {
-          let promises = [];
-          let indexArray = [];
-          let currentIndex = 0;
-          for (let i = 0; i < 5; i++) {
-            if (this.state.courseCodes[i]) {
-              promises.push(
-                axios.get(`/messages/${this.state.courseCodes[i]}`)
-              );
-              indexArray.push(i);
-            }
-          }
-
-          Promise.all(promises)
-            .then((results) => {
-              // console.log(results[0]);
-              if (indexArray.includes(0)) {
-                this.setState({
-                  messages1: results[currentIndex].data,
-                });
-                currentIndex++;
-              }
-              if (indexArray.includes(1)) {
-                this.setState({
-                  messages2: results[currentIndex].data,
-                });
-                currentIndex++;
-              }
-              if (indexArray.includes(2)) {
-                this.setState({
-                  messages3: results[currentIndex].data,
-                });
-                currentIndex++;
-              }
-              if (indexArray.includes(3)) {
-                this.setState({
-                  messages4: results[currentIndex].data,
-                });
-                currentIndex++;
-              }
-              if (indexArray.includes(4)) {
-                this.setState({
-                  messages5: results[currentIndex].data,
-                });
-                currentIndex++;
-              }
-            })
-            .then(() => {
-              this.setState({ loading: false });
-            })
-            .catch((err) => console.log(err));
+    axios
+      .get(`/senderInfo/${auth.currentUser.email}`)
+      .then((res) => {
+        this.setState({
+          courseCodes: res.data.courses.map((course) =>
+            course.courseCode.replace(/\s/g, "")
+          ),
+          ownName: res.data.firstName + " " + res.data.lastName,
+          ownId: res.data.emailId,
+          ownImage: res.data.imageUrl,
         });
-    }
+      })
+      .then(() => {
+        let promises = [];
+        let indexArray = [];
+        let currentIndex = 0;
+        for (let i = 0; i < 5; i++) {
+          if (this.state.courseCodes[i]) {
+            promises.push(
+              axios.get(
+                `/messages/${auth.currentUser.email}/${this.state.courseCodes[i]}`
+              )
+            );
+            indexArray.push(i);
+          }
+        }
+
+        Promise.all(promises)
+          .then((results) => {
+            // console.log(results[0]);
+            if (indexArray.includes(0)) {
+              this.setState({
+                messages1: results[currentIndex].data,
+              });
+              currentIndex++;
+            }
+            if (indexArray.includes(1)) {
+              this.setState({
+                messages2: results[currentIndex].data,
+              });
+              currentIndex++;
+            }
+            if (indexArray.includes(2)) {
+              this.setState({
+                messages3: results[currentIndex].data,
+              });
+              currentIndex++;
+            }
+            if (indexArray.includes(3)) {
+              this.setState({
+                messages4: results[currentIndex].data,
+              });
+              currentIndex++;
+            }
+            if (indexArray.includes(4)) {
+              this.setState({
+                messages5: results[currentIndex].data,
+              });
+              currentIndex++;
+            }
+          })
+          .then(() => {
+            this.setState({ loading: false });
+          })
+          .catch((err) => console.log(err));
+      });
   }
 
   handleChange = (event, value) => {

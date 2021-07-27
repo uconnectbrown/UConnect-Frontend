@@ -1,6 +1,7 @@
 // Setup
 import React, { Component } from "react";
 import axios from "axios";
+import { auth } from "../firebase";
 
 // Components
 import NavBar from "../components/NavBar";
@@ -23,23 +24,20 @@ export class feedView extends Component {
     this.setState({
       courseCode: this.props.location.state.courseCode,
     });
-    const FBIdToken = localStorage.FBIdToken;
-    axios.defaults.headers.common["Authorization"] = FBIdToken;
-    if (FBIdToken) {
-      axios
-        .get("/senderInfo")
-        .then((res) => {
-          this.setState({
-            ownId: res.data.emailId,
-            ownImage: res.data.imageUrl,
-            ownName: res.data.firstName + " " + res.data.lastName,
-          });
-        })
-        .then(() => {
-          this.setState({ loading: false });
-        })
-        .catch((err) => console.error(err));
-    }
+
+    axios
+      .get(`/senderInfo/${auth.currentUser.email}`)
+      .then((res) => {
+        this.setState({
+          ownId: res.data.emailId,
+          ownImage: res.data.imageUrl,
+          ownName: res.data.firstName + " " + res.data.lastName,
+        });
+      })
+      .then(() => {
+        this.setState({ loading: false });
+      })
+      .catch((err) => console.error(err));
   }
 
   handleBack = () => {

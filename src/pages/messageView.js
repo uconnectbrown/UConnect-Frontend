@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import { auth } from "../firebase";
 
 // Components
 import NavBar from "../components/NavBar";
@@ -33,30 +34,27 @@ export class messageView extends Component {
       recipientId: this.props.location.state.recipientInfo[2],
       courseCode: this.props.location.state.recipientInfo[3],
     });
-    const FBIdToken = localStorage.FBIdToken;
-    axios.defaults.headers.common["Authorization"] = FBIdToken;
-    if (FBIdToken) {
-      axios
-        .get("/senderInfo")
-        .then((res) => {
+
+    axios
+      .get(`/senderInfo/${auth.currentUser.email}`)
+      .then((res) => {
+        this.setState({
+          ownId: res.data.emailId,
+          ownImage: res.data.imageUrl,
+          ownName: res.data.firstName + " " + res.data.lastName,
+        });
+        if (this.props.location.state.recipientInfo[4]) {
           this.setState({
-            ownId: res.data.emailId,
-            ownImage: res.data.imageUrl,
-            ownName: res.data.firstName + " " + res.data.lastName,
+            roomId: this.props.location.state.recipientInfo[4],
           });
-          if (this.props.location.state.recipientInfo[4]) {
-            this.setState({
-              roomId: this.props.location.state.recipientInfo[4],
-            });
-          } else {
-            this.setState({ roomId: uuidv4() });
-          }
-        })
-        .then(() => {
-          this.setState({ loading: false });
-        })
-        .catch((err) => console.error(err));
-    }
+        } else {
+          this.setState({ roomId: uuidv4() });
+        }
+      })
+      .then(() => {
+        this.setState({ loading: false });
+      })
+      .catch((err) => console.error(err));
   }
 
   handleBack = () => {

@@ -21,8 +21,14 @@ import Music from "@material-ui/icons/MusicNote";
 // Body
 class studentView extends Component {
   state = {
-    courseInfo: [this.props.location.state.studentInfo[0],this.props.location.state.studentInfo[1],this.props.location.state.studentInfo[2],this.props.location.state.studentInfo[3],],
-    studentId: this.props.location.state.studentInfo[4],
+    courseInfo: [
+      this.props.location.state.studentInfo[0],
+      this.props.location.state.studentInfo[1],
+      this.props.location.state.studentInfo[2],
+      this.props.location.state.studentInfo[3],
+    ],
+    studentEmail: this.props.location.state.studentInfo[4],
+    studentId: this.props.location.state.studentInfo[4].split("@")[0],
     affinitySports: [],
     bio: "",
     class: "",
@@ -44,38 +50,35 @@ class studentView extends Component {
   };
 
   componentDidMount() {
-    const studentId = this.state.studentId;
-    const FBIdToken = localStorage.FBIdToken;
-    axios.defaults.headers.common["Authorization"] = FBIdToken;
-    if (FBIdToken) {
-      axios
-        .get(`/user/${studentId}`)
-        .then((res) => {
-          this.setState({
-            affinitySports: res.data.user.affinitySports,
-            bio: res.data.user.bio,
-            class: res.data.user.class,
-            courses: res.data.user.courses,
-            createdAt: res.data.user.createdAt,
-            email: res.data.user.email,
-            favorites: res.data.user.favorites,
-            firstName: res.data.user.firstName,
-            greekLife: res.data.user.greekLife,
-            groups: res.data.user.groups,
-            imageUrl: res.data.user.imageUrl,
-            interests: res.data.user.interests,
-            lastName: res.data.user.lastName,
-            majors: res.data.user.majors,
-            preferredPronouns: res.data.user.preferredPronouns,
-            userId: res.data.user.userId,
-            varsitySports: res.data.user.varsitySports,
-          });
-        })
-        .then(() => {
-          this.setState({ loading: false });
-        })
-        .catch((err) => console.log(err));
-    }
+    const studentEmail = this.state.studentEmail;
+
+    axios
+      .get(`/user/${studentEmail}`)
+      .then((res) => {
+        this.setState({
+          affinitySports: res.data.user.affinitySports,
+          bio: res.data.user.bio,
+          class: res.data.user.class,
+          courses: res.data.user.courses,
+          createdAt: res.data.user.createdAt,
+          email: res.data.user.email,
+          favorites: res.data.user.favorites,
+          firstName: res.data.user.firstName,
+          greekLife: res.data.user.greekLife,
+          groups: res.data.user.groups,
+          imageUrl: res.data.user.imageUrl,
+          interests: res.data.user.interests,
+          lastName: res.data.user.lastName,
+          majors: res.data.user.majors,
+          preferredPronouns: res.data.user.preferredPronouns,
+          userId: res.data.user.userId,
+          varsitySports: res.data.user.varsitySports,
+        });
+      })
+      .then(() => {
+        this.setState({ loading: false });
+      })
+      .catch((err) => console.log(err));
   }
 
   handleBack = () => {

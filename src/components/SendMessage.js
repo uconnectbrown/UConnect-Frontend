@@ -37,7 +37,7 @@ function SendMessage({
 
       db
         .collection("profiles")
-        .doc(ownId + "@brown.edu")
+        .doc(ownId)
         .collection(`${courseCode} messages`)
         .doc(roomId)
         .set({
@@ -51,7 +51,7 @@ function SendMessage({
 
       db
         .collection("profiles")
-        .doc(recipientId + "@brown.edu")
+        .doc(recipientId)
         .collection(`${courseCode} messages`)
         .doc(roomId)
         .set({
