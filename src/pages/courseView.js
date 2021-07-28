@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { auth } from "../firebase";
 
 // Components
 import NavBar from "../components/NavBar";
@@ -16,9 +17,11 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import RadioIcon from "@material-ui/icons/RadioButtonUnchecked";
 
 // Import Data
 import majorList from "../resources/majors";
@@ -29,12 +32,17 @@ class courseView extends Component {
   state = {
     courseInfo: this.props.location.state.courseInfo,
     students: [],
+    selected: [],
     open: false,
-    email: "",
     searchTerm: "",
     searchCriteria: "",
     sortBy: "courseOverlap",
     loading: true,
+    messageNames: [],
+    messageImages: [],
+    messageIds: [],
+    allIds: [],
+    createMessage: false,
   };
 
   componentDidMount() {
@@ -43,8 +51,15 @@ class courseView extends Component {
     axios
       .get(`/students/${codeNS}`)
       .then((res) => {
-        this.setState({ students: [...this.state.students, ...res.data] });
-        console.log(this.state.students);
+        this.setState({
+          students: [
+            ...this.state.students,
+            ...res.data.filter(
+              (student) => student.email !== auth.currentUser.email
+            ),
+          ],
+        });
+        console.log(res.data);
         let myCourseCodes = this.state.courseInfo[3]
           .map((courseCode) => courseCode)
           .filter(Boolean);
@@ -56,14 +71,16 @@ class courseView extends Component {
         let courseOverlap = theirCourseCodes.map((code) =>
           this.compare(myCourseCodes, code)
         );
-        console.log(courseOverlap);
+
         let newStudents = [];
+        let bools = [];
         for (let i = 0; i < numStudents; i++) {
           let newStudent = { ...students[i] };
           newStudent["courseOverlap"] = courseOverlap[i];
           newStudents.push(newStudent);
+          bools.push(false);
         }
-        this.setState({ students: newStudents });
+        this.setState({ students: newStudents, selected: bools });
         console.log(newStudents);
       })
       .then(() => {
@@ -85,6 +102,98 @@ class courseView extends Component {
           this.state.students[index].email,
         ],
       },
+    });
+  };
+
+  handleCreateMessage = () => {
+    if (this.state.selected.filter(Boolean).length == 1) {
+      this.props.history.push({
+        pathname: "/messageView",
+        state: {
+          recipientInfo: [
+            this.state.messageNames[0],
+            this.state.messageImages[0],
+            this.state.messageIds[0],
+            this.state.courseInfo[0].replace(/\s/g, ""),
+          ],
+        },
+      });
+    } else if (this.state.selected.filter(Boolean).length > 1) {
+      this.props.history.push({
+        pathname: "/groupMessageView",
+        state: {
+          recipientInfo: [
+            this.state.messageNames,
+            this.state.messageImages,
+            this.state.messageIds,
+            this.state.courseInfo[0].replace(/\s/g, ""),
+            this.state.allIds,
+          ],
+        },
+      });
+    }
+  };
+
+  handleRadio = (index) => {
+    this.onUpdateItem(index);
+  };
+
+  handleCreateButton = () => {
+    this.setState({ createMessage: true });
+  };
+
+  handleCancelButton = () => {
+    this.setState({ createMessage: false });
+    let bools = this.state.students.map((student) => false);
+    this.setState({ selected: bools, group: [] });
+  };
+
+  onUpdateItem = (i) => {
+    this.setState(
+      (state) => {
+        const selected = state.selected.map((item, j) => {
+          if (j === i) {
+            return !item;
+          } else {
+            return item;
+          }
+        });
+
+        return {
+          selected,
+        };
+      },
+      () => {
+        this.handleParticipants();
+      }
+    );
+  };
+
+  handleParticipants = () => {
+    let participantNames = [];
+    let participantImages = [];
+    let participantIds = [];
+    let allParticipantIds = [];
+    for (let i = 0; i < this.state.students.length; i++) {
+      if (this.state.selected[i]) {
+        participantNames.push(
+          this.state.students[i].firstName +
+            " " +
+            this.state.students[i].lastName
+        );
+        participantIds.push(this.state.students[i].email.split("@")[0]);
+        allParticipantIds.push(this.state.students[i].email.split("@")[0]);
+        participantImages.push(this.state.students[i].imageUrl);
+      }
+    }
+
+    allParticipantIds.push(auth.currentUser.email.split("@")[0]);
+
+    this.setState({
+      messageNames: participantNames,
+      messageImages: participantImages,
+      messageIds: participantIds,
+      allIds: allParticipantIds,
     });
   };
 
@@ -635,15 +744,73 @@ class courseView extends Component {
           </div>
         )}
         {!this.state.loading && (
-          <GridList cols={3} spacing={20} cellHeight="auto">
-            {
-              (newIndexArray = indexArray
-                .map((index) => {
-                  if (this.state.searchCriteria === "") {
-                    return index;
-                  } else if (this.state.searchCriteria === "name") {
-                    if (
-                      `${students[index]["firstName"]} ${students[index]["lastName"]}`
+          <div>
+            {!this.state.createMessage && (
+              <Button
+                onClick={() => {
+                  this.handleCreateButton();
+                }}
+                variant="contained"
+                color="secondary"
+                disabled={this.state.createMessage}
+              >
+                Create Message
+              </Button>
+            )}
+
+            {this.state.createMessage && (
+              <div>
+                <Button
+                  onClick={() => {
+                    this.handleCancelButton();
+                  }}
+                  variant="contained"
+                  color="primary"
+                >
+                  Cancel
+                </Button>
+                <Typography>
+                  {" "}
+                  Start a chat with{" "}
+                  {this.state.messageNames.map((name) => name + ", ")}
+                  ...
+                </Typography>
+              </div>
+            )}
+
+            {this.state.messageNames.length > 0 && (
+              <Button
+                onClick={() => {
+                  this.handleCreateMessage();
+                }}
+                variant="contained"
+                color="secondary"
+              >
+                Start Chat
+              </Button>
+            )}
+
+            <br />
+            <br />
+            <GridList cols={3} spacing={20} cellHeight="auto">
+              {
+                (newIndexArray = indexArray
+                  .map((index) => {
+                    if (this.state.searchCriteria === "") {
+                      return index;
+                    } else if (this.state.searchCriteria === "name") {
+                      if (
+                        `${students[index]["firstName"]} ${students[index]["lastName"]}`
+                          .toString()
+                          .toLowerCase()
+                          .includes(
+                            this.state.searchTerm.toString().toLowerCase()
+                          )
+                      ) {
+                        return index;
+                      }
+                    } else if (
+                      students[index][`${this.state.searchCriteria}`]
                         .toString()
                         .toLowerCase()
                         .includes(
@@ -652,93 +819,97 @@ class courseView extends Component {
                     ) {
                       return index;
                     }
-                  } else if (
-                    students[index][`${this.state.searchCriteria}`]
-                      .toString()
-                      .toLowerCase()
-                      .includes(this.state.searchTerm.toString().toLowerCase())
-                  ) {
-                    return index;
-                  }
-                })
-                .filter((index) => {
-                  return index !== undefined;
-                }))
-            }
-            {/* {console.log(indexArray)};{console.log(newIndexArray)}; */}
-            {newIndexArray.map((index) => (
-              <GridListTile item component="Card" sm>
-                <Card
-                  raised
-                  style={{
-                    borderStyle: "solid",
-                    borderWidth: "4px",
-                    borderColor: `${color}`,
-                    borderRadius: "5%",
-                    height: "97%",
-                  }}
-                  align="center"
-                >
-                  {/* switched the order of buttonBase and cardContent since it worked in coursesView */}
-                  <ButtonBase
-                    size="large"
-                    color="primary"
-                    onClick={() => this.handleClickOpen(index)}
-                    style={{ width: "100%" }}
+                  })
+                  .filter((index) => {
+                    return index !== undefined;
+                  }))
+              }
+              {newIndexArray.map((index) => (
+                <GridListTile item component="Card" sm>
+                  <Card
+                    raised
+                    style={{
+                      borderStyle: "solid",
+                      borderWidth: "4px",
+                      borderColor: `${color}`,
+                      borderRadius: "5%",
+                      height: "97%",
+                    }}
+                    align="center"
                   >
-                    <CardContent>
-                      <div>
-                        <Typography variant="h6">
-                          Course Overlap: {students[index].courseOverlap}/
-                          {myCourseCodes.length}
-                        </Typography>
-                        <br />
-                        <img
-                          alt="student"
-                          src={students[index].imageUrl}
-                          style={{
-                            width: 150,
-                            height: 150,
-                            objectFit: "cover",
-                            borderRadius: "10%",
-                            borderStyle: "solid",
-                            borderColor: `${color}`,
-                            borderWidth: "3px",
-                          }}
-                        />
+                    {/* switched the order of buttonBase and cardContent since it worked in coursesView */}
+                    {this.state.createMessage && (
+                      <Checkbox
+                        checked={this.state.selected[index]}
+                        onChange={() => {
+                          this.handleRadio(index);
+                        }}
+                        inputProps={{ "aria-label": "primary checkbox" }}
+                      />
+                    )}
 
-                        <br />
-                        <br />
-                        <Typography variant="h4">
-                          {students[index].firstName} {students[index].lastName}
-                        </Typography>
-                        <Typography variant="h6">
-                          Class of {students[index].classYear}
-                        </Typography>
-                        <Typography variant="h6">
-                          {students[index].majors[0]}
-                          {students[index].majors[1] &&
-                            `, ${students[index].majors[1]}`}
-                          {students[index].majors[2] &&
-                            `, ${students[index].majors[2]}`}
-                        </Typography>
-                        <Typography variant="body1">Interests:</Typography>
-                        <Typography variant="body1">
-                          • {students[index].interests[0]}
-                        </Typography>
-                        <Typography variant="body1">
-                          • {students[index].interests[1]}
-                        </Typography>
-                        <Typography variant="body1">
-                          • {students[index].interests[2]}
-                        </Typography>
-                      </div>
-                    </CardContent>
-                  </ButtonBase>
-                </Card>
-              </GridListTile>
-            ))}
-          </GridList>
+                    <ButtonBase
+                      size="large"
+                      color="primary"
+                      onClick={() => this.handleClickOpen(index)}
+                      style={{ width: "100%" }}
+                    >
+                      <CardContent>
+                        <div>
+                          <Typography variant="h6">
+                            Course Overlap: {students[index].courseOverlap}/
+                            {myCourseCodes.length}
+                          </Typography>
+
+                          <br />
+                          <img
+                            alt="student"
+                            src={students[index].imageUrl}
+                            style={{
+                              width: 150,
+                              height: 150,
+                              objectFit: "cover",
+                              borderRadius: "10%",
+                              borderStyle: "solid",
+                              borderColor: `${color}`,
+                              borderWidth: "3px",
+                            }}
+                          />
+
+                          <br />
+                          <br />
+                          <Typography variant="h4">
+                            {students[index].firstName}{" "}
+                            {students[index].lastName}
+                          </Typography>
+                          <Typography variant="h6">
+                            Class of {students[index].classYear}
+                          </Typography>
+                          <Typography variant="h6">
+                            {students[index].majors[0]}
+                            {students[index].majors[1] &&
+                              `, ${students[index].majors[1]}`}
+                            {students[index].majors[2] &&
+                              `, ${students[index].majors[2]}`}
+                          </Typography>
+                          <Typography variant="body1">Interests:</Typography>
+                          <Typography variant="body1">
+                            • {students[index].interests[0]}
+                          </Typography>
+                          <Typography variant="body1">
+                            • {students[index].interests[1]}
+                          </Typography>
+                          <Typography variant="body1">
+                            • {students[index].interests[2]}
+                          </Typography>
+                        </div>
+                      </CardContent>
+                    </ButtonBase>
+                  </Card>
+                </GridListTile>
+              ))}
+            </GridList>
+          </div>
         )}
       </div>
     );

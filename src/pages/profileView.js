@@ -57,16 +57,6 @@ class profileView extends Component {
 
   componentDidMount() {
     this.loadUserData();
-    // let emailId = auth.currentUser.email.split("@")[0];
-    // db.doc(`/profiles/${emailId}`)
-    //   .get()
-    //   .then((doc) => {
-    //     if (doc.exists) {
-    //       this.loadUserData();
-    //     } else {
-    //       this.props.history.push("/profileBuild");
-    //     }
-    //   });
   }
 
   loadUserData = () => {
@@ -74,67 +64,71 @@ class profileView extends Component {
     axios
       .get(`/user/${emailId}`)
       .then((res) => {
-        this.setState({
-          affinitySportOne: res.data.user.affinitySports[0],
-          affinitySportTwo: res.data.user.affinitySports[1],
-          affinitySportThree: res.data.user.affinitySports[2],
-          affinitySport1: res.data.user.affinitySports[0],
-          affinitySport2: res.data.user.affinitySports[1],
-          affinitySport3: res.data.user.affinitySports[2],
-          bio: res.data.user.bio,
-          bio_: res.data.user.bio,
-          class: res.data.user.class,
-          class_: res.data.user.class,
-          courses: res.data.user.courses,
-          createdAt: res.data.user.createdAt,
-          email: res.data.user.email,
-          favoriteBook: res.data.user.favorites.book,
-          favoriteMovie: res.data.user.favorites.movie,
-          favoriteShow: res.data.user.favorites.tvShow,
-          favoriteArtist: res.data.user.favorites.artist,
-          favBook: res.data.user.favorites.book,
-          favMovie: res.data.user.favorites.movie,
-          favShow: res.data.user.favorites.tvShow,
-          favArtist: res.data.user.favorites.artist,
-          firstName: res.data.user.firstName,
-          greekLife: res.data.user.greekLife,
-          firstName_: res.data.user.firstName,
-          greekLife_: res.data.user.greekLife,
-          groupOne: res.data.user.groups[0],
-          groupTwo: res.data.user.groups[1],
-          groupThree: res.data.user.groups[2],
-          group1: res.data.user.groups[0],
-          group2: res.data.user.groups[1],
-          group3: res.data.user.groups[2],
-          imageUrl: res.data.user.imageUrl,
-          interestOne: res.data.user.interests[0],
-          interestTwo: res.data.user.interests[1],
-          interestThree: res.data.user.interests[2],
-          interestFour: res.data.user.interests[3],
-          interestFive: res.data.user.interests[4],
-          interest1: res.data.user.interests[0],
-          interest2: res.data.user.interests[1],
-          interest3: res.data.user.interests[2],
-          interest4: res.data.user.interests[3],
-          interest5: res.data.user.interests[4],
-          lastName: res.data.user.lastName,
-          majorOne: res.data.user.majors[0],
-          majorTwo: res.data.user.majors[1],
-          majorThree: res.data.user.majors[2],
-          preferredPronouns: res.data.user.preferredPronouns,
-          lastName_: res.data.user.lastName,
-          major1: res.data.user.majors[0],
-          major2: res.data.user.majors[1],
-          major3: res.data.user.majors[2],
-          preferredPronouns_: res.data.user.preferredPronouns,
-          userId: res.data.user.userId,
-          varsitySportOne: res.data.user.varsitySports[0],
-          varsitySportTwo: res.data.user.varsitySports[1],
-          varsitySport1: res.data.user.varsitySports[0],
-          varsitySport2: res.data.user.varsitySports[1],
-        });
-        this.setState({ loading: false });
-        return this.updateCourses();
+        this.setState(
+          {
+            affinitySportOne: res.data.user.affinitySports[0],
+            affinitySportTwo: res.data.user.affinitySports[1],
+            affinitySportThree: res.data.user.affinitySports[2],
+            affinitySport1: res.data.user.affinitySports[0],
+            affinitySport2: res.data.user.affinitySports[1],
+            affinitySport3: res.data.user.affinitySports[2],
+            bio: res.data.user.bio,
+            bio_: res.data.user.bio,
+            class: res.data.user.class,
+            class_: res.data.user.class,
+            courses: res.data.user.courses,
+            createdAt: res.data.user.createdAt,
+            email: res.data.user.email,
+            favoriteBook: res.data.user.favorites.book,
+            favoriteMovie: res.data.user.favorites.movie,
+            favoriteShow: res.data.user.favorites.tvShow,
+            favoriteArtist: res.data.user.favorites.artist,
+            favBook: res.data.user.favorites.book,
+            favMovie: res.data.user.favorites.movie,
+            favShow: res.data.user.favorites.tvShow,
+            favArtist: res.data.user.favorites.artist,
+            firstName: res.data.user.firstName,
+            greekLife: res.data.user.greekLife,
+            firstName_: res.data.user.firstName,
+            greekLife_: res.data.user.greekLife,
+            groupOne: res.data.user.groups[0],
+            groupTwo: res.data.user.groups[1],
+            groupThree: res.data.user.groups[2],
+            group1: res.data.user.groups[0],
+            group2: res.data.user.groups[1],
+            group3: res.data.user.groups[2],
+            imageUrl: res.data.user.imageUrl,
+            interestOne: res.data.user.interests[0],
+            interestTwo: res.data.user.interests[1],
+            interestThree: res.data.user.interests[2],
+            interestFour: res.data.user.interests[3],
+            interestFive: res.data.user.interests[4],
+            interest1: res.data.user.interests[0],
+            interest2: res.data.user.interests[1],
+            interest3: res.data.user.interests[2],
+            interest4: res.data.user.interests[3],
+            interest5: res.data.user.interests[4],
+            lastName: res.data.user.lastName,
+            majorOne: res.data.user.majors[0],
+            majorTwo: res.data.user.majors[1],
+            majorThree: res.data.user.majors[2],
+            preferredPronouns: res.data.user.preferredPronouns,
+            lastName_: res.data.user.lastName,
+            major1: res.data.user.majors[0],
+            major2: res.data.user.majors[1],
+            major3: res.data.user.majors[2],
+            preferredPronouns_: res.data.user.preferredPronouns,
+            userId: res.data.user.userId,
+            varsitySportOne: res.data.user.varsitySports[0],
+            varsitySportTwo: res.data.user.varsitySports[1],
+            varsitySport1: res.data.user.varsitySports[0],
+            varsitySport2: res.data.user.varsitySports[1],
+            loading: false,
+          },
+          () => {
+            return this.updateCourses();
+          }
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -160,10 +154,9 @@ class profileView extends Component {
     axios
       .post(`/image/${auth.currentUser.email}`, formData)
       .then((data) => {
-        this.setState({ imageUrl: data.data.imageUrl });
-
-        // new test code
-        this.setState({ imageOpen: true });
+        this.setState({ imageUrl: data.data.imageUrl, imageOpen: true }, () => {
+          this.updateCourses();
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -250,14 +243,13 @@ class profileView extends Component {
     }
     let newCourses = { courses: courseList };
     axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
-      this.setState({ courses: courseList });
+      this.setState({ courses: courseList }, () => {
+        this.updateCourses();
+      });
     });
-    this.updateCourses();
     axios
       .get(`/delete/${auth.currentUser.email}/${deleteCourse}`)
-      .then(() => {
-        return;
-      })
+      .then(() => {})
       .catch((err) => console.log(err));
     this.setState({ removeOpen: false });
   };
@@ -369,9 +361,10 @@ class profileView extends Component {
     }
     let newCourses = { courses: courseList };
     axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
-      this.setState({ courses: courseList });
+      this.setState({ courses: courseList }, () => {
+        this.updateCourses();
+      });
     });
-    this.updateCourses();
     this.setState({ addOpen: false });
   };
 
@@ -390,7 +383,9 @@ class profileView extends Component {
     }
     let newCourses = { courses: courseList };
     axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
-      this.setState({ courses: courseList });
+      this.setState({ courses: courseList }, () => {
+        this.updateCourses();
+      });
     });
     this.setState({ colorOpen: [false, false, false, false, false] });
   };
@@ -410,11 +405,16 @@ class profileView extends Component {
       groups: groupList,
     };
     axios.post(`/edit/${auth.currentUser.email}`, newGroups).then(() => {
-      this.setState({
-        groupOne: groupList[0],
-        groupTwo: groupList[1],
-        groupThree: groupList[2],
-      });
+      this.setState(
+        {
+          groupOne: groupList[0],
+          groupTwo: groupList[1],
+          groupThree: groupList[2],
+        },
+        () => {
+          this.updateCourses();
+        }
+      );
     });
     this.setState({ groupOpen: false });
   };
@@ -446,16 +446,21 @@ class profileView extends Component {
       affinitySports: affinitySportsList,
     };
     axios.post(`/edit/${auth.currentUser.email}`, newInterests).then(() => {
-      this.setState({
-        interestOne: interestsList[0],
-        interestTwo: interestsList[1],
-        interestThree: interestsList[2],
-        interestFour: interestsList[3],
-        interestFive: interestsList[4],
-        affinitySportOne: affinitySportsList[0],
-        affinitySportTwo: affinitySportsList[1],
-        affinitySportThree: affinitySportsList[2],
-      });
+      this.setState(
+        {
+          interestOne: interestsList[0],
+          interestTwo: interestsList[1],
+          interestThree: interestsList[2],
+          interestFour: interestsList[3],
+          interestFive: interestsList[4],
+          affinitySportOne: affinitySportsList[0],
+          affinitySportTwo: affinitySportsList[1],
+          affinitySportThree: affinitySportsList[2],
+        },
+        () => {
+          this.updateCourses();
+        }
+      );
     });
     this.setState({ interestsOpen: false });
   };
@@ -512,16 +517,21 @@ class profileView extends Component {
     axios
       .post(`/edit/${auth.currentUser.email}`, newBasicInfo)
       .then(() => {
-        this.setState({
-          firstName: newBasicInfo["firstName"],
-          lastName: newBasicInfo["lastName"],
-          preferredPronouns: newBasicInfo["preferredPronouns"],
-          class: newBasicInfo["class"],
-          majors: newBasicInfo["majors"],
-          varsitySports: newBasicInfo["varsitySports"],
-          greekLife: newBasicInfo["greekLife"],
-          bio: newBasicInfo["bio"],
-        });
+        this.setState(
+          {
+            firstName: newBasicInfo["firstName"],
+            lastName: newBasicInfo["lastName"],
+            preferredPronouns: newBasicInfo["preferredPronouns"],
+            class: newBasicInfo["class"],
+            majors: newBasicInfo["majors"],
+            varsitySports: newBasicInfo["varsitySports"],
+            greekLife: newBasicInfo["greekLife"],
+            bio: newBasicInfo["bio"],
+          },
+          () => {
+            this.updateCourses();
+          }
+        );
       })
       .catch((err) => console.log(err));
     this.setState({ basicOpen: false });
@@ -1446,13 +1456,19 @@ class profileView extends Component {
                 <br />
                 <Grid container spacing={2}>
                   <Grid item sm>
-                    <Typography variant="h5" style={{color: `${palette[0]}`}}>Physical Activity and Wellness</Typography>
+                    <Typography variant="h5" style={{ color: `${palette[0]}` }}>
+                      Physical Activity and Wellness
+                    </Typography>
                   </Grid>
                   <Grid item sm>
-                    <Typography variant="h5" style={{color: `${palette[7]}`}}>Career and Academic</Typography>
+                    <Typography variant="h5" style={{ color: `${palette[7]}` }}>
+                      Career and Academic
+                    </Typography>
                   </Grid>
                   <Grid item sm>
-                    <Typography variant="h5" style={{color: `${palette[3]}`}}>General Hobbies</Typography>
+                    <Typography variant="h5" style={{ color: `${palette[3]}` }}>
+                      General Hobbies
+                    </Typography>
                   </Grid>
                 </Grid>
               </CardContent>
@@ -1460,101 +1476,102 @@ class profileView extends Component {
             <br />
             <Card raised>
               <CardContent align="center">
-                <Typography variant="h3">Favorites{" "}
-                <Tooltip title="Edit favorites" placement="right">
-                        <IconButton
-                          onClick={this.handleFavoritesOpen}
-                          className="button"
-                        >
-                          <EditIcon color="secondary" />
-                        </IconButton>
-                      </Tooltip>
-                      <Dialog
-                        overlayStyle={{ backgroundColor: "transparent" }}
-                        open={this.state.favoritesOpen}
+                <Typography variant="h3">
+                  Favorites{" "}
+                  <Tooltip title="Edit favorites" placement="right">
+                    <IconButton
+                      onClick={this.handleFavoritesOpen}
+                      className="button"
+                    >
+                      <EditIcon color="secondary" />
+                    </IconButton>
+                  </Tooltip>
+                  <Dialog
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    open={this.state.favoritesOpen}
+                  >
+                    <DialogTitle
+                      style={{ cursor: "move" }}
+                      id="draggable-dialog-title"
+                    >
+                      Edit Favorites
+                    </DialogTitle>
+                    <DialogContent>
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="favoriteBook"
+                        name="favoriteBook"
+                        autoComplete="off"
+                        label="Book"
+                        defaultValue={this.state.favoriteBook}
+                        fullWidth
+                        required
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="favoriteMovie"
+                        name="favoriteMovie"
+                        autoComplete="off"
+                        label="Movie"
+                        defaultValue={this.state.favoriteMovie}
+                        fullWidth
+                        required
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="favoriteShow"
+                        name="favoriteShow"
+                        autoComplete="off"
+                        label="Show"
+                        defaultValue={this.state.favoriteShow}
+                        fullWidth
+                        required
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="favoriteArtist"
+                        name="favoriteArtist"
+                        autoComplete="off"
+                        label="Artist"
+                        defaultValue={this.state.favoriteArtist}
+                        fullWidth
+                        required
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={this.handleFavoritesClose}
+                        color="secondary"
                       >
-                        <DialogTitle
-                          style={{ cursor: "move" }}
-                          id="draggable-dialog-title"
-                        >
-                          Edit Favorites
-                        </DialogTitle>
-                        <DialogContent>
-                          <TextField
-                            autofocus
-                            margin="dense"
-                            id="favoriteBook"
-                            name="favoriteBook"
-                            autoComplete="off"
-                            label="Book"
-                            defaultValue={this.state.favoriteBook}
-                            fullWidth
-                            required
-                            type="text"
-                            onChange={this.handleChange}
-                          />
-                          <TextField
-                            autofocus
-                            margin="dense"
-                            id="favoriteMovie"
-                            name="favoriteMovie"
-                            autoComplete="off"
-                            label="Movie"
-                            defaultValue={this.state.favoriteMovie}
-                            fullWidth
-                            required
-                            type="text"
-                            onChange={this.handleChange}
-                          />
-                          <TextField
-                            autofocus
-                            margin="dense"
-                            id="favoriteShow"
-                            name="favoriteShow"
-                            autoComplete="off"
-                            label="Show"
-                            defaultValue={this.state.favoriteShow}
-                            fullWidth
-                            required
-                            type="text"
-                            onChange={this.handleChange}
-                          />
-                          <TextField
-                            autofocus
-                            margin="dense"
-                            id="favoriteArtist"
-                            name="favoriteArtist"
-                            autoComplete="off"
-                            label="Artist"
-                            defaultValue={this.state.favoriteArtist}
-                            fullWidth
-                            required
-                            type="text"
-                            onChange={this.handleChange}
-                          />
-                        </DialogContent>
-                        <DialogActions>
-                          <Button
-                            onClick={this.handleFavoritesClose}
-                            color="secondary"
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            onClick={this.handleSubmitFavorites}
-                            color="secondary"
-                            disabled={
-                              this.state.favoriteBook === "" ||
-                              this.state.favoriteMovie === "" ||
-                              this.state.favoriteShow === "" ||
-                              this.state.favoriteArtist === ""
-                            }
-                          >
-                            Save Changes
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
-                      </Typography>
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={this.handleSubmitFavorites}
+                        color="secondary"
+                        disabled={
+                          this.state.favoriteBook === "" ||
+                          this.state.favoriteMovie === "" ||
+                          this.state.favoriteShow === "" ||
+                          this.state.favoriteArtist === ""
+                        }
+                      >
+                        Save Changes
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </Typography>
                 <hr />
                 <br />
                 <Grid container spacing={2}>

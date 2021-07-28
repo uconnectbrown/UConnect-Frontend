@@ -30,6 +30,7 @@ import courseView from "./pages/courseView";
 import studentView from "./pages/studentView";
 import messagesView from "./pages/messagesView";
 import feedView from "./pages/feedView";
+import groupMessageView from "./pages/groupMessageView";
 
 // Styling
 const theme = createTheme(themeFile);
@@ -53,6 +54,11 @@ function App() {
                 <Route exact path="/studentView" component={studentView} />
                 <Route exact path="/messagesView" component={messagesView} />
                 <Route exact path="/feedView" component={feedView} />
+                <Route
+                  exact
+                  path="/groupMessageView"
+                  component={groupMessageView}
+                />
               </Switch>
             </div>
           </Router>
