@@ -1441,6 +1441,161 @@ class profileView extends Component {
             <br />
             <Card raised>
               <CardContent align="center">
+                <Typography variant="h3">Interests</Typography>
+                <hr />
+                <br />
+                <Grid container spacing={2}>
+                  <Grid item sm>
+                    <Typography variant="h5" style={{color: `${palette[0]}`}}>Physical Activity and Wellness</Typography>
+                  </Grid>
+                  <Grid item sm>
+                    <Typography variant="h5" style={{color: `${palette[7]}`}}>Career and Academic</Typography>
+                  </Grid>
+                  <Grid item sm>
+                    <Typography variant="h5" style={{color: `${palette[3]}`}}>General Hobbies</Typography>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+            <br />
+            <Card raised>
+              <CardContent align="center">
+                <Typography variant="h3">Favorites{" "}
+                <Tooltip title="Edit favorites" placement="right">
+                        <IconButton
+                          onClick={this.handleFavoritesOpen}
+                          className="button"
+                        >
+                          <EditIcon color="secondary" />
+                        </IconButton>
+                      </Tooltip>
+                      <Dialog
+                        overlayStyle={{ backgroundColor: "transparent" }}
+                        open={this.state.favoritesOpen}
+                      >
+                        <DialogTitle
+                          style={{ cursor: "move" }}
+                          id="draggable-dialog-title"
+                        >
+                          Edit Favorites
+                        </DialogTitle>
+                        <DialogContent>
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="favoriteBook"
+                            name="favoriteBook"
+                            autoComplete="off"
+                            label="Book"
+                            defaultValue={this.state.favoriteBook}
+                            fullWidth
+                            required
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="favoriteMovie"
+                            name="favoriteMovie"
+                            autoComplete="off"
+                            label="Movie"
+                            defaultValue={this.state.favoriteMovie}
+                            fullWidth
+                            required
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="favoriteShow"
+                            name="favoriteShow"
+                            autoComplete="off"
+                            label="Show"
+                            defaultValue={this.state.favoriteShow}
+                            fullWidth
+                            required
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="favoriteArtist"
+                            name="favoriteArtist"
+                            autoComplete="off"
+                            label="Artist"
+                            defaultValue={this.state.favoriteArtist}
+                            fullWidth
+                            required
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            onClick={this.handleFavoritesClose}
+                            color="secondary"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={this.handleSubmitFavorites}
+                            color="secondary"
+                            disabled={
+                              this.state.favoriteBook === "" ||
+                              this.state.favoriteMovie === "" ||
+                              this.state.favoriteShow === "" ||
+                              this.state.favoriteArtist === ""
+                            }
+                          >
+                            Save Changes
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                      </Typography>
+                <hr />
+                <br />
+                <Grid container spacing={2}>
+                  <Grid item sm>
+                    <div>
+                      <Book />
+                      <Typography variant="body1">
+                        Book: {this.state.favoriteBook}
+                      </Typography>
+                    </div>
+                  </Grid>
+                  <Grid item sm>
+                    <div>
+                      <Movie />
+                      <Typography variant="body1">
+                        Movie: {this.state.favoriteMovie}
+                      </Typography>
+                    </div>
+                  </Grid>
+                  <Grid item sm>
+                    <div>
+                      <Tv />
+                      <Typography variant="body1">
+                        Show: {this.state.favoriteShow}
+                      </Typography>
+                    </div>
+                  </Grid>
+                  <Grid item sm>
+                    <div>
+                      <Music />
+                      <Typography variant="body1">
+                        Artist: {this.state.favoriteArtist}
+                      </Typography>
+                    </div>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+            <br />
+            <Card raised>
+              <CardContent align="center">
                 <Typography variant="h3">Courses</Typography>
                 <hr />
                 <br />
