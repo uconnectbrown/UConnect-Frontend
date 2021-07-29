@@ -176,6 +176,7 @@ class messagesView extends Component {
                 value={this.state.tabIndex}
                 onChange={this.handleChange}
                 aria-label="simple tabs example"
+                variant="fullWidth"
               >
                 {this.state.courseCodes[0] && (
                   <Tab label={this.state.courseCodes[0]} {...a11yProps(0)} />

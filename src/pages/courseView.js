@@ -17,11 +17,11 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import RadioIcon from "@material-ui/icons/RadioButtonUnchecked";
+import ChatIcon from "@material-ui/icons/ChatBubbleOutline";
+import FilledChatIcon from "@material-ui/icons/ChatBubble";
 
 // Import Data
 import majorList from "../resources/majors";
@@ -42,7 +42,6 @@ class courseView extends Component {
     messageImages: [],
     messageIds: [],
     allIds: [],
-    createMessage: false,
   };
 
   componentDidMount() {
@@ -136,16 +135,6 @@ class courseView extends Component {
 
   handleRadio = (index) => {
     this.onUpdateItem(index);
-  };
-
-  handleCreateButton = () => {
-    this.setState({ createMessage: true });
-  };
-
-  handleCancelButton = () => {
-    this.setState({ createMessage: false });
-    let bools = this.state.students.map((student) => false);
-    this.setState({ selected: bools, group: [] });
   };
 
   onUpdateItem = (i) => {
@@ -745,52 +734,28 @@ class courseView extends Component {
         )}
         {!this.state.loading && (
           <div>
-            {!this.state.createMessage && (
-              <Button
-                onClick={() => {
-                  this.handleCreateButton();
-                }}
-                variant="contained"
-                color="secondary"
-                disabled={this.state.createMessage}
-              >
-                Create Message
-              </Button>
-            )}
+            <div></div>
 
-            {this.state.createMessage && (
+            {this.state.messageNames.length > 0 && (
               <div>
                 <Button
                   onClick={() => {
-                    this.handleCancelButton();
+                    this.handleCreateMessage();
                   }}
                   variant="contained"
-                  color="primary"
+                  color="secondary"
+                  disabled={this.state.messageNames.length > 3}
                 >
-                  Cancel
+                  Start Chat{" "}
                 </Button>
-                <Typography>
-                  {" "}
-                  Start a chat with{" "}
-                  {this.state.messageNames.map((name) => name + ", ")}
-                  ...
-                </Typography>
+                {this.state.messageNames.length > 0 && (
+                  <Typography>
+                    {this.state.messageNames.map((name) => name + ", ")}
+                  </Typography>
+                )}
               </div>
             )}
 
-            {this.state.messageNames.length > 0 && (
-              <Button
-                onClick={() => {
-                  this.handleCreateMessage();
-                }}
-                variant="contained"
-                color="secondary"
-              >
-                Start Chat
-              </Button>
-            )}
-
-            <br />
             <br />
             <GridList cols={3} spacing={20} cellHeight="auto">
               {
@@ -838,15 +803,20 @@ class courseView extends Component {
                     align="center"
                   >
                     {/* switched the order of buttonBase and cardContent since it worked in coursesView */}
-                    {this.state.createMessage && (
-                      <Checkbox
-                        checked={this.state.selected[index]}
-                        onChange={() => {
-                          this.handleRadio(index);
-                        }}
-                        inputProps={{ "aria-label": "primary checkbox" }}
-                      />
-                    )}
+
+                    <IconButton
+                      onClick={() => {
+                        this.handleRadio(index);
+                      }}
+                      inputProps={{ "aria-label": "primary checkbox" }}
+                    >
+                      {!this.state.selected[index] && (
+                        <ChatIcon color="secondary" />
+                      )}
+                      {this.state.selected[index] && (
+                        <FilledChatIcon color="secondary" />
+                      )}
+                    </IconButton>
 
                     <ButtonBase
                       size="large"

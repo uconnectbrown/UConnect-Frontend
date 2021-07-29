@@ -3,7 +3,6 @@ exports.validProfile = (profile) => {
     profile.firstName &&
     profile.lastName &&
     profile.class &&
-    profile.interests.filter(Boolean).length > 2 &&
     profile.majors.filter(Boolean).length > 0 &&
     profile.favorites.movie &&
     profile.favorites.book &&

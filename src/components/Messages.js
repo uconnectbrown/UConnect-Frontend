@@ -9,6 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import { auth } from "../firebase";
+import Avatar from "@material-ui/core/Avatar";
+import AvatarGroup from "@material-ui/lab/AvatarGroup";
 
 function Messages(props) {
   dayjs.extend(relativeTime);
@@ -66,8 +68,9 @@ function Messages(props) {
                   borderStyle: "solid",
                   borderWidth: "2px",
                   borderColor: `red`,
-                  height: "97%",
+                  height: "125px",
                 }}
+                align="center"
               >
                 <CardContent>
                   <ButtonBase
@@ -86,31 +89,52 @@ function Messages(props) {
                       )
                     }
                   >
-                    <img
-                      src={message.recipientImage || message.recipientImages[0]}
-                      style={{
-                        width: 50,
-                        height: 50,
-                        objectFit: "cover",
-                        borderRadius: "10%",
-                        borderStyle: "solid",
-                        borderColor: `red`,
-                        borderWidth: "1px",
-                      }}
-                    />
                     <div>
                       <Typography
                         variant="h6"
                         style={{ marginLeft: "10px" }}
-                        align="left"
+                        align="center"
                       >
-                        {message.recipientName || message.recipientNames}
+                        {message.recipientName}
+                        {message.recipientNames &&
+                          `${message.recipientNames[0].split(" ")[0]}, ${
+                            message.recipientNames[1].split(" ")[0]
+                          }, ${message.recipientNames[2].split(" ")[0]}`}
                       </Typography>
-                      <Typography variant="body" style={{ marginLeft: "10px" }}>
-                        Most recent message... ||{" "}
-                        <Typography variant="caption">
-                          {dayjs(message.mostRecent).fromNow()}
-                        </Typography>
+                      <AvatarGroup
+                        max={3}
+                        style={{
+                          justifyContent: "center",
+                        }}
+                      >
+                        {message.recipientImage && (
+                          <Avatar
+                            alt="recipient"
+                            src={message.recipientImage}
+                          />
+                        )}
+                        {message.recipientImages && (
+                          <Avatar
+                            alt="recipient0"
+                            src={message.recipientImages[0]}
+                          />
+                        )}
+                        {message.recipientImages && (
+                          <Avatar
+                            alt="recipient1"
+                            src={message.recipientImages[1]}
+                          />
+                        )}
+                        {message.recipientImages && (
+                          <Avatar
+                            alt="recipient2"
+                            src={message.recipientImages[2]}
+                          />
+                        )}
+                      </AvatarGroup>
+
+                      <Typography variant="caption">
+                        {dayjs(message.mostRecent).fromNow()}
                       </Typography>
                     </div>
                   </ButtonBase>
