@@ -98,16 +98,9 @@ class profileView extends Component {
             group2: res.data.user.groups[1],
             group3: res.data.user.groups[2],
             imageUrl: res.data.user.imageUrl,
-            interestOne: res.data.user.interests[0],
-            interestTwo: res.data.user.interests[1],
-            interestThree: res.data.user.interests[2],
-            interestFour: res.data.user.interests[3],
-            interestFive: res.data.user.interests[4],
-            interest1: res.data.user.interests[0],
-            interest2: res.data.user.interests[1],
-            interest3: res.data.user.interests[2],
-            interest4: res.data.user.interests[3],
-            interest5: res.data.user.interests[4],
+            interests1: res.data.user.interests1,
+            interests2: res.data.user.interests2,
+            interests3: res.data.user.interests3,
             lastName: res.data.user.lastName,
             majorOne: res.data.user.majors[0],
             majorTwo: res.data.user.majors[1],
@@ -1323,16 +1316,15 @@ class profileView extends Component {
                     <Grid container>
                       <Grid item sm>
                         <Typography variant="body1">
-                          • {this.state.interestOne}
+                          • {this.state.interests1}
                         </Typography>
                         <Typography variant="body1">
-                          • {this.state.interestThree}
+                          • {this.state.interests2}
                         </Typography>
-                        {this.state.interestFive && (
-                          <Typography variant="body1">
-                            • {this.state.interestFive}
-                          </Typography>
-                        )}
+
+                        <Typography variant="body1">
+                          • {this.state.interests3}
+                        </Typography>
                       </Grid>
                       <Grid item sm>
                         <Typography variant="body1">
