@@ -303,6 +303,9 @@ class profileView extends Component {
       majorThree: this.state.major3,
       varsitySportOne: this.state.varsitySport1,
       varsitySportTwo: this.state.varsitySport2,
+      groupOne: this.state.group1,
+      groupTwo: this.state.group2,
+      groupThree: this.state.group3,
       greekLife: this.state.greekLife_,
       bio: this.state.bio_,
     });
@@ -501,6 +504,9 @@ class profileView extends Component {
       major3: this.state.majorThree,
       varsitySport1: this.state.varsitySportOne,
       varsitySport2: this.state.varsitySportTwo,
+      group1: this.state.groupOne,
+      group2: this.state.groupTwo,
+      group3: this.state.groupThree,
       greekLife_: this.state.greekLife,
       bio_: this.state.bio,
     });
@@ -511,6 +517,7 @@ class profileView extends Component {
       class: this.state.class,
       majors: [this.state.majorOne, this.state.majorTwo, this.state.majorThree],
       varsitySports: [this.state.varsitySportOne, this.state.varsitySportTwo],
+      groups: [this.state.groupOne, this.state.groupTwo, this.state.groupThree],
       greekLife: this.state.greekLife,
       bio: this.state.bio,
     };
@@ -525,6 +532,7 @@ class profileView extends Component {
             class: newBasicInfo["class"],
             majors: newBasicInfo["majors"],
             varsitySports: newBasicInfo["varsitySports"],
+            groups: newBasicInfo["groups"],
             greekLife: newBasicInfo["greekLife"],
             bio: newBasicInfo["bio"],
           },
@@ -936,6 +944,42 @@ class profileView extends Component {
                       <TextField
                         autofocus
                         margin="dense"
+                        id="groupOne"
+                        autoComplete="off"
+                        name="groupOne"
+                        label="Group 1"
+                        defaultValue={this.state.groupOne}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="groupTwo"
+                        autoComplete="off"
+                        name="groupTwo"
+                        label="Group 2"
+                        defaultValue={this.state.groupTwo}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="groupThree"
+                        autoComplete="off"
+                        name="groupThree"
+                        label="Group 3"
+                        defaultValue={this.state.groupThree}
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
                         name="greekLife"
                         autoComplete="off"
                         label="Greek Organization"
@@ -1011,6 +1055,15 @@ class profileView extends Component {
                           `, ${this.state.varsitySportTwo}`}
                       </Typography>
                     )}
+                    {this.state.groupOne && (
+                      <Typography variant="body1">
+                        Group(s): {this.state.groupOne}
+                        {this.state.groupTwo &&
+                          `, ${this.state.groupTwo}`}
+                        {this.state.groupThree &&
+                          `, ${this.state.groupThree}`}
+                      </Typography>
+                    )}
                     {this.state.greekLife && (
                       <Typography variant="body1">
                         Greek Organization: {this.state.greekLife}
@@ -1024,7 +1077,7 @@ class profileView extends Component {
               </CardContent>
             </Card>
             <br />
-            <Grid container spacing={2}>
+            {/* <Grid container spacing={2}>
               <Grid item component="Card" sm>
                 <Card raised style={{ height: "100%" }}>
                   <CardContent align="center">
@@ -1449,6 +1502,7 @@ class profileView extends Component {
               </Grid>
             </Grid>
             <br />
+             */}
             <Card raised>
               <CardContent align="center">
                 <Typography variant="h3">Interests</Typography>
