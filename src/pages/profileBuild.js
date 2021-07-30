@@ -753,7 +753,10 @@ class profileBuild extends Component {
               fullWidth
             />
 
-            <h2>Courses</h2>
+            <h2>Courses{" "}
+            {(Object.keys(this.state.courseOne).length > 2 && Object.keys(this.state.courseTwo).length > 2) 
+              ? <CheckedCircle style={{ marginTop: "5px" }} color="secondary" /> : <UncheckedButton style={{ marginTop: "5px" }} color="primary" />} 
+            </h2>
           </Grid>
           <Grid item sm />
         </Grid>
@@ -821,6 +824,7 @@ class profileBuild extends Component {
               onChange={this.handleCourseOne}
               variant="outlined"
               size={"small"}
+              required
               helperText="Please select a course color"
             >
               {palette.map((color) => (
@@ -876,6 +880,7 @@ class profileBuild extends Component {
               onChange={this.handleCourseTwo}
               variant="outlined"
               size={"small"}
+              required
               helperText="Please select a course color"
             >
               {palette.map((color) => (

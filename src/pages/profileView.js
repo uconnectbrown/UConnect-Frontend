@@ -742,6 +742,8 @@ class profileView extends Component {
                   </DialogActions>
                 </Dialog> */}
                 <br />
+                <Card raised style={{display: 'inline-block'}}>
+                  <CardContent>
                 <span>
                 <Typography variant="h3" align="center">
                   {this.state.firstName} {this.state.lastName}{" "}
@@ -1031,8 +1033,15 @@ class profileView extends Component {
                   {this.state.majorTwo && `, ${this.state.majorTwo}`}
                   {this.state.majorThree && `, ${this.state.majorThree}`}
                 </Typography>
+                {this.state.bio && (
+                  <div>
+                  <br />
+                  <Typography variant="h6">{this.state.bio}</Typography>
+                  </div>
+                )}
+                </CardContent>
+                </Card>
                 <br />
-                <Typography variant="h6">{this.state.bio}</Typography>
                 <br />
                 <Card raised
                 style={{
@@ -1040,33 +1049,38 @@ class profileView extends Component {
                   borderWidth: "2px",
                   borderColor: "red",
                   height: "100%",
+                  marginBottom: "-5px",
                 }}>
                   <CardContent>
                     <Grid container spacing={2}>
                   {this.state.varsitySportOne && (
                     <Grid item sm>
-                      <Typography variant="body1">
-                        Sport(s): {this.state.varsitySportOne}
+                      <Typography variant="h5">Varsity Sports</Typography>
+                      <br />
+                      <Typography>• {this.state.varsitySportOne}</Typography>
                         {this.state.varsitySportTwo &&
-                          `, ${this.state.varsitySportTwo}`}
-                      </Typography>
+                          (<Typography>• {this.state.varsitySportTwo}</Typography>)}
                     </Grid>
                   )}
                   {this.state.groupOne && (
                       <Grid item sm>
-                        <Typography variant="body1">
-                          Group(s): {this.state.groupOne}
-                          {this.state.groupTwo &&
-                            `, ${this.state.groupTwo}`}
-                          {this.state.groupThree &&
-                            `, ${this.state.groupThree}`}
-                        </Typography>
+                        <Typography variant="h5">Groups</Typography>
+                          <br />
+                          <Typography>• {this.state.groupOne}</Typography>
+                          {this.state.groupTwo && (
+                            <Typography variant="body">• {this.state.groupTwo}</Typography>
+                          )}
+                          {this.state.groupThree && (
+                            <Typography>• {this.state.groupThree}</Typography>
+                          )}
                       </Grid>
                     )}
                   {this.state.greekLife && (
                       <Grid item sm>
-                        <Typography variant="body1">
-                          Greek Organization: {this.state.greekLife}
+                        <Typography variant="h5">Greek Organization</Typography>
+                        <br />
+                        <Typography>
+                          • {this.state.greekLife}
                         </Typography>
                       </Grid>
                     )}

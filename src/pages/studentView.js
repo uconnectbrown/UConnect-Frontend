@@ -40,7 +40,9 @@ class studentView extends Component {
     greekLife: "",
     groups: [],
     imageUrl: "",
-    interests: [],
+    interests1: [],
+    interests2: [],
+    interests3: [],
     lastName: "",
     majors: [],
     preferredPronouns: "",
@@ -67,7 +69,9 @@ class studentView extends Component {
           greekLife: res.data.user.greekLife,
           groups: res.data.user.groups,
           imageUrl: res.data.user.imageUrl,
-          interests: res.data.user.interests,
+          interests1: res.data.user.interests1,
+          interests2: res.data.user.interests2,
+          interests3: res.data.user.interests3,
           lastName: res.data.user.lastName,
           majors: res.data.user.majors,
           preferredPronouns: res.data.user.preferredPronouns,
@@ -103,6 +107,18 @@ class studentView extends Component {
   };
 
   render() {
+    let palette = [
+      "#16a085",
+      "#27ae60",
+      "#2980b9",
+      "#8e44ad",
+      "#2c3e50",
+      "#f1c40f",
+      "#e67e22",
+      "#e74c3c",
+      "#ecf0f1",
+      "#95a5a6",
+    ];
     let indexArray = [];
     for (let j = 0; j < 5; j++) {
       if (this.state.courses[j].courseCode) {
@@ -213,159 +229,191 @@ class studentView extends Component {
             </Button> */}
                 <br />
                 <br />
-                <Typography variant="h3">
-                  {this.state.firstName} {this.state.lastName}
-                </Typography>
-                <Typography variant="h5">
-                  {this.state.preferredPronouns &&
-                    `(${this.state.preferredPronouns})`}
-                </Typography>
-                <br />
-                <Card
-                  variant="outlined"
-                  style={{
-                    maxWidth: 450,
-                    borderStyle: "solid",
-                    borderWidth: "2px",
-                    borderColor: "red",
-                  }}
-                >
+                <Card raised style={{display: "inline-block"}}>
                   <CardContent>
-                    <Typography variant="body1">
-                      Class of {this.state.class}
+                    <span>
+                    <Typography variant="h3">
+                      {this.state.firstName} {this.state.lastName}
                     </Typography>
-                    <Typography variant="body1">
+                    </span>
+                    <Typography variant="h5">
+                      {this.state.preferredPronouns &&
+                        `(${this.state.preferredPronouns})`}
+                    </Typography>
+                    <br />
+                    <Typography variant="h5">Class of {this.state.class}</Typography>
+                    <Typography variant="h5">
                       Concentration(s): {this.state.majors[0]}
                       {this.state.majors[1] && `, ${this.state.majors[1]}`}
                       {this.state.majors[2] && `, ${this.state.majors[2]}`}
                     </Typography>
-                    {this.state.varsitySports[0] && (
-                      <Typography variant="body1">
-                        Sport(s): {this.state.varsitySports[0]}
-                        {this.state.varsitySports[1] &&
-                          `, ${this.state.varsitySports[1]}`}
-                      </Typography>
+                    {this.state.bio && (
+                      <div>
+                      <br />
+                      <Typography variant="h6">{this.state.bio}</Typography>
+                      </div>
                     )}
-                    {this.state.greekLife && (
-                      <Typography variant="body1">
-                        Greek Organization: {this.state.greekLife}
-                      </Typography>
-                    )}
-                    <br />
-                    <Typography variant="body1">{this.state.bio}</Typography>
                   </CardContent>
                 </Card>
                 <br />
+                <br />
+                <Card raised
+                style={{
+                  borderStyle: "solid",
+                  borderWidth: "2px",
+                  borderColor: "red",
+                  height: "100%",
+                  marginBottom: "-5px",
+                }}>
+                  <CardContent>
+                    <Grid container spacing={2}>
+                  {this.state.varsitySports[0] && (
+                    <Grid item sm>
+                      <Typography variant="h5">Varsity Sports</Typography>
+                      <br />
+                      <Typography>• {this.state.varsitySports[0]}</Typography>
+                        {this.state.varsitySports[1] &&
+                          (<Typography>• {this.state.varsitySports[1]}</Typography>)}
+                    </Grid>
+                  )}
+                  {this.state.groups[0] && (
+                      <Grid item sm>
+                        <Typography variant="h5">Groups</Typography>
+                          <br />
+                          <Typography>• {this.state.groups[0]}</Typography>
+                          {this.state.groups[1] && (
+                            <Typography variant="body">• {this.state.groups[1]}</Typography>
+                          )}
+                          {this.state.groups[2] && (
+                            <Typography>• {this.state.groups[2]}</Typography>
+                          )}
+                      </Grid>
+                    )}
+                  {this.state.greekLife && (
+                      <Grid item sm>
+                        <Typography variant="h5">Greek Organization</Typography>
+                        <br />
+                        <Typography>
+                          • {this.state.greekLife}
+                        </Typography>
+                      </Grid>
+                    )}
+                </Grid>
+                  </CardContent>
+                </Card>
+              </CardContent>
+            </Card>
+              <br />
+              <Card raised>
+              <CardContent align="center">
+                <Typography variant="h3">Interests</Typography>
+                <hr />
+                <br />
+                <Grid container spacing={2}>
+                  <Grid item sm>
+                    <Card raised
+                    style={{
+                      borderStyle: "solid",
+                      borderWidth: "2px",
+                      borderColor: `${palette[7]}`,
+                      height: "100%"
+                    }}>
+                      <CardContent>
+                      <Typography variant="h5" style={{ color: `${palette[7]}` }}>
+                        Career and Academic
+                      </Typography>
+                      <br />
+                      {this.state.interests1.map((interest) => {
+                        return <Typography>• {interest}</Typography>
+                      })}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item sm>
+                    <Card raised 
+                    style={{
+                      borderStyle: "solid",
+                      borderWidth: "2px",
+                      borderColor: `${palette[0]}`,
+                      height: "100%"
+                    }}>
+                      <CardContent>
+                      <Typography variant="h5" style={{ color: `${palette[0]}` }}>
+                        Physical Activity and Wellness
+                      </Typography>
+                      <br />
+                      {this.state.interests2.map((interest) => {
+                        return <Typography>• {interest}</Typography>
+                      })}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item sm>
+                    <Card raised
+                    style={{
+                      borderStyle: "solid",
+                      borderWidth: "2px",
+                      borderColor: `${palette[3]}`,
+                      height: "100%"
+                    }}>
+                      <CardContent>
+                      <Typography variant="h5" style={{ color: `${palette[3]}` }}>
+                        General Hobbies
+                      </Typography>
+                      <br />
+                      {this.state.interests3.map((interest) => {
+                        return <Typography>• {interest}</Typography>
+                      })}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
               </CardContent>
             </Card>
             <br />
-            <Grid container spacing={2}>
-              <Grid item component="Card" sm>
-                <Card raised style={{ height: "100%" }}>
-                  <CardContent align="center">
-                    <Typography variant="h3">Groups</Typography>
-                    <hr />
-                    <br />
-                    {this.state.groups.map((group) => (
-                      <Typography variant="body1">{group}</Typography>
-                    ))}
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item component="Card" sm>
-                <Card raised style={{ height: "100%" }}>
-                  <CardContent align="center">
-                    <Typography variant="h3">Interests</Typography>
-                    <hr />
-                    <br />
-
-                    <Typography variant="h5">General</Typography>
-                    <Grid container>
-                      <Grid item sm>
-                        <Typography variant="body1">
-                          • {this.state.interests[0]}
-                        </Typography>
-                        <Typography variant="body1">
-                          • {this.state.interests[2]}
-                        </Typography>
-                        {this.state.interests[4] && (
-                          <Typography variant="body1">
-                            • {this.state.interests[4]}
-                          </Typography>
-                        )}
-                      </Grid>
-                      <Grid item sm>
-                        <Typography variant="body1">
-                          • {this.state.interests[1]}
-                        </Typography>
-                        {this.state.interests[3] && (
-                          <Typography variant="body1">
-                            • {this.state.interests[3]}
-                          </Typography>
-                        )}
-                      </Grid>
-                    </Grid>
-
-                    <br />
-
-                    {(this.state.affinitySports[0] ||
-                      this.state.affinitySports[1] ||
-                      this.state.affinitySports[2]) && (
-                      <Typography variant="h5">Athletic</Typography>
-                    )}
-                    <Grid container>
-                      <Grid item sm>
-                        {this.state.affinitySports[0] && (
-                          <Typography variant="body1">
-                            • {this.state.affinitySports[0]}
-                          </Typography>
-                        )}
-                        {this.state.affinitySports[2] && (
-                          <Typography variant="body1">
-                            • {this.state.affinitySports[2]}
-                          </Typography>
-                        )}
-                      </Grid>
-                      <Grid item sm>
-                        {this.state.affinitySports[1] && (
-                          <Typography variant="body1">
-                            • {this.state.affinitySports[1]}
-                          </Typography>
-                        )}
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item component="Card" sm>
-                <Card raised style={{ height: "100%" }}>
-                  <CardContent align="center">
-                    <Typography variant="h3">Favorites</Typography>
-                    <hr />
-                    <br />
-                    <Book />
-                    <Typography variant="body1">
-                      Book: {this.state.favorites.book}
-                    </Typography>
-                    <br />
-                    <Movie />
-                    <Typography variant="body1">
-                      Movie: {this.state.favorites.movie}
-                    </Typography>
-                    <br />
-                    <Tv />
-                    <Typography variant="body1">
-                      Show: {this.state.favorites.tvShow}
-                    </Typography>
-                    <br />
-                    <Music />
-                    <Typography variant="body1">
-                      Artist: {this.state.favorites.artist}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
+            <Card raised>
+              <CardContent align="center">
+                <Typography variant="h3">
+                  Favorites
+                </Typography>
+                <hr />
+                <br />
+                <Grid container spacing={2}>
+                  <Grid item sm>
+                    <div>
+                      <Book />
+                      <Typography variant="body1">
+                        Book: {this.state.favorites.book}
+                      </Typography>
+                    </div>
+                  </Grid>
+                  <Grid item sm>
+                    <div>
+                      <Movie />
+                      <Typography variant="body1">
+                        Movie: {this.state.favorites.movie}
+                      </Typography>
+                    </div>
+                  </Grid>
+                  <Grid item sm>
+                    <div>
+                      <Tv />
+                      <Typography variant="body1">
+                        Show: {this.state.favorites.tvShow}
+                      </Typography>
+                    </div>
+                  </Grid>
+                  <Grid item sm>
+                    <div>
+                      <Music />
+                      <Typography variant="body1">
+                        Artist: {this.state.favorites.artist}
+                      </Typography>
+                    </div>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
             <br />
             <Card raised>
               <CardContent align="center">
@@ -379,15 +427,16 @@ class studentView extends Component {
                         style={{
                           borderStyle: "solid",
                           borderWidth: "3px",
-                          borderColor: `${this.state.courses[index].undefined}`,
+                          borderColor: `${this.state.courses[index].courseColor}`,
                           height: "100%",
+                          marginBottom: "-5px"
                         }}
                       >
                         <CardContent>
                           <Typography
                             variant="h5"
                             style={{
-                              color: `${this.state.courses[index].undefined}`,
+                              color: `${this.state.courses[index].courseColor}`,
                             }}
                           >
                             {this.state.courses[index].courseCode}

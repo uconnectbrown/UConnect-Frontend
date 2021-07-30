@@ -305,9 +305,9 @@ class courseView extends Component {
             <MenuItem key="majors" value="majors">
               Concentration
             </MenuItem>
-            <MenuItem key="interests" value="interests">
+            {/* <MenuItem key="interests" value="interests">
               General Interests
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem key="groups" value="groups">
               Groups
             </MenuItem>
@@ -862,7 +862,7 @@ class courseView extends Component {
                             {students[index].majors[2] &&
                               `, ${students[index].majors[2]}`}
                           </Typography>
-                          <Typography variant="body1">Interests:</Typography>
+                          {/* <Typography variant="body1">Interests:</Typography>
                           <Typography variant="body1">
                             • {students[index].interests[0]}
                           </Typography>
@@ -871,7 +871,7 @@ class courseView extends Component {
                           </Typography>
                           <Typography variant="body1">
                             • {students[index].interests[2]}
-                          </Typography>
+                          </Typography> */}
                         </div>
                       </CardContent>
                     </ButtonBase>

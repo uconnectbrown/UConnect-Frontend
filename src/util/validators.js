@@ -8,7 +8,7 @@ exports.validProfile = (profile) => {
     profile.favorites.book &&
     profile.favorites.tvShow &&
     profile.favorites.artist &&
-    profile.courses.filter((course) => Object.keys(course).length > 1).length >
+    profile.courses.filter((course) => Object.keys(course).length > 2).length >
       1
   ) {
     return true;

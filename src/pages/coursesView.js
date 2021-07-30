@@ -587,7 +587,7 @@ export class coursesView extends Component {
         </GridList>
         <br />
 
-        <GridList cols={7} spacing={20} cellHeight="auto">
+        {/* <GridList cols={7} spacing={20} cellHeight="auto">
           {indices.map((index) => (
             <GridListTile item sm>
               <Card
@@ -607,18 +607,18 @@ export class coursesView extends Component {
                       <br />
                     </div>
                   )}
-                  {/* {!loading && (
+                  {!loading && (
                     dailyAssignments[index].map((assignment) => {
                       {console.log(assignment['name'])}
                       <Typography variant="h6" align="center">hi</Typography>
                     })
-                  )} */}
+                  )}
 
-                  {/* {this.state.courses.map((course) => (
+                  {this.state.courses.map((course) => (
                     course.assignments[index].map((assignment) => {
                       return <Typography>{assignment}</Typography>
                     })
-                  ))} */}
+                  ))}
                   <Tooltip title="Add assignment" placement="right">
                     <IconButton
                       onClick={() => this.handleAssignmentsOpen(index)}
@@ -704,7 +704,7 @@ export class coursesView extends Component {
               </Card>
             </GridListTile>
           ))}
-        </GridList>
+        </GridList> */}
       </div>
     );
   }
