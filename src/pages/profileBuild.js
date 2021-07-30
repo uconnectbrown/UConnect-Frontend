@@ -22,6 +22,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import UncheckedButton from '@material-ui/icons/RadioButtonUnchecked';
+import CheckedCircle from '@material-ui/icons/CheckCircleOutline';
 
 // Components
 import Interests from "../components/Interests.js";
@@ -239,7 +241,13 @@ class profileBuild extends Component {
               Build Profile
             </Typography>
 
-            <h2>Basic Info</h2>
+            <span>
+            <h2>Basic Info{" "}
+            {(this.state.firstName === "" || this.state.lastName === "" || this.state.class === "" || this.state.majorOne === "") 
+              ? <UncheckedButton style={{ marginTop: "5px" }} color="primary" /> : <CheckedCircle style={{ marginTop: "5px" }} color="secondary" />}
+            </h2>
+            </span>
+
             <TextField
               id="firstName"
               autoComplete="off"
@@ -426,7 +434,10 @@ class profileBuild extends Component {
                 other
               </MenuItem>
             </TextField>
-            <h2>Interests</h2>
+            <h2>Interests{" "}
+            {(this.state.interests1.length + this.state.interests2.length + this.state.interests3.length !== 10) 
+              ? <UncheckedButton style={{ marginTop: "5px" }} color="primary" /> : <CheckedCircle style={{ marginTop: "5px" }} color="secondary" />}
+            </h2>
             <body1>
               Among the 3 provided categories, please select a total of 10
               subcategories in which you are interested.
@@ -440,7 +451,7 @@ class profileBuild extends Component {
         <Grid container className={classes.form}>
           <Grid item sm />
           <Grid item sm>
-            <TextField
+            {/* <TextField
               id="interestOne"
               name="interestOne"
               autoComplete="off"
@@ -497,7 +508,7 @@ class profileBuild extends Component {
               onChange={this.handleChange}
               fullWidth
               size={"small"}
-            />
+            /> */}
 
             <h2>Groups</h2>
             <body1>
@@ -656,7 +667,10 @@ class profileBuild extends Component {
               }}
             />
 
-            <h2>Favorites</h2>
+            <h2>Favorites{" "}
+            {(this.state.favorites.book === "" || this.state.favorites.movie === "" || this.state.favorites.tvShow === "" || this.state.favorites.artist === "") 
+              ? <UncheckedButton style={{ marginTop: "5px" }} color="primary" /> : <CheckedCircle style={{ marginTop: "5px" }} color="secondary" />}
+            </h2>
             <body1>
               Feel free to share your favorite book, movie, tv show, and artist
               below.

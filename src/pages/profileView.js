@@ -742,6 +742,7 @@ class profileView extends Component {
                   </DialogActions>
                 </Dialog> */}
                 <br />
+                <span>
                 <Typography variant="h3" align="center">
                   {this.state.firstName} {this.state.lastName}{" "}
                   <Tooltip title="Edit basic info" placement="right">
@@ -1018,12 +1019,64 @@ class profileView extends Component {
                     </DialogActions>
                   </Dialog>
                 </Typography>
+                </span>
                 <Typography variant="h5">
                   {this.state.preferredPronouns &&
                     `(${this.state.preferredPronouns})`}
                 </Typography>
                 <br />
-                <Card
+                <Typography variant="h5">Class of {this.state.class}</Typography>
+                <Typography variant="h5">
+                  Concentration(s): {this.state.majorOne}
+                  {this.state.majorTwo && `, ${this.state.majorTwo}`}
+                  {this.state.majorThree && `, ${this.state.majorThree}`}
+                </Typography>
+                <br />
+                <Typography variant="h6">{this.state.bio}</Typography>
+                <br />
+                <Card raised
+                style={{
+                  borderStyle: "solid",
+                  borderWidth: "2px",
+                  borderColor: "red",
+                  height: "100%",
+                }}>
+                  <CardContent>
+                    <Grid container spacing={2}>
+                  {this.state.varsitySportOne && (
+                    <Grid item sm>
+                      <Typography variant="body1">
+                        Sport(s): {this.state.varsitySportOne}
+                        {this.state.varsitySportTwo &&
+                          `, ${this.state.varsitySportTwo}`}
+                      </Typography>
+                    </Grid>
+                  )}
+                  {this.state.groupOne && (
+                      <Grid item sm>
+                        <Typography variant="body1">
+                          Group(s): {this.state.groupOne}
+                          {this.state.groupTwo &&
+                            `, ${this.state.groupTwo}`}
+                          {this.state.groupThree &&
+                            `, ${this.state.groupThree}`}
+                        </Typography>
+                      </Grid>
+                    )}
+                  {this.state.greekLife && (
+                      <Grid item sm>
+                        <Typography variant="body1">
+                          Greek Organization: {this.state.greekLife}
+                        </Typography>
+                      </Grid>
+                    )}
+                </Grid>
+                  </CardContent>
+                </Card>
+                <Grid container>
+                  <Grid item sm />
+                  <Grid>
+                {/* <Card
                   variant="outlined"
                   style={{
                     maxWidth: 450,
@@ -1066,9 +1119,13 @@ class profileView extends Component {
                     <Typography variant="body1">{this.state.bio}</Typography>
                   </CardContent>
                 </Card>
-                <br />
+                <br /> */}
+                </Grid>
+            <Grid item sm />
+            </Grid>
               </CardContent>
             </Card>
+            
             <br />
             {/* <Grid container spacing={2}>
               <Grid item component="Card" sm>
@@ -1502,19 +1559,61 @@ class profileView extends Component {
                 <br />
                 <Grid container spacing={2}>
                   <Grid item sm>
-                    <Typography variant="h5" style={{ color: `${palette[0]}` }}>
-                      Physical Activity and Wellness
-                    </Typography>
+                    <Card raised
+                    style={{
+                      borderStyle: "solid",
+                      borderWidth: "2px",
+                      borderColor: `${palette[7]}`,
+                      height: "100%"
+                    }}>
+                      <CardContent>
+                      <Typography variant="h5" style={{ color: `${palette[7]}` }}>
+                        Career and Academic
+                      </Typography>
+                      <br />
+                      {this.state.interests1.map((interest) => {
+                        return <Typography>• {interest}</Typography>
+                      })}
+                      </CardContent>
+                    </Card>
                   </Grid>
                   <Grid item sm>
-                    <Typography variant="h5" style={{ color: `${palette[7]}` }}>
-                      Career and Academic
-                    </Typography>
+                    <Card raised 
+                    style={{
+                      borderStyle: "solid",
+                      borderWidth: "2px",
+                      borderColor: `${palette[0]}`,
+                      height: "100%"
+                    }}>
+                      <CardContent>
+                      <Typography variant="h5" style={{ color: `${palette[0]}` }}>
+                        Physical Activity and Wellness
+                      </Typography>
+                      <br />
+                      {this.state.interests2.map((interest) => {
+                        return <Typography>• {interest}</Typography>
+                      })}
+                      </CardContent>
+                    </Card>
                   </Grid>
                   <Grid item sm>
-                    <Typography variant="h5" style={{ color: `${palette[3]}` }}>
-                      General Hobbies
-                    </Typography>
+                    <Card raised
+                    style={{
+                      borderStyle: "solid",
+                      borderWidth: "2px",
+                      borderColor: `${palette[3]}`,
+                      height: "100%"
+                    }}>
+                      <CardContent>
+                      <Typography variant="h5" style={{ color: `${palette[3]}` }}>
+                        General Hobbies
+                      </Typography>
+                      <br />
+                      {this.state.interests3.map((interest) => {
+                        return <Typography>• {interest}</Typography>
+                      })}
+                      </CardContent>
+                    </Card>
                   </Grid>
                 </Grid>
               </CardContent>
