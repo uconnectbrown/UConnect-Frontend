@@ -114,7 +114,9 @@ class courseView extends Component {
             this.state.messageImages[0],
             this.state.messageIds[0],
             this.state.courseInfo[0].replace(/\s/g, ""),
+            this.state.courseInfo.slice(0, 4),
           ],
+          previousPage: "courseView",
         },
       });
     } else if (this.state.selected.filter(Boolean).length > 1) {
@@ -126,8 +128,10 @@ class courseView extends Component {
             this.state.messageImages,
             this.state.messageIds,
             this.state.courseInfo[0].replace(/\s/g, ""),
-            this.state.allIds,
+            this.state.courseInfo.slice(0, 4),
           ],
+          allIds: this.state.allIds,
+          previousPage: "courseView",
         },
       });
     }

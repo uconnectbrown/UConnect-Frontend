@@ -101,6 +101,8 @@ class studentView extends Component {
           this.state.imageUrl,
           this.state.studentId,
           this.state.courseInfo[0].replace(/\s/g, ""),
+          this.state.courseInfo,
+          this.state.studentEmail,
         ],
       },
     });
@@ -229,19 +231,21 @@ class studentView extends Component {
             </Button> */}
                 <br />
                 <br />
-                <Card raised style={{display: "inline-block"}}>
+                <Card raised style={{ display: "inline-block" }}>
                   <CardContent>
                     <span>
-                    <Typography variant="h3">
-                      {this.state.firstName} {this.state.lastName}
-                    </Typography>
+                      <Typography variant="h3">
+                        {this.state.firstName} {this.state.lastName}
+                      </Typography>
                     </span>
                     <Typography variant="h5">
                       {this.state.preferredPronouns &&
                         `(${this.state.preferredPronouns})`}
                     </Typography>
                     <br />
-                    <Typography variant="h5">Class of {this.state.class}</Typography>
+                    <Typography variant="h5">
+                      Class of {this.state.class}
+                    </Typography>
                     <Typography variant="h5">
                       Concentration(s): {this.state.majors[0]}
                       {this.state.majors[1] && `, ${this.state.majors[1]}`}
@@ -249,121 +253,145 @@ class studentView extends Component {
                     </Typography>
                     {this.state.bio && (
                       <div>
-                      <br />
-                      <Typography variant="h6">{this.state.bio}</Typography>
+                        <br />
+                        <Typography variant="h6">{this.state.bio}</Typography>
                       </div>
                     )}
                   </CardContent>
                 </Card>
                 <br />
                 <br />
-                <Card raised
-                style={{
-                  borderStyle: "solid",
-                  borderWidth: "2px",
-                  borderColor: "red",
-                  height: "100%",
-                  marginBottom: "-5px",
-                }}>
+                <Card
+                  raised
+                  style={{
+                    borderStyle: "solid",
+                    borderWidth: "2px",
+                    borderColor: "red",
+                    height: "100%",
+                    marginBottom: "-5px",
+                  }}
+                >
                   <CardContent>
                     <Grid container spacing={2}>
-                  {this.state.varsitySports[0] && (
-                    <Grid item sm>
-                      <Typography variant="h5">Varsity Sports</Typography>
-                      <br />
-                      <Typography>• {this.state.varsitySports[0]}</Typography>
-                        {this.state.varsitySports[1] &&
-                          (<Typography>• {this.state.varsitySports[1]}</Typography>)}
-                    </Grid>
-                  )}
-                  {this.state.groups[0] && (
-                      <Grid item sm>
-                        <Typography variant="h5">Groups</Typography>
+                      {this.state.varsitySports[0] && (
+                        <Grid item sm>
+                          <Typography variant="h5">Varsity Sports</Typography>
+                          <br />
+                          <Typography>
+                            • {this.state.varsitySports[0]}
+                          </Typography>
+                          {this.state.varsitySports[1] && (
+                            <Typography>
+                              • {this.state.varsitySports[1]}
+                            </Typography>
+                          )}
+                        </Grid>
+                      )}
+                      {this.state.groups[0] && (
+                        <Grid item sm>
+                          <Typography variant="h5">Groups</Typography>
                           <br />
                           <Typography>• {this.state.groups[0]}</Typography>
                           {this.state.groups[1] && (
-                            <Typography variant="body">• {this.state.groups[1]}</Typography>
+                            <Typography variant="body">
+                              • {this.state.groups[1]}
+                            </Typography>
                           )}
                           {this.state.groups[2] && (
                             <Typography>• {this.state.groups[2]}</Typography>
                           )}
-                      </Grid>
-                    )}
-                  {this.state.greekLife && (
-                      <Grid item sm>
-                        <Typography variant="h5">Greek Organization</Typography>
-                        <br />
-                        <Typography>
-                          • {this.state.greekLife}
-                        </Typography>
-                      </Grid>
-                    )}
-                </Grid>
+                        </Grid>
+                      )}
+                      {this.state.greekLife && (
+                        <Grid item sm>
+                          <Typography variant="h5">
+                            Greek Organization
+                          </Typography>
+                          <br />
+                          <Typography>• {this.state.greekLife}</Typography>
+                        </Grid>
+                      )}
+                    </Grid>
                   </CardContent>
                 </Card>
               </CardContent>
             </Card>
-              <br />
-              <Card raised>
+            <br />
+            <Card raised>
               <CardContent align="center">
                 <Typography variant="h3">Interests</Typography>
                 <hr />
                 <br />
                 <Grid container spacing={2}>
                   <Grid item sm>
-                    <Card raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: `${palette[7]}`,
-                      height: "100%"
-                    }}>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: `${palette[7]}`,
+                        height: "100%",
+                      }}
+                    >
                       <CardContent>
-                      <Typography variant="h5" style={{ color: `${palette[7]}` }}>
-                        Career and Academic
-                      </Typography>
-                      <br />
-                      {this.state.interests1.map((interest) => {
-                        return <Typography>• {interest}</Typography>
-                      })}
+                        <Typography
+                          variant="h5"
+                          style={{ color: `${palette[7]}` }}
+                        >
+                          Career and Academic
+                        </Typography>
+                        <br />
+                        {this.state.interests1.map((interest) => {
+                          return <Typography>• {interest}</Typography>;
+                        })}
                       </CardContent>
                     </Card>
                   </Grid>
                   <Grid item sm>
-                    <Card raised 
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: `${palette[0]}`,
-                      height: "100%"
-                    }}>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: `${palette[0]}`,
+                        height: "100%",
+                      }}
+                    >
                       <CardContent>
-                      <Typography variant="h5" style={{ color: `${palette[0]}` }}>
-                        Physical Activity and Wellness
-                      </Typography>
-                      <br />
-                      {this.state.interests2.map((interest) => {
-                        return <Typography>• {interest}</Typography>
-                      })}
+                        <Typography
+                          variant="h5"
+                          style={{ color: `${palette[0]}` }}
+                        >
+                          Physical Activity and Wellness
+                        </Typography>
+                        <br />
+                        {this.state.interests2.map((interest) => {
+                          return <Typography>• {interest}</Typography>;
+                        })}
                       </CardContent>
                     </Card>
                   </Grid>
                   <Grid item sm>
-                    <Card raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: `${palette[3]}`,
-                      height: "100%"
-                    }}>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: `${palette[3]}`,
+                        height: "100%",
+                      }}
+                    >
                       <CardContent>
-                      <Typography variant="h5" style={{ color: `${palette[3]}` }}>
-                        General Hobbies
-                      </Typography>
-                      <br />
-                      {this.state.interests3.map((interest) => {
-                        return <Typography>• {interest}</Typography>
-                      })}
+                        <Typography
+                          variant="h5"
+                          style={{ color: `${palette[3]}` }}
+                        >
+                          General Hobbies
+                        </Typography>
+                        <br />
+                        {this.state.interests3.map((interest) => {
+                          return <Typography>• {interest}</Typography>;
+                        })}
                       </CardContent>
                     </Card>
                   </Grid>
@@ -373,9 +401,7 @@ class studentView extends Component {
             <br />
             <Card raised>
               <CardContent align="center">
-                <Typography variant="h3">
-                  Favorites
-                </Typography>
+                <Typography variant="h3">Favorites</Typography>
                 <hr />
                 <br />
                 <Grid container spacing={2}>
@@ -429,7 +455,7 @@ class studentView extends Component {
                           borderWidth: "3px",
                           borderColor: `${this.state.courses[index].courseColor}`,
                           height: "100%",
-                          marginBottom: "-5px"
+                          marginBottom: "-5px",
                         }}
                       >
                         <CardContent>

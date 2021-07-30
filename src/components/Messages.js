@@ -36,6 +36,7 @@ function Messages(props) {
             courseCode,
             roomId,
           ],
+          previousPage: "messagesView",
         },
       });
     } else {
@@ -50,8 +51,9 @@ function Messages(props) {
             recipientImages,
             recipientIds,
             courseCode,
-            allIds,
           ],
+          allIds: allIds,
+          previousPage: "messagesView",
         },
       });
     }

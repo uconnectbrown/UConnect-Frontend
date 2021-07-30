@@ -13,9 +13,16 @@ import BackIcon from "@material-ui/icons/ArrowBack";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Avatar from "@material-ui/core/Avatar";
+import AppBar from "@material-ui/core/AppBar";
+import MessageIcon from "@material-ui/icons/Sms";
+import Toolbar from "@material-ui/core/Toolbar";
+import Grid from "@material-ui/core/Grid";
 
 export class messageView extends Component {
   state = {
+    courseInfo: this.props.location.state.recipientInfo[4],
+    studentEmail: this.props.location.state.recipientInfo[5],
     recipientName: "",
     recipientImage: "",
     recipientId: "",
@@ -25,9 +32,11 @@ export class messageView extends Component {
     ownName: "",
     roomId: "",
     loading: true,
+    previousPage: this.props.location.state.previousPage,
   };
 
   componentDidMount() {
+    console.log(this.props.location.state.recipientInfo[4]);
     this.setState({
       recipientName: this.props.location.state.recipientInfo[0],
       recipientImage: this.props.location.state.recipientInfo[1],
@@ -59,8 +68,39 @@ export class messageView extends Component {
       .catch((err) => console.error(err));
   }
 
-  handleBack = () => {
+  handleMessage = () => {
     this.props.history.push("/messagesView");
+  };
+
+  handleBack = () => {
+    if (this.state.previousPage == "courseView") {
+      this.props.history.push({
+        pathname: "/courseView",
+        state: {
+          courseInfo: [
+            this.state.courseInfo[0],
+            this.state.courseInfo[1],
+            this.state.courseInfo[2],
+            this.state.courseInfo[3],
+          ],
+        },
+      });
+    } else if (this.state.previousPage == "messagesView") {
+      this.handleMessage();
+    } else {
+      this.props.history.push({
+        pathname: "/studentView",
+        state: {
+          studentInfo: [
+            this.state.courseInfo[0],
+            this.state.courseInfo[1],
+            this.state.courseInfo[2],
+            this.state.courseInfo[3],
+            this.state.studentEmail,
+          ],
+        },
+      });
+    }
   };
 
   render() {
@@ -79,14 +119,48 @@ export class messageView extends Component {
         {!this.state.loading && (
           <div>
             <NavBar />
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="back"
-              onClick={this.handleBack}
-            >
-              <BackIcon />
-            </IconButton>
+            <AppBar>
+              <Toolbar>
+                <Grid container>
+                  <Grid item sm>
+                    <IconButton
+                      edge="start"
+                      color="inherit"
+                      aria-label="back"
+                      onClick={this.handleBack}
+                    >
+                      <BackIcon />
+                      <Typography variant="h6">Back</Typography>
+                    </IconButton>
+                  </Grid>
+                  <Grid item sm align="center">
+                    <Avatar
+                      alt="recipient"
+                      src={this.state.recipientImage}
+                      style={{ width: "70px", height: "70px" }}
+                    />
+                    <Typography variant="body1">
+                      {this.state.recipientName.split(" ")[0]}
+                    </Typography>
+                  </Grid>
+                  <Grid item sm align="right">
+                    {this.state.previousPage !== "messagesView" && (
+                      <IconButton
+                        edge="end"
+                        color="inherit"
+                        aria-label="message"
+                        onClick={this.handleMessage}
+                      >
+                        <Typography variant="h6"> To Messages</Typography>
+                        <span style={{ marginRight: "5px" }} />
+                        <MessageIcon />
+                      </IconButton>
+                    )}
+                  </Grid>
+                </Grid>
+              </Toolbar>
+            </AppBar>
+
             <Chat
               recipientName={this.state.recipientName}
               recipientImage={this.state.recipientImage}
