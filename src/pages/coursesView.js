@@ -315,7 +315,7 @@ export class coursesView extends Component {
                         <MessageIcon />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip
+                    {/* <Tooltip
                       title="Course assignments"
                       placement="bottom"
                       // onMouseEnter={() => {this.setState({overlayOn: false})}}
@@ -565,7 +565,7 @@ export class coursesView extends Component {
                           Close
                         </Button>
                       </DialogActions>
-                    </Dialog>
+                    </Dialog> */}
                     <Tooltip
                       title="Saved profiles"
                       placement="right"

@@ -793,8 +793,8 @@ class profileView extends Component {
                       alt="Profile"
                       src={this.state.imageUrl}
                       style={{
-                        width: 375,
-                        height: 375,
+                        width: 400,
+                        height: 400,
                         objectFit: "cover",
                         borderRadius: "10%",
                         borderStyle: "solid",

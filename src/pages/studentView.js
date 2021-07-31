@@ -17,6 +17,8 @@ import Book from "@material-ui/icons/MenuBook";
 import Movie from "@material-ui/icons/Movie";
 import Tv from "@material-ui/icons/Tv";
 import Music from "@material-ui/icons/MusicNote";
+import Pets from "@material-ui/icons/Pets";
+import Sports from '@material-ui/icons/SportsBasketball';
 
 // Body
 class studentView extends Component {
@@ -261,37 +263,53 @@ class studentView extends Component {
                 </Card>
                 <br />
                 <br />
-                <Card
-                  raised
-                  style={{
-                    borderStyle: "solid",
-                    borderWidth: "2px",
-                    borderColor: "red",
-                    height: "100%",
-                    marginBottom: "-5px",
-                  }}
-                >
-                  <CardContent>
-                    <Grid container spacing={2}>
-                      {this.state.varsitySports[0] && (
-                        <Grid item sm>
-                          <Typography variant="h5">Varsity Sports</Typography>
+                <Grid container spacing={2}>
+                  <Grid item sm>
+                    <Card raised
+                style={{
+                  borderStyle: "solid",
+                  borderWidth: "2px",
+                  borderColor: "red",
+                  height: "100%",
+                  marginBottom: "-5px",
+                }}>
+                      <CardContent>
+                      <Typography variant="h5">Varsity Sports</Typography>
                           <br />
-                          <Typography>
+                          {(this.state.varsitySports[0] === "" && this.state.varsitySports[1] === "") && (
+                            <Typography>N/A</Typography>
+                          )}
+                          {this.state.varsitySports[0] && (
+                            <Typography>
                             • {this.state.varsitySports[0]}
                           </Typography>
+                          )}
                           {this.state.varsitySports[1] && (
                             <Typography>
                               • {this.state.varsitySports[1]}
                             </Typography>
                           )}
-                        </Grid>
-                      )}
-                      {this.state.groups[0] && (
-                        <Grid item sm>
-                          <Typography variant="h5">Groups</Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item sm>
+                    <Card raised
+                style={{
+                  borderStyle: "solid",
+                  borderWidth: "2px",
+                  borderColor: "red",
+                  height: "100%",
+                  marginBottom: "-5px",
+                }}>
+                      <CardContent>
+                      <Typography variant="h5">Groups</Typography>
                           <br />
-                          <Typography>• {this.state.groups[0]}</Typography>
+                          {(this.state.groups[0] === "" && this.state.groups[1] === "" && this.state.groups[2] === "") && (
+                            <Typography>N/A</Typography>
+                          )}
+                          {this.state.groups[0] && (
+                            <Typography>• {this.state.groups[0]}</Typography>
+                          )}
                           {this.state.groups[1] && (
                             <Typography variant="body">
                               • {this.state.groups[1]}
@@ -300,20 +318,33 @@ class studentView extends Component {
                           {this.state.groups[2] && (
                             <Typography>• {this.state.groups[2]}</Typography>
                           )}
-                        </Grid>
-                      )}
-                      {this.state.greekLife && (
-                        <Grid item sm>
-                          <Typography variant="h5">
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item sm>
+                    <Card raised
+                style={{
+                  borderStyle: "solid",
+                  borderWidth: "2px",
+                  borderColor: "red",
+                  height: "100%",
+                  marginBottom: "-5px",
+                }}>
+                      <CardContent>
+                      <Typography variant="h5">
                             Greek Organization
                           </Typography>
                           <br />
-                          <Typography>• {this.state.greekLife}</Typography>
-                        </Grid>
-                      )}
-                    </Grid>
-                  </CardContent>
-                </Card>
+                          {this.state.greekLife === "" && (
+                            <Typography>N/A</Typography>
+                          )}
+                          {this.state.greekLife && (
+                            <Typography>• {this.state.greekLife}</Typography>
+                          )}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
               </CardContent>
             </Card>
             <br />
@@ -396,6 +427,54 @@ class studentView extends Component {
                     </Card>
                   </Grid>
                 </Grid>
+                <br />
+                <br />
+                <Card raised style={{marginBottom: "-5px"}}>
+                  <CardContent>
+                    <Typography variant="h4">Additional Info</Typography>
+                    <hr />
+                    <br />
+                    <Grid container spacing={2}>
+                      <Grid item sm>
+                        <div>
+                          <Music />
+                          <Typography variant="h6">
+                            Instruments
+                          </Typography>
+                        </div>
+                      </Grid>
+                      <Grid item sm>
+                        <div>
+                        <Sports />
+                        <Typography variant="h6">
+                          Pick-Up Sports
+                        </Typography>
+                        <br />
+                        {this.state.affinitySports[0] === "" && this.state.affinitySports[1] === "" && this.state.affinitySports[2] === "" && (
+                          <Typography>N/A</Typography>
+                        )}
+                        {this.state.affinitySports[0] && (
+                          <Typography>• {this.state.affinitySports[0]}</Typography>
+                        )}
+                        {this.state.affinitySports[1] && (
+                          <Typography>• {this.state.affinitySports[0]}</Typography>
+                        )}
+                        {this.state.affinitySports[2] && (
+                          <Typography>• {this.state.affinitySports[0]}</Typography>
+                        )}
+                        </div>
+                      </Grid>
+                      <Grid item sm>
+                      <div>
+                        <Pets />
+                        <Typography variant="h6">
+                          Pets
+                        </Typography>
+                      </div>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
               </CardContent>
             </Card>
             <br />
