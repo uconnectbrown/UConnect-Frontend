@@ -22,6 +22,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ChatIcon from "@material-ui/icons/ChatBubbleOutline";
 import FilledChatIcon from "@material-ui/icons/ChatBubble";
+import Tooltip from "@material-ui/core/Tooltip";
 
 // Import Data
 import majorList from "../resources/majors";
@@ -807,12 +808,13 @@ class courseView extends Component {
                     align="center"
                   >
                     {/* switched the order of buttonBase and cardContent since it worked in coursesView */}
-
+                    <Tooltip title="Create chat" placement="right">
                     <IconButton
                       onClick={() => {
                         this.handleRadio(index);
                       }}
                       inputProps={{ "aria-label": "primary checkbox" }}
+                      style={{marginBottom: "-15px"}}
                     >
                       {!this.state.selected[index] && (
                         <ChatIcon color="secondary" />
@@ -821,6 +823,7 @@ class courseView extends Component {
                         <FilledChatIcon color="secondary" />
                       )}
                     </IconButton>
+                    </Tooltip>
 
                     <ButtonBase
                       size="large"
