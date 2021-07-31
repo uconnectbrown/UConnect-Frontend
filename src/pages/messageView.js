@@ -144,18 +144,16 @@ export class messageView extends Component {
                     </Typography>
                   </Grid>
                   <Grid item sm align="right">
-                    {this.state.previousPage !== "messagesView" && (
-                      <IconButton
-                        edge="end"
-                        color="inherit"
-                        aria-label="message"
-                        onClick={this.handleMessage}
-                      >
-                        <Typography variant="h6"> To Messages</Typography>
-                        <span style={{ marginRight: "5px" }} />
-                        <MessageIcon />
-                      </IconButton>
-                    )}
+                    <IconButton
+                      edge="end"
+                      color="inherit"
+                      aria-label="message"
+                      onClick={this.handleMessage}
+                    >
+                      <Typography variant="h6"> To Messages</Typography>
+                      <span style={{ marginRight: "5px" }} />
+                      <MessageIcon />
+                    </IconButton>
                   </Grid>
                 </Grid>
               </Toolbar>

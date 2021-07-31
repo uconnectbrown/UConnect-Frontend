@@ -6,19 +6,12 @@ import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles/";
 import { createTheme } from "@material-ui/core/styles";
 import themeFile from "./util/theme";
 
-// MUI Stuff
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-
 // Authentication
 import { auth } from "./firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 // Components
 import AuthRoute from "./util/AuthRoute"; // auth => send to profileView, else send to component
-import SignIn from "./components/SignIn";
 import Welcome from "./components/Welcome";
 
 // Pages
