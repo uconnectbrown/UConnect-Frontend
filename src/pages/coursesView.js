@@ -1,7 +1,7 @@
 // Setup
 import React, { Component } from "react";
 import axios from "axios";
-import { auth } from "../firebase";
+import { db, auth } from "../firebase";
 
 // Components
 import NavBar from "../components/NavBar";
@@ -51,6 +51,16 @@ export class coursesView extends Component {
   };
 
   componentDidMount() {
+    db.doc(`/profiles/${auth.currentUser.email.split("@")[0]}`)
+      .get()
+      .then((doc) => {
+        if (!doc.exists) {
+          return this.props.history.push({
+            pathname: "/profileBuild",
+            state: { validRoute: true },
+          });
+        }
+      });
     let indexArray = [];
     let currentIndex = 0;
     axios

@@ -7,7 +7,11 @@ const AuthRoute = ({ component: Component, authenticated, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
-      authenticated === true ? <Component {...props} /> : <Redirect to="/" />
+      authenticated !== null ? (
+        <Redirect to="/coursesView" />
+      ) : (
+        <Component {...props} />
+      )
     }
   />
 );

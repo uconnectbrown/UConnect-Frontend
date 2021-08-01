@@ -46,7 +46,7 @@ import Movie from "@material-ui/icons/Movie";
 import Tv from "@material-ui/icons/Tv";
 import Music from "@material-ui/icons/MusicNote";
 import Pets from "@material-ui/icons/Pets";
-import Sports from '@material-ui/icons/SportsBasketball';
+import Sports from "@material-ui/icons/SportsBasketball";
 
 // Import Data
 import majorList from "../resources/majors";
@@ -60,7 +60,20 @@ class profileView extends Component {
   }
 
   componentDidMount() {
-    this.loadUserData();
+    db.doc(`/profiles/${auth.currentUser.email.split("@")[0]}`)
+      .get()
+      .then((doc) => {
+        if (!doc.exists) {
+          return this.props.history.push({
+            pathname: "/profileBuild",
+            state: { validRoute: true },
+          });
+        }
+      })
+      .then(() => {
+        this.loadUserData();
+      })
+      .catch((err) => console.log(err));
   }
 
   loadUserData = () => {
@@ -205,14 +218,14 @@ class profileView extends Component {
     this.setState({ favoritesOpen: true });
   };
   handleGreekOpen = () => {
-    this.setState({ greekOpen: true});
-  }
+    this.setState({ greekOpen: true });
+  };
   handleVarsityOpen = () => {
-    this.setState({ varsityOpen: true});
-  }
+    this.setState({ varsityOpen: true });
+  };
   handleBioOpen = () => {
-    this.setState({ bioOpen: true});
-  }
+    this.setState({ bioOpen: true });
+  };
 
   handleColorOpen = (index) => {
     let newColorOpen = this.state.colorOpen.slice();
@@ -278,8 +291,8 @@ class profileView extends Component {
       varsityOpen: false,
       varsitySportOne: this.state.varsitySport1,
       varsitySportTwo: this.state.varsitySport2,
-    })
-  }
+    });
+  };
   handleGroupsClose = () => {
     this.setState({
       groupOpen: false,
@@ -347,8 +360,8 @@ class profileView extends Component {
     this.setState({
       bioOpen: false,
       bio: this.state.bio_,
-    })
-  }
+    });
+  };
 
   handleColorClose = () => {
     this.setState({
@@ -458,7 +471,7 @@ class profileView extends Component {
     let newGreek = {
       greekLife: this.state.greekLife,
     };
-    console.log(newGreek)
+    console.log(newGreek);
     axios.post(`/edit/${auth.currentUser.email}`, newGreek).then(() => {
       this.setState(
         {
@@ -476,10 +489,7 @@ class profileView extends Component {
       varsitySport1: this.state.varsitySportOne,
       varsitySport2: this.state.varsitySportTwo,
     });
-    let varsityList = [
-      this.state.varsitySportOne,
-      this.state.varsitySportTwo,
-    ];
+    let varsityList = [this.state.varsitySportOne, this.state.varsitySportTwo];
     let newVarsity = {
       varsitySports: varsityList,
     };
@@ -495,7 +505,7 @@ class profileView extends Component {
       );
     });
     this.setState({ varsityOpen: false });
-  }
+  };
   handleSubmitGroups = () => {
     this.setState({
       group1: this.state.groupOne,
@@ -679,7 +689,7 @@ class profileView extends Component {
   };
 
   handleInterests = (i1, i2, i3) => {
-    this.setState({interests1: i1, interests2: i2, interests3: i3});
+    this.setState({ interests1: i1, interests2: i2, interests3: i3 });
   };
 
   handleChange = (event) => {
@@ -886,170 +896,170 @@ class profileView extends Component {
                   </DialogActions>
                 </Dialog> */}
                 <br />
-                <Card raised style={{display: 'inline-block'}}>
+                <Card raised style={{ display: "inline-block" }}>
                   <CardContent>
-                <span>
-                <Typography variant="h3" align="center">
-                  {this.state.firstName} {this.state.lastName}{" "}
-                  <Tooltip title="Edit basic info" placement="right">
-                    <IconButton
-                      onClick={this.handleBasicOpen}
-                      className="button"
-                    >
-                      <EditIcon color="secondary" />
-                    </IconButton>
-                  </Tooltip>
-                  <Dialog
-                    overlayStyle={{ backgroundColor: "transparent" }}
-                    open={this.state.basicOpen}
-                  >
-                    <DialogTitle
-                      style={{ cursor: "move" }}
-                      id="draggable-dialog-title"
-                    >
-                      Edit Basic Info
-                    </DialogTitle>
-                    <DialogContent>
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="firstName"
-                        autoComplete="off"
-                        name="firstName"
-                        label="First Name"
-                        defaultValue={this.state.firstName}
-                        required
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="lastName"
-                        autoComplete="off"
-                        name="lastName"
-                        label="Last Name"
-                        defaultValue={this.state.lastName}
-                        required
-                        fullWidth
-                        type="text"
-                        onChange={this.handleChange}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="preferredPronouns"
-                        name="preferredPronouns"
-                        select
-                        fullWidth
-                        label="Preferred Pronouns"
-                        defaultValue={this.state.preferredPronouns}
-                        onChange={this.handleChange}
-                      >
-                        <MenuItem key="he/him" value="he/him">
-                          he/him
-                        </MenuItem>
-                        <MenuItem key="she/her" value="she/her">
-                          she/her
-                        </MenuItem>
-                        <MenuItem key="they/them" value="they/them">
-                          they/them
-                        </MenuItem>
-                        <MenuItem key="ze/hir" value="ze/hir">
-                          ze/hir
-                        </MenuItem>
-                        <MenuItem key="other" value="other">
-                          other
-                        </MenuItem>
-                      </TextField>
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="class"
-                        name="class"
-                        select
-                        label="Graduating Class"
-                        defaultValue={this.state.class}
-                        onChange={this.handleChange}
-                        required
-                        fullWidth
-                      >
-                        <MenuItem key="2021.5" value="2021.5">
-                          2021.5
-                        </MenuItem>
-                        <MenuItem key="2022" value="2022">
-                          2022
-                        </MenuItem>
-                        <MenuItem key="2022.5" value="2022.5">
-                          2022.5
-                        </MenuItem>
-                        <MenuItem key="2023" value="2023">
-                          2023
-                        </MenuItem>
-                        <MenuItem key="2023.5" value="2023.5">
-                          2023.5
-                        </MenuItem>
-                        <MenuItem key="2024" value="2024">
-                          2024
-                        </MenuItem>
-                        <MenuItem key="2024.5" value="2024.5">
-                          2024.5
-                        </MenuItem>
-                        <MenuItem key="2025" value="2025">
-                          2025
-                        </MenuItem>
-                      </TextField>
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        name="majorOne"
-                        autoComplete="off"
-                        label="First Concentration"
-                        defaultValue={this.state.majorOne}
-                        fullWidth
-                        required
-                        onChange={this.handleChange}
-                        InputProps={{
-                          endAdornment: majorList,
-                          inputProps: {
-                            list: "majors",
-                          },
-                        }}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        name="majorTwo"
-                        autoComplete="off"
-                        label="Second Concentration"
-                        defaultValue={this.state.majorTwo}
-                        fullWidth
-                        onChange={this.handleChange}
-                        InputProps={{
-                          endAdornment: majorList,
-                          inputProps: {
-                            list: "majors",
-                          },
-                        }}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        name="majorThree"
-                        autoComplete="off"
-                        label="Third Concentration"
-                        defaultValue={this.state.majorThree}
-                        fullWidth
-                        onChange={this.handleChange}
-                        InputProps={{
-                          endAdornment: majorList,
-                          inputProps: {
-                            list: "majors",
-                          },
-                        }}
-                      />
-                      {/* <TextField
+                    <span>
+                      <Typography variant="h3" align="center">
+                        {this.state.firstName} {this.state.lastName}{" "}
+                        <Tooltip title="Edit basic info" placement="right">
+                          <IconButton
+                            onClick={this.handleBasicOpen}
+                            className="button"
+                          >
+                            <EditIcon color="secondary" />
+                          </IconButton>
+                        </Tooltip>
+                        <Dialog
+                          overlayStyle={{ backgroundColor: "transparent" }}
+                          open={this.state.basicOpen}
+                        >
+                          <DialogTitle
+                            style={{ cursor: "move" }}
+                            id="draggable-dialog-title"
+                          >
+                            Edit Basic Info
+                          </DialogTitle>
+                          <DialogContent>
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              id="firstName"
+                              autoComplete="off"
+                              name="firstName"
+                              label="First Name"
+                              defaultValue={this.state.firstName}
+                              required
+                              fullWidth
+                              type="text"
+                              onChange={this.handleChange}
+                            />
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              id="lastName"
+                              autoComplete="off"
+                              name="lastName"
+                              label="Last Name"
+                              defaultValue={this.state.lastName}
+                              required
+                              fullWidth
+                              type="text"
+                              onChange={this.handleChange}
+                            />
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              id="preferredPronouns"
+                              name="preferredPronouns"
+                              select
+                              fullWidth
+                              label="Preferred Pronouns"
+                              defaultValue={this.state.preferredPronouns}
+                              onChange={this.handleChange}
+                            >
+                              <MenuItem key="he/him" value="he/him">
+                                he/him
+                              </MenuItem>
+                              <MenuItem key="she/her" value="she/her">
+                                she/her
+                              </MenuItem>
+                              <MenuItem key="they/them" value="they/them">
+                                they/them
+                              </MenuItem>
+                              <MenuItem key="ze/hir" value="ze/hir">
+                                ze/hir
+                              </MenuItem>
+                              <MenuItem key="other" value="other">
+                                other
+                              </MenuItem>
+                            </TextField>
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              id="class"
+                              name="class"
+                              select
+                              label="Graduating Class"
+                              defaultValue={this.state.class}
+                              onChange={this.handleChange}
+                              required
+                              fullWidth
+                            >
+                              <MenuItem key="2021.5" value="2021.5">
+                                2021.5
+                              </MenuItem>
+                              <MenuItem key="2022" value="2022">
+                                2022
+                              </MenuItem>
+                              <MenuItem key="2022.5" value="2022.5">
+                                2022.5
+                              </MenuItem>
+                              <MenuItem key="2023" value="2023">
+                                2023
+                              </MenuItem>
+                              <MenuItem key="2023.5" value="2023.5">
+                                2023.5
+                              </MenuItem>
+                              <MenuItem key="2024" value="2024">
+                                2024
+                              </MenuItem>
+                              <MenuItem key="2024.5" value="2024.5">
+                                2024.5
+                              </MenuItem>
+                              <MenuItem key="2025" value="2025">
+                                2025
+                              </MenuItem>
+                            </TextField>
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              name="majorOne"
+                              autoComplete="off"
+                              label="First Concentration"
+                              defaultValue={this.state.majorOne}
+                              fullWidth
+                              required
+                              onChange={this.handleChange}
+                              InputProps={{
+                                endAdornment: majorList,
+                                inputProps: {
+                                  list: "majors",
+                                },
+                              }}
+                            />
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              name="majorTwo"
+                              autoComplete="off"
+                              label="Second Concentration"
+                              defaultValue={this.state.majorTwo}
+                              fullWidth
+                              onChange={this.handleChange}
+                              InputProps={{
+                                endAdornment: majorList,
+                                inputProps: {
+                                  list: "majors",
+                                },
+                              }}
+                            />
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              name="majorThree"
+                              autoComplete="off"
+                              label="Third Concentration"
+                              defaultValue={this.state.majorThree}
+                              fullWidth
+                              onChange={this.handleChange}
+                              InputProps={{
+                                endAdornment: majorList,
+                                inputProps: {
+                                  list: "majors",
+                                },
+                              }}
+                            />
+                            {/* <TextField
                         autofocus
                         margin="dense"
                         name="varsitySportOne"
@@ -1081,7 +1091,7 @@ class profileView extends Component {
                           },
                         }}
                       /> */}
-                      {/* <TextField
+                            {/* <TextField
                         autofocus
                         margin="dense"
                         id="groupOne"
@@ -1117,7 +1127,7 @@ class profileView extends Component {
                         type="text"
                         onChange={this.handleChange}
                       /> */}
-                      {/* <TextField
+                            {/* <TextField
                         autofocus
                         margin="dense"
                         name="greekLife"
@@ -1133,463 +1143,514 @@ class profileView extends Component {
                           },
                         }}
                       /> */}
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="bio"
-                        name="bio"
-                        label="Bio"
-                        defaultValue={this.state.bio}
-                        multiline
-                        onChange={this.handleChange}
-                        rows={2}
-                        fullWidth
-                      />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleBasicClose} color="secondary">
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={this.handleSubmitBasic}
-                        color="secondary"
-                        disabled={
-                          this.state.firstName === "" ||
-                          this.state.lastName === "" ||
-                          this.state.majorOne === "" ||
-                          this.state.class === ""
-                        }
-                      >
-                        Save Changes
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </Typography>
-                </span>
-                <Typography variant="h5">
-                  {this.state.preferredPronouns &&
-                    `(${this.state.preferredPronouns})`}
-                </Typography>
-                <br />
-                <Typography variant="h5">Class of {this.state.class}</Typography>
-                <Typography variant="h5">
-                  Concentration(s): {this.state.majorOne}
-                  {this.state.majorTwo && `, ${this.state.majorTwo}`}
-                  {this.state.majorThree && `, ${this.state.majorThree}`}
-                </Typography>
-                {this.state.bio && (
-                  <div>
-                  <br />
-                  <Typography variant="h6">{this.state.bio}</Typography>
-                  </div>
-                )}
-                {this.state.bio === "" && (
-                  <div>
-                  <br />
-                  <Button color="secondary" variant="outlined"
-                  onClick={this.handleBioOpen}
-                  >
-                    Add Bio
-                  </Button>
-                  </div>
-                )}
-                <Dialog
-                  overlayStyle={{ backgroundColor: "transparent" }}
-                  open={this.state.bioOpen}
-                >
-                  <DialogTitle
-                    style={{ cursor: "move" }}
-                    id="draggable-dialog-title"
-                  >
-                    Edit Bio
-                  </DialogTitle>
-                  <DialogContent>
-                    <Typography>
-                    If there is anything else you would like to share, we would love
-              for you to include it here.
-                    </Typography>
-                  <TextField
-                        autofocus
-                        margin="dense"
-                        id="bio"
-                        name="bio"
-                        label="Bio"
-                        defaultValue={this.state.bio}
-                        multiline
-                        onChange={this.handleChange}
-                        rows={2}
-                        fullWidth
-                      />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                      onClick={this.handleBioClose}
-                      color="secondary"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={this.handleSubmitBio}
-                      color="secondary"
-                    >
-                      Save Changes
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-                </CardContent>
-                </Card>
-                <br />
-                <br />
-                <Grid container spacing={2}>
-                <Grid item sm>
-                <Card raised
-                style={{
-                  borderStyle: "solid",
-                  borderWidth: "2px",
-                  borderColor: "red",
-                  height: "100%",
-                  marginBottom: "-5px",
-                }}>
-                  <CardContent>
-                  {(this.state.varsitySport1 !== "" && this.state.varsitySport2 !== "") && (
-                    <div>
-                      <Typography variant="h5">Varsity Sports{" "}
-                      <Tooltip title="Edit varsity sports" placement="right">
-                        <IconButton 
-                          onClick={this.handleVarsityOpen}
-                          className="button"
-                          style={{
-                            marginTop: "-10px",
-                            marginBottom: "-10px"
-                          }}>
-                          <EditIcon color="secondary" />
-                        </IconButton>
-                        </Tooltip>
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              id="bio"
+                              name="bio"
+                              label="Bio"
+                              defaultValue={this.state.bio}
+                              multiline
+                              onChange={this.handleChange}
+                              rows={2}
+                              fullWidth
+                            />
+                          </DialogContent>
+                          <DialogActions>
+                            <Button
+                              onClick={this.handleBasicClose}
+                              color="secondary"
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={this.handleSubmitBasic}
+                              color="secondary"
+                              disabled={
+                                this.state.firstName === "" ||
+                                this.state.lastName === "" ||
+                                this.state.majorOne === "" ||
+                                this.state.class === ""
+                              }
+                            >
+                              Save Changes
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
                       </Typography>
-                      <br />
-                      <Typography>• {this.state.varsitySportOne}</Typography>
-                        {this.state.varsitySportTwo &&
-                          (<Typography>• {this.state.varsitySportTwo}</Typography>)}
-                    </div>
-                  )}
-                  {(this.state.varsitySport1 === "" || this.state.varsitySport2 === "") && (
-                        <div>
-                        <Typography variant="h5">Varsity Sports</Typography>
-                        <br />
-                      <Typography>• {this.state.varsitySportOne}</Typography>
-                        {this.state.varsitySportTwo &&
-                          (<Typography>• {this.state.varsitySportTwo}</Typography>)}
-                        <br />
-                        <Tooltip title="Add varsity sport" placement="right">
-                        <IconButton 
-                         onClick={this.handleVarsityOpen}
-                          className="button"
-                          style={{
-                            marginTop: "-10px",
-                            marginBottom: "-10px"
-                          }}>
-                          <AddCircle color="secondary" />
-                        </IconButton>
-                        </Tooltip>
-                        </div>
-                      )}
-                      <Dialog
-                  overlayStyle={{ backgroundColor: "transparent" }}
-                  open={this.state.varsityOpen}
-                >
-                  <DialogTitle
-                    style={{ cursor: "move" }}
-                    id="draggable-dialog-title"
-                  >
-                    Edit Varsity Sports
-                  </DialogTitle>
-                  <DialogContent>
-                    <Typography>
-                    If you are a member of any varsity sports teams, please indicate
-              which ones below.
+                    </span>
+                    <Typography variant="h5">
+                      {this.state.preferredPronouns &&
+                        `(${this.state.preferredPronouns})`}
                     </Typography>
-                  <TextField
-                        autofocus
-                        margin="dense"
-                        name="varsitySportOne"
-                        autoComplete="off"
-                        label="First Varsity Sport"
-                        defaultValue={this.state.varsitySportOne}
-                        fullWidth
-                        onChange={this.handleChange}
-                        InputProps={{
-                          endAdornment: varsitySports,
-                          inputProps: {
-                            list: "varsitySports",
-                          },
-                        }}
-                      />
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        name="varsitySportTwo"
-                        autoComplete="off"
-                        label="Second Varsity Sport"
-                        defaultValue={this.state.varsitySportTwo}
-                        fullWidth
-                        onChange={this.handleChange}
-                        InputProps={{
-                          endAdornment: varsitySports,
-                          inputProps: {
-                            list: "varsitySports",
-                          },
-                        }}
-                      />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                      onClick={this.handleVarsityClose}
-                      color="secondary"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={this.handleSubmitVarsity}
-                      color="secondary"
-                    >
-                      Save Changes
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-                  </CardContent>
-                </Card>
-                </Grid>
-                <Grid item sm>
-                <Card raised
-                style={{
-                  borderStyle: "solid",
-                  borderWidth: "2px",
-                  borderColor: "red",
-                  height: "100%",
-                  marginBottom: "-5px",
-                }}>
-                  <CardContent>
-                    {(this.state.group1 === "" || this.state.group2 === "" || this.state.group3 === "") && (
-                      <Typography variant="h5">Groups</Typography>
-                    )}
-                    {(this.state.group1 !== "" && this.state.group2 !== "" && this.state.group3 !== "") && (
+                    <br />
+                    <Typography variant="h5">
+                      Class of {this.state.class}
+                    </Typography>
+                    <Typography variant="h5">
+                      Concentration(s): {this.state.majorOne}
+                      {this.state.majorTwo && `, ${this.state.majorTwo}`}
+                      {this.state.majorThree && `, ${this.state.majorThree}`}
+                    </Typography>
+                    {this.state.bio && (
                       <div>
-                      <Typography variant="h5">Groups{" "}
-                      <Tooltip title="Edit groups" placement="right">
-                      <IconButton 
-                        className="button"
-                        onClick={this.handleGroupsOpen}
-                        style={{
-                          marginTop: "-10px",
-                          marginBottom: "-10px"
-                        }}>
-                        <EditIcon color="secondary" />
-                      </IconButton>
-                    </Tooltip>
-                </Typography>
-                </div>
-                )}
-                  {this.state.groupOne && (
-                    <div>
-                          <br />
-                          <Typography>• {this.state.groupOne}</Typography>
-                          {this.state.groupTwo && (
-                            <Typography variant="body">• {this.state.groupTwo}</Typography>
-                          )}
-                          {this.state.groupThree && (
-                            <Typography>• {this.state.groupThree}</Typography>
-                          )}
-                    </div>
+                        <br />
+                        <Typography variant="h6">{this.state.bio}</Typography>
+                      </div>
                     )}
-                    {(this.state.group1 === "" || this.state.group2 === "" || this.state.group3 === "") && (
-                            <div>
-                              <br />
-                            <Tooltip title="Add group" placement="right">
-                            <IconButton 
-                              className="button"
-                              onClick={this.handleGroupsOpen}
-                              style={{
-                                marginTop: "-10px",
-                                marginBottom: "-10px"
-                              }}>
-                              <AddCircle color="secondary" />
-                            </IconButton>
-                          </Tooltip>
-                          </div>
-                          )}
+                    {this.state.bio === "" && (
+                      <div>
+                        <br />
+                        <Button
+                          color="secondary"
+                          variant="outlined"
+                          onClick={this.handleBioOpen}
+                        >
+                          Add Bio
+                        </Button>
+                      </div>
+                    )}
                     <Dialog
                       overlayStyle={{ backgroundColor: "transparent" }}
-                      open={this.state.groupOpen}
+                      open={this.state.bioOpen}
                     >
                       <DialogTitle
                         style={{ cursor: "move" }}
                         id="draggable-dialog-title"
                       >
-                        Edit Groups
+                        Edit Bio
                       </DialogTitle>
                       <DialogContent>
                         <Typography>
-                        Please list up to 3 clubs, affinity groups, or student
-            organizations you are involved with.
+                          If there is anything else you would like to share, we
+                          would love for you to include it here.
                         </Typography>
                         <TextField
                           autofocus
                           margin="dense"
-                          id="groupOne"
-                          autoComplete="off"
-                          name="groupOne"
-                          label="Group 1"
-                          defaultValue={this.state.groupOne}
-                          fullWidth
-                          type="text"
+                          id="bio"
+                          name="bio"
+                          label="Bio"
+                          defaultValue={this.state.bio}
+                          multiline
                           onChange={this.handleChange}
-                        />
-                        <TextField
-                          autofocus
-                          margin="dense"
-                          id="groupTwo"
-                          autoComplete="off"
-                          name="groupTwo"
-                          label="Group 2"
-                          defaultValue={this.state.groupTwo}
+                          rows={2}
                           fullWidth
-                          type="text"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          autofocus
-                          margin="dense"
-                          id="groupThree"
-                          autoComplete="off"
-                          name="groupThree"
-                          label="Group 3"
-                          defaultValue={this.state.groupThree}
-                          fullWidth
-                          type="text"
-                          onChange={this.handleChange}
                         />
                       </DialogContent>
                       <DialogActions>
-                        <Button
-                          onClick={this.handleGroupsClose}
-                          color="secondary"
-                        >
+                        <Button onClick={this.handleBioClose} color="secondary">
                           Cancel
                         </Button>
                         <Button
-                          onClick={this.handleSubmitGroups}
+                          onClick={this.handleSubmitBio}
                           color="secondary"
                         >
                           Save Changes
                         </Button>
                       </DialogActions>
                     </Dialog>
-                    </CardContent>
-                  </Card>
-                  </Grid>
-                  <Grid item sm>
-                  <Card raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: "red",
-                      height: "100%",
-                      marginBottom: "-5px",
-                    }}>
-                    <CardContent>
-                  {this.state.greekLife_ && (
-                    <div>
-                      <Typography variant="h5">Greek Organization{" "}
-                      <Tooltip title="Edit greek organization" placement="right">
-                      <IconButton 
-                        className="button"
-                        onClick={this.handleGreekOpen}
-                        style={{
-                          marginTop: "-10px",
-                          marginBottom: "-10px"
-                        }}>
-                        <EditIcon color="secondary" />
-                      </IconButton>
-                    </Tooltip>
-                      </Typography>
-                        <br />
-                        <Typography>
-                          • {this.state.greekLife}
-                        </Typography>
-                    </div>
-                    )}
-                    {this.state.greekLife_ === "" && (
-                          <div>
-                            <Typography variant="h5">Greek Organization</Typography>
-                            <br />
-                            <Tooltip title="Add greek organization" placement="right">
-                      <IconButton 
-                        className="button"
-                        onClick={this.handleGreekOpen}
-                        style={{
-                          marginTop: "-10px",
-                          marginBottom: "-10px"
-                        }}>
-                        <AddCircle color="secondary" />
-                      </IconButton>
-                    </Tooltip>
-                        </div>
-                        )}
-                        <Dialog
-                  overlayStyle={{ backgroundColor: "transparent" }}
-                  open={this.state.greekOpen}
-                >
-                  <DialogTitle
-                    style={{ cursor: "move" }}
-                    id="draggable-dialog-title"
-                  >
-                    Edit Greek Organization
-                  </DialogTitle>
-                  <DialogContent>
-                    <Typography>
-                    If you are a member of any Greek Organizations, please indicate
-              which one below.
-                    </Typography>
-                  <TextField
-                        autofocus
-                        margin="dense"
-                        name="greekLife"
-                        autoComplete="off"
-                        label="Greek Organization"
-                        defaultValue={this.state.greekLife}
-                        fullWidth
-                        onChange={this.handleChange}
-                        InputProps={{
-                          endAdornment: greekLife,
-                          inputProps: {
-                            list: "greekLife",
-                          },
-                        }}
-                      />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                      onClick={this.handleGreekClose}
-                      color="secondary"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={this.handleSubmitGreek}
-                      color="secondary"
-                    >
-                      Save Changes
-                    </Button>
-                  </DialogActions>
-                </Dialog>
                   </CardContent>
                 </Card>
-                </Grid>
+                <br />
+                <br />
+                <Grid container spacing={2}>
+                  <Grid item sm>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: "red",
+                        height: "100%",
+                        marginBottom: "-5px",
+                      }}
+                    >
+                      <CardContent>
+                        {this.state.varsitySport1 !== "" &&
+                          this.state.varsitySport2 !== "" && (
+                            <div>
+                              <Typography variant="h5">
+                                Varsity Sports{" "}
+                                <Tooltip
+                                  title="Edit varsity sports"
+                                  placement="right"
+                                >
+                                  <IconButton
+                                    onClick={this.handleVarsityOpen}
+                                    className="button"
+                                    style={{
+                                      marginTop: "-10px",
+                                      marginBottom: "-10px",
+                                    }}
+                                  >
+                                    <EditIcon color="secondary" />
+                                  </IconButton>
+                                </Tooltip>
+                              </Typography>
+                              <br />
+                              <Typography>
+                                • {this.state.varsitySportOne}
+                              </Typography>
+                              {this.state.varsitySportTwo && (
+                                <Typography>
+                                  • {this.state.varsitySportTwo}
+                                </Typography>
+                              )}
+                            </div>
+                          )}
+                        {(this.state.varsitySport1 === "" ||
+                          this.state.varsitySport2 === "") && (
+                          <div>
+                            <Typography variant="h5">Varsity Sports</Typography>
+                            <br />
+                            <Typography>
+                              • {this.state.varsitySportOne}
+                            </Typography>
+                            {this.state.varsitySportTwo && (
+                              <Typography>
+                                • {this.state.varsitySportTwo}
+                              </Typography>
+                            )}
+                            <br />
+                            <Tooltip
+                              title="Add varsity sport"
+                              placement="right"
+                            >
+                              <IconButton
+                                onClick={this.handleVarsityOpen}
+                                className="button"
+                                style={{
+                                  marginTop: "-10px",
+                                  marginBottom: "-10px",
+                                }}
+                              >
+                                <AddCircle color="secondary" />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                        )}
+                        <Dialog
+                          overlayStyle={{ backgroundColor: "transparent" }}
+                          open={this.state.varsityOpen}
+                        >
+                          <DialogTitle
+                            style={{ cursor: "move" }}
+                            id="draggable-dialog-title"
+                          >
+                            Edit Varsity Sports
+                          </DialogTitle>
+                          <DialogContent>
+                            <Typography>
+                              If you are a member of any varsity sports teams,
+                              please indicate which ones below.
+                            </Typography>
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              name="varsitySportOne"
+                              autoComplete="off"
+                              label="First Varsity Sport"
+                              defaultValue={this.state.varsitySportOne}
+                              fullWidth
+                              onChange={this.handleChange}
+                              InputProps={{
+                                endAdornment: varsitySports,
+                                inputProps: {
+                                  list: "varsitySports",
+                                },
+                              }}
+                            />
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              name="varsitySportTwo"
+                              autoComplete="off"
+                              label="Second Varsity Sport"
+                              defaultValue={this.state.varsitySportTwo}
+                              fullWidth
+                              onChange={this.handleChange}
+                              InputProps={{
+                                endAdornment: varsitySports,
+                                inputProps: {
+                                  list: "varsitySports",
+                                },
+                              }}
+                            />
+                          </DialogContent>
+                          <DialogActions>
+                            <Button
+                              onClick={this.handleVarsityClose}
+                              color="secondary"
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={this.handleSubmitVarsity}
+                              color="secondary"
+                            >
+                              Save Changes
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item sm>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: "red",
+                        height: "100%",
+                        marginBottom: "-5px",
+                      }}
+                    >
+                      <CardContent>
+                        {(this.state.group1 === "" ||
+                          this.state.group2 === "" ||
+                          this.state.group3 === "") && (
+                          <Typography variant="h5">Groups</Typography>
+                        )}
+                        {this.state.group1 !== "" &&
+                          this.state.group2 !== "" &&
+                          this.state.group3 !== "" && (
+                            <div>
+                              <Typography variant="h5">
+                                Groups{" "}
+                                <Tooltip title="Edit groups" placement="right">
+                                  <IconButton
+                                    className="button"
+                                    onClick={this.handleGroupsOpen}
+                                    style={{
+                                      marginTop: "-10px",
+                                      marginBottom: "-10px",
+                                    }}
+                                  >
+                                    <EditIcon color="secondary" />
+                                  </IconButton>
+                                </Tooltip>
+                              </Typography>
+                            </div>
+                          )}
+                        {this.state.groupOne && (
+                          <div>
+                            <br />
+                            <Typography>• {this.state.groupOne}</Typography>
+                            {this.state.groupTwo && (
+                              <Typography variant="body">
+                                • {this.state.groupTwo}
+                              </Typography>
+                            )}
+                            {this.state.groupThree && (
+                              <Typography>• {this.state.groupThree}</Typography>
+                            )}
+                          </div>
+                        )}
+                        {(this.state.group1 === "" ||
+                          this.state.group2 === "" ||
+                          this.state.group3 === "") && (
+                          <div>
+                            <br />
+                            <Tooltip title="Add group" placement="right">
+                              <IconButton
+                                className="button"
+                                onClick={this.handleGroupsOpen}
+                                style={{
+                                  marginTop: "-10px",
+                                  marginBottom: "-10px",
+                                }}
+                              >
+                                <AddCircle color="secondary" />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                        )}
+                        <Dialog
+                          overlayStyle={{ backgroundColor: "transparent" }}
+                          open={this.state.groupOpen}
+                        >
+                          <DialogTitle
+                            style={{ cursor: "move" }}
+                            id="draggable-dialog-title"
+                          >
+                            Edit Groups
+                          </DialogTitle>
+                          <DialogContent>
+                            <Typography>
+                              Please list up to 3 clubs, affinity groups, or
+                              student organizations you are involved with.
+                            </Typography>
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              id="groupOne"
+                              autoComplete="off"
+                              name="groupOne"
+                              label="Group 1"
+                              defaultValue={this.state.groupOne}
+                              fullWidth
+                              type="text"
+                              onChange={this.handleChange}
+                            />
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              id="groupTwo"
+                              autoComplete="off"
+                              name="groupTwo"
+                              label="Group 2"
+                              defaultValue={this.state.groupTwo}
+                              fullWidth
+                              type="text"
+                              onChange={this.handleChange}
+                            />
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              id="groupThree"
+                              autoComplete="off"
+                              name="groupThree"
+                              label="Group 3"
+                              defaultValue={this.state.groupThree}
+                              fullWidth
+                              type="text"
+                              onChange={this.handleChange}
+                            />
+                          </DialogContent>
+                          <DialogActions>
+                            <Button
+                              onClick={this.handleGroupsClose}
+                              color="secondary"
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={this.handleSubmitGroups}
+                              color="secondary"
+                            >
+                              Save Changes
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item sm>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: "red",
+                        height: "100%",
+                        marginBottom: "-5px",
+                      }}
+                    >
+                      <CardContent>
+                        {this.state.greekLife_ && (
+                          <div>
+                            <Typography variant="h5">
+                              Greek Organization{" "}
+                              <Tooltip
+                                title="Edit greek organization"
+                                placement="right"
+                              >
+                                <IconButton
+                                  className="button"
+                                  onClick={this.handleGreekOpen}
+                                  style={{
+                                    marginTop: "-10px",
+                                    marginBottom: "-10px",
+                                  }}
+                                >
+                                  <EditIcon color="secondary" />
+                                </IconButton>
+                              </Tooltip>
+                            </Typography>
+                            <br />
+                            <Typography>• {this.state.greekLife}</Typography>
+                          </div>
+                        )}
+                        {this.state.greekLife_ === "" && (
+                          <div>
+                            <Typography variant="h5">
+                              Greek Organization
+                            </Typography>
+                            <br />
+                            <Tooltip
+                              title="Add greek organization"
+                              placement="right"
+                            >
+                              <IconButton
+                                className="button"
+                                onClick={this.handleGreekOpen}
+                                style={{
+                                  marginTop: "-10px",
+                                  marginBottom: "-10px",
+                                }}
+                              >
+                                <AddCircle color="secondary" />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                        )}
+                        <Dialog
+                          overlayStyle={{ backgroundColor: "transparent" }}
+                          open={this.state.greekOpen}
+                        >
+                          <DialogTitle
+                            style={{ cursor: "move" }}
+                            id="draggable-dialog-title"
+                          >
+                            Edit Greek Organization
+                          </DialogTitle>
+                          <DialogContent>
+                            <Typography>
+                              If you are a member of any Greek Organizations,
+                              please indicate which one below.
+                            </Typography>
+                            <TextField
+                              autofocus
+                              margin="dense"
+                              name="greekLife"
+                              autoComplete="off"
+                              label="Greek Organization"
+                              defaultValue={this.state.greekLife}
+                              fullWidth
+                              onChange={this.handleChange}
+                              InputProps={{
+                                endAdornment: greekLife,
+                                inputProps: {
+                                  list: "greekLife",
+                                },
+                              }}
+                            />
+                          </DialogContent>
+                          <DialogActions>
+                            <Button
+                              onClick={this.handleGreekClose}
+                              color="secondary"
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={this.handleSubmitGreek}
+                              color="secondary"
+                            >
+                              Save Changes
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </CardContent>
+                    </Card>
+                  </Grid>
                 </Grid>
                 <Grid container>
                   <Grid item sm />
                   <Grid>
-                {/* <Card
+                    {/* <Card
                   variant="outlined"
                   style={{
                     maxWidth: 450,
@@ -1633,12 +1694,12 @@ class profileView extends Component {
                   </CardContent>
                 </Card>
                 <br /> */}
+                  </Grid>
+                  <Grid item sm />
                 </Grid>
-            <Grid item sm />
-            </Grid>
               </CardContent>
             </Card>
-            
+
             <br />
             {/* <Grid container spacing={2}>
               <Grid item component="Card" sm>
@@ -2067,146 +2128,162 @@ class profileView extends Component {
              */}
             <Card raised>
               <CardContent align="center">
-                <Typography variant="h3">Interests{" "}
-                <Tooltip title="Edit interests" placement="right">
-                  <IconButton
-                  className="button"
-                  onClick={this.handleNewInterestsOpen}
+                <Typography variant="h3">
+                  Interests{" "}
+                  <Tooltip title="Edit interests" placement="right">
+                    <IconButton
+                      className="button"
+                      onClick={this.handleNewInterestsOpen}
+                    >
+                      <EditIcon color="secondary" />
+                    </IconButton>
+                  </Tooltip>
+                  <Dialog
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    open={this.state.newInterestsOpen}
                   >
-                    <EditIcon color="secondary" />
-                  </IconButton>
-                </Tooltip>
-                <Dialog
-                        overlayStyle={{ backgroundColor: "transparent" }}
-                        open={this.state.newInterestsOpen}
+                    <DialogTitle
+                      style={{ cursor: "move" }}
+                      id="draggable-dialog-title"
+                    >
+                      Edit Interests
+                    </DialogTitle>
+                    <DialogContent>
+                      <Interests getInterests={this.handleInterests} />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={this.handleNewInterestsClose}
+                        color="secondary"
                       >
-                        <DialogTitle
-                          style={{ cursor: "move" }}
-                          id="draggable-dialog-title"
-                        >
-                          Edit Interests
-                        </DialogTitle>
-                        <DialogContent>
-                          <Interests getInterests={this.handleInterests} />
-                        </DialogContent>
-                        <DialogActions>
-                          <Button
-                            onClick={this.handleNewInterestsClose}
-                            color="secondary"
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            onClick={this.handleSubmitNewInterests}
-                            color="secondary"
-                          >
-                            Save Changes
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={this.handleSubmitNewInterests}
+                        color="secondary"
+                      >
+                        Save Changes
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </Typography>
                 <hr />
                 <br />
                 <Grid container spacing={2}>
                   <Grid item sm>
-                    <Card raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: `${palette[7]}`,
-                      height: "100%"
-                    }}>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: `${palette[7]}`,
+                        height: "100%",
+                      }}
+                    >
                       <CardContent>
-                      <Typography variant="h5" style={{ color: `${palette[7]}` }}>
-                        Career and Academic
-                      </Typography>
-                      <br />
-                      {this.state.interests1.map((interest) => {
-                        return <Typography>• {interest}</Typography>
-                      })}
+                        <Typography
+                          variant="h5"
+                          style={{ color: `${palette[7]}` }}
+                        >
+                          Career and Academic
+                        </Typography>
+                        <br />
+                        {this.state.interests1.map((interest) => {
+                          return <Typography>• {interest}</Typography>;
+                        })}
                       </CardContent>
                     </Card>
                   </Grid>
                   <Grid item sm>
-                    <Card raised 
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: `${palette[0]}`,
-                      height: "100%"
-                    }}>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: `${palette[0]}`,
+                        height: "100%",
+                      }}
+                    >
                       <CardContent>
-                      <Typography variant="h5" style={{ color: `${palette[0]}` }}>
-                        Physical Activity and Wellness
-                      </Typography>
-                      <br />
-                      {this.state.interests2.map((interest) => {
-                        return <Typography>• {interest}</Typography>
-                      })}
+                        <Typography
+                          variant="h5"
+                          style={{ color: `${palette[0]}` }}
+                        >
+                          Physical Activity and Wellness
+                        </Typography>
+                        <br />
+                        {this.state.interests2.map((interest) => {
+                          return <Typography>• {interest}</Typography>;
+                        })}
                       </CardContent>
                     </Card>
                   </Grid>
                   <Grid item sm>
-                    <Card raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: `${palette[3]}`,
-                      height: "100%"
-                    }}>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: `${palette[3]}`,
+                        height: "100%",
+                      }}
+                    >
                       <CardContent>
-                      <Typography variant="h5" style={{ color: `${palette[3]}` }}>
-                        General Hobbies
-                      </Typography>
-                      <br />
-                      {this.state.interests3.map((interest) => {
-                        return <Typography>• {interest}</Typography>
-                      })}
+                        <Typography
+                          variant="h5"
+                          style={{ color: `${palette[3]}` }}
+                        >
+                          General Hobbies
+                        </Typography>
+                        <br />
+                        {this.state.interests3.map((interest) => {
+                          return <Typography>• {interest}</Typography>;
+                        })}
                       </CardContent>
                     </Card>
                   </Grid>
                 </Grid>
                 <br />
                 <br />
-                <Card raised style={{marginBottom: "-5px"}}>
+                <Card raised style={{ marginBottom: "-5px" }}>
                   <CardContent>
                     <Typography variant="h4">Additional Info</Typography>
                     <hr />
                     <br />
                     <Grid container>
                       <Grid item sm>
-                      <div>
-                        <Music />
-                        <Typography variant="h6">
-                          Instruments
-                        </Typography>
-                      </div>
+                        <div>
+                          <Music />
+                          <Typography variant="h6">Instruments</Typography>
+                        </div>
                       </Grid>
                       <Grid item sm>
-                      <div>
-                        <Sports />
-                        <Typography variant="h6">
-                          Pick-Up Sports
-                        </Typography>
-                        <br />
-                        {this.state.affinitySportOne && (
-                          <Typography variant="body1">• {this.state.affinitySportOne}</Typography>
-                        )}
-                        {this.state.affinitySportTwo && (
-                          <Typography variant="body1">• {this.state.affinitySportTwo}</Typography>
-                        )}
-                        {this.state.affinitySportThree && (
-                          <Typography variant="body1">• {this.state.affinitySportThree}</Typography>
-                        )}
-                      </div>
+                        <div>
+                          <Sports />
+                          <Typography variant="h6">Pick-Up Sports</Typography>
+                          <br />
+                          {this.state.affinitySportOne && (
+                            <Typography variant="body1">
+                              • {this.state.affinitySportOne}
+                            </Typography>
+                          )}
+                          {this.state.affinitySportTwo && (
+                            <Typography variant="body1">
+                              • {this.state.affinitySportTwo}
+                            </Typography>
+                          )}
+                          {this.state.affinitySportThree && (
+                            <Typography variant="body1">
+                              • {this.state.affinitySportThree}
+                            </Typography>
+                          )}
+                        </div>
                       </Grid>
                       <Grid item sm>
-                      <div>
-                        <Pets />
-                        <Typography variant="h6">
-                          Pets
-                        </Typography>
-                      </div>
+                        <div>
+                          <Pets />
+                          <Typography variant="h6">Pets</Typography>
+                        </div>
                       </Grid>
                     </Grid>
                   </CardContent>

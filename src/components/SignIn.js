@@ -13,9 +13,12 @@ function SignIn() {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          history.push("/profileView");
+          history.push("/coursesView");
         } else {
-          history.push("/profileBuild");
+          history.push({
+            pathname: "/profileBuild",
+            state: { validRoute: true },
+          });
         }
       });
   }

@@ -21,23 +21,27 @@ export class feedView extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      courseCode: this.props.location.state.courseCode,
-    });
+    if (!this.props.location.state) {
+      this.props.history.push("/messagesView");
+    } else {
+      this.setState({
+        courseCode: this.props.location.state.courseCode,
+      });
 
-    axios
-      .get(`/senderInfo/${auth.currentUser.email}`)
-      .then((res) => {
-        this.setState({
-          ownId: res.data.emailId,
-          ownImage: res.data.imageUrl,
-          ownName: res.data.firstName + " " + res.data.lastName,
-        });
-      })
-      .then(() => {
-        this.setState({ loading: false });
-      })
-      .catch((err) => console.error(err));
+      axios
+        .get(`/senderInfo/${auth.currentUser.email}`)
+        .then((res) => {
+          this.setState({
+            ownId: res.data.emailId,
+            ownImage: res.data.imageUrl,
+            ownName: res.data.firstName + " " + res.data.lastName,
+          });
+        })
+        .then(() => {
+          this.setState({ loading: false });
+        })
+        .catch((err) => console.error(err));
+    }
   }
 
   handleBack = () => {

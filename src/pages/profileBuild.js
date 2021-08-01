@@ -20,6 +20,7 @@ import CheckedCircle from "@material-ui/icons/CheckCircleOutline";
 
 // Components
 import Interests from "../components/Interests.js";
+import SignOut from "../components/SignOut";
 
 // Import Data
 import majorList from "../resources/majors";
@@ -40,6 +41,12 @@ class profileBuild extends Component {
   constructor() {
     super();
     this.state = emptyProfile;
+  }
+
+  componentDidMount() {
+    if (!this.props.location.state) {
+      this.props.history.push("/");
+    }
   }
 
   handleSubmit = (event) => {
@@ -227,6 +234,7 @@ class profileBuild extends Component {
     ];
     return (
       <form noValidate onSubmit={this.handleSubmit}>
+        <SignOut />
         <Grid container className={classes.form}>
           <Grid item sm />
           <Grid item sm>

@@ -18,19 +18,14 @@ import Movie from "@material-ui/icons/Movie";
 import Tv from "@material-ui/icons/Tv";
 import Music from "@material-ui/icons/MusicNote";
 import Pets from "@material-ui/icons/Pets";
-import Sports from '@material-ui/icons/SportsBasketball';
+import Sports from "@material-ui/icons/SportsBasketball";
 
 // Body
 class studentView extends Component {
   state = {
-    courseInfo: [
-      this.props.location.state.studentInfo[0],
-      this.props.location.state.studentInfo[1],
-      this.props.location.state.studentInfo[2],
-      this.props.location.state.studentInfo[3],
-    ],
-    studentEmail: this.props.location.state.studentInfo[4],
-    studentId: this.props.location.state.studentInfo[4].split("@")[0],
+    courseInfo: [],
+    studentEmail: "",
+    studentId: "",
     affinitySports: [],
     bio: "",
     class: "",
@@ -54,37 +49,48 @@ class studentView extends Component {
   };
 
   componentDidMount() {
-    const studentEmail = this.state.studentEmail;
-
-    axios
-      .get(`/user/${studentEmail}`)
-      .then((res) => {
-        this.setState({
-          affinitySports: res.data.user.affinitySports,
-          bio: res.data.user.bio,
-          class: res.data.user.class,
-          courses: res.data.user.courses,
-          createdAt: res.data.user.createdAt,
-          email: res.data.user.email,
-          favorites: res.data.user.favorites,
-          firstName: res.data.user.firstName,
-          greekLife: res.data.user.greekLife,
-          groups: res.data.user.groups,
-          imageUrl: res.data.user.imageUrl,
-          interests1: res.data.user.interests1,
-          interests2: res.data.user.interests2,
-          interests3: res.data.user.interests3,
-          lastName: res.data.user.lastName,
-          majors: res.data.user.majors,
-          preferredPronouns: res.data.user.preferredPronouns,
-          userId: res.data.user.userId,
-          varsitySports: res.data.user.varsitySports,
-        });
-      })
-      .then(() => {
-        this.setState({ loading: false });
-      })
-      .catch((err) => console.log(err));
+    if (!this.props.location.state) {
+      this.props.history.push("/coursesView");
+    } else {
+      const studentEmail = this.props.location.state.studentInfo[4];
+      axios
+        .get(`/user/${studentEmail}`)
+        .then((res) => {
+          this.setState({
+            affinitySports: res.data.user.affinitySports,
+            bio: res.data.user.bio,
+            class: res.data.user.class,
+            courses: res.data.user.courses,
+            createdAt: res.data.user.createdAt,
+            email: res.data.user.email,
+            favorites: res.data.user.favorites,
+            firstName: res.data.user.firstName,
+            greekLife: res.data.user.greekLife,
+            groups: res.data.user.groups,
+            imageUrl: res.data.user.imageUrl,
+            interests1: res.data.user.interests1,
+            interests2: res.data.user.interests2,
+            interests3: res.data.user.interests3,
+            lastName: res.data.user.lastName,
+            majors: res.data.user.majors,
+            preferredPronouns: res.data.user.preferredPronouns,
+            userId: res.data.user.userId,
+            varsitySports: res.data.user.varsitySports,
+            courseInfo: [
+              this.props.location.state.studentInfo[0],
+              this.props.location.state.studentInfo[1],
+              this.props.location.state.studentInfo[2],
+              this.props.location.state.studentInfo[3],
+            ],
+            studentEmail: this.props.location.state.studentInfo[4],
+            studentId: this.props.location.state.studentInfo[4].split("@")[0],
+          });
+        })
+        .then(() => {
+          this.setState({ loading: false });
+        })
+        .catch((err) => console.log(err));
+    }
   }
 
   handleBack = () => {
@@ -265,82 +271,89 @@ class studentView extends Component {
                 <br />
                 <Grid container spacing={2}>
                   <Grid item sm>
-                    <Card raised
-                style={{
-                  borderStyle: "solid",
-                  borderWidth: "2px",
-                  borderColor: "red",
-                  height: "100%",
-                  marginBottom: "-5px",
-                }}>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: "red",
+                        height: "100%",
+                        marginBottom: "-5px",
+                      }}
+                    >
                       <CardContent>
-                      <Typography variant="h5">Varsity Sports</Typography>
-                          <br />
-                          {(this.state.varsitySports[0] === "" && this.state.varsitySports[1] === "") && (
+                        <Typography variant="h5">Varsity Sports</Typography>
+                        <br />
+                        {this.state.varsitySports[0] === "" &&
+                          this.state.varsitySports[1] === "" && (
                             <Typography>N/A</Typography>
                           )}
-                          {this.state.varsitySports[0] && (
-                            <Typography>
+                        {this.state.varsitySports[0] && (
+                          <Typography>
                             • {this.state.varsitySports[0]}
                           </Typography>
-                          )}
-                          {this.state.varsitySports[1] && (
-                            <Typography>
-                              • {this.state.varsitySports[1]}
-                            </Typography>
-                          )}
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                  <Grid item sm>
-                    <Card raised
-                style={{
-                  borderStyle: "solid",
-                  borderWidth: "2px",
-                  borderColor: "red",
-                  height: "100%",
-                  marginBottom: "-5px",
-                }}>
-                      <CardContent>
-                      <Typography variant="h5">Groups</Typography>
-                          <br />
-                          {(this.state.groups[0] === "" && this.state.groups[1] === "" && this.state.groups[2] === "") && (
-                            <Typography>N/A</Typography>
-                          )}
-                          {this.state.groups[0] && (
-                            <Typography>• {this.state.groups[0]}</Typography>
-                          )}
-                          {this.state.groups[1] && (
-                            <Typography variant="body">
-                              • {this.state.groups[1]}
-                            </Typography>
-                          )}
-                          {this.state.groups[2] && (
-                            <Typography>• {this.state.groups[2]}</Typography>
-                          )}
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                  <Grid item sm>
-                    <Card raised
-                style={{
-                  borderStyle: "solid",
-                  borderWidth: "2px",
-                  borderColor: "red",
-                  height: "100%",
-                  marginBottom: "-5px",
-                }}>
-                      <CardContent>
-                      <Typography variant="h5">
-                            Greek Organization
+                        )}
+                        {this.state.varsitySports[1] && (
+                          <Typography>
+                            • {this.state.varsitySports[1]}
                           </Typography>
-                          <br />
-                          {this.state.greekLife === "" && (
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item sm>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: "red",
+                        height: "100%",
+                        marginBottom: "-5px",
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="h5">Groups</Typography>
+                        <br />
+                        {this.state.groups[0] === "" &&
+                          this.state.groups[1] === "" &&
+                          this.state.groups[2] === "" && (
                             <Typography>N/A</Typography>
                           )}
-                          {this.state.greekLife && (
-                            <Typography>• {this.state.greekLife}</Typography>
-                          )}
+                        {this.state.groups[0] && (
+                          <Typography>• {this.state.groups[0]}</Typography>
+                        )}
+                        {this.state.groups[1] && (
+                          <Typography variant="body">
+                            • {this.state.groups[1]}
+                          </Typography>
+                        )}
+                        {this.state.groups[2] && (
+                          <Typography>• {this.state.groups[2]}</Typography>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item sm>
+                    <Card
+                      raised
+                      style={{
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderColor: "red",
+                        height: "100%",
+                        marginBottom: "-5px",
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="h5">Greek Organization</Typography>
+                        <br />
+                        {this.state.greekLife === "" && (
+                          <Typography>N/A</Typography>
+                        )}
+                        {this.state.greekLife && (
+                          <Typography>• {this.state.greekLife}</Typography>
+                        )}
                       </CardContent>
                     </Card>
                   </Grid>
@@ -429,7 +442,7 @@ class studentView extends Component {
                 </Grid>
                 <br />
                 <br />
-                <Card raised style={{marginBottom: "-5px"}}>
+                <Card raised style={{ marginBottom: "-5px" }}>
                   <CardContent>
                     <Typography variant="h4">Additional Info</Typography>
                     <hr />
@@ -438,39 +451,41 @@ class studentView extends Component {
                       <Grid item sm>
                         <div>
                           <Music />
-                          <Typography variant="h6">
-                            Instruments
-                          </Typography>
+                          <Typography variant="h6">Instruments</Typography>
                         </div>
                       </Grid>
                       <Grid item sm>
                         <div>
-                        <Sports />
-                        <Typography variant="h6">
-                          Pick-Up Sports
-                        </Typography>
-                        <br />
-                        {this.state.affinitySports[0] === "" && this.state.affinitySports[1] === "" && this.state.affinitySports[2] === "" && (
-                          <Typography>N/A</Typography>
-                        )}
-                        {this.state.affinitySports[0] && (
-                          <Typography>• {this.state.affinitySports[0]}</Typography>
-                        )}
-                        {this.state.affinitySports[1] && (
-                          <Typography>• {this.state.affinitySports[0]}</Typography>
-                        )}
-                        {this.state.affinitySports[2] && (
-                          <Typography>• {this.state.affinitySports[0]}</Typography>
-                        )}
+                          <Sports />
+                          <Typography variant="h6">Pick-Up Sports</Typography>
+                          <br />
+                          {this.state.affinitySports[0] === "" &&
+                            this.state.affinitySports[1] === "" &&
+                            this.state.affinitySports[2] === "" && (
+                              <Typography>N/A</Typography>
+                            )}
+                          {this.state.affinitySports[0] && (
+                            <Typography>
+                              • {this.state.affinitySports[0]}
+                            </Typography>
+                          )}
+                          {this.state.affinitySports[1] && (
+                            <Typography>
+                              • {this.state.affinitySports[0]}
+                            </Typography>
+                          )}
+                          {this.state.affinitySports[2] && (
+                            <Typography>
+                              • {this.state.affinitySports[0]}
+                            </Typography>
+                          )}
                         </div>
                       </Grid>
                       <Grid item sm>
-                      <div>
-                        <Pets />
-                        <Typography variant="h6">
-                          Pets
-                        </Typography>
-                      </div>
+                        <div>
+                          <Pets />
+                          <Typography variant="h6">Pets</Typography>
+                        </div>
                       </Grid>
                     </Grid>
                   </CardContent>

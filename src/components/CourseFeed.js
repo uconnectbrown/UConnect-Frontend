@@ -24,14 +24,19 @@ function CourseFeed(props) {
         <Grid item sm></Grid>
         <Grid item sm>
           <Card
-          raised
-          style={{
-            borderStyle: "solid",
-            borderWidth: "3px",
-            borderColor: "blue",
-          }}>
+            raised
+            style={{
+              borderStyle: "solid",
+              borderWidth: "3px",
+              borderColor: "blue",
+            }}
+          >
             <CardContent align="center">
-              <ButtonBase size="large" color="primary" onClick={() => handleFeed()}>
+              <ButtonBase
+                size="large"
+                color="primary"
+                onClick={() => handleFeed()}
+              >
                 <Typography variant="h5">Course Feed for {code}</Typography>
               </ButtonBase>
             </CardContent>

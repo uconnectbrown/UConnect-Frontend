@@ -21,8 +21,8 @@ import Grid from "@material-ui/core/Grid";
 
 export class messageView extends Component {
   state = {
-    courseInfo: this.props.location.state.recipientInfo[4],
-    studentEmail: this.props.location.state.recipientInfo[5],
+    courseInfo: "",
+    studentEmail: "",
     recipientName: "",
     recipientImage: "",
     recipientId: "",
@@ -32,17 +32,23 @@ export class messageView extends Component {
     ownName: "",
     roomId: "",
     loading: true,
-    previousPage: this.props.location.state.previousPage,
+    previousPage: "",
   };
 
   componentDidMount() {
-    console.log(this.props.location.state.recipientInfo[4]);
-    this.setState({
-      recipientName: this.props.location.state.recipientInfo[0],
-      recipientImage: this.props.location.state.recipientInfo[1],
-      recipientId: this.props.location.state.recipientInfo[2],
-      courseCode: this.props.location.state.recipientInfo[3],
-    });
+    if (!this.props.location.state) {
+      this.props.history.push("/messagesView");
+    } else {
+      this.setState({
+        recipientName: this.props.location.state.recipientInfo[0],
+        recipientImage: this.props.location.state.recipientInfo[1],
+        recipientId: this.props.location.state.recipientInfo[2],
+        courseCode: this.props.location.state.recipientInfo[3],
+        courseInfo: this.props.location.state.recipientInfo[4],
+        studentEmail: this.props.location.state.recipientInfo[5],
+        previousPage: this.props.location.state.previousPage,
+      });
+    }
 
     axios
       .get(`/senderInfo/${auth.currentUser.email}`)

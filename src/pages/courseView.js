@@ -31,7 +31,7 @@ import greekLife from "../resources/greekLife";
 
 class courseView extends Component {
   state = {
-    courseInfo: this.props.location.state.courseInfo,
+    courseInfo: ["code", "name", "color", ["courseCodes"]],
     students: [],
     selected: [],
     open: false,
@@ -43,50 +43,55 @@ class courseView extends Component {
     messageImages: [],
     messageIds: [],
     allIds: [],
+    messaging: false,
   };
 
   componentDidMount() {
-    const code = this.state.courseInfo[0];
-    const codeNS = code.replace(/\s/g, "");
-    axios
-      .get(`/students/${codeNS}`)
-      .then((res) => {
-        this.setState({
-          students: [
-            ...this.state.students,
-            ...res.data.filter(
-              (student) => student.email !== auth.currentUser.email
-            ),
-          ],
-        });
-        console.log(res.data);
-        let myCourseCodes = this.state.courseInfo[3]
-          .map((courseCode) => courseCode)
-          .filter(Boolean);
-        const numStudents = this.state.students.length;
-        let students = this.state.students;
-        let theirCourseCodes = students.map((student) =>
-          student.courses.map((course) => course.courseCode)
-        );
-        let courseOverlap = theirCourseCodes.map((code) =>
-          this.compare(myCourseCodes, code)
-        );
+    if (!this.props.location.state) {
+      this.props.history.push("/coursesView");
+    } else {
+      const code = this.props.location.state.courseInfo[0];
+      const codeNS = code.replace(/\s/g, "");
+      axios
+        .get(`/students/${codeNS}`)
+        .then((res) => {
+          this.setState({
+            courseInfo: this.props.location.state.courseInfo,
+            students: [
+              ...this.state.students,
+              ...res.data.filter(
+                (student) => student.email !== auth.currentUser.email
+              ),
+            ],
+          });
+          let myCourseCodes = this.props.location.state.courseInfo[3]
+            .map((courseCode) => courseCode)
+            .filter(Boolean);
+          const numStudents = this.state.students.length;
+          let students = this.state.students;
+          let theirCourseCodes = students.map((student) =>
+            student.courses.map((course) => course.courseCode)
+          );
+          let courseOverlap = theirCourseCodes.map((code) =>
+            this.compare(myCourseCodes, code)
+          );
 
-        let newStudents = [];
-        let bools = [];
-        for (let i = 0; i < numStudents; i++) {
-          let newStudent = { ...students[i] };
-          newStudent["courseOverlap"] = courseOverlap[i];
-          newStudents.push(newStudent);
-          bools.push(false);
-        }
-        this.setState({ students: newStudents, selected: bools });
-        console.log(newStudents);
-      })
-      .then(() => {
-        this.setState({ loading: false });
-      })
-      .catch((err) => console.log(err));
+          let newStudents = [];
+          let bools = [];
+          for (let i = 0; i < numStudents; i++) {
+            let newStudent = { ...students[i] };
+            newStudent["courseOverlap"] = courseOverlap[i];
+            newStudents.push(newStudent);
+            bools.push(false);
+          }
+          this.setState({ students: newStudents, selected: bools });
+          console.log(newStudents);
+        })
+        .then(() => {
+          this.setState({ loading: false });
+        })
+        .catch((err) => console.log(err));
+    }
   }
 
   handleClickOpen = (index) => {
@@ -740,8 +745,21 @@ class courseView extends Component {
         {!this.state.loading && (
           <div>
             <div></div>
+            {!this.state.messaging && (
+              <Button
+                onClick={() => {
+                  this.setState({ messaging: true });
+                }}
+                variant="contained"
+                color="secondary"
+              >
+                New Message
+              </Button>
+            )}
 
-            {this.state.messageNames.length > 0 && (
+            <br />
+
+            {this.state.messaging && (
               <div>
                 <Button
                   onClick={() => {
@@ -749,9 +767,29 @@ class courseView extends Component {
                   }}
                   variant="contained"
                   color="secondary"
-                  disabled={this.state.messageNames.length > 3}
+                  disabled={
+                    this.state.messageNames.length > 3 ||
+                    this.state.messageNames < 1
+                  }
                 >
-                  Start Chat{" "}
+                  {this.state.messageNames.length < 4
+                    ? `Start Chat (${this.state.messageNames.length})`
+                    : `Max size of 4 exceeded`}
+                </Button>
+                <Button
+                  onClick={() => {
+                    this.setState({
+                      messaging: false,
+                      messageNames: [],
+                      messageImages: [],
+                      messageIds: [],
+                      selected: this.state.students.map((student) => false),
+                    });
+                  }}
+                  variant="contained"
+                  color="primary"
+                >
+                  Cancel
                 </Button>
                 {this.state.messageNames.length > 0 && (
                   <Typography>
@@ -808,22 +846,24 @@ class courseView extends Component {
                     align="center"
                   >
                     {/* switched the order of buttonBase and cardContent since it worked in coursesView */}
-                    <Tooltip title="Create chat" placement="right">
-                    <IconButton
-                      onClick={() => {
-                        this.handleRadio(index);
-                      }}
-                      inputProps={{ "aria-label": "primary checkbox" }}
-                      style={{marginBottom: "-15px"}}
-                    >
-                      {!this.state.selected[index] && (
-                        <ChatIcon color="secondary" />
-                      )}
-                      {this.state.selected[index] && (
-                        <FilledChatIcon color="secondary" />
-                      )}
-                    </IconButton>
-                    </Tooltip>
+                    {this.state.messaging && (
+                      <Tooltip title="Add to Chat" placement="right">
+                        <IconButton
+                          onClick={() => {
+                            this.handleRadio(index);
+                          }}
+                          inputProps={{ "aria-label": "primary checkbox" }}
+                          style={{ marginBottom: "-15px" }}
+                        >
+                          {!this.state.selected[index] && (
+                            <ChatIcon color="secondary" />
+                          )}
+                          {this.state.selected[index] && (
+                            <FilledChatIcon color="secondary" />
+                          )}
+                        </IconButton>
+                      </Tooltip>
+                    )}
 
                     <ButtonBase
                       size="large"

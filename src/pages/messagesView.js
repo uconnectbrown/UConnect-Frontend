@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
-import { auth } from "../firebase";
+import { db, auth } from "../firebase";
 
 // Components
 import NavBar from "../components/NavBar";
@@ -72,7 +72,16 @@ class messagesView extends Component {
   };
 
   componentDidMount() {
-    let courseCodes = [];
+    db.doc(`/profiles/${auth.currentUser.email.split("@")[0]}`)
+      .get()
+      .then((doc) => {
+        if (!doc.exists) {
+          return this.props.history.push({
+            pathname: "/profileBuild",
+            state: { validRoute: true },
+          });
+        }
+      });
     axios
       .get(`/senderInfo/${auth.currentUser.email}`)
       .then((res) => {

@@ -22,7 +22,7 @@ import MessageIcon from "@material-ui/icons/Sms";
 
 export class groupMessageView extends Component {
   state = {
-    courseInfo: this.props.location.state.recipientInfo[4],
+    courseInfo: "",
     recipientNames: [],
     recipientImages: [],
     recipientIds: [],
@@ -32,42 +32,48 @@ export class groupMessageView extends Component {
     ownName: "",
     roomId: "",
     loading: true,
-    previousPage: this.props.location.state.previousPage,
+    previousPage: "",
   };
 
   componentDidMount() {
-    let names = this.props.location.state.recipientInfo[0];
-    let images = this.props.location.state.recipientInfo[1];
-    let ids = this.props.location.state.recipientInfo[2];
-    let allIds = this.props.location.state.allIds;
-    this.setState(
-      {
-        recipientNames: names,
-        recipientImages: images,
-        recipientIds: ids,
-        courseCode: this.props.location.state.recipientInfo[3],
-      },
-      () => {
-        axios
-          .get(`/senderInfo/${auth.currentUser.email}`)
-          .then((res) => {
-            this.setState({
-              ownId: res.data.emailId,
-              ownImage: res.data.imageUrl,
-              ownName: res.data.firstName + " " + res.data.lastName,
-            });
-            let alphaId = allIds.sort().join(" ");
-            console.log(ids);
-            this.setState({
-              roomId: md5(alphaId),
-            });
-          })
-          .then(() => {
-            this.setState({ loading: false });
-          })
-          .catch((err) => console.error(err));
-      }
-    );
+    if (!this.props.location.state) {
+      this.props.history.push("/messagesView");
+    } else {
+      let names = this.props.location.state.recipientInfo[0];
+      let images = this.props.location.state.recipientInfo[1];
+      let ids = this.props.location.state.recipientInfo[2];
+      let allIds = this.props.location.state.allIds;
+      this.setState(
+        {
+          courseInfo: this.props.location.state.recipientInfo[4],
+          recipientNames: names,
+          recipientImages: images,
+          recipientIds: ids,
+          courseCode: this.props.location.state.recipientInfo[3],
+          previousPage: this.props.location.state.previousPage,
+        },
+        () => {
+          axios
+            .get(`/senderInfo/${auth.currentUser.email}`)
+            .then((res) => {
+              this.setState({
+                ownId: res.data.emailId,
+                ownImage: res.data.imageUrl,
+                ownName: res.data.firstName + " " + res.data.lastName,
+              });
+              let alphaId = allIds.sort().join(" ");
+              console.log(ids);
+              this.setState({
+                roomId: md5(alphaId),
+              });
+            })
+            .then(() => {
+              this.setState({ loading: false });
+            })
+            .catch((err) => console.error(err));
+        }
+      );
+    }
   }
 
   handleBack = () => {

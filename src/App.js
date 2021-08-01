@@ -38,7 +38,7 @@ function App() {
           <Router>
             <div className="container">
               <Switch>
-                <Route exact path="/" component={Welcome} />
+                <Route exact path="/" component={coursesView} />
                 <Route exact path="/profileBuild" component={profileBuild} />
                 <Route exact path="/profileView" component={profileView} />
                 <Route exact path="/coursesView" component={coursesView} />
