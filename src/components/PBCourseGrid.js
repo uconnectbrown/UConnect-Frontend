@@ -41,7 +41,7 @@ function PBCourseGrid(props) {
         autoComplete="off"
         type="text"
         label="Name"
-        helperText="Principles of Economics"
+        helperText="e.g. Principles of Economics"
         className={props.classes}
         value={props.value.name}
         onChange={props.handleChange}

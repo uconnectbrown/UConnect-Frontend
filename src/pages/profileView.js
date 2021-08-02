@@ -1,15 +1,6 @@
 // Setup
 import React, { Component } from "react";
 import axios from "axios";
-import ImageCropper from "../components/ImageCropper";
-import Avatar from "../components/Avatar";
-import MyEditor from "../components/MyEditor";
-// import Crop from "../components/Crop";
-// import Cropper from "react-easy-crop";
-// import AvatarEditor from 'react-avatar-editor'
-import { useState, useCallback } from "react";
-import getCroppedImg from "../components/cropImage";
-// import update from "react-addons-update";
 import { db, auth } from "../firebase";
 
 // Components
@@ -18,6 +9,9 @@ import Interests from "../components/Interests.js";
 
 // Resources
 import profileViewState from "../resources/profileViewState";
+import majorList from "../resources/majors";
+import varsitySports from "../resources/varsitySports";
+import greekLife from "../resources/greekLife";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -49,20 +43,14 @@ import Pets from "@material-ui/icons/Pets";
 import Sports from "@material-ui/icons/SportsBasketball";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 
-// Import Data
-import majorList from "../resources/majors";
-import varsitySports from "../resources/varsitySports";
-import greekLife from "../resources/greekLife";
-
+// Tab Setup
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -93,6 +81,7 @@ function a11yProps(index) {
   };
 }
 
+// Body
 class profileView extends Component {
   constructor() {
     super();
@@ -108,6 +97,8 @@ class profileView extends Component {
             pathname: "/profileBuild",
             state: { validRoute: true },
           });
+        } else if (doc.data().firstTime) {
+          this.setState({ firstTime: true });
         }
       })
       .then(() => {
@@ -123,64 +114,83 @@ class profileView extends Component {
       .then((res) => {
         this.setState(
           {
-            affinitySportOne: res.data.user.affinitySports[0],
-            affinitySportTwo: res.data.user.affinitySports[1],
-            affinitySportThree: res.data.user.affinitySports[2],
-            affinitySport1: res.data.user.affinitySports[0],
-            affinitySport2: res.data.user.affinitySports[1],
-            affinitySport3: res.data.user.affinitySports[2],
-            bio: res.data.user.bio,
-            bio_: res.data.user.bio,
-            class: res.data.user.class,
-            class_: res.data.user.class,
-            courses: res.data.user.courses,
-            createdAt: res.data.user.createdAt,
-            email: res.data.user.email,
-            favoriteBook: res.data.user.favorites.book,
-            favoriteMovie: res.data.user.favorites.movie,
-            favoriteShow: res.data.user.favorites.tvShow,
-            favoriteArtist: res.data.user.favorites.artist,
-            favBook: res.data.user.favorites.book,
-            favMovie: res.data.user.favorites.movie,
-            favShow: res.data.user.favorites.tvShow,
-            favArtist: res.data.user.favorites.artist,
+            // Required
             firstName: res.data.user.firstName,
-            greekLife: res.data.user.greekLife,
-            firstName_: res.data.user.firstName,
-            greekLife_: res.data.user.greekLife,
-            groupOne: res.data.user.groups[0],
-            groupTwo: res.data.user.groups[1],
-            groupThree: res.data.user.groups[2],
-            group1: res.data.user.groups[0],
-            group2: res.data.user.groups[1],
-            group3: res.data.user.groups[2],
-            imageUrl: res.data.user.imageUrl,
-            interests1: res.data.user.interests1,
-            interests2: res.data.user.interests2,
-            interests3: res.data.user.interests3,
-            interests1_: res.data.user.interests1,
-            interests2_: res.data.user.interests2,
-            interests3_: res.data.user.interests3,
             lastName: res.data.user.lastName,
-            majorOne: res.data.user.majors[0],
-            majorTwo: res.data.user.majors[1],
-            majorThree: res.data.user.majors[2],
-            preferredPronouns: res.data.user.preferredPronouns,
-            lastName_: res.data.user.lastName,
+            classYear: res.data.user.classYear,
             major1: res.data.user.majors[0],
             major2: res.data.user.majors[1],
             major3: res.data.user.majors[2],
+            preferredPronouns: res.data.user.preferredPronouns,
+            interests1: res.data.user.interests1,
+            interests2: res.data.user.interests2,
+            interests3: res.data.user.interests3,
+            course1: res.data.user.courses[0],
+            course2: res.data.user.courses[1],
+            course3: res.data.user.courses[2],
+            course4: res.data.user.courses[3],
+            course5: res.data.user.courses[4],
+            imageUrl: res.data.user.imageUrl,
+            // Required edits
+            firstName_: res.data.user.firstName,
+            lastName_: res.data.user.lastName,
+            classYear_: res.data.user.classYear,
+            major1_: res.data.user.majors[0],
+            major2_: res.data.user.majors[1],
+            major3_: res.data.user.majors[2],
             preferredPronouns_: res.data.user.preferredPronouns,
-            userId: res.data.user.userId,
-            varsitySportOne: res.data.user.varsitySports[0],
-            varsitySportTwo: res.data.user.varsitySports[1],
-            varsitySport1: res.data.user.varsitySports[0],
-            varsitySport2: res.data.user.varsitySports[1],
+            // // Optional
+
+            // affinitySportOne: res.data.user.affinitySports[0],
+            // affinitySportTwo: res.data.user.affinitySports[1],
+            // affinitySportThree: res.data.user.affinitySports[2],
+            // affinitySport1: res.data.user.affinitySports[0],
+            // affinitySport2: res.data.user.affinitySports[1],
+            // affinitySport3: res.data.user.affinitySports[2],
+            // bio: res.data.user.bio,
+            // bio_: res.data.user.bio,
+            // class_: res.data.user.class,
+            // createdAt: res.data.user.createdAt,
+            // email: res.data.user.email,
+            // favoriteBook: res.data.user.favorites.book,
+            // favoriteMovie: res.data.user.favorites.movie,
+            // favoriteShow: res.data.user.favorites.tvShow,
+            // favoriteArtist: res.data.user.favorites.artist,
+            // favBook: res.data.user.favorites.book,
+            // favMovie: res.data.user.favorites.movie,
+            // favShow: res.data.user.favorites.tvShow,
+            // favArtist: res.data.user.favorites.artist,
+
+            // greekLife: res.data.user.greekLife,
+            // firstName_: res.data.user.firstName,
+            // greekLife_: res.data.user.greekLife,
+            // groupOne: res.data.user.groups[0],
+            // groupTwo: res.data.user.groups[1],
+            // groupThree: res.data.user.groups[2],
+            // group1: res.data.user.groups[0],
+            // group2: res.data.user.groups[1],
+            // group3: res.data.user.groups[2],
+            // imageUrl: res.data.user.imageUrl,
+
+            // interests1_: res.data.user.interests1,
+            // interests2_: res.data.user.interests2,
+            // interests3_: res.data.user.interests3,
+
+            // lastName_: res.data.user.lastName,
+            // major1: res.data.user.majors[0],
+            // major2: res.data.user.majors[1],
+            // major3: res.data.user.majors[2],
+            // preferredPronouns_: res.data.user.preferredPronouns,
+            // userId: res.data.user.userId,
+            // varsitySportOne: res.data.user.varsitySports[0],
+            // varsitySportTwo: res.data.user.varsitySports[1],
+            // varsitySport1: res.data.user.varsitySports[0],
+            // varsitySport2: res.data.user.varsitySports[1],
             loading: false,
-          },
-          () => {
-            return this.updateCourses();
           }
+          // () => {
+          //   // return this.updateCourses();
+          // }
         );
       })
       .catch((err) => {
@@ -192,15 +202,9 @@ class profileView extends Component {
     this.setState({ tabIndex: value });
   };
 
-  updateCourses = () => {
-    axios
-      .get(`/update/${auth.currentUser.email}`)
-      .then(() => {
-        return;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  handleEditPicture = () => {
+    const fileInput = document.getElementById("imageInput");
+    fileInput.click();
   };
 
   handleImageChange = (event) => {
@@ -219,10 +223,79 @@ class profileView extends Component {
         console.log(err);
       });
   };
-  handleEditPicture = () => {
-    const fileInput = document.getElementById("imageInput");
-    fileInput.click();
+
+  sameBasic = () => {
+    if (
+      this.state.firstName === this.state.firstName_ &&
+      this.state.lastName === this.state.lastName_ &&
+      this.state.classYear === this.state.classYear_ &&
+      this.state.major1 === this.state.major1_ &&
+      this.state.major2 === this.state.major2_ &&
+      this.state.major3 === this.state.major3_ &&
+      this.state.preferredPronouns === this.state.preferredPronouns_
+    ) {
+      return true;
+    }
   };
+
+  handleBasicOpen = () => {
+    this.setState({ basicOpen: true });
+  };
+
+  handleBasicClose = () => {
+    this.setState({
+      firstName_: this.state.firstName,
+      lastName_: this.state.lastName,
+      classYear_: this.state.classYear,
+      major1_: this.state.major1,
+      major2_: this.state.major2,
+      major3_: this.state.major3,
+      preferredPronouns_: this.state.preferredPronouns,
+      basicOpen: false,
+    });
+  };
+
+  handleSubmitBasic = () => {
+    let newBasicInfo = {
+      firstName: this.state.firstName_,
+      lastName: this.state.lastName_,
+      preferredPronouns: this.state.preferredPronouns_,
+      classYear: this.state.classYear_,
+      majors: [this.state.major1_, this.state.major2_, this.state.major3_],
+    };
+    axios
+      .post(`/edit/${auth.currentUser.email}`, newBasicInfo)
+      .then(() => {
+        this.setState(
+          {
+            firstName: newBasicInfo["firstName"],
+            lastName: newBasicInfo["lastName"],
+            preferredPronouns: newBasicInfo["preferredPronouns"],
+            classYear: newBasicInfo["classYear"],
+            major1: newBasicInfo["majors"][0],
+            major2: newBasicInfo["majors"][1],
+            major3: newBasicInfo["majors"][2],
+          }
+          // () => {
+          //   this.updateCourses();
+          // }
+        );
+      })
+      .catch((err) => console.log(err));
+    this.setState({ basicOpen: false });
+  };
+
+  updateCourses = () => {
+    axios
+      .get(`/update/${auth.currentUser.email}`)
+      .then(() => {
+        return;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   handleImageClose = () => {
     this.setState({ imageOpen: false });
   };
@@ -246,9 +319,7 @@ class profileView extends Component {
   handleAddOpen = () => {
     this.setState({ addOpen: true });
   };
-  handleBasicOpen = () => {
-    this.setState({ basicOpen: true });
-  };
+
   handleGroupsOpen = () => {
     this.setState({ groupOpen: true });
   };
@@ -381,25 +452,7 @@ class profileView extends Component {
       favoriteArtist: this.state.favArtist,
     });
   };
-  handleBasicClose = () => {
-    this.setState({
-      basicOpen: false,
-      firstName: this.state.firstName_,
-      lastName: this.state.lastName_,
-      preferredPronouns: this.state.preferredPronouns_,
-      class: this.state.class_,
-      majorOne: this.state.major1,
-      majorTwo: this.state.major2,
-      majorThree: this.state.major3,
-      varsitySportOne: this.state.varsitySport1,
-      varsitySportTwo: this.state.varsitySport2,
-      groupOne: this.state.group1,
-      groupTwo: this.state.group2,
-      groupThree: this.state.group3,
-      greekLife: this.state.greekLife_,
-      bio: this.state.bio_,
-    });
-  };
+
   handleBioClose = () => {
     this.setState({
       bioOpen: false,
@@ -680,57 +733,6 @@ class profileView extends Component {
     });
     this.setState({ favoritesOpen: false });
   };
-  handleSubmitBasic = () => {
-    this.setState({
-      firstName_: this.state.firstName,
-      lastName_: this.state.lastName,
-      preferredPronouns_: this.state.preferredPronouns,
-      class_: this.state.class,
-      major1: this.state.majorOne,
-      major2: this.state.majorTwo,
-      major3: this.state.majorThree,
-      varsitySport1: this.state.varsitySportOne,
-      varsitySport2: this.state.varsitySportTwo,
-      group1: this.state.groupOne,
-      group2: this.state.groupTwo,
-      group3: this.state.groupThree,
-      greekLife_: this.state.greekLife,
-      bio_: this.state.bio,
-    });
-    let newBasicInfo = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      preferredPronouns: this.state.preferredPronouns,
-      class: this.state.class,
-      majors: [this.state.majorOne, this.state.majorTwo, this.state.majorThree],
-      varsitySports: [this.state.varsitySportOne, this.state.varsitySportTwo],
-      groups: [this.state.groupOne, this.state.groupTwo, this.state.groupThree],
-      greekLife: this.state.greekLife,
-      bio: this.state.bio,
-    };
-    axios
-      .post(`/edit/${auth.currentUser.email}`, newBasicInfo)
-      .then(() => {
-        this.setState(
-          {
-            firstName: newBasicInfo["firstName"],
-            lastName: newBasicInfo["lastName"],
-            preferredPronouns: newBasicInfo["preferredPronouns"],
-            class: newBasicInfo["class"],
-            majors: newBasicInfo["majors"],
-            varsitySports: newBasicInfo["varsitySports"],
-            groups: newBasicInfo["groups"],
-            greekLife: newBasicInfo["greekLife"],
-            bio: newBasicInfo["bio"],
-          },
-          () => {
-            this.updateCourses();
-          }
-        );
-      })
-      .catch((err) => console.log(err));
-    this.setState({ basicOpen: false });
-  };
 
   handleInterests = (i1, i2, i3) => {
     this.setState({ interests1: i1, interests2: i2, interests3: i3 });
@@ -773,24 +775,18 @@ class profileView extends Component {
       "#95a5a6",
     ];
     let loading = this.state.loading;
-    let courseCode0 = this.state.courses[0].courseCode;
-    let courseCode1 = this.state.courses[1].courseCode;
-    let courseCode2 = this.state.courses[2].courseCode;
-    let courseCode3 = this.state.courses[3].courseCode;
-    let courseCode4 = this.state.courses[4].courseCode;
-    let numCourses = [
-      courseCode0,
-      courseCode1,
-      courseCode2,
-      courseCode3,
-      courseCode4,
-    ].filter(Boolean).length;
+    let code1 = this.state.course1.code;
+    let code2 = this.state.course2.code;
+    let code3 = this.state.course3.code;
+    let code4 = this.state.course4.code;
+    let code5 = this.state.course5.code;
+    let numCourses = [code1, code2, code3, code4, code5].filter(Boolean).length;
     let indexArray = [];
-    for (let j = 0; j < 5; j++) {
-      if (this.state.courses[j].courseCode) {
-        indexArray.push(j);
-      }
-    }
+    // for (let j = 0; j < 5; j++) {
+    //   if (this.state.courses[j].courseCode) {
+    //     indexArray.push(j);
+    //   }
+    // }
 
     return (
       <div>
@@ -806,7 +802,7 @@ class profileView extends Component {
         )}
         {!loading && (
           <div align="center">
-            <AppBar position="static" color="default">
+            <AppBar position="relative" color="default">
               <Tabs
                 value={this.state.tabIndex}
                 onChange={this.handleTabChange}
@@ -983,9 +979,9 @@ class profileView extends Component {
                               <TextField
                                 autofocus
                                 margin="dense"
-                                id="firstName"
+                                id="firstName_"
                                 autoComplete="off"
-                                name="firstName"
+                                name="firstName_"
                                 label="First Name"
                                 defaultValue={this.state.firstName}
                                 required
@@ -996,9 +992,9 @@ class profileView extends Component {
                               <TextField
                                 autofocus
                                 margin="dense"
-                                id="lastName"
+                                id="lastName_"
                                 autoComplete="off"
-                                name="lastName"
+                                name="lastName_"
                                 label="Last Name"
                                 defaultValue={this.state.lastName}
                                 required
@@ -1009,8 +1005,8 @@ class profileView extends Component {
                               <TextField
                                 autofocus
                                 margin="dense"
-                                id="preferredPronouns"
-                                name="preferredPronouns"
+                                id="preferredPronouns_"
+                                name="preferredPronouns_"
                                 select
                                 fullWidth
                                 label="Preferred Pronouns"
@@ -1036,11 +1032,11 @@ class profileView extends Component {
                               <TextField
                                 autofocus
                                 margin="dense"
-                                id="class"
-                                name="class"
+                                id="classYear_"
+                                name="classYear_"
                                 select
                                 label="Graduating Class"
-                                defaultValue={this.state.class}
+                                defaultValue={this.state.classYear}
                                 onChange={this.handleChange}
                                 required
                                 fullWidth
@@ -1073,10 +1069,11 @@ class profileView extends Component {
                               <TextField
                                 autofocus
                                 margin="dense"
-                                name="majorOne"
+                                id="major1_"
+                                name="major1_"
                                 autoComplete="off"
                                 label="First Concentration"
-                                defaultValue={this.state.majorOne}
+                                defaultValue={this.state.major1}
                                 fullWidth
                                 required
                                 onChange={this.handleChange}
@@ -1090,10 +1087,11 @@ class profileView extends Component {
                               <TextField
                                 autofocus
                                 margin="dense"
-                                name="majorTwo"
+                                name="major2_"
+                                name="major2_"
                                 autoComplete="off"
                                 label="Second Concentration"
-                                defaultValue={this.state.majorTwo}
+                                defaultValue={this.state.major2}
                                 fullWidth
                                 onChange={this.handleChange}
                                 InputProps={{
@@ -1106,10 +1104,11 @@ class profileView extends Component {
                               <TextField
                                 autofocus
                                 margin="dense"
-                                name="majorThree"
+                                id="major3_"
+                                name="major3_"
                                 autoComplete="off"
                                 label="Third Concentration"
-                                defaultValue={this.state.majorThree}
+                                defaultValue={this.state.major3}
                                 fullWidth
                                 onChange={this.handleChange}
                                 InputProps={{
@@ -1203,18 +1202,6 @@ class profileView extends Component {
                           },
                         }}
                       /> */}
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="bio"
-                                name="bio"
-                                label="Bio"
-                                defaultValue={this.state.bio}
-                                multiline
-                                onChange={this.handleChange}
-                                rows={2}
-                                fullWidth
-                              />
                             </DialogContent>
                             <DialogActions>
                               <Button
@@ -1227,10 +1214,11 @@ class profileView extends Component {
                                 onClick={this.handleSubmitBasic}
                                 color="secondary"
                                 disabled={
-                                  this.state.firstName === "" ||
-                                  this.state.lastName === "" ||
-                                  this.state.majorOne === "" ||
-                                  this.state.class === ""
+                                  this.state.firstName_ === "" ||
+                                  this.state.lastName_ === "" ||
+                                  this.state.major1_ === "" ||
+                                  this.state.classYear_ === "" ||
+                                  this.sameBasic()
                                 }
                               >
                                 Save Changes
@@ -1245,76 +1233,64 @@ class profileView extends Component {
                       </Typography>
                       <br />
                       <Typography variant="h5">
-                        Class of {this.state.class}
+                        Class of {this.state.classYear}
                       </Typography>
                       <Typography variant="h5">
-                        Concentration(s): {this.state.majorOne}
-                        {this.state.majorTwo && `, ${this.state.majorTwo}`}
-                        {this.state.majorThree && `, ${this.state.majorThree}`}
+                        Concentration(s): {this.state.major1}
+                        {this.state.major2 && `, ${this.state.major2}`}
+                        {this.state.major3 && `, ${this.state.major3}`}
                       </Typography>
-                      {this.state.bio && (
-                        <div>
-                          <br />
-                          <Typography variant="h6">{this.state.bio}</Typography>
-                        </div>
-                      )}
-                      {this.state.bio === "" && (
-                        <div>
-                          <br />
-                          <Button
-                            color="secondary"
-                            variant="outlined"
-                            onClick={this.handleBioOpen}
-                          >
-                            Add Bio
-                          </Button>
-                        </div>
-                      )}
-                      <Dialog
-                        overlayStyle={{ backgroundColor: "transparent" }}
-                        open={this.state.bioOpen}
-                      >
-                        <DialogTitle
-                          style={{ cursor: "move" }}
-                          id="draggable-dialog-title"
-                        >
-                          Edit Bio
-                        </DialogTitle>
-                        <DialogContent>
-                          <Typography>
-                            If there is anything else you would like to share,
-                            we would love for you to include it here.
-                          </Typography>
-                          <TextField
-                            autofocus
-                            margin="dense"
-                            id="bio"
-                            name="bio"
-                            label="Bio"
-                            defaultValue={this.state.bio}
-                            multiline
-                            onChange={this.handleChange}
-                            rows={2}
-                            fullWidth
-                          />
-                        </DialogContent>
-                        <DialogActions>
-                          <Button
-                            onClick={this.handleBioClose}
-                            color="secondary"
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            onClick={this.handleSubmitBio}
-                            color="secondary"
-                          >
-                            Save Changes
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
                     </CardContent>
                   </Card>
+                  {this.state.bio === "" && (
+                    <div>
+                      <br />
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        onClick={this.handleBioOpen}
+                      >
+                        Add Bio
+                      </Button>
+                    </div>
+                  )}
+                  <Dialog
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    open={this.state.bioOpen}
+                  >
+                    <DialogTitle
+                      style={{ cursor: "move" }}
+                      id="draggable-dialog-title"
+                    >
+                      Edit Bio
+                    </DialogTitle>
+                    <DialogContent>
+                      <Typography>
+                        If there is anything else you would like to share, we
+                        would love for you to include it here.
+                      </Typography>
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="bio"
+                        name="bio"
+                        label="Bio"
+                        defaultValue={this.state.bio}
+                        multiline
+                        onChange={this.handleChange}
+                        rows={2}
+                        fullWidth
+                      />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={this.handleBioClose} color="secondary">
+                        Cancel
+                      </Button>
+                      <Button onClick={this.handleSubmitBio} color="secondary">
+                        Save Changes
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                   <br />
                   <br />
                   <Grid container spacing={2}>
@@ -2795,11 +2771,9 @@ class profileView extends Component {
                               Class of {this.state.class}
                             </Typography>
                             <Typography variant="h5">
-                              Concentration(s): {this.state.majors[0]}
-                              {this.state.majors[1] &&
-                                `, ${this.state.majors[1]}`}
-                              {this.state.majors[2] &&
-                                `, ${this.state.majors[2]}`}
+                              Concentration(s): {this.state.major1}
+                              {this.state.major2 && `, ${this.state.major2}`}
+                              {this.state.major3 && `, ${this.state.major3}`}
                             </Typography>
                             {this.state.bio && (
                               <div>

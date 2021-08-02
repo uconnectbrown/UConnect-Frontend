@@ -60,7 +60,7 @@ class profileBuild extends Component {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       classYear: this.state.classYear,
-      majors: [this.state.majorOne, this.state.majorTwo, this.state.majorThree],
+      majors: [this.state.major1, this.state.major2, this.state.major3],
       preferredPronouns: this.state.preferredPronouns,
       email: auth.currentUser.email,
       // Interests
@@ -69,11 +69,11 @@ class profileBuild extends Component {
       interests3: this.state.interests3,
       // Courses
       courses: [
-        this.state.courseOne,
-        this.state.courseTwo,
-        this.state.courseThree,
-        this.state.courseFour,
-        this.state.courseFive,
+        this.state.course1,
+        this.state.course2,
+        this.state.course3,
+        this.state.course4,
+        this.state.course5,
       ],
     };
 
@@ -99,7 +99,7 @@ class profileBuild extends Component {
       })
       .catch((err) => {
         this.setState({
-          errors: err.response.data,
+          errors: err,
           loading: false,
         });
       });
@@ -113,53 +113,53 @@ class profileBuild extends Component {
     this.setState({ interests1: i1, interests2: i2, interests3: i3 });
   };
 
-  handleCourseOne = (event) => {
+  handleCourse1 = (event) => {
     let input = event.target.value;
     let subfield = event.target.name;
     this.setState((prevState) => {
-      let courseOne = Object.assign({}, prevState.courseOne);
-      courseOne[subfield] = input;
-      return { courseOne };
+      let course1 = Object.assign({}, prevState.course1);
+      course1[subfield] = input;
+      return { course1 };
     });
   };
 
-  handleCourseTwo = (event) => {
+  handleCourse2 = (event) => {
     let input = event.target.value;
     let subfield = event.target.name;
     this.setState((prevState) => {
-      let courseTwo = Object.assign({}, prevState.courseTwo);
-      courseTwo[subfield] = input;
-      return { courseTwo };
+      let course2 = Object.assign({}, prevState.course2);
+      course2[subfield] = input;
+      return { course2 };
     });
   };
 
-  handleCourseThree = (event) => {
+  handleCourse3 = (event) => {
     let input = event.target.value;
     let subfield = event.target.name;
     this.setState((prevState) => {
-      let courseThree = Object.assign({}, prevState.courseThree);
-      courseThree[subfield] = input;
-      return { courseThree };
+      let course3 = Object.assign({}, prevState.course3);
+      course3[subfield] = input;
+      return { course3 };
     });
   };
 
-  handleCourseFour = (event) => {
+  handleCourse4 = (event) => {
     let input = event.target.value;
     let subfield = event.target.name;
     this.setState((prevState) => {
-      let courseFour = Object.assign({}, prevState.courseFour);
-      courseFour[subfield] = input;
-      return { courseFour };
+      let course4 = Object.assign({}, prevState.course4);
+      course4[subfield] = input;
+      return { course4 };
     });
   };
 
-  handleCourseFive = (event) => {
+  handleCourse5 = (event) => {
     let input = event.target.value;
     let subfield = event.target.name;
     this.setState((prevState) => {
-      let courseFive = Object.assign({}, prevState.courseFive);
-      courseFive[subfield] = input;
-      return { courseFive };
+      let course5 = Object.assign({}, prevState.course5);
+      course5[subfield] = input;
+      return { course5 };
     });
   };
 
@@ -193,7 +193,7 @@ class profileBuild extends Component {
                 {this.state.firstName === "" ||
                 this.state.lastName === "" ||
                 this.state.class === "" ||
-                this.state.majorOne === "" ? (
+                this.state.major1 === "" ? (
                   <UncheckedButton color="primary" />
                 ) : (
                   <CheckedCircle color="secondary" />
@@ -256,7 +256,7 @@ class profileBuild extends Component {
             <span>
               <TextField
                 variant="outlined"
-                name="majorOne"
+                name="major1"
                 autoComplete="off"
                 size={"small"}
                 label="Concentration"
@@ -291,7 +291,7 @@ class profileBuild extends Component {
                   <TextField
                     style={{ marginTop: "-10px" }}
                     variant="outlined"
-                    name="majorTwo"
+                    name="major2"
                     autoComplete="off"
                     size={"small"}
                     label="Second Concentration"
@@ -325,7 +325,7 @@ class profileBuild extends Component {
                   <TextField
                     style={{ marginTop: "-10px", marginBottom: "-10px" }}
                     variant="outlined"
-                    name="majorThree"
+                    name="major3"
                     autoComplete="off"
                     size={"small"}
                     label="Third Concentration"
@@ -393,11 +393,11 @@ class profileBuild extends Component {
             <h2>
               Courses{" "}
               {[
-                this.state.courseOne.code,
-                this.state.courseTwo.code,
-                this.state.courseThree.code,
-                this.state.courseFour.code,
-                this.state.courseFive.code,
+                this.state.course1.code,
+                this.state.course2.code,
+                this.state.course3.code,
+                this.state.course4.code,
+                this.state.course5.code,
               ].filter(Boolean).length > 1 ? (
                 <CheckedCircle style={{ marginTop: "5px" }} color="secondary" />
               ) : (
@@ -411,28 +411,28 @@ class profileBuild extends Component {
           <PBCourseGrid
             course="Course #1"
             className={classes.textField}
-            value={this.state.courseOne}
-            handleChange={this.handleCourseOne}
+            value={this.state.course1}
+            handleChange={this.handleCourse1}
             required={true}
           />
           <PBCourseGrid
             course="Course #2"
             className={classes.textField}
-            value={this.state.courseTwo}
-            handleChange={this.handleCourseTwo}
+            value={this.state.course2}
+            handleChange={this.handleCourse2}
             required={true}
           />
           <PBCourseGrid
             course="Course #3"
             className={classes.textField}
-            value={this.state.courseThree}
-            handleChange={this.handleCourseThree}
+            value={this.state.course3}
+            handleChange={this.handleCourse3}
           />
           <PBCourseGrid
             course="Course #4"
             className={classes.textField}
-            value={this.state.courseFour}
-            handleChange={this.handleCourseFour}
+            value={this.state.course4}
+            handleChange={this.handleCourse4}
           />
 
           {!this.state.fifthCourse && (
@@ -447,8 +447,8 @@ class profileBuild extends Component {
             <PBCourseGrid
               course="Course #5"
               className={classes.textField}
-              value={this.state.courseFive}
-              handleChange={this.handlecourseFive}
+              value={this.state.course5}
+              handleChange={this.handlecourse5}
             />
           )}
         </Grid>
