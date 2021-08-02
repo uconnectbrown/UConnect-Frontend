@@ -77,6 +77,7 @@ const profileViewState = {
   courseColor2: "",
   courseColor3: "",
   courseColor4: "",
+  tabIndex: 0,
 };
 
 export default profileViewState;

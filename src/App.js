@@ -11,7 +11,6 @@ import { auth } from "./firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 // Components
-import AuthRoute from "./util/AuthRoute"; // auth => send to profileView, else send to component
 import Welcome from "./components/Welcome";
 
 // Pages

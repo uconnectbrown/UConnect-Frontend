@@ -11,7 +11,6 @@ import PaletteIcon from "@material-ui/icons/Palette";
 import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { Box } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 
 // Components
@@ -23,7 +22,6 @@ import {
   PAandWinterests,
   GHinterests,
 } from "../resources/interests";
-import { FormatColorResetOutlined } from "@material-ui/icons";
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
@@ -122,14 +120,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getSteps() {
-  return [
-    "Career and Academic ",
-    "Physical Activity and Wellness",
-    "General Hobbies",
-  ];
-}
-
 function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
   let interests1 = CandAinterests;
   let interests2 = PAandWinterests;
@@ -182,17 +172,14 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
     case 0:
       return (
         <div>
-          <Typography
-            variant="h5"
-            style={{ color: `${palette[7]}` }}
-            align="center"
-          >
+          <Typography component={"span"} variant="h5" align="center">
             Career and Academic
           </Typography>
           <br />
-          <Grid container spacing={2} justify="center">
+          <br />
+          <Grid container spacing={2} justifyContent="center">
             {interests1.map((interest, index) => (
-              <Grid item>
+              <Grid item key={index}>
                 <Button
                   onClick={() => {
                     let newSelected = [...select1];
@@ -200,7 +187,6 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
                     setSelect1(newSelected);
                   }}
                   variant={select1[index] ? "contained" : "outlined"}
-                  color="primary"
                   disabled={total > 9 && !select1[index]}
                 >
                   {interest}
@@ -213,15 +199,11 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
     case 1:
       return (
         <div>
-          <Typography
-            variant="h5"
-            style={{ color: `${palette[7]}` }}
-            align="center"
-          >
+          <Typography component={"span"} variant="h5" align="center">
             Physical Activity and Wellness
           </Typography>
           <br />
-          <Grid container spacing={3} justify="center">
+          <Grid container spacing={2} justifyContent="center">
             {interests2.map((interest, index) => (
               <Grid item>
                 <Button
@@ -231,7 +213,6 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
                     setSelect2(newSelected);
                   }}
                   variant={select2[index] ? "contained" : "outlined"}
-                  color="primary"
                   disabled={total > 9 && !select2[index]}
                 >
                   {interest}
@@ -244,15 +225,11 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
     case 2:
       return (
         <div>
-          <Typography
-            variant="h5"
-            style={{ color: `${palette[7]}` }}
-            align="center"
-          >
+          <Typography component={"span"} variant="h5" align="center">
             General Hobbies
           </Typography>
           <br />
-          <Grid container spacing={3} justify="center">
+          <Grid container spacing={2} justifyContent="center">
             {interests3.map((interest, index) => (
               <Grid item>
                 <Button
@@ -262,7 +239,6 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
                     setSelect3(newSelected);
                   }}
                   variant={select3[index] ? "contained" : "outlined"}
-                  color="primary"
                   disabled={total > 9 && !select3[index]}
                 >
                   {interest}
@@ -285,7 +261,6 @@ export default function CustomizedSteppers(props) {
   const [interests3, setInterests3] = React.useState([]);
   const total = interests1.length + interests2.length + interests3.length;
   const [notDone, setNotDone] = React.useState(false);
-  const steps = getSteps();
 
   const handleNext = () => {
     if (activeStep === 0) {
@@ -314,10 +289,6 @@ export default function CustomizedSteppers(props) {
     setNotDone(false);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
   const sendInterests1 = (i1) => {
     setInterests1(i1);
   };
@@ -339,37 +310,22 @@ export default function CustomizedSteppers(props) {
       >
         <Step key="CandA">
           <StepLabel StepIconComponent={ColorlibStepIcon}>
-            {"Career and Academic"}{" "}
             {interests1.map((interest) => {
-              return (
-                <div>
-                  <br /> • {interest}
-                </div>
-              );
+              return <div>• {interest}</div>;
             })}
           </StepLabel>
         </Step>
         <Step key="PAandW">
           <StepLabel StepIconComponent={ColorlibStepIcon}>
-            {"Physical Activity and Wellness"}{" "}
             {interests2.map((interest) => {
-              return (
-                <div>
-                  <br /> • {interest}
-                </div>
-              );
+              return <div>• {interest}</div>;
             })}
           </StepLabel>
         </Step>
         <Step key="GH">
           <StepLabel StepIconComponent={ColorlibStepIcon}>
-            {"General Hobbies"}{" "}
             {interests3.map((interest) => {
-              return (
-                <div>
-                  <br /> • {interest}
-                </div>
-              );
+              return <div>• {interest}</div>;
             })}
           </StepLabel>
         </Step>
@@ -377,7 +333,7 @@ export default function CustomizedSteppers(props) {
       <br />
 
       <div align="center">
-        <Typography className={classes.instructions}>
+        <Typography component={"span"} className={classes.instructions}>
           {GetStepContent(
             activeStep,
             sendInterests1,
@@ -418,8 +374,8 @@ export default function CustomizedSteppers(props) {
           {activeStep > 1 ? "Finish" : "Next"}
         </Button>
         {notDone && (
-          <Typography variant="body1">
-            Please select at least 1 subcategory
+          <Typography component={"span"} variant="body1">
+            Please select at least 1 category in this section
           </Typography>
         )}
       </div>

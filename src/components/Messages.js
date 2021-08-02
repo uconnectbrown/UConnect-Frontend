@@ -97,11 +97,16 @@ function Messages(props) {
                         style={{ marginLeft: "10px" }}
                         align="center"
                       >
-                        {message.recipientName}
+                        {message.recipientName &&
+                          message.recipientName.split(" ")[0]}
                         {message.recipientNames &&
                           `${message.recipientNames[0].split(" ")[0]}, ${
                             message.recipientNames[1].split(" ")[0]
-                          }, ${message.recipientNames[2].split(" ")[0]}`}
+                          }`}
+
+                        {message.recipientNames &&
+                          message.recipientNames.length === 3 &&
+                          `, ${message.recipientNames[2].split(" ")[0]}`}
                       </Typography>
                       <AvatarGroup
                         max={3}
@@ -127,12 +132,13 @@ function Messages(props) {
                             src={message.recipientImages[1]}
                           />
                         )}
-                        {message.recipientImages && (
-                          <Avatar
-                            alt="recipient2"
-                            src={message.recipientImages[2]}
-                          />
-                        )}
+                        {message.recipientImages &&
+                          message.recipientImages.length === 3 && (
+                            <Avatar
+                              alt="recipient2"
+                              src={message.recipientImages[2]}
+                            />
+                          )}
                       </AvatarGroup>
 
                       <Typography variant="caption">

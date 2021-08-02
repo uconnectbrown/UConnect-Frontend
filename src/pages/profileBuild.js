@@ -21,12 +21,12 @@ import CheckedCircle from "@material-ui/icons/CheckCircleOutline";
 // Components
 import Interests from "../components/Interests.js";
 import SignOut from "../components/SignOut";
+import PBTextField from "../components/PBTextField";
+import PBCourseGrid from "../components/PBCourseGrid";
 
 // Import Data
 import majorList from "../resources/majors";
-import varsitySports from "../resources/varsitySports";
 import emptyProfile from "../resources/emptyProfile";
-import greekLife from "../resources/greekLife";
 
 // Styling
 const styles = (theme) => ({
@@ -56,25 +56,18 @@ class profileBuild extends Component {
     });
 
     const newUserData = {
+      // Basic Info
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      class: this.state.class,
-      email: auth.currentUser.email,
+      classYear: this.state.classYear,
       majors: [this.state.majorOne, this.state.majorTwo, this.state.majorThree],
       preferredPronouns: this.state.preferredPronouns,
+      email: auth.currentUser.email,
+      // Interests
       interests1: this.state.interests1,
       interests2: this.state.interests2,
       interests3: this.state.interests3,
-      groups: [this.state.groupOne, this.state.groupTwo, this.state.groupThree],
-      varsitySports: [this.state.varsitySportOne, this.state.varsitySportTwo],
-      affinitySports: [
-        this.state.affinitySportOne,
-        this.state.affinitySportTwo,
-        this.state.affinitySportThree,
-      ],
-      greekLife: this.state.greekLife,
-      favorites: this.state.favorites,
-      bio: this.state.bio,
+      // Courses
       courses: [
         this.state.courseOne,
         this.state.courseTwo,
@@ -84,28 +77,7 @@ class profileBuild extends Component {
       ],
     };
 
-    for (let i = 0; i < 5; i++) {
-      if (Object.keys(newUserData.courses[i]).length === 3) {
-        newUserData.courses[i] = {
-          courseCode: newUserData.courses[i].courseCode,
-          courseName: newUserData.courses[i].courseName,
-          courseColor: newUserData.courses[i].courseColor,
-          assignments: [],
-        };
-      }
-    }
-
-    for (let i = 0; i < 5; i++) {
-      if (Object.keys(newUserData.courses[i]).length === 0) {
-        newUserData.courses[i] = {
-          courseCode: "",
-          courseName: "",
-          courseColor: "",
-          assignments: [],
-        };
-      }
-    }
-
+    // TO-DO: Check courses validator
     if (!validProfile(newUserData)) {
       this.setState({
         loading: false,
@@ -139,16 +111,6 @@ class profileBuild extends Component {
 
   handleInterests = (i1, i2, i3) => {
     this.setState({ interests1: i1, interests2: i2, interests3: i3 });
-  };
-
-  handleFavorites = (event) => {
-    let input = event.target.value;
-    let subfield = event.target.id;
-    this.setState((prevState) => {
-      let favorites = Object.assign({}, prevState.favorites);
-      favorites[subfield] = input;
-      return { favorites };
-    });
   };
 
   handleCourseOne = (event) => {
@@ -209,10 +171,6 @@ class profileBuild extends Component {
     this.setState({ thirdMajor: true });
   };
 
-  handleVarsity = () => {
-    this.setState({ secondVarsitySport: true });
-  };
-
   handleFifthCourse = () => {
     this.setState({ fifthCourse: true });
   };
@@ -220,84 +178,49 @@ class profileBuild extends Component {
   render() {
     const { classes } = this.props;
     const { errors, loading } = this.state;
-    let palette = [
-      "#16a085",
-      "#27ae60",
-      "#2980b9",
-      "#8e44ad",
-      "#2c3e50",
-      "#f1c40f",
-      "#e67e22",
-      "#e74c3c",
-      "#ecf0f1",
-      "#95a5a6",
-    ];
     return (
       <form noValidate onSubmit={this.handleSubmit}>
         <SignOut />
         <Grid container className={classes.form}>
-          <Grid item sm />
           <Grid item sm>
             <Typography variant="h2" className={classes.pageTitle}>
               Build Profile
             </Typography>
 
-            <span>
+            <span align="center">
               <h2>
                 Basic Info{" "}
                 {this.state.firstName === "" ||
                 this.state.lastName === "" ||
                 this.state.class === "" ||
                 this.state.majorOne === "" ? (
-                  <UncheckedButton
-                    style={{ marginTop: "5px" }}
-                    color="primary"
-                  />
+                  <UncheckedButton color="primary" />
                 ) : (
-                  <CheckedCircle
-                    style={{ marginTop: "5px" }}
-                    color="secondary"
-                  />
+                  <CheckedCircle color="secondary" />
                 )}
               </h2>
             </span>
-
-            <TextField
-              id="firstName"
-              autoComplete="off"
+            <PBTextField
               name="firstName"
-              type="text"
               label="First Name"
-              className={classes.textField}
+              handleChange={this.handleChange}
               value={this.state.firstName}
-              onChange={this.handleChange}
-              fullWidth
-              required
-              variant="outlined"
-              size={"small"}
-            />
-            <br />
-            <TextField
-              id="lastName"
-              autoComplete="off"
-              name="lastName"
-              type="text"
-              label="Last Name"
               className={classes.textField}
+            />
+            <PBTextField
+              name="lastName"
+              label="Last Name"
+              handleChange={this.handleChange}
               value={this.state.lastName}
-              onChange={this.handleChange}
-              fullWidth
-              required
-              variant="outlined"
-              size={"small"}
+              className={classes.textField}
             />
             <TextField
-              id="class"
-              name="class"
+              id="classYear"
+              name="classYear"
               select
               label="Class of ..."
               className={classes.textField}
-              value={this.state.class}
+              value={this.state.classYear}
               onChange={this.handleChange}
               variant="outlined"
               required
@@ -330,11 +253,6 @@ class profileBuild extends Component {
               </MenuItem>
             </TextField>
             <br />
-            <body1>
-              What is your intended major? Feel free to type out an independent
-              major or put "Undecided" if you don't know at this point.
-            </body1>
-            <br />
             <span>
               <TextField
                 variant="outlined"
@@ -351,6 +269,8 @@ class profileBuild extends Component {
                     list: "majors",
                   },
                 }}
+                helperText='Feel free to enter an independent
+                major or put "Undecided".'
               />
               {!this.state.secondMajor && (
                 <Tooltip
@@ -364,7 +284,6 @@ class profileBuild extends Component {
                 </Tooltip>
               )}
             </span>
-
             <span>
               {this.state.secondMajor && (
                 <div>
@@ -385,41 +304,44 @@ class profileBuild extends Component {
                       },
                     }}
                   />
+                  {!this.state.thirdMajor && (
+                    <Tooltip
+                      title="Add Third Concentration"
+                      placement="top"
+                      style={{ marginTop: "-10px" }}
+                    >
+                      <IconButton onClick={this.handleThirdMajor}>
+                        <AddIcon color="secondary" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                 </div>
               )}
-              {this.state.secondMajor && !this.state.thirdMajor && (
-                <Tooltip title="Add Third Concentration" placement="top">
-                  <IconButton onClick={this.handleThirdMajor}>
-                    <AddIcon color="secondary" />
-                  </IconButton>
-                </Tooltip>
+            </span>
+            <span>
+              {this.state.thirdMajor && (
+                <div>
+                  <br />
+                  <TextField
+                    style={{ marginTop: "-10px", marginBottom: "-10px" }}
+                    variant="outlined"
+                    name="majorThree"
+                    autoComplete="off"
+                    size={"small"}
+                    label="Third Concentration"
+                    className={classes.textField}
+                    onChange={this.handleChange}
+                    InputProps={{
+                      endAdornment: majorList,
+                      inputProps: {
+                        list: "majors",
+                      },
+                    }}
+                  />
+                </div>
               )}
             </span>
-
-            {this.state.thirdMajor && (
-              <div>
-                <br />
-                <TextField
-                  style={{ marginTop: "-10px", marginBottom: "-10px" }}
-                  variant="outlined"
-                  name="majorThree"
-                  autoComplete="off"
-                  size={"small"}
-                  label="Third Concentration"
-                  className={classes.textField}
-                  onChange={this.handleChange}
-                  InputProps={{
-                    endAdornment: majorList,
-                    inputProps: {
-                      list: "majors",
-                    },
-                  }}
-                />
-              </div>
-            )}
-
             <br />
-
             <TextField
               id="preferredPronouns"
               name="preferredPronouns"
@@ -448,6 +370,7 @@ class profileBuild extends Component {
                 other
               </MenuItem>
             </TextField>
+
             <h2>
               Interests{" "}
               {this.state.interests1.length +
@@ -459,273 +382,23 @@ class profileBuild extends Component {
                 <CheckedCircle style={{ marginTop: "5px" }} color="secondary" />
               )}
             </h2>
-            <body1>
-              Among the 3 provided categories, please select a total of 10
-              subcategories in which you are interested.
-            </body1>
+            <h3>Please select 10 categories in which you are interested.</h3>
           </Grid>
-          <Grid item sm />
         </Grid>
-        <br />
         <Interests getInterests={this.handleInterests} />
 
         <Grid container className={classes.form}>
           <Grid item sm />
           <Grid item sm>
-            <h2>Groups</h2>
-            <body1>
-              Please list up to 3 clubs, affinity groups, or student
-              organizations you are involved with.
-            </body1>
-            <TextField
-              id="groupOne"
-              name="groupOne"
-              autoComplete="off"
-              type="text"
-              label="First Group"
-              className={classes.textField}
-              onChange={this.handleChange}
-              fullWidth
-              size={"small"}
-            />
-            <TextField
-              id="groupTwo"
-              name="groupTwo"
-              autoComplete="off"
-              type="text"
-              label="Second Group"
-              className={classes.textField}
-              onChange={this.handleChange}
-              fullWidth
-              size={"small"}
-            />
-            <TextField
-              id="groupThree"
-              name="groupThree"
-              autoComplete="off"
-              type="text"
-              label="Third Group"
-              className={classes.textField}
-              onChange={this.handleChange}
-              fullWidth
-              size={"small"}
-            />
-
-            <h2>Athletics</h2>
-            <body1>
-              If you are a member of any varsity sports teams, please indicate
-              which ones below.
-            </body1>
-            <br />
-            <span>
-              <TextField
-                variant="outlined"
-                name="varsitySportOne"
-                autoComplete="off"
-                size={"small"}
-                label="First Varsity Sport"
-                className={classes.textField}
-                onChange={this.handleChange}
-                InputProps={{
-                  endAdornment: varsitySports,
-                  inputProps: {
-                    list: "varsitySports",
-                  },
-                }}
-              />
-
-              {!this.state.secondVarsitySport && (
-                <Tooltip
-                  title="Add Second Varsity Sport"
-                  placement="top"
-                  style={{ marginTop: "5px" }}
-                >
-                  <IconButton onClick={this.handleVarsity}>
-                    <AddIcon color="secondary" />
-                  </IconButton>
-                </Tooltip>
-              )}
-            </span>
-
-            {this.state.secondVarsitySport && (
-              <div>
-                <br />
-                <TextField
-                  style={{ marginTop: "-10px" }}
-                  variant="outlined"
-                  name="varsitySportTwo"
-                  autoComplete="off"
-                  size={"small"}
-                  label="Second Varsity Sport"
-                  className={classes.textField}
-                  onChange={this.handleChange}
-                  InputProps={{
-                    endAdornment: varsitySports,
-                    inputProps: {
-                      list: "varsitySports",
-                    },
-                  }}
-                />
-              </div>
-            )}
-            <br />
-            <body1>
-              If you are not on a varsity sports team but still enjoy playing
-              and competing in sports, please indicate which ones below.
-            </body1>
-            <TextField
-              id="affinitySportOne"
-              name="affinitySportOne"
-              autoComplete="off"
-              type="text"
-              label="First Sport"
-              className={classes.textField}
-              onChange={this.handleChange}
-              fullWidth
-              size={"small"}
-            />
-            <TextField
-              id="affinitySportTwo"
-              name="affinitySportTwo"
-              autoComplete="off"
-              type="text"
-              label="Second Sport"
-              className={classes.textField}
-              onChange={this.handleChange}
-              fullWidth
-              size={"small"}
-            />
-            <TextField
-              id="affinitySportThree"
-              name="affinitySportThree"
-              autoComplete="off"
-              type="text"
-              label="Third Sport"
-              className={classes.textField}
-              onChange={this.handleChange}
-              fullWidth
-              size={"small"}
-            />
-
-            <h2>Greek Life</h2>
-            <body1>
-              If you are a member of any Greek Organizations, please indicate
-              which one below.
-            </body1>
-            <TextField
-              variant="outlined"
-              name="greekLife"
-              autoComplete="off"
-              size={"small"}
-              label="Greek Organization"
-              className={classes.textField}
-              fullWidth
-              onChange={this.handleChange}
-              InputProps={{
-                endAdornment: greekLife,
-                inputProps: {
-                  list: "greekLife",
-                },
-              }}
-            />
-
-            <h2>
-              Favorites{" "}
-              {this.state.favorites.book === "" ||
-              this.state.favorites.movie === "" ||
-              this.state.favorites.tvShow === "" ||
-              this.state.favorites.artist === "" ? (
-                <UncheckedButton style={{ marginTop: "5px" }} color="primary" />
-              ) : (
-                <CheckedCircle style={{ marginTop: "5px" }} color="secondary" />
-              )}
-            </h2>
-            <body1>
-              Feel free to share your favorite book, movie, tv show, and artist
-              below.
-            </body1>
-            <br />
-            <span>
-              <TextField
-                id="book"
-                name="favorites"
-                type="text"
-                label="Book"
-                autoComplete="off"
-                style={{ width: 150 }}
-                className={classes.textField}
-                value={this.state.favorites.book}
-                onChange={this.handleFavorites}
-                required
-                size={"small"}
-              />
-              {"   "}
-              <TextField
-                id="movie"
-                name="favorites"
-                type="text"
-                label="Movie"
-                autoComplete="off"
-                style={{ width: 150 }}
-                className={classes.textField}
-                value={this.state.favorites.movie}
-                onChange={this.handleFavorites}
-                required
-                size={"small"}
-              />
-            </span>
-            <span>
-              <TextField
-                id="tvShow"
-                name="favorites"
-                type="text"
-                label="Show"
-                autoComplete="off"
-                style={{ width: 150 }}
-                className={classes.textField}
-                value={this.state.favorites.tvShow}
-                onChange={this.handleFavorites}
-                required
-                size={"small"}
-              />
-              {"   "}
-              <TextField
-                id="artist"
-                name="favorites"
-                type="text"
-                label="Artist/Band"
-                autoComplete="off"
-                style={{ width: 150 }}
-                className={classes.textField}
-                value={this.state.favorites.artist}
-                onChange={this.handleFavorites}
-                required
-                size={"small"}
-              />
-            </span>
-
-            <h2>Bio</h2>
-            <body1>
-              If there is anything else you would like to share, we would love
-              for you to include it here.
-            </body1>
-            <br />
-            <br />
-            <TextField
-              id="bio"
-              name="bio"
-              autoComplete="off"
-              multiline
-              onChange={this.handleChange}
-              rows={4}
-              variant="outlined"
-              fullWidth
-            />
-
             <h2>
               Courses{" "}
-              {Object.keys(this.state.courseOne).length > 2 &&
-              Object.keys(this.state.courseTwo).length > 2 ? (
+              {[
+                this.state.courseOne.code,
+                this.state.courseTwo.code,
+                this.state.courseThree.code,
+                this.state.courseFour.code,
+                this.state.courseFive.code,
+              ].filter(Boolean).length > 1 ? (
                 <CheckedCircle style={{ marginTop: "5px" }} color="secondary" />
               ) : (
                 <UncheckedButton style={{ marginTop: "5px" }} color="primary" />
@@ -734,247 +407,33 @@ class profileBuild extends Component {
           </Grid>
           <Grid item sm />
         </Grid>
-        <div align="center">
-          <body>
-            In order to give you access to the profiles of all of your
-            classmates, we will need you to provide us with your current courses
-            in the fields below.
-          </body>
-          <br />
-          <body>
-            The course code refers to the unique string identifier listed on C@B
-            for the course (e.g. ECON 0110). Note: please include the space
-            between the capital letters and the numbers and the 0 at the start
-            of the numbers if it less than 1000.
-          </body>
-          <br />
-
-          <body>
-            The course name refers to the name listed on either C@B or Canvas
-            for the course (e.g. Principles of Economics). Note: this name is
-            just meant to help you easily recognize the class, so don't worry
-            about formatting it in a particular way.
-          </body>
-        </div>
-        <Grid container className={classes.form} align="center" spacing={2}>
-          <Grid item sm>
-            <h3>Course #1</h3>
-            <TextField
-              id="courseCode"
-              name="courseCode"
-              autoComplete="off"
-              type="text"
-              label="Course Code"
-              className={classes.textField}
-              helperText={errors.courseCode}
-              error={errors.courseCode ? true : false}
-              value={this.state.courseCode}
-              onChange={this.handleCourseOne}
-              size={"small"}
-              required
-              variant="outlined"
-            />
-            <TextField
-              id="courseName"
-              name="courseName"
-              autoComplete="off"
-              type="text"
-              label="Course Name"
-              className={classes.textField}
-              value={this.state.courseName}
-              onChange={this.handleCourseOne}
-              fullWidth
-              required
-              size={"small"}
-            />
-            <TextField
-              id="courseColor"
-              name="courseColor"
-              autoComplete="off"
-              select
-              label="Course Color"
-              className={classes.textField}
-              value={this.state.courseColor}
-              onChange={this.handleCourseOne}
-              variant="outlined"
-              size={"small"}
-              required
-              helperText="Please select a course color"
-            >
-              {palette.map((color) => (
-                <MenuItem key={color} value={color}>
-                  <Typography
-                    variant="h6"
-                    style={{ backgroundColor: color, color: color }}
-                  >
-                    Color
-                  </Typography>
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item sm>
-            <h3>Course #2</h3>
-            <TextField
-              id="courseCode"
-              name="courseCode"
-              autoComplete="off"
-              type="text"
-              label="Course Code"
-              className={classes.textField}
-              helperText={errors.courseCode}
-              error={errors.courseCode ? true : false}
-              value={this.state.courseCode}
-              onChange={this.handleCourseTwo}
-              size={"small"}
-              required
-              variant="outlined"
-            />
-            <TextField
-              id="courseName"
-              name="courseName"
-              autoComplete="off"
-              type="text"
-              label="Course Name"
-              className={classes.textField}
-              value={this.state.courseName}
-              onChange={this.handleCourseTwo}
-              fullWidth
-              required
-              size={"small"}
-            />
-            <TextField
-              id="courseColor"
-              name="courseColor"
-              autoComplete="off"
-              select
-              label="Course Color"
-              className={classes.textField}
-              value={this.state.courseColor}
-              onChange={this.handleCourseTwo}
-              variant="outlined"
-              size={"small"}
-              required
-              helperText="Please select a course color"
-            >
-              {palette.map((color) => (
-                <MenuItem key={color} value={color}>
-                  <Typography
-                    variant="h6"
-                    style={{ backgroundColor: color, color: color }}
-                  >
-                    Color
-                  </Typography>
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item sm>
-            <h3>Course #3</h3>
-            <TextField
-              id="courseCode"
-              name="courseCode"
-              autoComplete="off"
-              type="text"
-              label="Course Code"
-              className={classes.textField}
-              helperText={errors.courseCode}
-              error={errors.courseCode ? true : false}
-              value={this.state.courseCode}
-              onChange={this.handleCourseThree}
-              size={"small"}
-              variant="outlined"
-            />
-            <TextField
-              id="courseName"
-              name="courseName"
-              autoComplete="off"
-              type="text"
-              label="Course Name"
-              className={classes.textField}
-              value={this.state.courseName}
-              onChange={this.handleCourseThree}
-              fullWidth
-              size={"small"}
-            />
-            <TextField
-              id="courseColor"
-              name="courseColor"
-              autoComplete="off"
-              select
-              label="Course Color"
-              className={classes.textField}
-              value={this.state.courseColor}
-              onChange={this.handleCourseThree}
-              variant="outlined"
-              size={"small"}
-              helperText="Please select a course color"
-            >
-              {palette.map((color) => (
-                <MenuItem key={color} value={color}>
-                  <Typography
-                    variant="h6"
-                    style={{ backgroundColor: color, color: color }}
-                  >
-                    Color
-                  </Typography>
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item sm>
-            <h3>Course #4</h3>
-            <TextField
-              id="courseCode"
-              name="courseCode"
-              autoComplete="off"
-              type="text"
-              label="Course Code"
-              className={classes.textField}
-              helperText={errors.courseCode}
-              error={errors.courseCode ? true : false}
-              value={this.state.courseCode}
-              onChange={this.handleCourseFour}
-              size={"small"}
-              variant="outlined"
-            />
-            <TextField
-              id="courseName"
-              name="courseName"
-              autoComplete="off"
-              type="text"
-              label="Course Name"
-              className={classes.textField}
-              value={this.state.courseName}
-              onChange={this.handleCourseFour}
-              fullWidth
-              size={"small"}
-            />
-            <TextField
-              id="courseColor"
-              name="courseColor"
-              autoComplete="off"
-              select
-              label="Course Color"
-              className={classes.textField}
-              value={this.state.courseColor}
-              onChange={this.handleCourseFour}
-              variant="outlined"
-              size={"small"}
-              helperText="Please select a course color"
-            >
-              {palette.map((color) => (
-                <MenuItem key={color} value={color}>
-                  <Typography
-                    variant="h6"
-                    style={{ backgroundColor: color, color: color }}
-                  >
-                    Color
-                  </Typography>
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
+        <Grid container className={classes.form} align="center" spacing={5}>
+          <PBCourseGrid
+            course="Course #1"
+            className={classes.textField}
+            value={this.state.courseOne}
+            handleChange={this.handleCourseOne}
+            required={true}
+          />
+          <PBCourseGrid
+            course="Course #2"
+            className={classes.textField}
+            value={this.state.courseTwo}
+            handleChange={this.handleCourseTwo}
+            required={true}
+          />
+          <PBCourseGrid
+            course="Course #3"
+            className={classes.textField}
+            value={this.state.courseThree}
+            handleChange={this.handleCourseThree}
+          />
+          <PBCourseGrid
+            course="Course #4"
+            className={classes.textField}
+            value={this.state.courseFour}
+            handleChange={this.handleCourseFour}
+          />
 
           {!this.state.fifthCourse && (
             <Tooltip title="Add Fifth Course" placement="top">
@@ -985,59 +444,12 @@ class profileBuild extends Component {
           )}
 
           {this.state.fifthCourse && (
-            <Grid item sm>
-              <h3>Course #5</h3>
-              <TextField
-                id="courseCode"
-                name="courseCode"
-                autoComplete="off"
-                type="text"
-                label="Course Code"
-                className={classes.textField}
-                helperText={errors.courseCode}
-                error={errors.courseCode ? true : false}
-                value={this.state.courseCode}
-                onChange={this.handleCourseFive}
-                size={"small"}
-                variant="outlined"
-              />
-              <TextField
-                id="courseName"
-                name="courseName"
-                autoComplete="off"
-                type="text"
-                label="Course Name"
-                className={classes.textField}
-                value={this.state.courseName}
-                onChange={this.handleCourseFive}
-                fullWidth
-                size={"small"}
-              />
-              <TextField
-                id="courseColor"
-                name="courseColor"
-                autoComplete="off"
-                select
-                label="Course Color"
-                className={classes.textField}
-                value={this.state.courseColor}
-                onChange={this.handleCourseFive}
-                variant="outlined"
-                size={"small"}
-                helperText="Please select a course color"
-              >
-                {palette.map((color) => (
-                  <MenuItem key={color} value={color}>
-                    <Typography
-                      variant="h6"
-                      style={{ backgroundColor: color, color: color }}
-                    >
-                      Color
-                    </Typography>
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+            <PBCourseGrid
+              course="Course #5"
+              className={classes.textField}
+              value={this.state.courseFive}
+              handleChange={this.handlecourseFive}
+            />
           )}
         </Grid>
         <Grid container align="center">

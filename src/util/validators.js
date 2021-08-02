@@ -2,14 +2,13 @@ exports.validProfile = (profile) => {
   if (
     profile.firstName &&
     profile.lastName &&
-    profile.class &&
+    profile.classYear &&
     profile.majors.filter(Boolean).length > 0 &&
-    profile.favorites.movie &&
-    profile.favorites.book &&
-    profile.favorites.tvShow &&
-    profile.favorites.artist &&
-    profile.courses.filter((course) => Object.keys(course).length > 2).length >
-      1
+    profile.courses.filter((course) => course.code.length > 4).length > 1 &&
+    profile.interests1.length +
+      profile.interests2.length +
+      profile.interests3.length ===
+      10
   ) {
     return true;
   }
