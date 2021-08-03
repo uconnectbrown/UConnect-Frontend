@@ -24,18 +24,42 @@ const profileViewState = {
   major2_: "",
   major3_: "",
   preferredPronouns_: "",
+  interests1_: [],
+  interests2_: [],
+  interests3_: [],
   //Optional
-
   bio: "",
+  varsitySport1: "",
+  varsitySport2: "",
+  group1: "",
+  group2: "",
+  group3: "",
+  greekLife: "",
+  pickUpSport1: "",
+  pickUpSport2: "",
+  pickUpSport3: "",
+  // Optional Edits
+  bio_: "",
+  varsitySport1_: "",
+  varsitySport2_: "",
+  group1_: "",
+  group2_: "",
+  group3_: "",
+  greekLife_: "",
+  pickUpSport1_: "",
+  pickUpSport2_: "",
+  pickUpSport3_: "",
+  // Dialog Controls
+  imageOpen: false,
+  bioOpen: false,
+  groupsOpen: false,
+  varsityOpen: false,
+  interestsOpen: false,
+  //
   addCourseCode: "",
   addCourseName: "",
   addCourseColor: "",
   affinitySports: [],
-  affinitySportOne: "",
-  affinitySportTwo: "",
-  affinitySportThree: "",
-  bio_: "",
-  bioOpen: false,
 
   class_: "",
 
@@ -49,34 +73,23 @@ const profileViewState = {
   favoriteArtist: "",
 
   firstTime: false,
-  greekLife: "",
-  greekOpen: false,
-  greekLife_: "",
-  groups: [],
-  groupOne: "",
-  groupTwo: "",
-  groupThree: "",
 
-  newInterestsOpen: false,
-  interests1_: [],
-  interests2_: [],
-  interests3_: [],
+  greekOpen: false,
+
+  groups: [],
+
   addOpen: false,
   removeOpen: false,
   deleteCourse: false,
 
   userId: "",
-  varsityOpen: false,
+
   varsitySports: [],
-  varsitySportOne: "",
-  varsitySportTwo: "",
-  varsitySport1: "",
-  varsitySport2: "",
-  groupOpen: false,
+
   basicOpen: false,
-  interestsOpen: false,
+
   favoritesOpen: false,
-  imageOpen: false,
+
   loading: true,
   colorOpen: [false, false, false, false, false],
   courseColor: "",
