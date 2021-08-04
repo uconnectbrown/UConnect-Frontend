@@ -459,26 +459,6 @@ class studentView extends Component {
                           <Sports />
                           <Typography variant="h6">Pick-Up Sports</Typography>
                           <br />
-                          {this.state.affinitySports[0] === "" &&
-                            this.state.affinitySports[1] === "" &&
-                            this.state.affinitySports[2] === "" && (
-                              <Typography>N/A</Typography>
-                            )}
-                          {this.state.affinitySports[0] && (
-                            <Typography>
-                              • {this.state.affinitySports[0]}
-                            </Typography>
-                          )}
-                          {this.state.affinitySports[1] && (
-                            <Typography>
-                              • {this.state.affinitySports[0]}
-                            </Typography>
-                          )}
-                          {this.state.affinitySports[2] && (
-                            <Typography>
-                              • {this.state.affinitySports[0]}
-                            </Typography>
-                          )}
                         </div>
                       </Grid>
                       <Grid item sm>

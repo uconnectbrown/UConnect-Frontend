@@ -87,7 +87,7 @@ class messagesView extends Component {
       .then((res) => {
         this.setState({
           courseCodes: res.data.courses.map((course) =>
-            course.courseCode.replace(/\s/g, "")
+            course.code.replace(/\s/g, "")
           ),
           ownName: res.data.firstName + " " + res.data.lastName,
           ownId: res.data.emailId,

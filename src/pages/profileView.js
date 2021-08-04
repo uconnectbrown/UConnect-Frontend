@@ -112,70 +112,37 @@ class profileView extends Component {
     axios
       .get(`/user/${emailId}`)
       .then((res) => {
-        this.setState(
-          {
-            // Required
-            firstName: res.data.user.firstName,
-            lastName: res.data.user.lastName,
-            classYear: res.data.user.classYear,
-            major1: res.data.user.majors[0],
-            major2: res.data.user.majors[1],
-            major3: res.data.user.majors[2],
-            preferredPronouns: res.data.user.preferredPronouns,
-            interests1: res.data.user.interests1,
-            interests2: res.data.user.interests2,
-            interests3: res.data.user.interests3,
-            course1: res.data.user.courses[0],
-            course2: res.data.user.courses[1],
-            course3: res.data.user.courses[2],
-            course4: res.data.user.courses[3],
-            course5: res.data.user.courses[4],
-            imageUrl: res.data.user.imageUrl,
-            // Required edits
-            firstName_: res.data.user.firstName,
-            lastName_: res.data.user.lastName,
-            classYear_: res.data.user.classYear,
-            major1_: res.data.user.majors[0],
-            major2_: res.data.user.majors[1],
-            major3_: res.data.user.majors[2],
-            preferredPronouns_: res.data.user.preferredPronouns,
-            // Optional
-            bio: res.data.user.bio,
-            greekLife: res.data.user.greekLife,
-            // Optional edits
-            bio_: res.data.user.bio,
-            greekLife_: res.data.user.greekLife,
+        this.setState({
+          // Required
+          firstName: res.data.user.firstName,
+          lastName: res.data.user.lastName,
+          classYear: res.data.user.classYear,
+          major1: res.data.user.majors[0],
+          major2: res.data.user.majors[1],
+          major3: res.data.user.majors[2],
+          preferredPronouns: res.data.user.preferredPronouns,
+          interests1: res.data.user.interests1,
+          interests2: res.data.user.interests2,
+          interests3: res.data.user.interests3,
+          courses: res.data.user.courses,
+          imageUrl: res.data.user.imageUrl,
+          // Required edits
+          firstName_: res.data.user.firstName,
+          lastName_: res.data.user.lastName,
+          classYear_: res.data.user.classYear,
+          major1_: res.data.user.majors[0],
+          major2_: res.data.user.majors[1],
+          major3_: res.data.user.majors[2],
+          preferredPronouns_: res.data.user.preferredPronouns,
+          // Optional
+          bio: res.data.user.bio,
+          greekLife: res.data.user.greekLife,
+          // Optional edits
+          bio_: res.data.user.bio,
+          greekLife_: res.data.user.greekLife,
 
-            // affinitySportOne: res.data.user.affinitySports[0],
-            // affinitySportTwo: res.data.user.affinitySports[1],
-            // affinitySportThree: res.data.user.affinitySports[2],
-            // affinitySport1: res.data.user.affinitySports[0],
-            // affinitySport2: res.data.user.affinitySports[1],
-            // affinitySport3: res.data.user.affinitySports[2],
-            // createdAt: res.data.user.createdAt,
-            // email: res.data.user.email,
-            // favoriteBook: res.data.user.favorites.book,
-            // favoriteMovie: res.data.user.favorites.movie,
-            // favoriteShow: res.data.user.favorites.tvShow,
-            // favoriteArtist: res.data.user.favorites.artist,
-            // favBook: res.data.user.favorites.book,
-            // favMovie: res.data.user.favorites.movie,
-            // favShow: res.data.user.favorites.tvShow,
-            // favArtist: res.data.user.favorites.artist,
-
-            // firstName_: res.data.user.firstName,
-
-            // imageUrl: res.data.user.imageUrl,
-
-            // userId: res.data.user.userId,
-
-            loading: false,
-          }
-
-          // () => {
-          //   // return this.updateCourses();
-          // }
-        );
+          loading: false,
+        });
         if (res.data.user.varsitySports) {
           this.setState({
             varsitySport1: res.data.user.varsitySports[0],
@@ -214,6 +181,17 @@ class profileView extends Component {
             instrument1_: res.data.user.instruments[0],
             instrument2_: res.data.user.instruments[1],
             instrument3_: res.data.user.instruments[2],
+          });
+        }
+
+        if (res.data.user.pets) {
+          this.setState({
+            pet1: res.data.user.pets[0],
+            pet2: res.data.user.pets[1],
+            pet3: res.data.user.pets[2],
+            pet1_: res.data.user.pets[0],
+            pet2_: res.data.user.pets[1],
+            pet3_: res.data.user.pets[2],
           });
         }
       })
@@ -299,14 +277,18 @@ class profileView extends Component {
             major1: newBasicInfo["majors"][0],
             major2: newBasicInfo["majors"][1],
             major3: newBasicInfo["majors"][2],
+          },
+          () => {
+            this.updateCourses();
           }
-          // () => {
-          //   this.updateCourses();
-          // }
         );
       })
       .catch((err) => console.log(err));
     this.setState({ basicOpen: false });
+  };
+
+  handleBioOpen = () => {
+    this.setState({ bioOpen: true });
   };
 
   handleSubmitBio = () => {
@@ -317,10 +299,10 @@ class profileView extends Component {
       this.setState(
         {
           bio: newBio["bio"],
+        },
+        () => {
+          this.updateCourses();
         }
-        // () => {
-        //   this.updateCourses();
-        // }
       );
     });
     this.setState({ bioOpen: false });
@@ -352,10 +334,10 @@ class profileView extends Component {
           group1: groupList[0],
           group2: groupList[1],
           group3: groupList[2],
+        },
+        () => {
+          this.updateCourses();
         }
-        // () => {
-        //   this.updateCourses();
-        // }
       );
     });
     this.setState({ groupsOpen: false });
@@ -384,10 +366,10 @@ class profileView extends Component {
         {
           varsitySport1: varsityList[0],
           varsitySport2: varsityList[1],
+        },
+        () => {
+          this.updateCourses();
         }
-        // () => {
-        //   this.updateCourses();
-        // }
       );
     });
     this.setState({ varsityOpen: false });
@@ -413,10 +395,10 @@ class profileView extends Component {
       this.setState(
         {
           greekLife: newGreek["greekLife"],
+        },
+        () => {
+          this.updateCourses();
         }
-        // () => {
-        //   this.updateCourses();
-        // }
       );
     });
     this.setState({ greekOpen: false });
@@ -451,10 +433,10 @@ class profileView extends Component {
             interests1: interestsList.interests1,
             interests2: interestsList.interests2,
             interests3: interestsList.interests3,
+          },
+          () => {
+            this.updateCourses();
           }
-          // () => {
-          //   this.updateCourses();
-          // }
         );
       })
       .catch((err) => {
@@ -497,10 +479,10 @@ class profileView extends Component {
             instrument1: newInstruments.instruments[0],
             instrument2: newInstruments.instruments[1],
             instrument3: newInstruments.instruments[2],
+          },
+          () => {
+            this.updateCourses();
           }
-          // () => {
-          //   this.updateCourses();
-          // }
         );
       })
       .catch((err) => {
@@ -540,10 +522,10 @@ class profileView extends Component {
             pickUpSport1: newPickUpSports.pickUpSports[0],
             pickUpSport2: newPickUpSports.pickUpSports[1],
             pickUpSport3: newPickUpSports.pickUpSports[2],
+          },
+          () => {
+            this.updateCourses();
           }
-          // () => {
-          //   this.updateCourses();
-          // }
         );
       })
       .catch((err) => {
@@ -561,6 +543,179 @@ class profileView extends Component {
       pickUpSport2_: this.state.pickUpSport2,
       pickUpSport3_: this.state.pickUpSport3,
     });
+  };
+
+  handlePetsOpen = () => {
+    this.setState({ petsOpen: true });
+  };
+
+  handleSubmitPets = () => {
+    let newPets = {
+      pets: [this.state.pet1_, this.state.pet2_, this.state.pet3_],
+    };
+    axios
+      .post(`/edit/${auth.currentUser.email}`, newPets)
+      .then(() => {
+        this.setState(
+          {
+            pet1: newPets.pets[0],
+            pet2: newPets.pets[1],
+            pet3: newPets.pets[2],
+          },
+          () => {
+            this.updateCourses();
+          }
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    this.setState({
+      petsOpen: false,
+    });
+  };
+
+  handlePetsClose = () => {
+    this.setState({
+      petssOpen: false,
+      pets1_: this.state.pet1,
+      pets2_: this.state.pet2,
+      pets3_: this.state.pet3,
+    });
+  };
+
+  handleFavoritesOpen = () => {
+    this.setState({ favoritesOpen: true });
+  };
+
+  handleSubmitFavorites = () => {
+    let favorites = {
+      book: this.state.favoriteBook_,
+      movie: this.state.favoriteMovie_,
+      tvShow: this.state.favoriteShow_,
+      artist: this.state.favoriteArtist_,
+    };
+    let newFavorites = {
+      favorites: favorites,
+    };
+    axios.post(`/edit/${auth.currentUser.email}`, newFavorites).then(() => {
+      this.setState({
+        favoriteBook: favorites["book"],
+        favoriteMovie: favorites["movie"],
+        favoriteShow: favorites["tvShow"],
+        favoriteArtist: favorites["artist"],
+      });
+    });
+    this.setState({ favoritesOpen: false });
+  };
+
+  handleFavoritesClose = () => {
+    this.setState({
+      favoritesOpen: false,
+      favoriteBook_: this.state.favoriteBook,
+      favoriteMovie_: this.state.favoriteMovie,
+      favoriteShow_: this.state.favoriteShow,
+      favoriteArtist_: this.state.favoriteArtist,
+    });
+  };
+
+  handleColorOpen = (index) => {
+    let newColorOpen = this.state.colorOpen;
+    newColorOpen[index] = true;
+    this.setState({ colorOpen: newColorOpen });
+  };
+
+  handleColorSave = (index) => {
+    let courseList = [];
+    let newCourse = {
+      code: this.state.courses[index].code,
+      name: this.state.courses[index].name,
+      color: this.state.courseColor,
+    };
+    for (let j = 0; j < 5; j++) {
+      if (j !== index) {
+        courseList.push(this.state.courses[j]);
+      } else courseList.push(newCourse);
+    }
+    let newCourses = { courses: courseList };
+    axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
+      this.setState({ courses: courseList }, () => {
+        this.updateCourses();
+      });
+    });
+    this.setState({ colorOpen: [false, false, false, false, false] });
+  };
+
+  handleColorClose = () => {
+    this.setState({
+      colorOpen: [false, false, false, false, false],
+    });
+  };
+
+  handleAddOpen = () => {
+    this.setState({ addOpen: true });
+  };
+
+  handleAddCourse = () => {
+    let firstIndex;
+    let courseList = [];
+    for (let i = 0; i < 5; i++) {
+      if (!this.state.courses[i].code) {
+        firstIndex = i;
+        break;
+      }
+    }
+    let newCourse = {
+      code: this.state.addCourseCode,
+      name: this.state.addCourseName,
+      color: this.state.addCourseColor,
+    };
+    for (let j = 0; j < 5; j++) {
+      if (j !== firstIndex) {
+        courseList.push(this.state.courses[j]);
+      } else courseList.push(newCourse);
+    }
+    let newCourses = { courses: courseList };
+    axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
+      this.setState({ courses: courseList }, () => {
+        this.updateCourses();
+      });
+    });
+    this.setState({ addOpen: false });
+  };
+
+  handleAddClose = () => {
+    this.setState({ addOpen: false });
+  };
+
+  toggleRemoveOpen = () => {
+    this.setState({ removeOpen: !this.state.removeOpen });
+  };
+
+  handleRemoveCourse = (deleteIndex) => {
+    let courseList = [];
+    let deleteCode;
+    for (let i = 0; i < 5; i++) {
+      if (i === deleteIndex) {
+        courseList.push({ code: "", name: "", color: "" });
+        deleteCode = this.state.courses[i].code.replace(/\s/g, "");
+      } else courseList.push(this.state.courses[i]);
+    }
+    let newCourses = { courses: courseList };
+    axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
+      this.setState({ courses: courseList }, () => {
+        this.updateCourses();
+      });
+    });
+    axios
+      .get(`/delete/${auth.currentUser.email}/${deleteCode}`)
+      .then(() => {})
+      .catch((err) => console.log(err));
+    this.setState({ removeOpen: false });
+  };
+
+  handleRemoveClose = () => {
+    this.setState({ removeOpen: false });
   };
 
   updateCourses = () => {
@@ -594,217 +749,8 @@ class profileView extends Component {
   //     });
   // }
 
-  handleAddOpen = () => {
-    this.setState({ addOpen: true });
-  };
-
-  handleFavoritesOpen = () => {
-    this.setState({ favoritesOpen: true });
-  };
-
-  handleBioOpen = () => {
-    this.setState({ bioOpen: true });
-  };
-
-  handleColorOpen = (index) => {
-    let newColorOpen = this.state.colorOpen.slice();
-    newColorOpen[index] = true;
-    this.setState({ colorOpen: newColorOpen });
-
-    // this.setState(update(this.state, {
-    //   courseColor: {
-    //     [index]: {
-    //       $set: true
-    //     }
-    //   }
-    // }))
-  };
-  handleColorOpen0 = () => {
-    this.setState({ colorOpen0: true });
-  };
-  handleColorOpen1 = () => {
-    this.setState({ colorOpen1: true });
-  };
-  handleColorOpen2 = () => {
-    this.setState({ colorOpen2: true });
-  };
-  handleColorOpen3 = () => {
-    this.setState({ colorOpen3: true });
-  };
-  handleColorOpen4 = () => {
-    this.setState({ colorOpen4: true });
-  };
-
-  handleRemoveOpen = (deleteIndex) => {
-    this.setState({ removeOpen: true });
-    let courseList = [];
-    let deleteCourse = {};
-    for (let i = 0; i < 5; i++) {
-      if (i === deleteIndex) {
-        courseList.push({ courseCode: "", courseName: "", courseColor: "" });
-        deleteCourse = this.state.courses[i].courseCode.replace(/\s/g, "");
-      } else courseList.push(this.state.courses[i]);
-    }
-    let newCourses = { courses: courseList };
-    axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
-      this.setState({ courses: courseList }, () => {
-        this.updateCourses();
-      });
-    });
-    axios
-      .get(`/delete/${auth.currentUser.email}/${deleteCourse}`)
-      .then(() => {})
-      .catch((err) => console.log(err));
-    this.setState({ removeOpen: false });
-  };
-
-  handleAddClose = () => {
-    this.setState({ addOpen: false });
-  };
-  handleRemoveClose = () => {
-    this.setState({ removeOpen: false });
-  };
-
-  handleFavoritesClose = () => {
-    this.setState({
-      favoritesOpen: false,
-      favoriteBook: this.state.favBook,
-      favoriteMovie: this.state.favMovie,
-      favoriteShow: this.state.favShow,
-      favoriteArtist: this.state.favArtist,
-    });
-  };
-
-  handleColorClose = () => {
-    this.setState({
-      colorOpen: [false, false, false, false, false],
-    });
-  };
-  handleColorClose0 = () => {
-    this.setState({
-      colorOpen0: false,
-    });
-  };
-  handleColorClose1 = () => {
-    this.setState({
-      colorOpen1: false,
-    });
-  };
-  handleColorClose2 = () => {
-    this.setState({
-      colorOpen2: false,
-    });
-  };
-  handleColorClose3 = () => {
-    this.setState({
-      colorOpen3: false,
-    });
-  };
-  handleColorClose4 = () => {
-    this.setState({
-      colorOpen4: false,
-    });
-  };
-
-  handleSubmitCourses = () => {
-    let firstIndex;
-    let courseList = [];
-    for (let i = 0; i < 5; i++) {
-      if (!this.state.courses[i].courseCode) {
-        firstIndex = i;
-        break;
-      }
-    }
-    let newCourse = {
-      courseCode: this.state.addCourseCode,
-      courseName: this.state.addCourseName,
-      courseColor: this.state.addCourseColor,
-      assignments: [],
-    };
-    for (let j = 0; j < 5; j++) {
-      if (j !== firstIndex) {
-        courseList.push(this.state.courses[j]);
-      } else courseList.push(newCourse);
-    }
-    let newCourses = { courses: courseList };
-    axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
-      this.setState({ courses: courseList }, () => {
-        this.updateCourses();
-      });
-    });
-    this.setState({ addOpen: false });
-  };
-
-  handleColorSave = (index) => {
-    let courseList = [];
-    let newCourse = {
-      courseCode: this.state.courses[index].courseCode,
-      courseName: this.state.courses[index].courseName,
-      courseColor: this.state.courseColor,
-      assignments: this.state.courses[index].assignments,
-    };
-    for (let j = 0; j < 5; j++) {
-      if (j !== index) {
-        courseList.push(this.state.courses[j]);
-      } else courseList.push(newCourse);
-    }
-    let newCourses = { courses: courseList };
-    axios.post(`/edit/${auth.currentUser.email}`, newCourses).then(() => {
-      this.setState({ courses: courseList }, () => {
-        this.updateCourses();
-      });
-    });
-    this.setState({ colorOpen: [false, false, false, false, false] });
-  };
-
-  handleSubmitFavorites = () => {
-    this.setState({
-      favBook: this.state.favoriteBook,
-      favMovie: this.state.favoriteMovie,
-      favShow: this.state.favoriteShow,
-      favArtist: this.state.favoriteArtist,
-    });
-    let favorites = {
-      book: this.state.favoriteBook,
-      movie: this.state.favoriteMovie,
-      tvShow: this.state.favoriteShow,
-      artist: this.state.favoriteArtist,
-    };
-    let newFavorites = {
-      favorites: favorites,
-    };
-    axios.post(`/edit/${auth.currentUser.email}`, newFavorites).then(() => {
-      this.setState({
-        favoriteBook: favorites["book"],
-        favoriteMovie: favorites["movie"],
-        favoriteShow: favorites["tvShow"],
-        favoriteArtist: favorites["artist"],
-      });
-    });
-    this.setState({ favoritesOpen: false });
-  };
-
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
-  };
-  // handleColorChange0 = (event) => {
-  //   this.setState({ courseColor0: event.target.value })
-  // }
-  // handleColorChange1 = (event) => {
-  //   this.setState({ courseColor1: event.target.value })
-  // }
-  // handleColorChange2 = (event) => {
-  //   this.setState({ courseColor2: event.target.value })
-  // }
-  // handleColorChange3 = (event) => {
-  //   this.setState({ courseColor3: event.target.value })
-  // }
-  // handleColorChange4 = (event) => {
-  //   this.setState({ courseColor4: event.target.value })
-  // }
-
-  toggleDelete = () => {
-    this.setState({ delete: !this.state.delete });
   };
 
   render() {
@@ -821,33 +767,29 @@ class profileView extends Component {
       "#95a5a6",
     ];
     let loading = this.state.loading;
-    let code1 = this.state.course1.code;
-    let code2 = this.state.course2.code;
-    let code3 = this.state.course3.code;
-    let code4 = this.state.course4.code;
-    let code5 = this.state.course5.code;
+    let code1 = this.state.courses[0].code;
+    let code2 = this.state.courses[1].code;
+    let code3 = this.state.courses[2].code;
+    let code4 = this.state.courses[3].code;
+    let code5 = this.state.courses[4].code;
     let numCourses = [code1, code2, code3, code4, code5].filter(Boolean).length;
     let indexArray = [];
-    // for (let j = 0; j < 5; j++) {
-    //   if (this.state.courses[j].courseCode) {
-    //     indexArray.push(j);
-    //   }
-    // }
+    for (let j = 0; j < 5; j++) {
+      if (this.state.courses[j].code) {
+        indexArray.push(j);
+      }
+    }
 
     return (
       <div>
         {loading && (
           <div align="center">
             <NavBar />
-            <br />
-            <CircularProgress size={100} />
-            <br />
-            <br />
-            <Typography variant="h4">Fetching user data...</Typography>
           </div>
         )}
         {!loading && (
           <div align="center">
+            <NavBar />
             <AppBar position="relative" color="default">
               <Tabs
                 value={this.state.tabIndex}
@@ -2124,6 +2066,75 @@ class profileView extends Component {
                                   </IconButton>
                                 </Tooltip>
                               )}
+                            <Dialog
+                              overlayStyle={{ backgroundColor: "transparent" }}
+                              open={this.state.petsOpen}
+                            >
+                              <DialogTitle
+                                style={{ cursor: "move" }}
+                                id="draggable-dialog-title"
+                              >
+                                Edit Pets
+                              </DialogTitle>
+                              <DialogContent>
+                                <Typography>Insert Later</Typography>
+                                <TextField
+                                  autofocus
+                                  margin="dense"
+                                  id="pet1_"
+                                  autoComplete="off"
+                                  name="pet1_"
+                                  label="Pet 1"
+                                  defaultValue={this.state.pet1}
+                                  fullWidth
+                                  type="text"
+                                  onChange={this.handleChange}
+                                />
+                                <TextField
+                                  autofocus
+                                  margin="dense"
+                                  id="pet2_"
+                                  autoComplete="off"
+                                  name="pet2_"
+                                  label="Pet 2"
+                                  defaultValue={this.state.pet2}
+                                  fullWidth
+                                  type="text"
+                                  onChange={this.handleChange}
+                                />
+                                <TextField
+                                  autofocus
+                                  margin="dense"
+                                  id="pet_"
+                                  autoComplete="off"
+                                  name="pet_"
+                                  label="Pet 3"
+                                  defaultValue={this.state.pet}
+                                  fullWidth
+                                  type="text"
+                                  onChange={this.handleChange}
+                                />
+                              </DialogContent>
+                              <DialogActions>
+                                <Button
+                                  onClick={this.handlePetsClose}
+                                  color="secondary"
+                                >
+                                  Cancel
+                                </Button>
+                                <Button
+                                  onClick={this.handleSubmitPets}
+                                  color="secondary"
+                                  disabled={
+                                    this.state.pet1 === this.state.pet1_ &&
+                                    this.state.pet2 === this.state.pet2_ &&
+                                    this.state.pet3 === this.state.pet3_
+                                  }
+                                >
+                                  Save Changes
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
                           </div>
                         </Grid>
                       </Grid>
@@ -2136,14 +2147,34 @@ class profileView extends Component {
                 <CardContent align="center">
                   <Typography variant="h3">
                     Favorites{" "}
-                    <Tooltip title="Edit favorites" placement="right">
-                      <IconButton
-                        onClick={this.handleFavoritesOpen}
-                        className="button"
-                      >
-                        <EditIcon color="secondary" />
-                      </IconButton>
-                    </Tooltip>
+                    {!this.state.favoriteBook &&
+                      !this.state.favoriteMovie &&
+                      !this.state.favoriteShow &&
+                      !this.state.favoriteArtist && (
+                        <Tooltip title="Add favorites" placement="right">
+                          <IconButton
+                            onClick={this.handleFavoritesOpen}
+                            className="button"
+                          >
+                            <AddCircle color="secondary" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                    {[
+                      this.state.favoriteBook,
+                      this.state.favoriteMovie,
+                      this.state.favoriteShow,
+                      this.state.favoriteArtist,
+                    ].filter(Boolean).length > 0 && (
+                      <Tooltip title="Edit favorites" placement="right">
+                        <IconButton
+                          onClick={this.handleFavoritesOpen}
+                          className="button"
+                        >
+                          <EditIcon color="secondary" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                     <Dialog
                       overlayStyle={{ backgroundColor: "transparent" }}
                       open={this.state.favoritesOpen}
@@ -2158,8 +2189,8 @@ class profileView extends Component {
                         <TextField
                           autofocus
                           margin="dense"
-                          id="favoriteBook"
-                          name="favoriteBook"
+                          id="favoriteBook_"
+                          name="favoriteBook_"
                           autoComplete="off"
                           label="Book"
                           defaultValue={this.state.favoriteBook}
@@ -2171,8 +2202,8 @@ class profileView extends Component {
                         <TextField
                           autofocus
                           margin="dense"
-                          id="favoriteMovie"
-                          name="favoriteMovie"
+                          id="favoriteMovie_"
+                          name="favoriteMovie_"
                           autoComplete="off"
                           label="Movie"
                           defaultValue={this.state.favoriteMovie}
@@ -2184,8 +2215,8 @@ class profileView extends Component {
                         <TextField
                           autofocus
                           margin="dense"
-                          id="favoriteShow"
-                          name="favoriteShow"
+                          id="favoriteShow_"
+                          name="favoriteShow_"
                           autoComplete="off"
                           label="Show"
                           defaultValue={this.state.favoriteShow}
@@ -2197,8 +2228,8 @@ class profileView extends Component {
                         <TextField
                           autofocus
                           margin="dense"
-                          id="favoriteArtist"
-                          name="favoriteArtist"
+                          id="favoriteArtist_"
+                          name="favoriteArtist_"
                           autoComplete="off"
                           label="Artist"
                           defaultValue={this.state.favoriteArtist}
@@ -2219,10 +2250,14 @@ class profileView extends Component {
                           onClick={this.handleSubmitFavorites}
                           color="secondary"
                           disabled={
-                            this.state.favoriteBook === "" ||
-                            this.state.favoriteMovie === "" ||
-                            this.state.favoriteShow === "" ||
-                            this.state.favoriteArtist === ""
+                            this.state.favoriteBook ===
+                              this.state.favoriteBook_ &&
+                            this.state.favoriteMovie ===
+                              this.state.favoriteMovie_ &&
+                            this.state.favoriteShow ===
+                              this.state.favoriteShow_ &&
+                            this.state.favoriteArtist ===
+                              this.state.favoriteArtist_
                           }
                         >
                           Save Changes
@@ -2281,8 +2316,7 @@ class profileView extends Component {
                           style={{
                             borderStyle: "solid",
                             borderWidth: "3px",
-                            borderColor: `${this.state.courses[index].courseColor}`,
-                            // borderColor: `${this.state.courses[index].undefined}`,
+                            borderColor: `${this.state.courses[index].color}`,
                             height: "100%",
                           }}
                         >
@@ -2290,13 +2324,13 @@ class profileView extends Component {
                             <Typography
                               variant="h5"
                               style={{
-                                color: `${this.state.courses[index].courseColor}`,
+                                color: `${this.state.courses[index].color}`,
                               }}
                             >
-                              {this.state.courses[index].courseCode}
+                              {this.state.courses[index].code}
                             </Typography>
                             <Typography variant="body1">
-                              {this.state.courses[index].courseName}
+                              {this.state.courses[index].name}
                             </Typography>
                             <Tooltip title="Change color" placement="right">
                               <IconButton
@@ -2325,9 +2359,7 @@ class profileView extends Component {
                                   autoComplete="off"
                                   select
                                   label="Course Color"
-                                  defaultValue={
-                                    this.state.courses[index].courseColor
-                                  }
+                                  defaultValue={this.state.courses[index].color}
                                   onChange={this.handleChange}
                                   helperText="Please select a course color"
                                 >
@@ -2361,13 +2393,13 @@ class profileView extends Component {
                                 </Button>
                               </DialogActions>
                             </Dialog>
-                            {this.state.delete && (
+                            {this.state.removeOpen && (
                               <div>
                                 <br />
                                 <IconButton
                                   size="large"
                                   color="primary"
-                                  onClick={() => this.handleRemoveOpen(index)}
+                                  onClick={() => this.handleRemoveCourse(index)}
                                   style={{
                                     marginBottom: "-30px",
                                     marginTop: "-15px",
@@ -2416,7 +2448,7 @@ class profileView extends Component {
                                 margin="dense"
                                 id="courseCode"
                                 name="addCourseCode"
-                                label="Course Code (e.g. ECON 0110)"
+                                label="Code (e.g. ECON 0110)"
                                 fullWidth
                                 type="text"
                                 onChange={this.handleChange}
@@ -2427,7 +2459,7 @@ class profileView extends Component {
                                 margin="dense"
                                 id="courseName"
                                 name="addCourseName"
-                                label="Course Name (e.g. Principles of Economics)"
+                                label="Name (e.g. Principles of Economics)"
                                 fullWidth
                                 onChange={this.handleChange}
                               />
@@ -2449,6 +2481,7 @@ class profileView extends Component {
                                       style={{
                                         backgroundColor: color,
                                         color: color,
+                                        width: "100%",
                                       }}
                                     >
                                       Color
@@ -2459,10 +2492,16 @@ class profileView extends Component {
                             </DialogContent>
                             <DialogActions>
                               <Button
-                                onClick={this.handleSubmitCourses}
+                                onClick={this.handleAddCourse}
                                 color="primary"
                               >
                                 Add
+                              </Button>
+                              <Button
+                                onClick={this.handleAddClose}
+                                color="primary"
+                              >
+                                Cancel
                               </Button>
                             </DialogActions>
                           </Dialog>
@@ -2470,7 +2509,7 @@ class profileView extends Component {
                       )}
                       <br />
 
-                      {numCourses > 2 && (
+                      {numCourses > 0 && (
                         <div>
                           {numCourses === 5 && (
                             <div>
@@ -2478,13 +2517,13 @@ class profileView extends Component {
                               <br />
                             </div>
                           )}
-                          {!this.state.delete && (
+                          {!this.state.removeOpen && (
                             <div>
                               <Tooltip title="Remove course" placement="right">
                                 <IconButton
                                   variant="contained"
                                   color="primary"
-                                  onClick={this.toggleDelete}
+                                  onClick={this.toggleRemoveOpen}
                                   style={{ marginTop: "-25px" }}
                                 >
                                   Remove <span style={{ marginRight: "5px" }} />{" "}
@@ -2493,11 +2532,11 @@ class profileView extends Component {
                               </Tooltip>
                             </div>
                           )}
-                          {this.state.delete && (
+                          {this.state.removeOpen && (
                             <Button
                               variant="contained"
                               color="primary"
-                              onClick={this.toggleDelete}
+                              onClick={this.toggleRemoveOpen}
                             >
                               Cancel
                             </Button>
@@ -2510,403 +2549,7 @@ class profileView extends Component {
               </Card>
               <br />
             </TabPanel>
-            <TabPanel value={this.state.tabIndex} index={1}>
-              <div>
-                {this.state.loading && (
-                  <div align="center">
-                    <br />
-                    <CircularProgress size={100} />
-                    <br />
-                    <br />
-                    <Typography variant="h4">Fetching user data...</Typography>
-                  </div>
-                )}
-                {!this.state.loading && (
-                  <div>
-                    <Card raised>
-                      <CardContent align="center">
-                        <img
-                          src={this.state.imageUrl}
-                          style={{
-                            width: 400,
-                            height: 400,
-                            objectFit: "cover",
-                            borderRadius: "10%",
-                            borderStyle: "solid",
-                            borderColor: "red",
-                            borderWidth: "2px",
-                          }}
-                        />
-                        <input
-                          type="file"
-                          id="imageInput"
-                          hidden="hidden"
-                          onChange={this.handleImageChange}
-                        />
-                        <br />
-
-                        {/* <Button onClick={this.handleEditPicture}>
-              <EditIcon color="primary" />
-            </Button> */}
-                        <br />
-                        <br />
-                        <Card raised style={{ display: "inline-block" }}>
-                          <CardContent>
-                            <span>
-                              <Typography variant="h3">
-                                {this.state.firstName} {this.state.lastName}
-                              </Typography>
-                            </span>
-                            <Typography variant="h5">
-                              {this.state.preferredPronouns &&
-                                `(${this.state.preferredPronouns})`}
-                            </Typography>
-                            <br />
-                            <Typography variant="h5">
-                              Class of {this.state.class}
-                            </Typography>
-                            <Typography variant="h5">
-                              Concentration(s): {this.state.major1}
-                              {this.state.major2 && `, ${this.state.major2}`}
-                              {this.state.major3 && `, ${this.state.major3}`}
-                            </Typography>
-                            {this.state.bio && (
-                              <div>
-                                <br />
-                                <Typography variant="h6">
-                                  {this.state.bio}
-                                </Typography>
-                              </div>
-                            )}
-                          </CardContent>
-                        </Card>
-                        <br />
-                        <br />
-                        <Grid container spacing={2}>
-                          <Grid item sm>
-                            <Card
-                              raised
-                              style={{
-                                borderStyle: "solid",
-                                borderWidth: "2px",
-                                borderColor: "red",
-                                height: "100%",
-                                marginBottom: "-5px",
-                              }}
-                            >
-                              <CardContent>
-                                <Typography variant="h5">
-                                  Varsity Sports
-                                </Typography>
-                                <br />
-                                {this.state.varsitySports[0] === "" &&
-                                  this.state.varsitySports[1] === "" && (
-                                    <Typography>N/A</Typography>
-                                  )}
-                                {this.state.varsitySports[0] && (
-                                  <Typography>
-                                    • {this.state.varsitySports[0]}
-                                  </Typography>
-                                )}
-                                {this.state.varsitySports[1] && (
-                                  <Typography>
-                                    • {this.state.varsitySports[1]}
-                                  </Typography>
-                                )}
-                              </CardContent>
-                            </Card>
-                          </Grid>
-                          <Grid item sm>
-                            <Card
-                              raised
-                              style={{
-                                borderStyle: "solid",
-                                borderWidth: "2px",
-                                borderColor: "red",
-                                height: "100%",
-                                marginBottom: "-5px",
-                              }}
-                            >
-                              <CardContent>
-                                <Typography variant="h5">Groups</Typography>
-                                <br />
-                                {this.state.groups[0] === "" &&
-                                  this.state.groups[1] === "" &&
-                                  this.state.groups[2] === "" && (
-                                    <Typography>N/A</Typography>
-                                  )}
-                                {this.state.groups[0] && (
-                                  <Typography>
-                                    • {this.state.groups[0]}
-                                  </Typography>
-                                )}
-                                {this.state.groups[1] && (
-                                  <Typography variant="body">
-                                    • {this.state.groups[1]}
-                                  </Typography>
-                                )}
-                                {this.state.groups[2] && (
-                                  <Typography>
-                                    • {this.state.groups[2]}
-                                  </Typography>
-                                )}
-                              </CardContent>
-                            </Card>
-                          </Grid>
-                          <Grid item sm>
-                            <Card
-                              raised
-                              style={{
-                                borderStyle: "solid",
-                                borderWidth: "2px",
-                                borderColor: "red",
-                                height: "100%",
-                                marginBottom: "-5px",
-                              }}
-                            >
-                              <CardContent>
-                                <Typography variant="h5">
-                                  Greek Organization
-                                </Typography>
-                                <br />
-                                {this.state.greekLife === "" && (
-                                  <Typography>N/A</Typography>
-                                )}
-                                {this.state.greekLife && (
-                                  <Typography>
-                                    • {this.state.greekLife}
-                                  </Typography>
-                                )}
-                              </CardContent>
-                            </Card>
-                          </Grid>
-                        </Grid>
-                      </CardContent>
-                    </Card>
-                    <br />
-                    <Card raised>
-                      <CardContent align="center">
-                        <Typography variant="h3">Interests</Typography>
-                        <hr />
-                        <br />
-                        <Grid container spacing={2}>
-                          <Grid item sm>
-                            <Card
-                              raised
-                              style={{
-                                borderStyle: "solid",
-                                borderWidth: "2px",
-                                borderColor: `${palette[7]}`,
-                                height: "100%",
-                              }}
-                            >
-                              <CardContent>
-                                <Typography
-                                  variant="h5"
-                                  style={{ color: `${palette[7]}` }}
-                                >
-                                  Career and Academic
-                                </Typography>
-                                <br />
-                                {this.state.interests1.map((interest) => {
-                                  return <Typography>• {interest}</Typography>;
-                                })}
-                              </CardContent>
-                            </Card>
-                          </Grid>
-                          <Grid item sm>
-                            <Card
-                              raised
-                              style={{
-                                borderStyle: "solid",
-                                borderWidth: "2px",
-                                borderColor: `${palette[0]}`,
-                                height: "100%",
-                              }}
-                            >
-                              <CardContent>
-                                <Typography
-                                  variant="h5"
-                                  style={{ color: `${palette[0]}` }}
-                                >
-                                  Physical Activity and Wellness
-                                </Typography>
-                                <br />
-                                {this.state.interests2.map((interest) => {
-                                  return <Typography>• {interest}</Typography>;
-                                })}
-                              </CardContent>
-                            </Card>
-                          </Grid>
-                          <Grid item sm>
-                            <Card
-                              raised
-                              style={{
-                                borderStyle: "solid",
-                                borderWidth: "2px",
-                                borderColor: `${palette[3]}`,
-                                height: "100%",
-                              }}
-                            >
-                              <CardContent>
-                                <Typography
-                                  variant="h5"
-                                  style={{ color: `${palette[3]}` }}
-                                >
-                                  General Hobbies
-                                </Typography>
-                                <br />
-                                {this.state.interests3.map((interest) => {
-                                  return <Typography>• {interest}</Typography>;
-                                })}
-                              </CardContent>
-                            </Card>
-                          </Grid>
-                        </Grid>
-                        <br />
-                        <br />
-                        <Card raised style={{ marginBottom: "-5px" }}>
-                          <CardContent>
-                            <Typography variant="h4">
-                              Additional Info
-                            </Typography>
-                            <hr />
-                            <br />
-                            <Grid container spacing={2}>
-                              <Grid item sm>
-                                <div>
-                                  <Music />
-                                  <Typography variant="h6">
-                                    Instruments
-                                  </Typography>
-                                </div>
-                              </Grid>
-                              <Grid item sm>
-                                <div>
-                                  <Sports />
-                                  <Typography variant="h6">
-                                    Pick-Up Sports
-                                  </Typography>
-                                  <br />
-                                  {this.state.affinitySports[0] === "" &&
-                                    this.state.affinitySports[1] === "" &&
-                                    this.state.affinitySports[2] === "" && (
-                                      <Typography>N/A</Typography>
-                                    )}
-                                  {this.state.affinitySports[0] && (
-                                    <Typography>
-                                      • {this.state.affinitySports[0]}
-                                    </Typography>
-                                  )}
-                                  {this.state.affinitySports[1] && (
-                                    <Typography>
-                                      • {this.state.affinitySports[0]}
-                                    </Typography>
-                                  )}
-                                  {this.state.affinitySports[2] && (
-                                    <Typography>
-                                      • {this.state.affinitySports[0]}
-                                    </Typography>
-                                  )}
-                                </div>
-                              </Grid>
-                              <Grid item sm>
-                                <div>
-                                  <Pets />
-                                  <Typography variant="h6">Pets</Typography>
-                                </div>
-                              </Grid>
-                            </Grid>
-                          </CardContent>
-                        </Card>
-                      </CardContent>
-                    </Card>
-                    <br />
-                    <Card raised>
-                      <CardContent align="center">
-                        <Typography variant="h3">Favorites</Typography>
-                        <hr />
-                        <br />
-                        <Grid container spacing={2}>
-                          <Grid item sm>
-                            <div>
-                              <Book />
-                              <Typography variant="body1">
-                                Book: {this.state.favorites.book}
-                              </Typography>
-                            </div>
-                          </Grid>
-                          <Grid item sm>
-                            <div>
-                              <Movie />
-                              <Typography variant="body1">
-                                Movie: {this.state.favorites.movie}
-                              </Typography>
-                            </div>
-                          </Grid>
-                          <Grid item sm>
-                            <div>
-                              <Tv />
-                              <Typography variant="body1">
-                                Show: {this.state.favorites.tvShow}
-                              </Typography>
-                            </div>
-                          </Grid>
-                          <Grid item sm>
-                            <div>
-                              <Music />
-                              <Typography variant="body1">
-                                Artist: {this.state.favorites.artist}
-                              </Typography>
-                            </div>
-                          </Grid>
-                        </Grid>
-                      </CardContent>
-                    </Card>
-                    <br />
-                    <Card raised>
-                      <CardContent align="center">
-                        <Typography variant="h3">Courses</Typography>
-                        <hr />
-                        <br />
-                        <Grid container spacing={2}>
-                          {indexArray.map((index) => (
-                            <Grid item sm>
-                              <Card
-                                style={{
-                                  borderStyle: "solid",
-                                  borderWidth: "3px",
-                                  borderColor: `${this.state.courses[index].courseColor}`,
-                                  height: "100%",
-                                  marginBottom: "-5px",
-                                }}
-                              >
-                                <CardContent>
-                                  <Typography
-                                    variant="h5"
-                                    style={{
-                                      color: `${this.state.courses[index].courseColor}`,
-                                    }}
-                                  >
-                                    {this.state.courses[index].courseCode}
-                                  </Typography>
-                                  <Typography variant="body1">
-                                    {this.state.courses[index].courseName}
-                                  </Typography>
-                                </CardContent>
-                              </Card>
-                            </Grid>
-                          ))}
-                        </Grid>
-                      </CardContent>
-                    </Card>
-                    <br />
-                    <br />
-                  </div>
-                )}
-              </div>
-            </TabPanel>
-            <NavBar />
+            <TabPanel value={this.state.tabIndex} index={1}></TabPanel>
           </div>
         )}
       </div>

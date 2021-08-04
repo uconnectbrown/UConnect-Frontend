@@ -283,7 +283,7 @@ class courseView extends Component {
       <div>
         <NavBar />
         <Typography variant="h3" align="center" style={{ color: `${color}` }}>
-          {code}: {name}
+          {code && code}: {name && name}
         </Typography>
         <IconButton
           variant="contained"

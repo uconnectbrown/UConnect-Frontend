@@ -42,12 +42,12 @@ export class coursesView extends Component {
     avatars3: [],
     avatars4: [],
     loading: true,
-    notesOpen: [false, false, false, false, false],
-    overlayOn: true,
-    assignmentsOpen: [false, false, false, false, false, false, false],
-    assignCourse: "",
-    assignmentName: "",
-    dailyAssignments: [[], [], [], [], [], [], []],
+    // notesOpen: [false, false, false, false, false],
+    // overlayOn: true,
+    // assignmentsOpen: [false, false, false, false, false, false, false],
+    // assignCourse: "",
+    // assignmentName: "",
+    // dailyAssignments: [[], [], [], [], [], [], []],
   };
 
   componentDidMount() {
@@ -64,22 +64,20 @@ export class coursesView extends Component {
     let indexArray = [];
     let currentIndex = 0;
     axios
-      .get(`/update/${auth.currentUser.email}`)
-      .then(() => {
-        return axios.get(`/courses/${auth.currentUser.email}`).then((res) => {
-          this.setState({
-            courses: res.data,
-          });
+      .get(`/courses/${auth.currentUser.email}`)
+      .then((res) => {
+        this.setState({
+          courses: res.data,
         });
       })
       .then(() => {
         for (let j = 0; j < 5; j++) {
-          if (this.state.courses[j].courseCode) {
+          if (this.state.courses[j].code) {
             indexArray.push(j);
           }
         }
         let courseCodes = this.state.courses.map((course) =>
-          course.courseCode.replace(/\s/g, "")
+          course.code.replace(/\s/g, "")
         );
         // pull students to obtain avatars
         let promises = [];
@@ -123,25 +121,25 @@ export class coursesView extends Component {
           });
           currentIndex++;
         }
-        let newAssignments = [...this.state.dailyAssignments];
-        for (let i = 0; i < 7; i++) {
-          this.state.courses.map((course) => {
-            {
-              course.assignments &&
-                course.assignments.map((assignment) => {
-                  if (assignment["day"] === i) {
-                    // {console.log(course['courseColor'], assignment['name'])}
-                    newAssignments[i].push({
-                      color: course["courseColor"],
-                      name: assignment["name"],
-                    });
-                    // {console.log(newAssignments)}
-                  }
-                });
-            }
-          });
-        }
-        this.setState({ dailyAssignments: newAssignments });
+        // let newAssignments = [...this.state.dailyAssignments];
+        // for (let i = 0; i < 7; i++) {
+        //   this.state.courses.map((course) => {
+        //     {
+        //       course.assignments &&
+        //         course.assignments.map((assignment) => {
+        //           if (assignment["day"] === i) {
+        //             // {console.log(course['courseColor'], assignment['name'])}
+        //             newAssignments[i].push({
+        //               color: course["courseColor"],
+        //               name: assignment["name"],
+        //             });
+        //             // {console.log(newAssignments)}
+        //           }
+        //         });
+        //     }
+        //   });
+        // }
+        // this.setState({ dailyAssignments: newAssignments });
         this.setState({ loading: false });
       })
       .catch((err) => console.log(err));
@@ -221,25 +219,25 @@ export class coursesView extends Component {
     ];
     let indexArray = [];
     for (let j = 0; j < 5; j++) {
-      if (this.state.courses[j].courseCode) {
+      if (this.state.courses[j].code) {
         indexArray.push(j);
       }
     }
     let numCourses = indexArray.length;
     let loading = this.state.loading;
-    let indices = [0, 1, 2, 3, 4, 5, 6];
-    let weekdays = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
-    let courseCodes = this.state.courses.map((course) => course.courseCode);
-    let dailyAssignments = this.state.dailyAssignments;
-    console.log(dailyAssignments);
+    // let indices = [0, 1, 2, 3, 4, 5, 6];
+    // let weekdays = [
+    //   "Monday",
+    //   "Tuesday",
+    //   "Wednesday",
+    //   "Thursday",
+    //   "Friday",
+    //   "Saturday",
+    //   "Sunday",
+    // ];
+    let courseCodes = this.state.courses.map((course) => course.code);
+    // let dailyAssignments = this.state.dailyAssignments;
+    // console.log(dailyAssignments);
     return (
       <div align="center">
         <NavBar />
@@ -253,17 +251,16 @@ export class coursesView extends Component {
                 style={{
                   borderStyle: "solid",
                   borderWidth: "4px",
-                  borderColor: `${this.state.courses[index].courseColor}`,
-                  // borderColor: `${this.state.courses[index].undefined}`,
+                  borderColor: `${this.state.courses[index].color}`,
                   height: "96%",
                 }}
               >
                 <ButtonBase
                   onClick={() =>
                     this.handleClick(
-                      this.state.courses[index].courseCode,
-                      this.state.courses[index].courseName,
-                      this.state.courses[index].courseColor,
+                      this.state.courses[index].code,
+                      this.state.courses[index].name,
+                      this.state.courses[index].color,
                       courseCodes
                       // this.state.courses[index].undefined,
                     )
@@ -280,13 +277,13 @@ export class coursesView extends Component {
                     <Typography
                       variant="h4"
                       style={{
-                        color: `${this.state.courses[index].courseColor}`,
+                        color: `${this.state.courses[index].color}`,
                       }}
                     >
-                      {this.state.courses[index].courseCode}
+                      {this.state.courses[index].code}
                     </Typography>
                     <Typography variant="h5">
-                      {this.state.courses[index].courseName}
+                      {this.state.courses[index].name}
                     </Typography>
                     <hr />
                     <br />

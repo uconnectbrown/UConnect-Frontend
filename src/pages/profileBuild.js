@@ -93,6 +93,11 @@ class profileBuild extends Component {
           loading: false,
           validProfile: true,
         });
+      })
+      .then(() => {
+        return axios.get(`/update/${auth.currentUser.email}`);
+      })
+      .then(() => {
         this.props.history.push({
           pathname: "/profileView",
         });

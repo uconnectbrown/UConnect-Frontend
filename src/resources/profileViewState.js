@@ -10,11 +10,7 @@ const profileViewState = {
   interests1: [],
   interests2: [],
   interests3: [],
-  course1: { code: "", name: "", color: "" },
-  course2: { code: "", name: "", color: "" },
-  course3: { code: "", name: "", color: "" },
-  course4: { code: "", name: "", color: "" },
-  course5: { code: "", name: "", color: "" },
+  courses: [{}, {}, {}, {}, {}],
   imageUrl: "",
   // Required Edits
   firstName_: "",
@@ -27,6 +23,10 @@ const profileViewState = {
   interests1_: [],
   interests2_: [],
   interests3_: [],
+  courseColor: "",
+  addCourseCode: "",
+  addCourseName: "",
+  addCourseColor: "",
   //Optional
   bio: "",
   varsitySport1: "",
@@ -41,6 +41,13 @@ const profileViewState = {
   pickUpSport1: "",
   pickUpSport2: "",
   pickUpSport3: "",
+  pet1: "",
+  pet2: "",
+  pet3: "",
+  favoriteBook: "",
+  favoriteMovie: "",
+  favoriteShow: "",
+  favoriteArtist: "",
   // Optional Edits
   bio_: "",
   varsitySport1_: "",
@@ -55,57 +62,31 @@ const profileViewState = {
   pickUpSport1_: "",
   pickUpSport2_: "",
   pickUpSport3_: "",
+  pet1_: "",
+  pet2_: "",
+  pet3_: "",
+  favoriteBook_: "",
+  favoriteMovie_: "",
+  favoriteShow_: "",
+  favoriteArtist_: "",
   // Dialog Controls
   imageOpen: false,
+  basicOpen: false,
   bioOpen: false,
   groupsOpen: false,
   varsityOpen: false,
+  greekOpen: false,
   interestsOpen: false,
   instrumentsOpen: false,
   pickUpSportsOpen: false,
-  //
-  addCourseCode: "",
-  addCourseName: "",
-  addCourseColor: "",
-  affinitySports: [],
-
-  class_: "",
-
-  createdAt: "",
-  delete: false,
-  email: "",
-  favorites: {},
-  favoriteBook: "",
-  favoriteMovie: "",
-  favoriteShow: "",
-  favoriteArtist: "",
-
-  firstTime: false,
-
-  greekOpen: false,
-
-  groups: [],
-
+  petsOpen: false,
+  favoritesOpen: false,
+  colorOpen: [false, false, false, false, false],
   addOpen: false,
   removeOpen: false,
-  deleteCourse: false,
-
-  userId: "",
-
-  varsitySports: [],
-
-  basicOpen: false,
-
-  favoritesOpen: false,
-
+  // Miscellaneous
+  firstTime: false,
   loading: true,
-  colorOpen: [false, false, false, false, false],
-  courseColor: "",
-  courseColor0: "",
-  courseColor1: "",
-  courseColor2: "",
-  courseColor3: "",
-  courseColor4: "",
   tabIndex: 0,
 };
 
