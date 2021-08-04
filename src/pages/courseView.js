@@ -44,6 +44,7 @@ class courseView extends Component {
     messageIds: [],
     allIds: [],
     messaging: false,
+    compScores: [],
   };
 
   componentDidMount() {
@@ -64,13 +65,16 @@ class courseView extends Component {
               ),
             ],
           });
+          let myProfile = res.data.filter(
+            (student) => student.email === auth.currentUser.email
+          )[0];
           let myCourseCodes = this.props.location.state.courseInfo[3]
             .map((courseCode) => courseCode)
             .filter(Boolean);
           const numStudents = this.state.students.length;
           let students = this.state.students;
           let theirCourseCodes = students.map((student) =>
-            student.courses.map((course) => course.courseCode)
+            student.courses.map((course) => course.code)
           );
           let courseOverlap = theirCourseCodes.map((code) =>
             this.compare(myCourseCodes, code)
@@ -85,7 +89,44 @@ class courseView extends Component {
             bools.push(false);
           }
           this.setState({ students: newStudents, selected: bools });
-          console.log(newStudents);
+          return myProfile
+        })
+        .then((myProfile) => {
+        let compScores = this.state.students.map((student) => {
+            let compScore = 0;
+            if (student.classYear === myProfile.classYear) {
+                compScore = compScore + 1;
+            }
+            compScore = compScore + this.compare(myProfile.majors.filter((major) => major !== ""), student.majors.filter((major) => major !== ""))
+            if (student.varsitySports.filter(Boolean).length > 0 && myProfile.varsitySports.filter(Boolean).length > 0) {
+                compScore = compScore + 1;
+            }
+            if (student.greekLife !== "" && myProfile.greekLife !== "") {
+                compScore = compScore + 1;
+            }
+            compScore = compScore + (this.compare(myProfile.interests1, student.interests1) 
+            + this.compare(myProfile.interests2, student.interests2) 
+            + this.compare(myProfile.interests3, student.interests3))
+            compScore = compScore + this.compare(myProfile.instruments.filter((instrument) => instrument !== ""), student.instruments.filter((instrument) => instrument !== ""))
+            compScore = compScore + this.compare(myProfile.pickUpSports.filter((sport) => sport !== ""), student.pickUpSports.filter((sport) => sport !== ""))
+            compScore = compScore + this.compare(myProfile.pets.filter((pet) => pet !== ""), student.pets.filter((pet) => pet !== ""))
+            compScore = compScore + student.courseOverlap
+            return compScore
+        })
+        this.setState({compScores: compScores})
+        console.log(compScores)
+        const numStudents = this.state.students.length;
+        let students = this.state.students;
+        let newStudents = [];
+        let bools = [];
+        for (let i = 0; i < numStudents; i++) {
+          let newStudent = { ...students[i] };
+          newStudent["compScore"] = this.state.compScores[i];
+          newStudents.push(newStudent);
+          bools.push(false);
+        }
+        this.setState({ students: newStudents, selected: bools });
+        console.log(newStudents)
         })
         .then(() => {
           this.setState({ loading: false });
@@ -873,6 +914,7 @@ class courseView extends Component {
                     >
                       <CardContent>
                         <div>
+                          <Typography>Unweighted Compatibility: {students[index].compScore}</Typography>
                           <Typography variant="h6">
                             Course Overlap: {students[index].courseOverlap}/
                             {myCourseCodes.length}
