@@ -205,6 +205,17 @@ class profileView extends Component {
             pickUpSport3_: res.data.user.pickUpSports[2],
           });
         }
+
+        if (res.data.user.instruments) {
+          this.setState({
+            instrument1: res.data.user.instruments[0],
+            instrument2: res.data.user.instruments[1],
+            instrument3: res.data.user.instruments[2],
+            instrument1_: res.data.user.instruments[0],
+            instrument2_: res.data.user.instruments[1],
+            instrument3_: res.data.user.instruments[2],
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -432,7 +443,6 @@ class profileView extends Component {
       interests2: this.state.interests2_,
       interests3: this.state.interests3_,
     };
-    console.log(interestsList);
     axios
       .post(`/edit/${auth.currentUser.email}`, interestsList)
       .then(() => {
@@ -464,6 +474,92 @@ class profileView extends Component {
       interests1_: [],
       interests2_: [],
       interests3_: [],
+    });
+  };
+
+  handleInstrumentsOpen = () => {
+    this.setState({ instrumentsOpen: true });
+  };
+
+  handleSubmitInstruments = () => {
+    let newInstruments = {
+      instruments: [
+        this.state.instrument1_,
+        this.state.instrument2_,
+        this.state.instrument3_,
+      ],
+    };
+    axios
+      .post(`/edit/${auth.currentUser.email}`, newInstruments)
+      .then(() => {
+        this.setState(
+          {
+            instrument1: newInstruments.instruments[0],
+            instrument2: newInstruments.instruments[1],
+            instrument3: newInstruments.instruments[2],
+          }
+          // () => {
+          //   this.updateCourses();
+          // }
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    this.setState({
+      instrumentsOpen: false,
+    });
+  };
+
+  handleInstrumentsClose = () => {
+    this.setState({
+      instrumentsOpen: false,
+      instrument1_: this.state.instrument1,
+      instrument2_: this.state.instrument2,
+      instrument3_: this.state.instrument3,
+    });
+  };
+
+  handlePickUpSportsOpen = () => {
+    this.setState({ pickUpSportsOpen: true });
+  };
+
+  handleSubmitPickUpSports = () => {
+    let newPickUpSports = {
+      pickUpSports: [
+        this.state.pickUpSport1_,
+        this.state.pickUpSport2_,
+        this.state.pickUpSport3_,
+      ],
+    };
+    axios
+      .post(`/edit/${auth.currentUser.email}`, newPickUpSports)
+      .then(() => {
+        this.setState(
+          {
+            pickUpSport1: newPickUpSports.pickUpSports[0],
+            pickUpSport2: newPickUpSports.pickUpSports[1],
+            pickUpSport3: newPickUpSports.pickUpSports[2],
+          }
+          // () => {
+          //   this.updateCourses();
+          // }
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    this.setState({
+      pickUpSportsOpen: false,
+    });
+  };
+
+  handlePickUpSportsClose = () => {
+    this.setState({
+      pickUpSportsOpen: false,
+      pickUpSport1_: this.state.pickUpSport1,
+      pickUpSport2_: this.state.pickUpSport2,
+      pickUpSport3_: this.state.pickUpSport3,
     });
   };
 
@@ -1764,6 +1860,78 @@ class profileView extends Component {
                                   </IconButton>
                                 </Tooltip>
                               )}
+                            <Dialog
+                              overlayStyle={{ backgroundColor: "transparent" }}
+                              open={this.state.instrumentsOpen}
+                            >
+                              <DialogTitle
+                                style={{ cursor: "move" }}
+                                id="draggable-dialog-title"
+                              >
+                                Edit Instruments
+                              </DialogTitle>
+                              <DialogContent>
+                                <Typography>Insert Later</Typography>
+                                <TextField
+                                  autofocus
+                                  margin="dense"
+                                  id="instrument1_"
+                                  autoComplete="off"
+                                  name="instrument1_"
+                                  label="Instrument 1"
+                                  defaultValue={this.state.instrument1}
+                                  fullWidth
+                                  type="text"
+                                  onChange={this.handleChange}
+                                />
+                                <TextField
+                                  autofocus
+                                  margin="dense"
+                                  id="instrument2_"
+                                  autoComplete="off"
+                                  name="instrument2_"
+                                  label="Instrument 2"
+                                  defaultValue={this.state.instrument2}
+                                  fullWidth
+                                  type="text"
+                                  onChange={this.handleChange}
+                                />
+                                <TextField
+                                  autofocus
+                                  margin="dense"
+                                  id="instrument3_"
+                                  autoComplete="off"
+                                  name="instrument3_"
+                                  label="Instrument 3"
+                                  defaultValue={this.state.instrument3}
+                                  fullWidth
+                                  type="text"
+                                  onChange={this.handleChange}
+                                />
+                              </DialogContent>
+                              <DialogActions>
+                                <Button
+                                  onClick={this.handleInstrumentsClose}
+                                  color="secondary"
+                                >
+                                  Cancel
+                                </Button>
+                                <Button
+                                  onClick={this.handleSubmitInstruments}
+                                  color="secondary"
+                                  disabled={
+                                    this.state.instrument1 ===
+                                      this.state.instrument1_ &&
+                                    this.state.instrument2 ===
+                                      this.state.instrument2_ &&
+                                    this.state.instrument3 ===
+                                      this.state.instrument3_
+                                  }
+                                >
+                                  Save Changes
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
                           </div>
                         </Grid>
                         <Grid item sm>
@@ -1778,11 +1946,11 @@ class profileView extends Component {
                                   this.state.pickUpSport3,
                                 ].filter(Boolean).length > 0 && (
                                   <Tooltip
-                                    title="Edit pick up sports"
+                                    title="Edit pickUpSports"
                                     placement="right"
                                   >
                                     <IconButton
-                                      onClick={this.handlePickUpOpen}
+                                      onClick={this.handlePickUpSportsOpen}
                                       className="button"
                                       style={{
                                         marginTop: "-10px",
@@ -1819,7 +1987,7 @@ class profileView extends Component {
                                   placement="right"
                                 >
                                   <IconButton
-                                    onClick={this.handlePickUpOpen}
+                                    onClick={this.handlePickUpSportsOpen}
                                     className="button"
                                     style={{
                                       marginTop: "-10px",
@@ -1830,6 +1998,78 @@ class profileView extends Component {
                                   </IconButton>
                                 </Tooltip>
                               )}
+                            <Dialog
+                              overlayStyle={{ backgroundColor: "transparent" }}
+                              open={this.state.pickUpSportsOpen}
+                            >
+                              <DialogTitle
+                                style={{ cursor: "move" }}
+                                id="draggable-dialog-title"
+                              >
+                                Edit Pick-Up Sports
+                              </DialogTitle>
+                              <DialogContent>
+                                <Typography>Insert Later</Typography>
+                                <TextField
+                                  autofocus
+                                  margin="dense"
+                                  id="pickUpSport1_"
+                                  autoComplete="off"
+                                  name="pickUpSport1_"
+                                  label="Pick-Up Sport 1"
+                                  defaultValue={this.state.pickUpSport1}
+                                  fullWidth
+                                  type="text"
+                                  onChange={this.handleChange}
+                                />
+                                <TextField
+                                  autofocus
+                                  margin="dense"
+                                  id="pickUpSport2_"
+                                  autoComplete="off"
+                                  name="pickUpSport2_"
+                                  label="Pick-Up Sport 2"
+                                  defaultValue={this.state.pickUpSport2}
+                                  fullWidth
+                                  type="text"
+                                  onChange={this.handleChange}
+                                />
+                                <TextField
+                                  autofocus
+                                  margin="dense"
+                                  id="pickUpSport3_"
+                                  autoComplete="off"
+                                  name="pickUpSport3_"
+                                  label="Pick-Up Sport 3"
+                                  defaultValue={this.state.pickUpSport3}
+                                  fullWidth
+                                  type="text"
+                                  onChange={this.handleChange}
+                                />
+                              </DialogContent>
+                              <DialogActions>
+                                <Button
+                                  onClick={this.handlePickUpSportsClose}
+                                  color="secondary"
+                                >
+                                  Cancel
+                                </Button>
+                                <Button
+                                  onClick={this.handleSubmitPickUpSports}
+                                  color="secondary"
+                                  disabled={
+                                    this.state.pickUpSport1 ===
+                                      this.state.pickUpSport1_ &&
+                                    this.state.pickUpSport2 ===
+                                      this.state.pickUpSport2_ &&
+                                    this.state.pickUpSport3 ===
+                                      this.state.pickUpSport3_
+                                  }
+                                >
+                                  Save Changes
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
                           </div>
                         </Grid>
                         <Grid item sm>
