@@ -21,12 +21,16 @@ import Grid from "@material-ui/core/Grid";
 
 export class messageView extends Component {
   state = {
-    courseInfo: "",
+    // Props that courseView needs
+    code: "",
+    name: "",
+    color: "",
+    numCourses: "",
+    // Props that studentView needs
     studentEmail: "",
+    // Props that messageView needs
     recipientName: "",
     recipientImage: "",
-    recipientId: "",
-    courseCode: "",
     ownId: "",
     ownImage: "",
     ownName: "",
@@ -40,12 +44,17 @@ export class messageView extends Component {
       this.props.history.push("/messagesView");
     } else {
       this.setState({
-        recipientName: this.props.location.state.recipientInfo[0],
-        recipientImage: this.props.location.state.recipientInfo[1],
-        recipientId: this.props.location.state.recipientInfo[2],
-        courseCode: this.props.location.state.recipientInfo[3],
-        courseInfo: this.props.location.state.recipientInfo[4],
-        studentEmail: this.props.location.state.recipientInfo[5],
+        // Props that courseView needs
+        code: this.props.location.state.code,
+        name: this.props.location.state.name,
+        color: this.props.location.state.color,
+        numCourses: this.props.location.state.numCourses,
+        // Props that studnetView needs
+        studentEmail: this.props.location.state.studentEmail,
+        // Props that messageView needs
+        recipientName: this.props.location.state.recipientName,
+        recipientImage: this.props.location.state.recipientImage,
+        recipientId: this.props.location.state.studentEmail.split("@")[0],
         previousPage: this.props.location.state.previousPage,
       });
     }
@@ -60,7 +69,7 @@ export class messageView extends Component {
         });
         let alphaId = [
           res.data.emailId,
-          this.props.location.state.recipientInfo[2],
+          this.props.location.state.studentEmail.split("@")[0],
         ]
           .sort()
           .join(" ");
@@ -97,15 +106,20 @@ export class messageView extends Component {
       this.props.history.push({
         pathname: "/studentView",
         state: {
-          studentInfo: [
-            this.state.courseInfo[0],
-            this.state.courseInfo[1],
-            this.state.courseInfo[2],
-            this.state.courseInfo[3],
-            this.state.studentEmail,
-          ],
+          code: this.state.code,
+          name: this.state.name,
+          color: this.state.color,
+          numCourses: this.state.numCourses,
+          studentEmail: this.state.studentEmail,
         },
       });
+      console.log(
+        this.state.code,
+        this.state.name,
+        this.state.color,
+        this.state.numCourses,
+        this.state.studentEmail
+      );
     }
   };
 
@@ -169,7 +183,7 @@ export class messageView extends Component {
               recipientName={this.state.recipientName}
               recipientImage={this.state.recipientImage}
               recipientId={this.state.recipientId}
-              courseCode={this.state.courseCode}
+              code={this.state.code}
               ownId={this.state.ownId}
               ownImage={this.state.ownImage}
               ownName={this.state.ownName}

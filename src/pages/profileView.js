@@ -108,9 +108,9 @@ class profileView extends Component {
   }
 
   loadUserData = () => {
-    let emailId = auth.currentUser.email.split("@")[0];
+    let email = auth.currentUser.email;
     axios
-      .get(`/user/${emailId}`)
+      .get(`/user/${email}`)
       .then((res) => {
         this.setState({
           // Required
@@ -136,64 +136,45 @@ class profileView extends Component {
           preferredPronouns_: res.data.user.preferredPronouns,
           // Optional
           bio: res.data.user.bio,
+          group1: res.data.user.groups[0],
+          group2: res.data.user.groups[1],
+          group3: res.data.user.groups[2],
+          varsitySport1: res.data.user.varsitySports[0],
+          varsitySport2: res.data.user.varsitySports[1],
           greekLife: res.data.user.greekLife,
+          instrument1: res.data.user.instruments[0],
+          instrument2: res.data.user.instruments[1],
+          instrument3: res.data.user.instruments[2],
+          pickUpSport1: res.data.user.pickUpSports[0],
+          pickUpSport2: res.data.user.pickUpSports[1],
+          pickUpSport3: res.data.user.pickUpSports[2],
+          pet1: res.data.user.pets[0],
+          pet2: res.data.user.pets[1],
+          pet3: res.data.user.pets[2],
+          favoriteBook: res.data.user.favorites.book,
+          favoriteMovie: res.data.user.favorites.movie,
+          favoriteShow: res.data.user.favorites.tvShow,
+          favoriteArtist: res.data.user.favorites.artist,
           // Optional edits
           bio_: res.data.user.bio,
+          group1_: res.data.user.groups[0],
+          group2_: res.data.user.groups[1],
+          group3_: res.data.user.groups[2],
+          varsitySport1_: res.data.user.varsitySports[0],
+          varsitySport2_: res.data.user.varsitySports[1],
           greekLife_: res.data.user.greekLife,
-
+          instrument1_: res.data.user.instruments[0],
+          instrument2_: res.data.user.instruments[1],
+          instrument3_: res.data.user.instruments[2],
+          pickUpSport1_: res.data.user.pickUpSports[0],
+          pickUpSport2_: res.data.user.pickUpSports[1],
+          pickUpSport3_: res.data.user.pickUpSports[2],
+          pet1_: res.data.user.pets[0],
+          pet2_: res.data.user.pets[1],
+          pet3_: res.data.user.pets[2],
+          // Other
           loading: false,
         });
-        if (res.data.user.varsitySports) {
-          this.setState({
-            varsitySport1: res.data.user.varsitySports[0],
-            varsitySport2: res.data.user.varsitySports[1],
-            varsitySport1_: res.data.user.varsitySports[0],
-            varsitySport2_: res.data.user.varsitySports[1],
-          });
-        }
-        if (res.data.user.groups) {
-          this.setState({
-            group1: res.data.user.groups[0],
-            group2: res.data.user.groups[1],
-            group3: res.data.user.groups[2],
-            group1_: res.data.user.groups[0],
-            group2_: res.data.user.groups[1],
-            group3_: res.data.user.groups[2],
-          });
-        }
-
-        if (res.data.user.pickUpSports) {
-          this.setState({
-            pickUpSport1: res.data.user.pickUpSports[0],
-            pickUpSport2: res.data.user.pickUpSports[1],
-            pickUpSport3: res.data.user.pickUpSports[2],
-            pickUpSport1_: res.data.user.pickUpSports[0],
-            pickUpSport2_: res.data.user.pickUpSports[1],
-            pickUpSport3_: res.data.user.pickUpSports[2],
-          });
-        }
-
-        if (res.data.user.instruments) {
-          this.setState({
-            instrument1: res.data.user.instruments[0],
-            instrument2: res.data.user.instruments[1],
-            instrument3: res.data.user.instruments[2],
-            instrument1_: res.data.user.instruments[0],
-            instrument2_: res.data.user.instruments[1],
-            instrument3_: res.data.user.instruments[2],
-          });
-        }
-
-        if (res.data.user.pets) {
-          this.setState({
-            pet1: res.data.user.pets[0],
-            pet2: res.data.user.pets[1],
-            pet3: res.data.user.pets[2],
-            pet1_: res.data.user.pets[0],
-            pet2_: res.data.user.pets[1],
-            pet3_: res.data.user.pets[2],
-          });
-        }
       })
       .catch((err) => {
         console.log(err);

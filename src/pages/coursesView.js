@@ -72,7 +72,9 @@ export class coursesView extends Component {
         let promises = [];
         for (let i = 0; i < 5; i++) {
           if (indexArray.includes(i))
-            promises.push(axios.get(`/avatars/${courseCodes[i]}`));
+            promises.push(
+              axios.get(`/avatars/${auth.currentUser.email}/${courseCodes[i]}`)
+            );
         }
         return promises;
       })
@@ -138,10 +140,10 @@ export class coursesView extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleClick = (code, name, color, courseCodes) => {
+  handleClick = (code, name, color, numCourses) => {
     this.props.history.push({
       pathname: "/courseView",
-      state: { courseInfo: [code, name, color, courseCodes] },
+      state: { code: code, name: name, color: color, numCourses: numCourses },
     });
   };
 
@@ -224,7 +226,6 @@ export class coursesView extends Component {
     //   "Saturday",
     //   "Sunday",
     // ];
-    let courseCodes = this.state.courses.map((course) => course.code);
     // let dailyAssignments = this.state.dailyAssignments;
     // console.log(dailyAssignments);
     return (
@@ -250,7 +251,9 @@ export class coursesView extends Component {
                       this.state.courses[index].code,
                       this.state.courses[index].name,
                       this.state.courses[index].color,
-                      courseCodes
+                      this.state.courses
+                        .map((course) => course.code)
+                        .filter(Boolean).length
                     )
                   }
                   style={{

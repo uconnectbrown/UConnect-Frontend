@@ -31,10 +31,15 @@ import greekLife from "../resources/greekLife";
 
 class courseView extends Component {
   state = {
-    courseInfo: ["code", "name", "color", ["courseCodes"]],
+    // Props from coursesView
+    code: "",
+    name: "",
+    color: "",
+    numCourses: "",
+    // Axios
     students: [],
+    // Other
     selected: [],
-    open: false,
     searchTerm: "",
     searchCriteria: "",
     sortBy: "courseOverlap",
@@ -44,89 +49,29 @@ class courseView extends Component {
     messageIds: [],
     allIds: [],
     messaging: false,
-    compScores: [],
   };
 
   componentDidMount() {
     if (!this.props.location.state) {
       this.props.history.push("/coursesView");
     } else {
-      const code = this.props.location.state.courseInfo[0];
+      const code = this.props.location.state.code;
       const codeNS = code.replace(/\s/g, "");
       axios
-        .get(`/students/${codeNS}`)
+        .get(`/students/${auth.currentUser.email}/${codeNS}`)
         .then((res) => {
+          console.log(res.data);
           this.setState({
-            courseInfo: this.props.location.state.courseInfo,
-            students: [
-              ...this.state.students,
-              ...res.data.filter(
-                (student) => student.email !== auth.currentUser.email
-              ),
-            ],
+            // Props from coursesView
+            name: this.props.location.state.name,
+            color: this.props.location.state.color,
+            code: code,
+            numCourses: this.props.location.state.numCourses,
+            // Axios request
+            students: res.data,
+            // Other
+            selected: res.data.map((student) => false),
           });
-          let myProfile = res.data.filter(
-            (student) => student.email === auth.currentUser.email
-          )[0];
-          let myCourseCodes = this.props.location.state.courseInfo[3]
-            .map((courseCode) => courseCode)
-            .filter(Boolean);
-          const numStudents = this.state.students.length;
-          let students = this.state.students;
-          let theirCourseCodes = students.map((student) =>
-            student.courses.map((course) => course.code)
-          );
-          let courseOverlap = theirCourseCodes.map((code) =>
-            this.compare(myCourseCodes, code)
-          );
-
-          let newStudents = [];
-          let bools = [];
-          for (let i = 0; i < numStudents; i++) {
-            let newStudent = { ...students[i] };
-            newStudent["courseOverlap"] = courseOverlap[i];
-            newStudents.push(newStudent);
-            bools.push(false);
-          }
-          this.setState({ students: newStudents, selected: bools });
-          return myProfile
-        })
-        .then((myProfile) => {
-        let compScores = this.state.students.map((student) => {
-            let compScore = 0;
-            if (student.classYear === myProfile.classYear) {
-                compScore = compScore + 20;
-            }
-            compScore = compScore + 10*this.compare(myProfile.majors.filter((major) => major !== ""), student.majors.filter((major) => major !== ""))
-            if (student.varsitySports.filter(Boolean).length > 0 && myProfile.varsitySports.filter(Boolean).length > 0) {
-                compScore = compScore + 20;
-            }
-            if (student.greekLife !== "" && myProfile.greekLife !== "") {
-                compScore = compScore + 10;
-            }
-            compScore = compScore + (this.compare(myProfile.interests1, student.interests1) 
-              + this.compare(myProfile.interests2, student.interests2) 
-              + this.compare(myProfile.interests3, student.interests3))**2
-            compScore = compScore + 10*this.compare(myProfile.instruments.filter((instrument) => instrument !== ""), student.instruments.filter((instrument) => instrument !== ""))
-            compScore = compScore + 10*this.compare(myProfile.pickUpSports.filter((sport) => sport !== ""), student.pickUpSports.filter((sport) => sport !== ""))
-            compScore = compScore + 10*this.compare(myProfile.pets.filter((pet) => pet !== ""), student.pets.filter((pet) => pet !== ""))
-            compScore = compScore + 5*student.courseOverlap
-            return compScore
-        })
-        this.setState({compScores: compScores})
-        console.log(compScores)
-        const numStudents = this.state.students.length;
-        let students = this.state.students;
-        let newStudents = [];
-        let bools = [];
-        for (let i = 0; i < numStudents; i++) {
-          let newStudent = { ...students[i] };
-          newStudent["compScore"] = this.state.compScores[i];
-          newStudents.push(newStudent);
-          bools.push(false);
-        }
-        this.setState({ students: newStudents, selected: bools });
-        console.log(newStudents)
         })
         .then(() => {
           this.setState({ loading: false });
@@ -140,13 +85,13 @@ class courseView extends Component {
     this.props.history.push({
       pathname: "/studentView",
       state: {
-        studentInfo: [
-          this.state.courseInfo[0],
-          this.state.courseInfo[1],
-          this.state.courseInfo[2],
-          this.state.courseInfo[3],
-          this.state.students[index].email,
-        ],
+        // Props upon return
+        code: this.state.code,
+        name: this.state.name,
+        color: this.state.color,
+        numCourses: this.state.numCourses,
+        // Prop for studentView
+        studentEmail: this.state.students[index].email,
       },
     });
   };
@@ -260,13 +205,10 @@ class courseView extends Component {
   compare = (a1, a2) => a1.filter((v) => a2.includes(v)).length;
 
   render() {
-    const code = this.state.courseInfo[0];
-    const name = this.state.courseInfo[1];
-    const color = this.state.courseInfo[2];
-    let myCourseCodes = this.state.courseInfo[3]
-      .map((courseCode) => courseCode)
-      .filter(Boolean);
-    // console.log(myCourseCodes)
+    const code = this.state.code;
+    const name = this.state.name;
+    const color = this.state.color;
+    const numCourses = this.state.numCourses;
     const numStudents = this.state.students.length;
     let indexArray = [];
     for (let i = 0; i < numStudents; i++) {
@@ -324,7 +266,7 @@ class courseView extends Component {
       <div>
         <NavBar />
         <Typography variant="h3" align="center" style={{ color: `${color}` }}>
-          {code && code}: {name && name}
+          {code}: {name}
         </Typography>
         <IconButton
           variant="contained"
@@ -775,17 +717,16 @@ class courseView extends Component {
         </Typography>
         <br />
         <br />
-        {this.state.loading && (
+        {/* {this.state.loading && (
           <div align="center">
             <CircularProgress size={100} />
             <br />
             <br />
             <Typography variant="h4">Fetching students' data...</Typography>
           </div>
-        )}
+        )} */}
         {!this.state.loading && (
           <div>
-            <div></div>
             {!this.state.messaging && (
               <Button
                 onClick={() => {
@@ -832,9 +773,20 @@ class courseView extends Component {
                 >
                   Cancel
                 </Button>
-                {this.state.messageNames.length > 0 && (
+                {this.state.messageNames.length === 1 && (
+                  <Typography>{this.state.messageNames[0]}</Typography>
+                )}
+                {this.state.messageNames.length === 2 && (
                   <Typography>
-                    {this.state.messageNames.map((name) => name + ", ")}
+                    {this.state.messageNames[0]} and{" "}
+                    {this.state.messageNames[1]}
+                  </Typography>
+                )}
+                {this.state.messageNames.length === 3 && (
+                  <Typography>
+                    {this.state.messageNames[0]} , {this.state.messageNames[1]}{" "}
+                    , and
+                    {this.state.messageNames[2]}
                   </Typography>
                 )}
               </div>
@@ -886,14 +838,12 @@ class courseView extends Component {
                     }}
                     align="center"
                   >
-                    {/* switched the order of buttonBase and cardContent since it worked in coursesView */}
                     {this.state.messaging && (
                       <Tooltip title="Add to Chat" placement="right">
                         <IconButton
                           onClick={() => {
                             this.handleRadio(index);
                           }}
-                          inputProps={{ "aria-label": "primary checkbox" }}
                           style={{ marginBottom: "-15px" }}
                         >
                           {!this.state.selected[index] && (
@@ -914,10 +864,12 @@ class courseView extends Component {
                     >
                       <CardContent>
                         <div>
-                          <Typography>Unweighted Compatibility: {students[index].compScore}</Typography>
+                          <Typography>
+                            Compatibility: {students[index].compScores[0]}
+                          </Typography>
                           <Typography variant="h6">
-                            Course Overlap: {students[index].courseOverlap}/
-                            {myCourseCodes.length}
+                            Course Overlap: {students[index].compScores[1]}/
+                            {numCourses}
                           </Typography>
 
                           <br />
@@ -951,16 +903,6 @@ class courseView extends Component {
                             {students[index].majors[2] &&
                               `, ${students[index].majors[2]}`}
                           </Typography>
-                          {/* <Typography variant="body1">Interests:</Typography>
-                          <Typography variant="body1">
-                            • {students[index].interests[0]}
-                          </Typography>
-                          <Typography variant="body1">
-                            • {students[index].interests[1]}
-                          </Typography>
-                          <Typography variant="body1">
-                            • {students[index].interests[2]}
-                          </Typography> */}
                         </div>
                       </CardContent>
                     </ButtonBase>
