@@ -95,22 +95,22 @@ class courseView extends Component {
         let compScores = this.state.students.map((student) => {
             let compScore = 0;
             if (student.classYear === myProfile.classYear) {
-                compScore = compScore + 1;
+                compScore = compScore + 20;
             }
-            compScore = compScore + this.compare(myProfile.majors.filter((major) => major !== ""), student.majors.filter((major) => major !== ""))
+            compScore = compScore + 10*this.compare(myProfile.majors.filter((major) => major !== ""), student.majors.filter((major) => major !== ""))
             if (student.varsitySports.filter(Boolean).length > 0 && myProfile.varsitySports.filter(Boolean).length > 0) {
-                compScore = compScore + 1;
+                compScore = compScore + 20;
             }
             if (student.greekLife !== "" && myProfile.greekLife !== "") {
-                compScore = compScore + 1;
+                compScore = compScore + 10;
             }
             compScore = compScore + (this.compare(myProfile.interests1, student.interests1) 
-            + this.compare(myProfile.interests2, student.interests2) 
-            + this.compare(myProfile.interests3, student.interests3))
-            compScore = compScore + this.compare(myProfile.instruments.filter((instrument) => instrument !== ""), student.instruments.filter((instrument) => instrument !== ""))
-            compScore = compScore + this.compare(myProfile.pickUpSports.filter((sport) => sport !== ""), student.pickUpSports.filter((sport) => sport !== ""))
-            compScore = compScore + this.compare(myProfile.pets.filter((pet) => pet !== ""), student.pets.filter((pet) => pet !== ""))
-            compScore = compScore + student.courseOverlap
+              + this.compare(myProfile.interests2, student.interests2) 
+              + this.compare(myProfile.interests3, student.interests3))**2
+            compScore = compScore + 10*this.compare(myProfile.instruments.filter((instrument) => instrument !== ""), student.instruments.filter((instrument) => instrument !== ""))
+            compScore = compScore + 10*this.compare(myProfile.pickUpSports.filter((sport) => sport !== ""), student.pickUpSports.filter((sport) => sport !== ""))
+            compScore = compScore + 10*this.compare(myProfile.pets.filter((pet) => pet !== ""), student.pets.filter((pet) => pet !== ""))
+            compScore = compScore + 5*student.courseOverlap
             return compScore
         })
         this.setState({compScores: compScores})
