@@ -21,6 +21,7 @@ export class feedView extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props.location.state.courseCode);
     if (!this.props.location.state) {
       this.props.history.push("/messagesView");
     } else {

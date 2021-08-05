@@ -7,12 +7,6 @@ import { db, auth } from "../firebase";
 import NavBar from "../components/NavBar";
 
 // MUI Stuff
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from "@material-ui/core/TextField";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -22,25 +16,20 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Menu from "@material-ui/icons/Menu";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import MenuItem from "@material-ui/core/MenuItem";
 import MessageIcon from "@material-ui/icons/ChatBubbleOutline";
 import StarIcon from "@material-ui/icons/StarOutline";
-import Checkbox from "@material-ui/core/Checkbox";
 
 // Body
 export class coursesView extends Component {
   state = {
     courses: [{}, {}, {}, {}, {}],
-    avatars0: [],
     avatars1: [],
     avatars2: [],
     avatars3: [],
     avatars4: [],
+    avatars5: [],
     loading: true,
     // notesOpen: [false, false, false, false, false],
     // overlayOn: true,
@@ -93,31 +82,31 @@ export class coursesView extends Component {
       .then((results) => {
         if (indexArray.includes(0)) {
           this.setState({
-            avatars0: results[currentIndex].data,
+            avatars1: results[currentIndex].data,
           });
           currentIndex++;
         }
         if (indexArray.includes(1)) {
           this.setState({
-            avatars1: results[currentIndex].data,
+            avatars2: results[currentIndex].data,
           });
           currentIndex++;
         }
         if (indexArray.includes(2)) {
           this.setState({
-            avatars2: results[currentIndex].data,
+            avatars3: results[currentIndex].data,
           });
           currentIndex++;
         }
         if (indexArray.includes(3)) {
           this.setState({
-            avatars3: results[currentIndex].data,
+            avatars4: results[currentIndex].data,
           });
           currentIndex++;
         }
         if (indexArray.includes(4)) {
           this.setState({
-            avatars4: results[currentIndex].data,
+            avatars5: results[currentIndex].data,
           });
           currentIndex++;
         }
@@ -156,66 +145,66 @@ export class coursesView extends Component {
     });
   };
 
-  handleAssignmentsOpen = (index) => {
-    let newAssignmentsOpen = this.state.assignmentsOpen.slice();
-    newAssignmentsOpen[index] = true;
-    this.setState({ assignmentsOpen: newAssignmentsOpen });
-  };
-  handleAssignmentsClose = () => {
-    this.setState({
-      assignmentsOpen: [false, false, false, false, false, false, false],
-    });
-  };
-  handleSubmitAssignment = (index) => {
-    let courseList = [];
-    let courseIndex = this.state.courses
-      .map((course) => course.courseCode)
-      .indexOf(this.state.assignCourse);
-    let newAssignments = [...this.state.courses[courseIndex].assignments];
-    console.log(newAssignments);
-    newAssignments.push({ day: index, name: this.state.assignmentName });
-    console.log(newAssignments);
-    let newCourse = {
-      courseCode: this.state.courses[courseIndex].courseCode,
-      courseName: this.state.courses[courseIndex].courseName,
-      courseColor: this.state.courses[courseIndex].courseColor,
-      assignments: newAssignments,
-    };
-    for (let j = 0; j < 5; j++) {
-      if (j !== courseIndex) {
-        courseList.push(this.state.courses[j]);
-      } else courseList.push(newCourse);
-    }
-    let newCourses = { courses: courseList };
-    console.log(newCourses);
-    axios.post("/edit", newCourses).then(() => {
-      this.setState({ courses: courseList });
-      return axios.get("/update");
-    });
-    this.setState({
-      assignmentsOpen: [false, false, false, false, false, false, false],
-      assignCourse: "",
-      assignmentName: "",
-    });
-  };
+  // handleAssignmentsOpen = (index) => {
+  //   let newAssignmentsOpen = this.state.assignmentsOpen.slice();
+  //   newAssignmentsOpen[index] = true;
+  //   this.setState({ assignmentsOpen: newAssignmentsOpen });
+  // };
+  // handleAssignmentsClose = () => {
+  //   this.setState({
+  //     assignmentsOpen: [false, false, false, false, false, false, false],
+  //   });
+  // };
+  // handleSubmitAssignment = (index) => {
+  //   let courseList = [];
+  //   let courseIndex = this.state.courses
+  //     .map((course) => course.courseCode)
+  //     .indexOf(this.state.assignCourse);
+  //   let newAssignments = [...this.state.courses[courseIndex].assignments];
+  //   console.log(newAssignments);
+  //   newAssignments.push({ day: index, name: this.state.assignmentName });
+  //   console.log(newAssignments);
+  //   let newCourse = {
+  //     courseCode: this.state.courses[courseIndex].courseCode,
+  //     courseName: this.state.courses[courseIndex].courseName,
+  //     courseColor: this.state.courses[courseIndex].courseColor,
+  //     assignments: newAssignments,
+  //   };
+  //   for (let j = 0; j < 5; j++) {
+  //     if (j !== courseIndex) {
+  //       courseList.push(this.state.courses[j]);
+  //     } else courseList.push(newCourse);
+  //   }
+  //   let newCourses = { courses: courseList };
+  //   console.log(newCourses);
+  //   axios.post("/edit", newCourses).then(() => {
+  //     this.setState({ courses: courseList });
+  //     return axios.get("/update");
+  //   });
+  //   this.setState({
+  //     assignmentsOpen: [false, false, false, false, false, false, false],
+  //     assignCourse: "",
+  //     assignmentName: "",
+  //   });
+  // };
 
-  handleNotesOpen = (index) => {
-    let newNotesOpen = this.state.notesOpen.slice();
-    newNotesOpen[index] = true;
-    this.setState({ notesOpen: newNotesOpen });
-  };
+  // handleNotesOpen = (index) => {
+  //   let newNotesOpen = this.state.notesOpen.slice();
+  //   newNotesOpen[index] = true;
+  //   this.setState({ notesOpen: newNotesOpen });
+  // };
 
-  handleNotesClose = () => {
-    this.setState({ notesOpen: [false, false, false, false, false] });
-  };
+  // handleNotesClose = () => {
+  //   this.setState({ notesOpen: [false, false, false, false, false] });
+  // };
 
   render() {
     let avatarList = [
-      this.state.avatars0,
       this.state.avatars1,
       this.state.avatars2,
       this.state.avatars3,
       this.state.avatars4,
+      this.state.avatars5,
     ];
     let indexArray = [];
     for (let j = 0; j < 5; j++) {
@@ -262,16 +251,13 @@ export class coursesView extends Component {
                       this.state.courses[index].name,
                       this.state.courses[index].color,
                       courseCodes
-                      // this.state.courses[index].undefined,
                     )
                   }
-                  // disabled={!this.state.overlayOn}
                   style={{
                     width: "100%",
                     height: "100%",
                     position: "relative",
                   }}
-                  Zindex="0"
                 >
                   <CardContent align="center">
                     <Typography
@@ -287,7 +273,6 @@ export class coursesView extends Component {
                     </Typography>
                     <hr />
                     <br />
-                    {/* Proof of concept styling idea */}
                     {loading && (
                       <div>
                         <span>
@@ -296,7 +281,7 @@ export class coursesView extends Component {
                             align="center"
                             style={{ marginBottom: "5px" }}
                           >
-                            Fetching course data...
+                            Fetching avatars...
                           </Typography>
                           <CircularProgress />
                         </span>
@@ -309,14 +294,19 @@ export class coursesView extends Component {
                         ))}
                       </AvatarGroup>
                     )}
-                    <Tooltip
-                      title="Course feed"
-                      placement="left"
-                      // onMouseEnter={() => {this.setState({overlayOn: false})}}
-                      // onMouseOut={() => {this.setState({overlayOn: true})}}
-                    >
+                    <Tooltip title="Course feed" placement="left">
                       <IconButton
-                        Zindex="10"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          this.props.history.push({
+                            pathname: "/feedView",
+                            state: {
+                              courseCode: this.state.courses[
+                                index
+                              ].code.replace(/\s/g, ""),
+                            },
+                          });
+                        }}
                         style={{ marginBottom: "-10px", position: "relative" }}
                       >
                         <MessageIcon />
@@ -580,7 +570,6 @@ export class coursesView extends Component {
                       // onMouseOut={() => {this.setState({overlayOn: true})}}
                     >
                       <IconButton
-                        Zindex="10"
                         style={{ marginBottom: "-10px", position: "relative" }}
                       >
                         <StarIcon />
