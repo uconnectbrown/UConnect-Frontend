@@ -8,7 +8,7 @@ function Chat(props) {
   const recipientName = props.recipientName;
   const recipientImage = props.recipientImage;
   const recipientId = props.recipientId;
-  const courseCode = props.courseCode;
+  const courseCode = props.code;
   const ownId = props.ownId;
   const ownImage = props.ownImage;
   const ownName = props.ownName;

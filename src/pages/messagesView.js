@@ -63,7 +63,6 @@ class messagesView extends Component {
     messages3: [],
     messages4: [],
     messages5: [],
-    cf1: {},
     ownName: "",
     ownImage: "",
     ownId: "",

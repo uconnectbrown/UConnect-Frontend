@@ -119,8 +119,7 @@ class courseView extends Component {
             this.state.messageNames,
             this.state.messageImages,
             this.state.messageIds,
-            this.state.courseInfo[0].replace(/\s/g, ""),
-            this.state.courseInfo.slice(0, 4),
+            this.state.code,
           ],
           allIds: this.state.allIds,
           previousPage: "courseView",
@@ -864,9 +863,9 @@ class courseView extends Component {
                     >
                       <CardContent>
                         <div>
-                          <Typography>
+                          {/* <Typography>
                             Compatibility: {students[index].compScores[0]}
-                          </Typography>
+                          </Typography> */}
                           <Typography variant="h6">
                             Course Overlap: {students[index].compScores[1]}/
                             {numCourses}

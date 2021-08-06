@@ -31,6 +31,7 @@ export class messageView extends Component {
     // Props that messageView needs
     recipientName: "",
     recipientImage: "",
+    recipientId: "",
     ownId: "",
     ownImage: "",
     ownName: "",

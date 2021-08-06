@@ -22,7 +22,6 @@ import MessageIcon from "@material-ui/icons/Sms";
 
 export class groupMessageView extends Component {
   state = {
-    courseInfo: "",
     recipientNames: [],
     recipientImages: [],
     recipientIds: [],
@@ -45,7 +44,6 @@ export class groupMessageView extends Component {
       let allIds = this.props.location.state.allIds;
       this.setState(
         {
-          courseInfo: this.props.location.state.recipientInfo[4],
           recipientNames: names,
           recipientImages: images,
           recipientIds: ids,

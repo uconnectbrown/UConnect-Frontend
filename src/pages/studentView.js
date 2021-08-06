@@ -117,7 +117,7 @@ class studentView extends Component {
         recipientImage: this.state.imageUrl,
         studentEmail: this.state.studentEmail,
         // Props that courseView needs
-        code: this.state.code,
+        code: this.state.code.replace(/\s/g, ""),
         name: this.state.name,
         color: this.state.color,
         numCourses: this.state.numCourses,
