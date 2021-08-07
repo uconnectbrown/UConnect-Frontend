@@ -95,7 +95,9 @@ class courseView extends Component {
             featuredProfiles.push(this.state.students[index])
           }
           console.log(featuredProfiles)
-          this.setState({ loading: false, featured: featuredProfiles });
+          this.setState({ featured: featuredProfiles }, () => {
+            this.setState({ loading: false })
+          });
         })
         .catch((err) => console.log(err));
     }
@@ -113,6 +115,22 @@ class courseView extends Component {
         numCourses: this.state.numCourses,
         // Prop for studentView
         studentEmail: this.state.students[index].email,
+      },
+    });
+  };
+
+  handleFeaturedClickOpen = (index) => {
+    this.setState({ open: true });
+    this.props.history.push({
+      pathname: "/studentView",
+      state: {
+        // Props upon return
+        code: this.state.code,
+        name: this.state.name,
+        color: this.state.color,
+        numCourses: this.state.numCourses,
+        // Prop for studentView
+        studentEmail: this.state.featured[index].email,
       },
     });
   };
@@ -236,6 +254,19 @@ class courseView extends Component {
     }
     let newIndexArray = [];
     let students = this.state.students;
+    let featured = this.state.featured;
+    console.log(varsitySports.props.children[0].props.value)
+    let sports = [];
+    {students.map((student) => {
+      sports.push(student.varsitySports[0])
+      sports.push(student.varsitySports[1])
+    })}
+    sports = sports.filter(Boolean)
+    // let sports = varsitySports.props.children.map((child) => {
+    //   child.props.value
+    // })
+    console.log(sports)
+    
     // need to update backend to include the courses if we want to do the overlap here...
     // let theirCourseCodes = this.state.students.map((student) => (
     //   student.courses.map((course) => (
@@ -261,6 +292,26 @@ class courseView extends Component {
         a[`${this.state.sortBy}`] < b[`${this.state.sortBy}`]
           ? 1
           : b[`${this.state.sortBy}`] < a[`${this.state.sortBy}`]
+          ? -1
+          : 0
+      );
+    } else if (
+      this.state.sortBy === "classYearD"
+    ) {
+      students.sort((a, b) =>
+        a['classYear'] < b['classYear']
+          ? 1
+          : b['classYear'] < a['classYear']
+          ? -1
+          : 0
+      );
+    } else if (
+      this.state.sortBy === "classYearA"
+    ) {
+      students.sort((a, b) =>
+        a['classYear'] > b['classYear']
+          ? 1
+          : b['classYear'] > a['classYear']
           ? -1
           : 0
       );
@@ -362,28 +413,60 @@ class courseView extends Component {
               size={"small"}
             >
               <MenuItem key="2021.5" value="2021.5">
-                2021.5
+                2021.5 ({students.map((student) => {
+                  if (student.classYear === "2021.5") {
+                    return student
+                  }
+                }).filter(Boolean).length})
               </MenuItem>
               <MenuItem key="2022" value="2022">
-                2022
+                2022 ({students.map((student) => {
+                  if (student.classYear === "2022") {
+                    return student
+                  }
+                }).filter(Boolean).length})
               </MenuItem>
               <MenuItem key="2022.5" value="2022.5">
-                2022.5
+                2022.5 ({students.map((student) => {
+                  if (student.classYear === "2022.5") {
+                    return student
+                  }
+                }).filter(Boolean).length})
               </MenuItem>
               <MenuItem key="2023" value="2023">
-                2023
+                2023 ({students.map((student) => {
+                  if (student.classYear === "2023") {
+                    return student
+                  }
+                }).filter(Boolean).length})
               </MenuItem>
               <MenuItem key="2023.5" value="2023.5">
-                2023.5
+                2023.5 ({students.map((student) => {
+                  if (student.classYear === "2023.5") {
+                    return student
+                  }
+                }).filter(Boolean).length})
               </MenuItem>
               <MenuItem key="2024" value="2024">
-                2024
+                2024 ({students.map((student) => {
+                  if (student.classYear === "2024") {
+                    return student
+                  }
+                }).filter(Boolean).length})
               </MenuItem>
               <MenuItem key="2024.5" value="2024.5">
-                2024.5
+                2024.5 ({students.map((student) => {
+                  if (student.classYear === "2024.5") {
+                    return student
+                  }
+                }).filter(Boolean).length})
               </MenuItem>
               <MenuItem key="2025" value="2025">
-                2025
+                2025 ({students.map((student) => {
+                  if (student.classYear === "2025") {
+                    return student
+                  }
+                }).filter(Boolean).length})
               </MenuItem>
             </TextField>
           )}
@@ -574,7 +657,7 @@ class courseView extends Component {
             )}
 
           {this.state.searchCriteria === "" &&
-            this.state.sortBy === "classYear" && (
+            this.state.sortBy === "classYearD" && (
               <span
                 style={{
                   marginRight: "291px",
@@ -582,7 +665,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "name" &&
-            this.state.sortBy === "classYear" && (
+            this.state.sortBy === "classYearD" && (
               <span
                 style={{
                   marginRight: "97px",
@@ -590,7 +673,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "classYear" &&
-            this.state.sortBy === "classYear" && (
+            this.state.sortBy === "classYearD" && (
               <span
                 style={{
                   marginRight: "78px",
@@ -598,7 +681,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "majors" &&
-            this.state.sortBy === "classYear" && (
+            this.state.sortBy === "classYearD" && (
               <span
                 style={{
                   marginRight: "90px",
@@ -606,7 +689,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "interests" &&
-            this.state.sortBy === "classYear" && (
+            this.state.sortBy === "classYearD" && (
               <span
                 style={{
                   marginRight: "78px",
@@ -614,7 +697,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "groups" &&
-            this.state.sortBy === "classYear" && (
+            this.state.sortBy === "classYearD" && (
               <span
                 style={{
                   marginRight: "97px",
@@ -622,7 +705,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "varsitySports" &&
-            this.state.sortBy === "classYear" && (
+            this.state.sortBy === "classYearD" && (
               <span
                 style={{
                   marginRight: "97px",
@@ -630,7 +713,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "affinitySports" &&
-            this.state.sortBy === "classYear" && (
+            this.state.sortBy === "classYearD" && (
               <span
                 style={{
                   marginRight: "73px",
@@ -638,7 +721,7 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "pickUpSports" &&
-            this.state.sortBy === "classYear" && (
+            this.state.sortBy === "classYearD" && (
               <span
                 style={{
                   marginRight: "94px",
@@ -646,10 +729,91 @@ class courseView extends Component {
               />
             )}
           {this.state.searchCriteria === "greekLife" &&
-            this.state.sortBy === "classYear" && (
+            this.state.sortBy === "classYearD" && (
               <span
                 style={{
                   marginRight: "61px",
+                }}
+              />
+            )}
+
+          {this.state.searchCriteria === "" &&
+            this.state.sortBy === "classYearA" && (
+              <span
+                style={{
+                  marginRight: "301px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "name" &&
+            this.state.sortBy === "classYearA" && (
+              <span
+                style={{
+                  marginRight: "107px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "classYear" &&
+            this.state.sortBy === "classYearA" && (
+              <span
+                style={{
+                  marginRight: "88px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "majors" &&
+            this.state.sortBy === "classYearA" && (
+              <span
+                style={{
+                  marginRight: "100px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "interests" &&
+            this.state.sortBy === "classYearA" && (
+              <span
+                style={{
+                  marginRight: "88px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "groups" &&
+            this.state.sortBy === "classYearA" && (
+              <span
+                style={{
+                  marginRight: "107px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "varsitySports" &&
+            this.state.sortBy === "classYearA" && (
+              <span
+                style={{
+                  marginRight: "107px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "affinitySports" &&
+            this.state.sortBy === "classYearA" && (
+              <span
+                style={{
+                  marginRight: "83px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "pickUpSports" &&
+            this.state.sortBy === "classYearA" && (
+              <span
+                style={{
+                  marginRight: "104px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "greekLife" &&
+            this.state.sortBy === "classYearA" && (
+              <span
+                style={{
+                  marginRight: "71px",
                 }}
               />
             )}
@@ -755,7 +919,10 @@ class courseView extends Component {
             <MenuItem key="lastName" value="lastName">
               Last Name: Alphabetical (A-Z)
             </MenuItem>
-            <MenuItem key="classYear" value="classYear">
+            <MenuItem key="classYearA" value="classYearA">
+              Graduating Class: Ascending (2021.5-2025)
+            </MenuItem>
+            <MenuItem key="classYearD" value="classYearD">
               Graduating Class: Descending (2025-2021.5)
             </MenuItem>
           </TextField>
@@ -836,10 +1003,103 @@ class courseView extends Component {
                 )}
               </div>
             )}
-            {this.state.featured.map((student) => {
-              <Typography>{student.firstName}</Typography>
-            })}
 
+            {this.state.searchCriteria === "" && (
+              <div>
+              <br />
+              <Typography variant="h4">Featured Profiles</Typography>
+              <br />
+              <GridList cols={3} spacing={20} cellHeight="auto">
+              {[0, 1, 2].map((index) => {
+                return <GridListTile item component="Card" sm>
+                <Card
+                  raised
+                  style={{
+                    borderStyle: "solid",
+                    borderWidth: "4px",
+                    borderColor: `${color}`,
+                    borderRadius: "5%",
+                    height: "97%",
+                  }}
+                  align="center"
+                >
+                  {/* {this.state.messaging && (
+                    <Tooltip title="Add to Chat" placement="right">
+                      <IconButton
+                        onClick={() => {
+                          this.handleRadio(index);
+                        }}
+                        style={{ marginBottom: "-15px" }}
+                      >
+                        {!this.state.selected[index] && (
+                          <ChatIcon color="secondary" />
+                        )}
+                        {this.state.selected[index] && (
+                          <FilledChatIcon color="secondary" />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                  )} */}
+  
+                  <ButtonBase
+                    size="large"
+                    color="primary"
+                    onClick={() => this.handleFeaturedClickOpen(index)}
+                    style={{ width: "100%" }}
+                  >
+                    <CardContent>
+                      <div>
+                        <Typography>
+                          Compatibility: {featured[index].compScores[0]}
+                        </Typography>
+                        <Typography variant="h6">
+                          Course Overlap: {featured[index].compScores[1]}/
+                          {numCourses}
+                        </Typography>
+  
+                        <br />
+                        <img
+                          alt="student"
+                          src={featured[index].imageUrl}
+                          style={{
+                            width: 150,
+                            height: 150,
+                            objectFit: "cover",
+                            borderRadius: "10%",
+                            borderStyle: "solid",
+                            borderColor: `${color}`,
+                            borderWidth: "3px",
+                          }}
+                        />
+  
+                        <br />
+                        <br />
+                        <Typography variant="h4">
+                          {featured[index].firstName}{" "}
+                          {featured[index].lastName}
+                        </Typography>
+                        <Typography variant="h6">
+                          Class of {featured[index].classYear}
+                        </Typography>
+                        <Typography variant="h6">
+                          {featured[index].majors[0]}
+                          {featured[index].majors[1] &&
+                            `, ${featured[index].majors[1]}`}
+                          {featured[index].majors[2] &&
+                            `, ${featured[index].majors[2]}`}
+                        </Typography>
+                      </div>
+                    </CardContent>
+                  </ButtonBase>
+                </Card>
+              </GridListTile>
+              })}
+              </GridList>
+              </div>
+            )}
+
+            <br />
+            <Typography variant="h4">Class Roster ({students.length})</Typography>
             <br />
             <GridList cols={3} spacing={20} cellHeight="auto">
               {

@@ -292,7 +292,7 @@ export class coursesView extends Component {
                       </div>
                     )}
                     {!loading && (
-                      <AvatarGroup max={10 - numCourses}>
+                      <AvatarGroup max={10 - numCourses} style={{marginLeft: "10px"}}>
                         {avatarList[index].map((url) => (
                           <Avatar src={url} style={{ marginBottom: "5px" }} />
                         ))}
