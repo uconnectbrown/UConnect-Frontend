@@ -229,7 +229,7 @@ class courseView extends Component {
   };
 
   handleCriteria = (event) => {
-    this.setState({ searchCriteria: event.target.value });
+    this.setState({ searchCriteria: event.target.value, searchTerm: "" });
   };
 
   handleSearch = (event) => {
@@ -266,7 +266,7 @@ class courseView extends Component {
     //   child.props.value
     // })
     console.log(sports)
-    
+
     // need to update backend to include the courses if we want to do the overlap here...
     // let theirCourseCodes = this.state.students.map((student) => (
     //   student.courses.map((course) => (
@@ -1099,7 +1099,35 @@ class courseView extends Component {
             )}
 
             <br />
-            <Typography variant="h4">Class Roster ({students.length})</Typography>
+            <Typography variant="h4">Class Roster ({indexArray
+                  .map((index) => {
+                    if (this.state.searchCriteria === "") {
+                      return index;
+                    } else if (this.state.searchCriteria === "name") {
+                      if (
+                        `${students[index]["firstName"]} ${students[index]["lastName"]}`
+                          .toString()
+                          .toLowerCase()
+                          .includes(
+                            this.state.searchTerm.toString().toLowerCase()
+                          )
+                      ) {
+                        return index;
+                      }
+                    } else if (
+                      students[index][`${this.state.searchCriteria}`]
+                        .toString()
+                        .toLowerCase()
+                        .includes(
+                          this.state.searchTerm.toString().toLowerCase()
+                        )
+                    ) {
+                      return index;
+                    }
+                  })
+                  .filter((index) => {
+                    return index !== undefined;
+                  }).length})</Typography>
             <br />
             <GridList cols={3} spacing={20} cellHeight="auto">
               {
