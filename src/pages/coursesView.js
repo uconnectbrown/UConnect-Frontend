@@ -20,6 +20,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import MessageIcon from "@material-ui/icons/ChatBubbleOutline";
 import StarIcon from "@material-ui/icons/StarOutline";
+import PeopleIcon from "@material-ui/icons/People";
 
 // Body
 export class coursesView extends Component {
@@ -245,7 +246,7 @@ export class coursesView extends Component {
                   height: "96%",
                 }}
               >
-                <ButtonBase
+                {/* <ButtonBase
                   onClick={() =>
                     this.handleClick(
                       this.state.courses[index].code,
@@ -261,7 +262,7 @@ export class coursesView extends Component {
                     height: "100%",
                     position: "relative",
                   }}
-                >
+                > */}
                   <CardContent align="center">
                     <Typography
                       variant="h4"
@@ -310,9 +311,26 @@ export class coursesView extends Component {
                             },
                           });
                         }}
-                        style={{ marginBottom: "-10px", position: "relative" }}
+                        style={{ marginBottom: "-10px", marginTop: "5px", position: "relative" }}
                       >
                         <MessageIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Course roster" placement="bottom">
+                      <IconButton
+                        onClick={() =>
+                          this.handleClick(
+                            this.state.courses[index].code,
+                            this.state.courses[index].name,
+                            this.state.courses[index].color,
+                            this.state.courses
+                              .map((course) => course.code)
+                              .filter(Boolean).length
+                          )
+                        }
+                        style={{ marginBottom: "-10px", marginTop: "5px", position: "relative" }}
+                      >
+                        <PeopleIcon />
                       </IconButton>
                     </Tooltip>
                     {/* <Tooltip
@@ -573,13 +591,13 @@ export class coursesView extends Component {
                       // onMouseOut={() => {this.setState({overlayOn: true})}}
                     >
                       <IconButton
-                        style={{ marginBottom: "-10px", position: "relative" }}
+                        style={{ marginBottom: "-10px", marginTop: "5px", position: "relative" }}
                       >
                         <StarIcon />
                       </IconButton>
                     </Tooltip>
                   </CardContent>
-                </ButtonBase>
+                {/* </ButtonBase> */}
               </Card>
             </GridListTile>
           ))}

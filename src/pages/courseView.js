@@ -38,6 +38,7 @@ class courseView extends Component {
     numCourses: "",
     // Axios
     students: [],
+    featured: [],
     // Other
     selected: [],
     searchTerm: "",
@@ -60,7 +61,7 @@ class courseView extends Component {
       axios
         .get(`/students/${auth.currentUser.email}/${codeNS}`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.setState({
             // Props from coursesView
             name: this.props.location.state.name,
@@ -74,7 +75,27 @@ class courseView extends Component {
           });
         })
         .then(() => {
-          this.setState({ loading: false });
+          let compScores = this.state.students.map((student) => {
+            return student.compScores[0]
+          })
+          let compScores_ = this.state.students.map((student) => {
+            return student.compScores[0]
+          })
+          compScores.sort((a, b) =>
+            a < b
+            ? 1
+            : b < a
+            ? -1
+            : 0
+          );
+          console.log(compScores)
+          let featuredProfiles = [];
+          for (let i = 0; i < 3; i++) {
+            let index = compScores_.indexOf(compScores[i])
+            featuredProfiles.push(this.state.students[index])
+          }
+          console.log(featuredProfiles)
+          this.setState({ loading: false, featured: featuredProfiles });
         })
         .catch((err) => console.log(err));
     }
@@ -300,18 +321,18 @@ class courseView extends Component {
             {/* <MenuItem key="interests" value="interests">
               General Interests
             </MenuItem> */}
-            <MenuItem key="groups" value="groups">
+            {/* <MenuItem key="groups" value="groups">
               Groups
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem key="varsitySports" value="varsitySports">
               Varsity Sport
             </MenuItem>
-            <MenuItem key="affinitySports" value="affinitySports">
-              Athletic Interests
+            <MenuItem key="pickUpSports" value="pickUpSports">
+              Pick-Up Sport
             </MenuItem>
-            <MenuItem key="greekLife" value="greekLife">
+            {/* <MenuItem key="greekLife" value="greekLife">
               Greek Organization
-            </MenuItem>
+            </MenuItem> */}
           </TextField>
 
           {this.state.searchCriteria === "name" && (
@@ -428,16 +449,16 @@ class courseView extends Component {
               }}
             />
           )}
-          {this.state.searchCriteria === "affinitySports" && (
+          {this.state.searchCriteria === "pickUpSports" && (
             <TextField
-              id="affinitySports"
-              name="affinitySports"
+              id="pickUpSports"
+              name="pickUpSports"
               autoComplete="off"
               type="text"
               label="Search..."
               value={this.state.searchTerm}
               onChange={this.handleSearch}
-              helperText="Please search an athletic interest"
+              helperText="Please search a pick-up sport"
               variant="outlined"
               size={"small"}
             />
@@ -533,6 +554,15 @@ class courseView extends Component {
                 }}
               />
             )}
+          {this.state.searchCriteria === "pickUpSports" &&
+            (this.state.sortBy === "firstName" ||
+              this.state.sortBy === "lastName") && (
+              <span
+                style={{
+                  marginRight: "203px",
+                }}
+              />
+            )}
           {this.state.searchCriteria === "greekLife" &&
             (this.state.sortBy === "firstName" ||
               this.state.sortBy === "lastName") && (
@@ -547,7 +577,7 @@ class courseView extends Component {
             this.state.sortBy === "classYear" && (
               <span
                 style={{
-                  marginRight: "381px",
+                  marginRight: "291px",
                 }}
               />
             )}
@@ -555,7 +585,7 @@ class courseView extends Component {
             this.state.sortBy === "classYear" && (
               <span
                 style={{
-                  marginRight: "187px",
+                  marginRight: "97px",
                 }}
               />
             )}
@@ -563,7 +593,7 @@ class courseView extends Component {
             this.state.sortBy === "classYear" && (
               <span
                 style={{
-                  marginRight: "168px",
+                  marginRight: "78px",
                 }}
               />
             )}
@@ -571,7 +601,7 @@ class courseView extends Component {
             this.state.sortBy === "classYear" && (
               <span
                 style={{
-                  marginRight: "180px",
+                  marginRight: "90px",
                 }}
               />
             )}
@@ -579,7 +609,7 @@ class courseView extends Component {
             this.state.sortBy === "classYear" && (
               <span
                 style={{
-                  marginRight: "168px",
+                  marginRight: "78px",
                 }}
               />
             )}
@@ -587,7 +617,7 @@ class courseView extends Component {
             this.state.sortBy === "classYear" && (
               <span
                 style={{
-                  marginRight: "187px",
+                  marginRight: "97px",
                 }}
               />
             )}
@@ -595,7 +625,7 @@ class courseView extends Component {
             this.state.sortBy === "classYear" && (
               <span
                 style={{
-                  marginRight: "187px",
+                  marginRight: "97px",
                 }}
               />
             )}
@@ -603,7 +633,15 @@ class courseView extends Component {
             this.state.sortBy === "classYear" && (
               <span
                 style={{
-                  marginRight: "163px",
+                  marginRight: "73px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "pickUpSports" &&
+            this.state.sortBy === "classYear" && (
+              <span
+                style={{
+                  marginRight: "94px",
                 }}
               />
             )}
@@ -611,7 +649,7 @@ class courseView extends Component {
             this.state.sortBy === "classYear" && (
               <span
                 style={{
-                  marginRight: "151px",
+                  marginRight: "61px",
                 }}
               />
             )}
@@ -677,6 +715,14 @@ class courseView extends Component {
               <span
                 style={{
                   marginRight: "64px",
+                }}
+              />
+            )}
+          {this.state.searchCriteria === "pickUpSports" &&
+            this.state.sortBy === "courseOverlap" && (
+              <span
+                style={{
+                  marginRight: "85px",
                 }}
               />
             )}
@@ -790,6 +836,9 @@ class courseView extends Component {
                 )}
               </div>
             )}
+            {this.state.featured.map((student) => {
+              <Typography>{student.firstName}</Typography>
+            })}
 
             <br />
             <GridList cols={3} spacing={20} cellHeight="auto">
@@ -863,9 +912,9 @@ class courseView extends Component {
                     >
                       <CardContent>
                         <div>
-                          {/* <Typography>
+                          <Typography>
                             Compatibility: {students[index].compScores[0]}
-                          </Typography> */}
+                          </Typography>
                           <Typography variant="h6">
                             Course Overlap: {students[index].compScores[1]}/
                             {numCourses}
