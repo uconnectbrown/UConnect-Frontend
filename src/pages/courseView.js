@@ -23,6 +23,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import ChatIcon from "@material-ui/icons/ChatBubbleOutline";
 import FilledChatIcon from "@material-ui/icons/ChatBubble";
 import Tooltip from "@material-ui/core/Tooltip";
+import StarIcon from "@material-ui/icons/StarOutline";
 
 // Import Data
 import majorList from "../resources/majors";
@@ -88,14 +89,34 @@ class courseView extends Component {
             ? -1
             : 0
           );
-          console.log(compScores)
+          // console.log(compScores)
           let featuredProfiles = [];
+          let indices = [];
           for (let i = 0; i < 3; i++) {
             let index = compScores_.indexOf(compScores[i])
+            indices.push(index)
             featuredProfiles.push(this.state.students[index])
           }
-          console.log(featuredProfiles)
-          this.setState({ featured: featuredProfiles }, () => {
+          const numStudents = this.state.students.length;
+          let indexArray = [];
+          for (let i = 0; i < numStudents; i++) {
+            indexArray.push(i);
+          }
+          let newProfiles = [];
+          indexArray.map((index) => {
+            if (indices.includes(index)) {
+              let newProfile = this.state.students[index];
+              newProfile['featured'] = true;
+              newProfiles.push(newProfile);
+            } else {
+              let newProfile = this.state.students[index];
+              newProfile['featured'] = false;
+              newProfiles.push(newProfile)
+            }
+          })
+          // console.log(featuredProfiles)
+          this.setState({ featured: featuredProfiles, students: newProfiles }, () => {
+            console.log(this.state.students)
             this.setState({ loading: false })
           });
         })
@@ -255,7 +276,7 @@ class courseView extends Component {
     let newIndexArray = [];
     let students = this.state.students;
     let featured = this.state.featured;
-    console.log(varsitySports.props.children[0].props.value)
+    // console.log(varsitySports.props.children[0].props.value)
     let sports = [];
     {students.map((student) => {
       sports.push(student.varsitySports[0])
@@ -265,7 +286,7 @@ class courseView extends Component {
     // let sports = varsitySports.props.children.map((child) => {
     //   child.props.value
     // })
-    console.log(sports)
+    // console.log(sports)
 
     // need to update backend to include the courses if we want to do the overlap here...
     // let theirCourseCodes = this.state.students.map((student) => (
@@ -336,9 +357,6 @@ class courseView extends Component {
     return (
       <div>
         <NavBar />
-        <Typography variant="h3" align="center" style={{ color: `${color}` }}>
-          {code}: {name}
-        </Typography>
         <IconButton
           variant="contained"
           style={{ color: `${color}` }}
@@ -348,6 +366,9 @@ class courseView extends Component {
           <BackIcon style={{ marginRight: "3px" }} />
           Back
         </IconButton>
+        <Typography variant="h3" align="center" style={{ marginTop: "-40px", marginBottom: "30px", color: `${color}` }}>
+          {code}: {name}
+        </Typography>
         <Typography align="center">
           <TextField
             id="searchCriteria"
@@ -378,9 +399,9 @@ class courseView extends Component {
             <MenuItem key="varsitySports" value="varsitySports">
               Varsity Sport
             </MenuItem>
-            <MenuItem key="pickUpSports" value="pickUpSports">
+            {/* <MenuItem key="pickUpSports" value="pickUpSports">
               Pick-Up Sport
-            </MenuItem>
+            </MenuItem> */}
             {/* <MenuItem key="greekLife" value="greekLife">
               Greek Organization
             </MenuItem> */}
@@ -1009,17 +1030,17 @@ class courseView extends Component {
               <br />
               <Typography variant="h4">Featured Profiles</Typography>
               <br />
-              <GridList cols={3} spacing={20} cellHeight="auto">
+              <GridList cols={5} spacing={20} cellHeight="auto">
               {[0, 1, 2].map((index) => {
                 return <GridListTile item component="Card" sm>
                 <Card
-                  raised
+                  
                   style={{
                     borderStyle: "solid",
                     borderWidth: "4px",
                     borderColor: `${color}`,
                     borderRadius: "5%",
-                    height: "97%",
+                    height: "95%",
                   }}
                   align="center"
                 >
@@ -1049,7 +1070,7 @@ class courseView extends Component {
                   >
                     <CardContent>
                       <div>
-                        <Typography>
+                        {/* <Typography>
                           Compatibility: {featured[index].compScores[0]}
                         </Typography>
                         <Typography variant="h6">
@@ -1057,13 +1078,20 @@ class courseView extends Component {
                           {numCourses}
                         </Typography>
   
-                        <br />
+                        <br /> */}
+                        <div>
+                        <Tooltip title="Featured profile" placement="right">
+                                <StarIcon color="primary" style={{marginTop: "-8px", marginBottom: "5px"}}/>
+                              </Tooltip>
+                              <br />
+                            </div>
                         <img
                           alt="student"
                           src={featured[index].imageUrl}
                           style={{
-                            width: 150,
-                            height: 150,
+                            marginBottom: "10px",
+                            width: 120,
+                            height: 120,
                             objectFit: "cover",
                             borderRadius: "10%",
                             borderStyle: "solid",
@@ -1071,17 +1099,14 @@ class courseView extends Component {
                             borderWidth: "3px",
                           }}
                         />
-  
-                        <br />
-                        <br />
-                        <Typography variant="h4">
+                        <Typography variant="h5" style={{marginBottom: "5px", lineHeight: "120%"}}>
                           {featured[index].firstName}{" "}
                           {featured[index].lastName}
                         </Typography>
-                        <Typography variant="h6">
+                        <Typography variant="subtitle1" style={{marginBottom: "5px", lineHeight: "120%"}}>
                           Class of {featured[index].classYear}
                         </Typography>
-                        <Typography variant="h6">
+                        <Typography variant="subtitle1" style={{lineHeight: "120%"}}>
                           {featured[index].majors[0]}
                           {featured[index].majors[1] &&
                             `, ${featured[index].majors[1]}`}
@@ -1129,7 +1154,7 @@ class courseView extends Component {
                     return index !== undefined;
                   }).length})</Typography>
             <br />
-            <GridList cols={3} spacing={20} cellHeight="auto">
+            <GridList cols={5} spacing={20} cellHeight="auto">
               {
                 (newIndexArray = indexArray
                   .map((index) => {
@@ -1164,7 +1189,7 @@ class courseView extends Component {
               {newIndexArray.map((index) => (
                 <GridListTile item component="Card" sm>
                   <Card
-                    raised
+                    
                     style={{
                       borderStyle: "solid",
                       borderWidth: "4px",
@@ -1200,7 +1225,7 @@ class courseView extends Component {
                     >
                       <CardContent>
                         <div>
-                          <Typography>
+                          {/* <Typography>
                             Compatibility: {students[index].compScores[0]}
                           </Typography>
                           <Typography variant="h6">
@@ -1208,13 +1233,22 @@ class courseView extends Component {
                             {numCourses}
                           </Typography>
 
-                          <br />
+                          <br /> */}
+                          {students[index].featured && (
+                            <div>
+                              <Tooltip title="Featured profile" placement="right">
+                                <StarIcon color="primary" style={{marginTop: "-8px", marginBottom: "5px"}}/>
+                              </Tooltip>
+                            <br />
+                            </div>
+                          )}
                           <img
                             alt="student"
                             src={students[index].imageUrl}
                             style={{
-                              width: 150,
-                              height: 150,
+                              marginBottom: "10px",
+                              width: 120,
+                              height: 120,
                               objectFit: "cover",
                               borderRadius: "10%",
                               borderStyle: "solid",
@@ -1223,16 +1257,16 @@ class courseView extends Component {
                             }}
                           />
 
-                          <br />
-                          <br />
-                          <Typography variant="h4">
+                          {/* <br />
+                          <br /> */}
+                          <Typography variant="h5" style={{marginBottom: "5px", lineHeight: "120%"}}>
                             {students[index].firstName}{" "}
                             {students[index].lastName}
                           </Typography>
-                          <Typography variant="h6">
+                          <Typography variant="subtitle1" style={{marginBottom: "5px", lineHeight: "120%"}}>
                             Class of {students[index].classYear}
                           </Typography>
-                          <Typography variant="h6">
+                          <Typography variant="subtitle1" style={{lineHeight: "120%"}}>
                             {students[index].majors[0]}
                             {students[index].majors[1] &&
                               `, ${students[index].majors[1]}`}

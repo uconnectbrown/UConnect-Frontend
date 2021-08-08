@@ -601,7 +601,7 @@ class profileView extends Component {
   };
 
   handleColorOpen = (index) => {
-    let newColorOpen = this.state.colorOpen;
+    let newColorOpen = [...this.state.colorOpen];
     newColorOpen[index] = true;
     this.setState({ colorOpen: newColorOpen });
   };
@@ -624,11 +624,12 @@ class profileView extends Component {
         this.updateCourses();
       });
     });
-    this.setState({ colorOpen: [false, false, false, false, false] });
+    this.setState({ courseColor: "", colorOpen: [false, false, false, false, false] });
   };
 
   handleColorClose = () => {
     this.setState({
+      courseColor: "",
       colorOpen: [false, false, false, false, false],
     });
   };
@@ -1161,7 +1162,6 @@ class profileView extends Component {
                       </CardContent>
                     </Card>
                   )}
-
                   <Dialog
                     overlayStyle={{ backgroundColor: "transparent" }}
                     open={this.state.bioOpen}
@@ -1194,7 +1194,7 @@ class profileView extends Component {
                       <Button
                         onClick={this.handleSubmitBio}
                         color="secondary"
-                        disabled={this.state.bio_ === this.state.bio}
+                        disabled={this.state.bio_ === this.state.bio || this.state.bio_.length >= 140}
                       >
                         Save Changes
                       </Button>
@@ -2369,6 +2369,7 @@ class profileView extends Component {
                                 <Button
                                   onClick={() => this.handleColorSave(index)}
                                   color="secondary"
+                                  disabled={this.state.courses[index].color === this.state.courseColor || this.state.courseColor === ""}
                                 >
                                   Save Changes
                                 </Button>
@@ -2472,17 +2473,17 @@ class profileView extends Component {
                               </TextField>
                             </DialogContent>
                             <DialogActions>
-                              <Button
-                                onClick={this.handleAddCourse}
-                                color="primary"
-                              >
-                                Add
-                              </Button>
-                              <Button
+                            <Button
                                 onClick={this.handleAddClose}
-                                color="primary"
+                                color="secondary"
                               >
                                 Cancel
+                              </Button>
+                              <Button
+                                onClick={this.handleAddCourse}
+                                color="secondary"
+                              >
+                                Add
                               </Button>
                             </DialogActions>
                           </Dialog>
