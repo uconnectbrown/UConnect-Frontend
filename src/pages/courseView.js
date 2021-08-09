@@ -31,12 +31,8 @@ import varsitySports from "../resources/varsitySports";
 import greekLife from "../resources/greekLife";
 
 class courseView extends Component {
+  // Needed props: code, name, color
   state = {
-    // Props from coursesView
-    code: "",
-    name: "",
-    color: "",
-    numCourses: "",
     // Axios
     students: [],
     featured: [],
@@ -54,6 +50,7 @@ class courseView extends Component {
   };
 
   componentDidMount() {
+    console.log(majorList);
     if (!this.props.location.state) {
       this.props.history.push("/coursesView");
     } else {
@@ -62,40 +59,26 @@ class courseView extends Component {
       axios
         .get(`/students/${auth.currentUser.email}/${codeNS}`)
         .then((res) => {
-          // console.log(res.data);
           this.setState({
-            // Props from coursesView
-            name: this.props.location.state.name,
-            color: this.props.location.state.color,
-            code: code,
-            numCourses: this.props.location.state.numCourses,
-            // Axios request
             students: res.data,
-            // Other
             selected: res.data.map((student) => false),
           });
         })
         .then(() => {
           let compScores = this.state.students.map((student) => {
-            return student.compScores[0]
-          })
+            return student.compScores[0];
+          });
           let compScores_ = this.state.students.map((student) => {
-            return student.compScores[0]
-          })
-          compScores.sort((a, b) =>
-            a < b
-            ? 1
-            : b < a
-            ? -1
-            : 0
-          );
+            return student.compScores[0];
+          });
+          compScores.sort((a, b) => (a < b ? 1 : b < a ? -1 : 0));
           // console.log(compScores)
           let featuredProfiles = [];
           let indices = [];
           for (let i = 0; i < 3; i++) {
-            let index = compScores_.indexOf(compScores[i])
-            indices.push(index)
-            featuredProfiles.push(this.state.students[index])
+            let index = compScores_.indexOf(compScores[i]);
+            indices.push(index);
+            featuredProfiles.push(this.state.students[index]);
           }
           const numStudents = this.state.students.length;
           let indexArray = [];
@@ -106,19 +89,21 @@ class courseView extends Component {
           indexArray.map((index) => {
             if (indices.includes(index)) {
               let newProfile = this.state.students[index];
-              newProfile['featured'] = true;
+              newProfile["featured"] = true;
               newProfiles.push(newProfile);
             } else {
               let newProfile = this.state.students[index];
-              newProfile['featured'] = false;
-              newProfiles.push(newProfile)
+              newProfile["featured"] = false;
+              newProfiles.push(newProfile);
             }
-          })
-          // console.log(featuredProfiles)
-          this.setState({ featured: featuredProfiles, students: newProfiles }, () => {
-            console.log(this.state.students)
-            this.setState({ loading: false })
           });
+          this.setState(
+            { featured: featuredProfiles, students: newProfiles },
+            () => {
+              console.log(this.state.students);
+              this.setState({ loading: false });
+            }
+          );
         })
         .catch((err) => console.log(err));
     }
@@ -130,12 +115,11 @@ class courseView extends Component {
       pathname: "/studentView",
       state: {
         // Props upon return
-        code: this.state.code,
-        name: this.state.name,
-        color: this.state.color,
-        numCourses: this.state.numCourses,
+        code: this.props.location.state.code,
+        name: this.props.location.state.name,
+        color: this.props.location.state.color,
         // Prop for studentView
-        studentEmail: this.state.students[index].email,
+        recipientId: this.state.students[index].email.split("@")[0],
       },
     });
   };
@@ -146,12 +130,12 @@ class courseView extends Component {
       pathname: "/studentView",
       state: {
         // Props upon return
-        code: this.state.code,
-        name: this.state.name,
-        color: this.state.color,
-        numCourses: this.state.numCourses,
+        code: this.props.location.state.code,
+        name: this.props.location.state.name,
+        color: this.props.location.state.color,
+        numCourses: this.props.location.state.numCourses,
         // Prop for studentView
-        studentEmail: this.state.featured[index].email,
+        recipientId: this.state.featured[index].email.split("@")[0],
       },
     });
   };
@@ -161,28 +145,33 @@ class courseView extends Component {
       this.props.history.push({
         pathname: "/messageView",
         state: {
-          recipientInfo: [
-            this.state.messageNames[0],
-            this.state.messageImages[0],
-            this.state.messageIds[0],
-            this.state.courseInfo[0].replace(/\s/g, ""),
-            this.state.courseInfo.slice(0, 4),
-          ],
+          // Props that messageView needs
+          recipientName: this.state.messageNames[0],
+          recipientImage: this.state.messageImages[0],
+          recipientId: this.state.messageIds[0],
           previousPage: "courseView",
+          // Props that courseView needs upon return
+          code: this.props.location.state.code,
+          name: this.props.location.state.name,
+          color: this.props.location.state.color,
+          numCourses: this.props.location.state.numCourses,
         },
       });
     } else if (this.state.selected.filter(Boolean).length > 1) {
       this.props.history.push({
         pathname: "/groupMessageView",
         state: {
-          recipientInfo: [
-            this.state.messageNames,
-            this.state.messageImages,
-            this.state.messageIds,
-            this.state.code,
-          ],
-          allIds: this.state.allIds,
+          // Props that groupMessageView needs
+          recipientNames: this.state.messageNames,
+          recipientImages: this.state.messageImages,
+          recipientIds: this.state.messageIds,
           previousPage: "courseView",
+          // Props that courseView needs upon return
+          code: this.props.location.state.code,
+          name: this.props.location.state.name,
+          color: this.props.location.state.color,
+          numCourses: this.props.location.state.numCourses,
+          allIds: this.state.allIds,
         },
       });
     }
@@ -264,10 +253,9 @@ class courseView extends Component {
   compare = (a1, a2) => a1.filter((v) => a2.includes(v)).length;
 
   render() {
-    const code = this.state.code;
-    const name = this.state.name;
-    const color = this.state.color;
-    const numCourses = this.state.numCourses;
+    const code = this.props.location.state.code;
+    const name = this.props.location.state.name;
+    const color = this.props.location.state.color;
     const numStudents = this.state.students.length;
     let indexArray = [];
     for (let i = 0; i < numStudents; i++) {
@@ -278,11 +266,13 @@ class courseView extends Component {
     let featured = this.state.featured;
     // console.log(varsitySports.props.children[0].props.value)
     let sports = [];
-    {students.map((student) => {
-      sports.push(student.varsitySports[0])
-      sports.push(student.varsitySports[1])
-    })}
-    sports = sports.filter(Boolean)
+    {
+      students.map((student) => {
+        sports.push(student.varsitySports[0]);
+        sports.push(student.varsitySports[1]);
+      });
+    }
+    sports = sports.filter(Boolean);
     // let sports = varsitySports.props.children.map((child) => {
     //   child.props.value
     // })
@@ -316,23 +306,19 @@ class courseView extends Component {
           ? -1
           : 0
       );
-    } else if (
-      this.state.sortBy === "classYearD"
-    ) {
+    } else if (this.state.sortBy === "classYearD") {
       students.sort((a, b) =>
-        a['classYear'] < b['classYear']
+        a["classYear"] < b["classYear"]
           ? 1
-          : b['classYear'] < a['classYear']
+          : b["classYear"] < a["classYear"]
           ? -1
           : 0
       );
-    } else if (
-      this.state.sortBy === "classYearA"
-    ) {
+    } else if (this.state.sortBy === "classYearA") {
       students.sort((a, b) =>
-        a['classYear'] > b['classYear']
+        a["classYear"] > b["classYear"]
           ? 1
-          : b['classYear'] > a['classYear']
+          : b["classYear"] > a["classYear"]
           ? -1
           : 0
       );
@@ -366,7 +352,15 @@ class courseView extends Component {
           <BackIcon style={{ marginRight: "3px" }} />
           Back
         </IconButton>
-        <Typography variant="h3" align="center" style={{ marginTop: "-40px", marginBottom: "30px", color: `${color}` }}>
+        <Typography
+          variant="h3"
+          align="center"
+          style={{
+            marginTop: "-40px",
+            marginBottom: "30px",
+            color: `${color}`,
+          }}
+        >
           {code}: {name}
         </Typography>
         <Typography align="center">
@@ -434,60 +428,108 @@ class courseView extends Component {
               size={"small"}
             >
               <MenuItem key="2021.5" value="2021.5">
-                2021.5 ({students.map((student) => {
-                  if (student.classYear === "2021.5") {
-                    return student
-                  }
-                }).filter(Boolean).length})
+                2021.5 (
+                {
+                  students
+                    .map((student) => {
+                      if (student.classYear === "2021.5") {
+                        return student;
+                      }
+                    })
+                    .filter(Boolean).length
+                }
+                )
               </MenuItem>
               <MenuItem key="2022" value="2022">
-                2022 ({students.map((student) => {
-                  if (student.classYear === "2022") {
-                    return student
-                  }
-                }).filter(Boolean).length})
+                2022 (
+                {
+                  students
+                    .map((student) => {
+                      if (student.classYear === "2022") {
+                        return student;
+                      }
+                    })
+                    .filter(Boolean).length
+                }
+                )
               </MenuItem>
               <MenuItem key="2022.5" value="2022.5">
-                2022.5 ({students.map((student) => {
-                  if (student.classYear === "2022.5") {
-                    return student
-                  }
-                }).filter(Boolean).length})
+                2022.5 (
+                {
+                  students
+                    .map((student) => {
+                      if (student.classYear === "2022.5") {
+                        return student;
+                      }
+                    })
+                    .filter(Boolean).length
+                }
+                )
               </MenuItem>
               <MenuItem key="2023" value="2023">
-                2023 ({students.map((student) => {
-                  if (student.classYear === "2023") {
-                    return student
-                  }
-                }).filter(Boolean).length})
+                2023 (
+                {
+                  students
+                    .map((student) => {
+                      if (student.classYear === "2023") {
+                        return student;
+                      }
+                    })
+                    .filter(Boolean).length
+                }
+                )
               </MenuItem>
               <MenuItem key="2023.5" value="2023.5">
-                2023.5 ({students.map((student) => {
-                  if (student.classYear === "2023.5") {
-                    return student
-                  }
-                }).filter(Boolean).length})
+                2023.5 (
+                {
+                  students
+                    .map((student) => {
+                      if (student.classYear === "2023.5") {
+                        return student;
+                      }
+                    })
+                    .filter(Boolean).length
+                }
+                )
               </MenuItem>
               <MenuItem key="2024" value="2024">
-                2024 ({students.map((student) => {
-                  if (student.classYear === "2024") {
-                    return student
-                  }
-                }).filter(Boolean).length})
+                2024 (
+                {
+                  students
+                    .map((student) => {
+                      if (student.classYear === "2024") {
+                        return student;
+                      }
+                    })
+                    .filter(Boolean).length
+                }
+                )
               </MenuItem>
               <MenuItem key="2024.5" value="2024.5">
-                2024.5 ({students.map((student) => {
-                  if (student.classYear === "2024.5") {
-                    return student
-                  }
-                }).filter(Boolean).length})
+                2024.5 (
+                {
+                  students
+                    .map((student) => {
+                      if (student.classYear === "2024.5") {
+                        return student;
+                      }
+                    })
+                    .filter(Boolean).length
+                }
+                )
               </MenuItem>
               <MenuItem key="2025" value="2025">
-                2025 ({students.map((student) => {
-                  if (student.classYear === "2025") {
-                    return student
-                  }
-                }).filter(Boolean).length})
+                2025 (
+                {
+                  students
+                    .map((student) => {
+                      if (student.classYear === "2025") {
+                        return student;
+                      }
+                    })
+                    .filter(Boolean).length
+                }
+                )
               </MenuItem>
             </TextField>
           )}
@@ -1027,24 +1069,24 @@ class courseView extends Component {
 
             {this.state.searchCriteria === "" && (
               <div>
-              <br />
-              <Typography variant="h4">Featured Profiles</Typography>
-              <br />
-              <GridList cols={5} spacing={20} cellHeight="auto">
-              {[0, 1, 2].map((index) => {
-                return <GridListTile item component="Card" sm>
-                <Card
-                  
-                  style={{
-                    borderStyle: "solid",
-                    borderWidth: "4px",
-                    borderColor: `${color}`,
-                    borderRadius: "5%",
-                    height: "95%",
-                  }}
-                  align="center"
-                >
-                  {/* {this.state.messaging && (
+                <br />
+                <Typography variant="h4">Featured Profiles</Typography>
+                <br />
+                <GridList cols={5} spacing={20} cellHeight="auto">
+                  {[0, 1, 2].map((index) => {
+                    return (
+                      <GridListTile item component="Card" sm>
+                        <Card
+                          style={{
+                            borderStyle: "solid",
+                            borderWidth: "4px",
+                            borderColor: `${color}`,
+                            borderRadius: "5%",
+                            height: "95%",
+                          }}
+                          align="center"
+                        >
+                          {/* {this.state.messaging && (
                     <Tooltip title="Add to Chat" placement="right">
                       <IconButton
                         onClick={() => {
@@ -1061,16 +1103,16 @@ class courseView extends Component {
                       </IconButton>
                     </Tooltip>
                   )} */}
-  
-                  <ButtonBase
-                    size="large"
-                    color="primary"
-                    onClick={() => this.handleFeaturedClickOpen(index)}
-                    style={{ width: "100%" }}
-                  >
-                    <CardContent>
-                      <div>
-                        {/* <Typography>
+
+                          <ButtonBase
+                            size="large"
+                            color="primary"
+                            onClick={() => this.handleFeaturedClickOpen(index)}
+                            style={{ width: "100%" }}
+                          >
+                            <CardContent>
+                              <div>
+                                {/* <Typography>
                           Compatibility: {featured[index].compScores[0]}
                         </Typography>
                         <Typography variant="h6">
@@ -1079,52 +1121,80 @@ class courseView extends Component {
                         </Typography>
   
                         <br /> */}
-                        <div>
-                        <Tooltip title="Featured profile" placement="right">
-                                <StarIcon color="primary" style={{marginTop: "-8px", marginBottom: "5px"}}/>
-                              </Tooltip>
-                              <br />
-                            </div>
-                        <img
-                          alt="student"
-                          src={featured[index].imageUrl}
-                          style={{
-                            marginBottom: "10px",
-                            width: 120,
-                            height: 120,
-                            objectFit: "cover",
-                            borderRadius: "10%",
-                            borderStyle: "solid",
-                            borderColor: `${color}`,
-                            borderWidth: "3px",
-                          }}
-                        />
-                        <Typography variant="h5" style={{marginBottom: "5px", lineHeight: "120%"}}>
-                          {featured[index].firstName}{" "}
-                          {featured[index].lastName}
-                        </Typography>
-                        <Typography variant="subtitle1" style={{marginBottom: "5px", lineHeight: "120%"}}>
-                          Class of {featured[index].classYear}
-                        </Typography>
-                        <Typography variant="subtitle1" style={{lineHeight: "120%"}}>
-                          {featured[index].majors[0]}
-                          {featured[index].majors[1] &&
-                            `, ${featured[index].majors[1]}`}
-                          {featured[index].majors[2] &&
-                            `, ${featured[index].majors[2]}`}
-                        </Typography>
-                      </div>
-                    </CardContent>
-                  </ButtonBase>
-                </Card>
-              </GridListTile>
-              })}
-              </GridList>
+                                <div>
+                                  <Tooltip
+                                    title="Featured profile"
+                                    placement="right"
+                                  >
+                                    <StarIcon
+                                      color="primary"
+                                      style={{
+                                        marginTop: "-8px",
+                                        marginBottom: "5px",
+                                      }}
+                                    />
+                                  </Tooltip>
+                                  <br />
+                                </div>
+                                <img
+                                  alt="student"
+                                  src={featured[index].imageUrl}
+                                  style={{
+                                    marginBottom: "10px",
+                                    width: 120,
+                                    height: 120,
+                                    objectFit: "cover",
+                                    borderRadius: "10%",
+                                    borderStyle: "solid",
+                                    borderColor: `${color}`,
+                                    borderWidth: "3px",
+                                  }}
+                                />
+                                <Typography
+                                  variant="h5"
+                                  style={{
+                                    marginBottom: "5px",
+                                    lineHeight: "120%",
+                                  }}
+                                >
+                                  {featured[index].firstName}{" "}
+                                  {featured[index].lastName}
+                                </Typography>
+                                <Typography
+                                  variant="subtitle1"
+                                  style={{
+                                    marginBottom: "5px",
+                                    lineHeight: "120%",
+                                  }}
+                                >
+                                  Class of {featured[index].classYear}
+                                </Typography>
+                                <Typography
+                                  variant="subtitle1"
+                                  style={{ lineHeight: "120%" }}
+                                >
+                                  {featured[index].majors[0]}
+                                  {featured[index].majors[1] &&
+                                    `, ${featured[index].majors[1]}`}
+                                  {featured[index].majors[2] &&
+                                    `, ${featured[index].majors[2]}`}
+                                </Typography>
+                              </div>
+                            </CardContent>
+                          </ButtonBase>
+                        </Card>
+                      </GridListTile>
+                    );
+                  })}
+                </GridList>
               </div>
             )}
 
             <br />
-            <Typography variant="h4">Class Roster ({indexArray
+            <Typography variant="h4">
+              Class Roster (
+              {
+                indexArray
                   .map((index) => {
                     if (this.state.searchCriteria === "") {
                       return index;
@@ -1152,7 +1222,10 @@ class courseView extends Component {
                   })
                   .filter((index) => {
                     return index !== undefined;
-                  }).length})</Typography>
+                  }).length
+              }
+              )
+            </Typography>
             <br />
             <GridList cols={5} spacing={20} cellHeight="auto">
               {
@@ -1189,7 +1262,6 @@ class courseView extends Component {
               {newIndexArray.map((index) => (
                 <GridListTile item component="Card" sm>
                   <Card
-                    
                     style={{
                       borderStyle: "solid",
                       borderWidth: "4px",
@@ -1236,10 +1308,19 @@ class courseView extends Component {
                           <br /> */}
                           {students[index].featured && (
                             <div>
-                              <Tooltip title="Featured profile" placement="right">
-                                <StarIcon color="primary" style={{marginTop: "-8px", marginBottom: "5px"}}/>
+                              <Tooltip
+                                title="Featured profile"
+                                placement="right"
+                              >
+                                <StarIcon
+                                  color="primary"
+                                  style={{
+                                    marginTop: "-8px",
+                                    marginBottom: "5px",
+                                  }}
+                                />
                               </Tooltip>
-                            <br />
+                              <br />
                             </div>
                           )}
                           <img
@@ -1259,14 +1340,23 @@ class courseView extends Component {
 
                           {/* <br />
                           <br /> */}
-                          <Typography variant="h5" style={{marginBottom: "5px", lineHeight: "120%"}}>
+                          <Typography
+                            variant="h5"
+                            style={{ marginBottom: "5px", lineHeight: "120%" }}
+                          >
                             {students[index].firstName}{" "}
                             {students[index].lastName}
                           </Typography>
-                          <Typography variant="subtitle1" style={{marginBottom: "5px", lineHeight: "120%"}}>
+                          <Typography
+                            variant="subtitle1"
+                            style={{ marginBottom: "5px", lineHeight: "120%" }}
+                          >
                             Class of {students[index].classYear}
                           </Typography>
-                          <Typography variant="subtitle1" style={{lineHeight: "120%"}}>
+                          <Typography
+                            variant="subtitle1"
+                            style={{ lineHeight: "120%" }}
+                          >
                             {students[index].majors[0]}
                             {students[index].majors[1] &&
                               `, ${students[index].majors[1]}`}

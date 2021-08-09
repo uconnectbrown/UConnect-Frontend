@@ -21,23 +21,23 @@ import Grid from "@material-ui/core/Grid";
 
 export class messageView extends Component {
   state = {
-    // Props that courseView needs
-    code: "",
-    name: "",
-    color: "",
-    numCourses: "",
+    // // Props that courseView needs
+    // code: "",
+    // name: "",
+    // color: "",
+    // numCourses: "",
     // Props that studentView needs
-    studentEmail: "",
-    // Props that messageView needs
+    recipientId: "",
+    // Props that messageView needs passed in
     recipientName: "",
     recipientImage: "",
-    recipientId: "",
+    previousPage: "",
+    // Other props that messageView needs
     ownId: "",
     ownImage: "",
     ownName: "",
     roomId: "",
     loading: true,
-    previousPage: "",
   };
 
   componentDidMount() {
@@ -45,17 +45,17 @@ export class messageView extends Component {
       this.props.history.push("/messagesView");
     } else {
       this.setState({
-        // Props that courseView needs
-        code: this.props.location.state.code,
-        name: this.props.location.state.name,
-        color: this.props.location.state.color,
-        numCourses: this.props.location.state.numCourses,
-        // Props that studnetView needs
-        studentEmail: this.props.location.state.studentEmail,
+        // // Props that courseView needs
+        // code: this.props.location.state.code,
+        // name: this.props.location.state.name,
+        // color: this.props.location.state.color,
+        // numCourses: this.props.location.state.numCourses,
+        // Props that studentView needs
+
         // Props that messageView needs
+        recipientId: this.props.location.state.recipientId, // studentView needs
         recipientName: this.props.location.state.recipientName,
         recipientImage: this.props.location.state.recipientImage,
-        recipientId: this.props.location.state.studentEmail.split("@")[0],
         previousPage: this.props.location.state.previousPage,
       });
     }
@@ -68,10 +68,7 @@ export class messageView extends Component {
           ownImage: res.data.imageUrl,
           ownName: res.data.firstName + " " + res.data.lastName,
         });
-        let alphaId = [
-          res.data.emailId,
-          this.props.location.state.studentEmail.split("@")[0],
-        ]
+        let alphaId = [res.data.emailId, this.props.location.state.recipientId]
           .sort()
           .join(" ");
         this.setState({
@@ -93,12 +90,10 @@ export class messageView extends Component {
       this.props.history.push({
         pathname: "/courseView",
         state: {
-          courseInfo: [
-            this.state.courseInfo[0],
-            this.state.courseInfo[1],
-            this.state.courseInfo[2],
-            this.state.courseInfo[3],
-          ],
+          code: this.props.location.state.code,
+          name: this.props.location.state.name,
+          color: this.props.location.state.color,
+          numCourses: this.props.location.state.numCourses,
         },
       });
     } else if (this.state.previousPage == "messagesView") {
@@ -107,20 +102,13 @@ export class messageView extends Component {
       this.props.history.push({
         pathname: "/studentView",
         state: {
-          code: this.state.code,
-          name: this.state.name,
-          color: this.state.color,
-          numCourses: this.state.numCourses,
-          studentEmail: this.state.studentEmail,
+          code: this.props.location.state.code,
+          name: this.props.location.state.name,
+          color: this.props.location.state.color,
+          numCourses: this.props.location.state.numCourses,
+          recipientId: this.props.location.state.recipientId,
         },
       });
-      console.log(
-        this.state.code,
-        this.state.name,
-        this.state.color,
-        this.state.numCourses,
-        this.state.studentEmail
-      );
     }
   };
 
@@ -184,7 +172,7 @@ export class messageView extends Component {
               recipientName={this.state.recipientName}
               recipientImage={this.state.recipientImage}
               recipientId={this.state.recipientId}
-              code={this.state.code}
+              code={this.props.location.state.code.replace(/\s/g, "")}
               ownId={this.state.ownId}
               ownImage={this.state.ownImage}
               ownName={this.state.ownName}

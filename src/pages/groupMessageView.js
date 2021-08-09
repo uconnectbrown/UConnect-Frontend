@@ -5,7 +5,6 @@ import md5 from "md5";
 import { auth } from "../firebase";
 
 // Components
-import NavBar from "../components/NavBar";
 import GroupChat from "../components/GroupChat";
 
 // MUI Stuff
@@ -22,10 +21,15 @@ import MessageIcon from "@material-ui/icons/Sms";
 
 export class groupMessageView extends Component {
   state = {
+    // // Props that courseView needs
+    // code: "",
+    // name: "",
+    // color: "",
+    // numCourses: "",
+    // Props that groupMessageView needs
     recipientNames: [],
     recipientImages: [],
     recipientIds: [],
-    courseCode: "",
     ownId: "",
     ownImage: "",
     ownName: "",
@@ -38,40 +42,38 @@ export class groupMessageView extends Component {
     if (!this.props.location.state) {
       this.props.history.push("/messagesView");
     } else {
-      let names = this.props.location.state.recipientInfo[0];
-      let images = this.props.location.state.recipientInfo[1];
-      let ids = this.props.location.state.recipientInfo[2];
-      let allIds = this.props.location.state.allIds;
-      this.setState(
-        {
-          recipientNames: names,
-          recipientImages: images,
-          recipientIds: ids,
-          courseCode: this.props.location.state.recipientInfo[3],
-          previousPage: this.props.location.state.previousPage,
-        },
-        () => {
-          axios
-            .get(`/senderInfo/${auth.currentUser.email}`)
-            .then((res) => {
-              this.setState({
-                ownId: res.data.emailId,
-                ownImage: res.data.imageUrl,
-                ownName: res.data.firstName + " " + res.data.lastName,
-              });
-              let alphaId = allIds.sort().join(" ");
-              console.log(ids);
-              this.setState({
-                roomId: md5(alphaId),
-              });
-            })
-            .then(() => {
-              this.setState({ loading: false });
-            })
-            .catch((err) => console.error(err));
-        }
-      );
+      this.setState({
+        // // Props that courseView needs
+        // code: this.props.location.state.code,
+        // name: this.props.location.state.name,
+        // color: this.props.location.state.color,
+        // numCourses: this.props.location.state.numCourses,
+        // Props that groupMesssageView needs
+        recipientNames: this.props.location.state.recipientNames,
+        recipientImages: this.props.location.state.recipientImages,
+        recipientIds: this.props.location.state.recipientIds,
+        previousPage: this.props.location.state.previousPage,
+      });
     }
+
+    axios
+      .get(`/senderInfo/${auth.currentUser.email}`)
+      .then((res) => {
+        this.setState({
+          ownId: res.data.emailId,
+          ownImage: res.data.imageUrl,
+          ownName: res.data.firstName + " " + res.data.lastName,
+        });
+        let alphaId = this.props.location.state.allIds.sort().join(" ");
+        console.log(alphaId);
+        this.setState({
+          roomId: md5(alphaId),
+        });
+      })
+      .then(() => {
+        this.setState({ loading: false });
+      })
+      .catch((err) => console.error(err));
   }
 
   handleBack = () => {
@@ -79,12 +81,10 @@ export class groupMessageView extends Component {
       this.props.history.push({
         pathname: "/courseView",
         state: {
-          courseInfo: [
-            this.state.courseInfo[0],
-            this.state.courseInfo[1],
-            this.state.courseInfo[2],
-            this.state.courseInfo[3],
-          ],
+          code: this.props.location.state.code,
+          name: this.props.location.state.name,
+          color: this.props.location.state.color,
+          numCourses: this.props.location.state.numCourses,
         },
       });
     } else {
@@ -101,7 +101,6 @@ export class groupMessageView extends Component {
       <div>
         {this.state.loading && (
           <div align="center">
-            <NavBar />
             <br />
             <CircularProgress size={100} />
             <br />
@@ -111,7 +110,6 @@ export class groupMessageView extends Component {
         )}
         {!this.state.loading && (
           <div>
-            <NavBar />
             <AppBar>
               <Toolbar>
                 <Grid container>
@@ -178,7 +176,7 @@ export class groupMessageView extends Component {
               recipientNames={this.state.recipientNames}
               recipientImages={this.state.recipientImages}
               recipientIds={this.state.recipientIds}
-              courseCode={this.state.courseCode}
+              courseCode={this.props.location.state.code.replace(/\s/g, "")}
               ownId={this.state.ownId}
               ownImage={this.state.ownImage}
               ownName={this.state.ownName}

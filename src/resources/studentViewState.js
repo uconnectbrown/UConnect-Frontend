@@ -33,14 +33,6 @@ const studentViewState = {
   favoriteMovie: "",
   favoriteShow: "",
   favoriteArtist: "",
-  // Props from courseView
-  // Send back on return
-  code: "",
-  name: "",
-  color: "",
-  numCourses: "",
-  // Prop for studentView
-  studentEmail: "",
 };
 
 export default studentViewState;

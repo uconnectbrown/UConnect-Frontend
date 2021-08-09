@@ -15,7 +15,7 @@ function CourseFeed(props) {
   const handleFeed = () => {
     history.push({
       pathname: "/feedView",
-      state: { courseCode: code },
+      state: { code: code, previousPage: "messagesView" },
     });
   };
   return (

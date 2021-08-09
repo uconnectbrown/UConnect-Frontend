@@ -4,16 +4,20 @@ import axios from "axios";
 import { auth } from "../firebase";
 
 // Components
-import NavBar from "../components/NavBar";
 import Feed from "../components/Feed";
 
 // MUI Stuff
 import BackIcon from "@material-ui/icons/ArrowBack";
 import IconButton from "@material-ui/core/IconButton";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import MessageIcon from "@material-ui/icons/Sms";
 
 export class feedView extends Component {
   state = {
-    courseCode: "",
+    code: "",
     ownId: "",
     ownImage: "",
     ownName: "",
@@ -21,12 +25,11 @@ export class feedView extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props.location.state.courseCode);
     if (!this.props.location.state) {
       this.props.history.push("/messagesView");
     } else {
       this.setState({
-        courseCode: this.props.location.state.courseCode,
+        code: this.props.location.state.code,
       });
 
       axios
@@ -46,6 +49,14 @@ export class feedView extends Component {
   }
 
   handleBack = () => {
+    if (this.props.location.state.previousPage === "messagesView") {
+      this.props.history.push("/messagesView");
+    } else {
+      this.props.history.push("/coursesView");
+    }
+  };
+
+  handleMessage = () => {
     this.props.history.push("/messagesView");
   };
 
@@ -54,17 +65,44 @@ export class feedView extends Component {
       <div>
         {!this.state.loading && (
           <div>
-            <NavBar />
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="back"
-              onClick={this.handleBack}
-            >
-              <BackIcon />
-            </IconButton>
+            <AppBar>
+              <Toolbar>
+                <Grid container>
+                  <Grid item sm>
+                    <IconButton
+                      edge="start"
+                      color="inherit"
+                      aria-label="back"
+                      onClick={this.handleBack}
+                    >
+                      <BackIcon />
+                      <Typography variant="h6">Back</Typography>
+                    </IconButton>
+                  </Grid>
+                  <Grid item sm align="center">
+                    <Typography variant="h4">
+                      Course Feed for {this.state.code}
+                    </Typography>
+                  </Grid>
+                  <Grid item sm align="right">
+                    {" "}
+                    <IconButton
+                      edge="end"
+                      color="inherit"
+                      aria-label="message"
+                      onClick={this.handleMessage}
+                    >
+                      <Typography variant="h6"> To Messages</Typography>
+                      <span style={{ marginRight: "5px" }} />
+                      <MessageIcon />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              </Toolbar>
+            </AppBar>
+
             <Feed
-              courseCode={this.state.courseCode}
+              courseCode={this.state.code.replace(/\s/g, "")}
               ownId={this.state.ownId}
               ownImage={this.state.ownImage}
               ownName={this.state.ownName}

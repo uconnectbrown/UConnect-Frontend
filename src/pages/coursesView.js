@@ -141,10 +141,10 @@ export class coursesView extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleClick = (code, name, color, numCourses) => {
+  handleClick = (code, name, color) => {
     this.props.history.push({
       pathname: "/courseView",
-      state: { code: code, name: name, color: color, numCourses: numCourses },
+      state: { code: code, name: name, color: color },
     });
   };
 
@@ -263,77 +263,86 @@ export class coursesView extends Component {
                     position: "relative",
                   }}
                 > */}
-                  <CardContent align="center">
-                    <Typography
-                      variant="h4"
+                <CardContent align="center">
+                  <Typography
+                    variant="h4"
+                    style={{
+                      color: `${this.state.courses[index].color}`,
+                    }}
+                  >
+                    {this.state.courses[index].code}
+                  </Typography>
+                  <Typography variant="h5">
+                    {this.state.courses[index].name}
+                  </Typography>
+                  <hr />
+                  <br />
+                  {loading && (
+                    <div>
+                      <span>
+                        <Typography
+                          variant="body1"
+                          align="center"
+                          style={{ marginBottom: "5px" }}
+                        >
+                          Fetching avatars...
+                        </Typography>
+                        <CircularProgress />
+                      </span>
+                    </div>
+                  )}
+                  {!loading && (
+                    <AvatarGroup
+                      max={10 - numCourses}
+                      style={{ marginLeft: "10px" }}
+                    >
+                      {avatarList[index].map((url) => (
+                        <Avatar src={url} style={{ marginBottom: "5px" }} />
+                      ))}
+                    </AvatarGroup>
+                  )}
+                  <Tooltip title="Course feed" placement="left">
+                    <IconButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        this.props.history.push({
+                          pathname: "/feedView",
+                          state: {
+                            code: this.state.courses[index].code.replace(
+                              /\s/g,
+                              ""
+                            ),
+                          },
+                        });
+                      }}
                       style={{
-                        color: `${this.state.courses[index].color}`,
+                        marginBottom: "-10px",
+                        marginTop: "5px",
+                        position: "relative",
                       }}
                     >
-                      {this.state.courses[index].code}
-                    </Typography>
-                    <Typography variant="h5">
-                      {this.state.courses[index].name}
-                    </Typography>
-                    <hr />
-                    <br />
-                    {loading && (
-                      <div>
-                        <span>
-                          <Typography
-                            variant="body1"
-                            align="center"
-                            style={{ marginBottom: "5px" }}
-                          >
-                            Fetching avatars...
-                          </Typography>
-                          <CircularProgress />
-                        </span>
-                      </div>
-                    )}
-                    {!loading && (
-                      <AvatarGroup max={10 - numCourses} style={{marginLeft: "10px"}}>
-                        {avatarList[index].map((url) => (
-                          <Avatar src={url} style={{ marginBottom: "5px" }} />
-                        ))}
-                      </AvatarGroup>
-                    )}
-                    <Tooltip title="Course feed" placement="left">
-                      <IconButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          this.props.history.push({
-                            pathname: "/feedView",
-                            state: {
-                              courseCode: this.state.courses[
-                                index
-                              ].code.replace(/\s/g, ""),
-                            },
-                          });
-                        }}
-                        style={{ marginBottom: "-10px", marginTop: "5px", position: "relative" }}
-                      >
-                        <MessageIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Course roster" placement="bottom">
-                      <IconButton
-                        onClick={() =>
-                          this.handleClick(
-                            this.state.courses[index].code,
-                            this.state.courses[index].name,
-                            this.state.courses[index].color,
-                            this.state.courses
-                              .map((course) => course.code)
-                              .filter(Boolean).length
-                          )
-                        }
-                        style={{ marginBottom: "-10px", marginTop: "5px", position: "relative" }}
-                      >
-                        <PeopleIcon />
-                      </IconButton>
-                    </Tooltip>
-                    {/* <Tooltip
+                      <MessageIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Course roster" placement="bottom">
+                    <IconButton
+                      onClick={() =>
+                        this.handleClick(
+                          this.state.courses[index].code,
+                          this.state.courses[index].name,
+                          this.state.courses[index].color
+                        )
+                      }
+                      style={{
+                        marginBottom: "-10px",
+                        marginTop: "5px",
+                        position: "relative",
+                      }}
+                    >
+                      <PeopleIcon />
+                    </IconButton>
+                  </Tooltip>
+                  {/* <Tooltip
                       title="Course assignments"
                       placement="bottom"
                       // onMouseEnter={() => {this.setState({overlayOn: false})}}
@@ -584,19 +593,23 @@ export class coursesView extends Component {
                         </Button>
                       </DialogActions>
                     </Dialog> */}
-                    <Tooltip
-                      title="Saved profiles"
-                      placement="right"
-                      // onMouseEnter={() => {this.setState({overlayOn: false})}}
-                      // onMouseOut={() => {this.setState({overlayOn: true})}}
+                  <Tooltip
+                    title="Saved profiles"
+                    placement="right"
+                    // onMouseEnter={() => {this.setState({overlayOn: false})}}
+                    // onMouseOut={() => {this.setState({overlayOn: true})}}
+                  >
+                    <IconButton
+                      style={{
+                        marginBottom: "-10px",
+                        marginTop: "5px",
+                        position: "relative",
+                      }}
                     >
-                      <IconButton
-                        style={{ marginBottom: "-10px", marginTop: "5px", position: "relative" }}
-                      >
-                        <StarIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </CardContent>
+                      <StarIcon />
+                    </IconButton>
+                  </Tooltip>
+                </CardContent>
                 {/* </ButtonBase> */}
               </Card>
             </GridListTile>

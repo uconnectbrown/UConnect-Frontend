@@ -108,9 +108,9 @@ class profileView extends Component {
   }
 
   loadUserData = () => {
-    let email = auth.currentUser.email;
+    let emailId = auth.currentUser.email.split("@")[0];
     axios
-      .get(`/user/${email}`)
+      .get(`/user/${emailId}`)
       .then((res) => {
         this.setState({
           // Required
@@ -624,7 +624,10 @@ class profileView extends Component {
         this.updateCourses();
       });
     });
-    this.setState({ courseColor: "", colorOpen: [false, false, false, false, false] });
+    this.setState({
+      courseColor: "",
+      colorOpen: [false, false, false, false, false],
+    });
   };
 
   handleColorClose = () => {
@@ -1194,7 +1197,10 @@ class profileView extends Component {
                       <Button
                         onClick={this.handleSubmitBio}
                         color="secondary"
-                        disabled={this.state.bio_ === this.state.bio || this.state.bio_.length >= 140}
+                        disabled={
+                          this.state.bio_ === this.state.bio ||
+                          this.state.bio_.length >= 140
+                        }
                       >
                         Save Changes
                       </Button>
@@ -2369,7 +2375,11 @@ class profileView extends Component {
                                 <Button
                                   onClick={() => this.handleColorSave(index)}
                                   color="secondary"
-                                  disabled={this.state.courses[index].color === this.state.courseColor || this.state.courseColor === ""}
+                                  disabled={
+                                    this.state.courses[index].color ===
+                                      this.state.courseColor ||
+                                    this.state.courseColor === ""
+                                  }
                                 >
                                   Save Changes
                                 </Button>
@@ -2473,7 +2483,7 @@ class profileView extends Component {
                               </TextField>
                             </DialogContent>
                             <DialogActions>
-                            <Button
+                              <Button
                                 onClick={this.handleAddClose}
                                 color="secondary"
                               >

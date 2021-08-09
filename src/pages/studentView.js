@@ -29,6 +29,8 @@ import { ThreeDRotation } from "@material-ui/icons";
 // Body
 class studentView extends Component {
   constructor() {
+    // Needed props to send back to courseView: code, name, color
+    // Needed props for studentView: recipientId
     super();
     this.state = studentViewState;
   }
@@ -37,22 +39,15 @@ class studentView extends Component {
     if (!this.props.location.state) {
       this.props.history.push("/coursesView");
     } else {
-      this.loadUserData(this.props.location.state.studentEmail);
+      this.loadUserData(this.props.location.state.recipientId);
     }
   }
 
-  loadUserData = (studentEmail) => {
+  loadUserData = (id) => {
     axios
-      .get(`/user/${studentEmail}`)
+      .get(`/user/${id}`)
       .then((res) => {
         this.setState({
-          // Props to send back to courseView
-          code: this.props.location.state.code,
-          name: this.props.location.state.name,
-          color: this.props.location.state.color,
-          numCourses: this.props.location.state.numCourses,
-          // Props we need for studentView
-          studentEmail: this.props.location.state.studentEmail,
           // Required
           firstName: res.data.user.firstName,
           lastName: res.data.user.lastName,
@@ -100,10 +95,9 @@ class studentView extends Component {
     this.props.history.push({
       pathname: "/courseView",
       state: {
-        code: this.state.code,
-        name: this.state.name,
-        color: this.state.color,
-        numCourses: this.state.numCourses,
+        code: this.props.location.state.code,
+        name: this.props.location.state.name,
+        color: this.props.location.state.color,
       },
     });
   };
@@ -115,12 +109,11 @@ class studentView extends Component {
         // Props that messageView needs
         recipientName: this.state.firstName + " " + this.state.lastName,
         recipientImage: this.state.imageUrl,
-        studentEmail: this.state.studentEmail,
+        recipientId: this.props.location.state.recipientId,
         // Props that courseView needs
-        code: this.state.code.replace(/\s/g, ""),
-        name: this.state.name,
-        color: this.state.color,
-        numCourses: this.state.numCourses,
+        code: this.props.location.state.code,
+        name: this.props.location.state.name,
+        color: this.props.location.state.color,
       },
     });
   };

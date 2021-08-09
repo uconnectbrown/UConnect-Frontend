@@ -22,20 +22,16 @@ function Messages(props) {
     recipientImages,
     recipientId,
     recipientIds,
-    courseCode,
-    roomId
+    courseCode
   ) => {
     if (recipientId) {
       history.push({
         pathname: "/messageView",
         state: {
-          recipientInfo: [
-            recipientName,
-            recipientImage,
-            recipientId,
-            courseCode,
-            roomId,
-          ],
+          recipientId: recipientId,
+          recipientName: recipientName,
+          code: courseCode,
+          recipientImage: recipientImage,
           previousPage: "messagesView",
         },
       });
@@ -46,12 +42,10 @@ function Messages(props) {
       history.push({
         pathname: "/groupMessageView",
         state: {
-          recipientInfo: [
-            recipientNames,
-            recipientImages,
-            recipientIds,
-            courseCode,
-          ],
+          recipientNames: recipientNames,
+          recipientImages: recipientImages,
+          recipientIds: recipientIds,
+          code: courseCode,
           allIds: allIds,
           previousPage: "messagesView",
         },
