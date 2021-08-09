@@ -27,6 +27,7 @@ import PBCourseGrid from "../components/PBCourseGrid";
 // Import Data
 import majorList from "../resources/majors";
 import emptyProfile from "../resources/emptyProfile";
+import { nameList } from "../resources/courses";
 
 // Styling
 const styles = (theme) => ({
@@ -119,51 +120,61 @@ class profileBuild extends Component {
   };
 
   handleCourse1 = (event) => {
-    let input = event.target.value;
-    let subfield = event.target.name;
     this.setState((prevState) => {
       let course1 = Object.assign({}, prevState.course1);
-      course1[subfield] = input;
+      course1["code"] = event.target.value.split(":")[0];
+      course1["name"] = event.target.value.slice(
+        event.target.value.indexOf(":") + 2,
+        event.target.value.length
+      );
       return { course1 };
     });
   };
 
   handleCourse2 = (event) => {
-    let input = event.target.value;
-    let subfield = event.target.name;
     this.setState((prevState) => {
       let course2 = Object.assign({}, prevState.course2);
-      course2[subfield] = input;
+      course2["code"] = event.target.value.split(":")[0];
+      course2["name"] = event.target.value.slice(
+        event.target.value.indexOf(":") + 2,
+        event.target.value.length
+      );
       return { course2 };
     });
   };
 
   handleCourse3 = (event) => {
-    let input = event.target.value;
-    let subfield = event.target.name;
     this.setState((prevState) => {
       let course3 = Object.assign({}, prevState.course3);
-      course3[subfield] = input;
+      course3["code"] = event.target.value.split(":")[0];
+      course3["name"] = event.target.value.slice(
+        event.target.value.indexOf(":") + 2,
+        event.target.value.length
+      );
       return { course3 };
     });
   };
 
   handleCourse4 = (event) => {
-    let input = event.target.value;
-    let subfield = event.target.name;
     this.setState((prevState) => {
       let course4 = Object.assign({}, prevState.course4);
-      course4[subfield] = input;
+      course4["code"] = event.target.value.split(":")[0];
+      course4["name"] = event.target.value.slice(
+        event.target.value.indexOf(":") + 2,
+        event.target.value.length
+      );
       return { course4 };
     });
   };
 
   handleCourse5 = (event) => {
-    let input = event.target.value;
-    let subfield = event.target.name;
     this.setState((prevState) => {
       let course5 = Object.assign({}, prevState.course5);
-      course5[subfield] = input;
+      course5["code"] = event.target.value.split(":")[0];
+      course5["name"] = event.target.value.slice(
+        event.target.value.indexOf(":") + 2,
+        event.target.value.length
+      );
       return { course5 };
     });
   };
@@ -453,7 +464,7 @@ class profileBuild extends Component {
               course="Course #5"
               className={classes.textField}
               value={this.state.course5}
-              handleChange={this.handlecourse5}
+              handleChange={this.handleCourse5}
             />
           )}
         </Grid>

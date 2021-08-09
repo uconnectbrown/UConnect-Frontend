@@ -13,11 +13,11 @@ const emptyProfile = {
   interests2: [],
   interests3: [],
   // Courses
-  course1: { code: "", name: "", color: "" },
-  course2: { code: "", name: "", color: "" },
-  course3: { code: "", name: "", color: "" },
-  course4: { code: "", name: "", color: "" },
-  course5: { code: "", name: "", color: "" },
+  course1: { code: "", name: "", color: "#16a085" },
+  course2: { code: "", name: "", color: "#8e44ad" },
+  course3: { code: "", name: "", color: "#f1c40f" },
+  course4: { code: "", name: "", color: "#e74c3c" },
+  course5: { code: "", name: "", color: "#95a5a6" },
   // Miscellaneous
   loading: false,
   errors: {},

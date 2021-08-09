@@ -31,7 +31,6 @@ import varsitySports from "../resources/varsitySports";
 import greekLife from "../resources/greekLife";
 
 class courseView extends Component {
-  // Needed props: code, name, color
   state = {
     // Axios
     students: [],
