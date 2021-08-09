@@ -48,6 +48,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 
+// Styles
+import './profileView.css'
+
 // Tab Setup
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -738,7 +741,412 @@ class profileView extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  render() {
+  getClassYears = () => {
+    const currYear = new Date().getFullYear()
+    const years = []
+
+    for (let i = currYear; i <= currYear + 4; i += 0.5) {
+      years.push(String(i))
+    }
+    return years 
+  }
+
+  renderEditBasicInfo = () => {
+    const pronouns = ['he/him', 'she/her', 'they/them', 'ze/hir', 'other']
+    const classYears = this.getClassYears()
+
+    return (<>
+      <Tooltip title="Edit basic info" placement="right">
+        <IconButton
+          onClick={this.handleBasicOpen}
+          className="button"
+        >
+          <EditIcon color="secondary" />
+        </IconButton>
+      </Tooltip>
+      <Dialog
+        overlayStyle={{ backgroundColor: "transparent" }}
+        open={this.state.basicOpen}
+      >
+        <DialogTitle
+          style={{ cursor: "move" }}
+          id="draggable-dialog-title"
+        >
+          Edit Basic Info
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            autofocus
+            margin="dense"
+            id="firstName_"
+            autoComplete="off"
+            name="firstName_"
+            label="First Name"
+            defaultValue={this.state.firstName}
+            required
+            fullWidth
+            type="text"
+            onChange={this.handleChange}
+          />
+          <TextField
+            autofocus
+            margin="dense"
+            id="lastName_"
+            autoComplete="off"
+            name="lastName_"
+            label="Last Name"
+            defaultValue={this.state.lastName}
+            required
+            fullWidth
+            type="text"
+            onChange={this.handleChange}
+          />
+          <TextField
+            autofocus
+            margin="dense"
+            id="preferredPronouns_"
+            name="preferredPronouns_"
+            select
+            fullWidth
+            label="Preferred Pronouns"
+            defaultValue={this.state.preferredPronouns}
+            onChange={this.handleChange}
+          >
+            {pronouns.map(p => {
+              return <MenuItem key={p} value={p}>{p}</MenuItem>
+            })}
+          </TextField>
+          <TextField
+            autofocus
+            margin="dense"
+            id="classYear_"
+            name="classYear_"
+            select
+            label="Graduating Class"
+            defaultValue={this.state.classYear}
+            onChange={this.handleChange}
+            required
+            fullWidth
+          >
+            {classYears.map(year => {
+              return <MenuItem key={year} value={year}>{year}</MenuItem>
+            })}
+          </TextField>
+          <TextField
+            autofocus
+            margin="dense"
+            id="major1_"
+            name="major1_"
+            autoComplete="off"
+            label="First Concentration"
+            defaultValue={this.state.major1}
+            fullWidth
+            required
+            onChange={this.handleChange}
+            InputProps={{
+              endAdornment: majorList,
+              inputProps: {
+                list: "majors",
+              },
+            }}
+          />
+          <TextField
+            autofocus
+            margin="dense"
+            name="major2_"
+            name="major2_"
+            autoComplete="off"
+            label="Second Concentration"
+            defaultValue={this.state.major2}
+            fullWidth
+            onChange={this.handleChange}
+            InputProps={{
+              endAdornment: majorList,
+              inputProps: {
+                list: "majors",
+              },
+            }}
+          />
+          <TextField
+            autofocus
+            margin="dense"
+            id="major3_"
+            name="major3_"
+            autoComplete="off"
+            label="Third Concentration"
+            defaultValue={this.state.major3}
+            fullWidth
+            onChange={this.handleChange}
+            InputProps={{
+              endAdornment: majorList,
+              inputProps: {
+                list: "majors",
+              },
+            }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={this.handleBasicClose}
+            color="secondary"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={this.handleSubmitBasic}
+            color="secondary"
+            disabled={
+              this.state.firstName_ === "" ||
+              this.state.lastName_ === "" ||
+              this.state.major1_ === "" ||
+              this.state.classYear_ === "" ||
+              this.sameBasic()
+            }
+          >
+            Save Changes
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>)
+  }
+
+  renderOrganizations = () => {
+    return (<>
+    <Grid item xs={12} md={4}>
+      <Card raised className="info-card">
+        <CardContent>
+          <div>
+            <Typography variant="h5">
+              Groups
+              {[this.state.group1, this.state.group2, this.state.group3].filter(Boolean).length > 0 && (
+                <Tooltip title="Edit groups" placement="right">
+                  <IconButton onClick={this.handleGroupsOpen} className="button">
+                    <EditIcon color="secondary" />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Typography>
+            {this.state.group1 && <Typography>• {this.state.group1}</Typography>}
+            {this.state.group2 && <Typography>• {this.state.group2}</Typography>}
+            {this.state.group3 && <Typography>• {this.state.group3}</Typography>}
+            {!this.state.group1 &&
+              !this.state.group2 &&
+              !this.state.group3 && (
+                <Tooltip title="Add group" placement="right">
+                  <IconButton onClick={this.handleGroupsOpen} className="button">
+                    <AddCircle color="secondary" />
+                  </IconButton>
+                </Tooltip>
+              )}
+          </div>
+          <Dialog overlayStyle={{ backgroundColor: "transparent" }} open={this.state.groupsOpen}>
+            <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+              Edit Groups
+            </DialogTitle>
+            <DialogContent>
+              <Typography>Please list up to 3 clubs, affinity groups, or student organizations you are involved with.</Typography>
+              <TextField
+                autofocus
+                margin="dense"
+                id="group1_"
+                autoComplete="off"
+                name="group1_"
+                label="Group 1"
+                defaultValue={this.state.group1}
+                fullWidth
+                type="text"
+                onChange={this.handleChange}
+              />
+              <TextField
+                autofocus
+                margin="dense"
+                id="group2_"
+                autoComplete="off"
+                name="group2_"
+                label="Group 2"
+                defaultValue={this.state.group2}
+                fullWidth
+                type="text"
+                onChange={this.handleChange}
+              />
+              <TextField
+                autofocus
+                margin="dense"
+                id="group3_"
+                autoComplete="off"
+                name="group3_"
+                label="Group 3"
+                defaultValue={this.state.group3}
+                fullWidth
+                type="text"
+                onChange={this.handleChange}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleGroupsClose} color="secondary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleSubmitGroups} color="secondary">
+                Save Changes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </CardContent>
+      </Card>
+    </Grid>
+    <Grid item xs={12} md={4}>
+      <Card raised className="info-card">
+        <CardContent>
+          <div>
+            <Typography variant="h5">
+              Varsity Sports
+              {[this.state.varsitySport1, this.state.varsitySport2].filter(Boolean).length > 0 && (
+                <Tooltip title="Edit varsity sports" placement="right">
+                  <IconButton onClick={this.handleVarsityOpen} className="button">
+                    <EditIcon color="secondary" />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Typography>
+            {this.state.varsitySport1 && <Typography>• {this.state.varsitySport1}</Typography>}
+            {this.state.varsitySport2 && <Typography>• {this.state.varsitySport2}</Typography>}
+            {!this.state.varsitySport1 &&
+              !this.state.varsitySport2 && (
+                <Tooltip title="Add varsity sport" placement="right">
+                  <IconButton onClick={this.handleVarsityOpen} className="button">
+                    <AddCircle color="secondary" />
+                  </IconButton>
+                </Tooltip>
+              )}
+          </div>
+          <Dialog overlayStyle={{ backgroundColor: "transparent" }} open={this.state.varsityOpen}>
+            <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+              Edit Varsity Sports
+            </DialogTitle>
+            <DialogContent>
+              <Typography>If you are a member of any varsity sports teams, please indicate which ones below.</Typography>
+              <TextField
+                autofocus
+                margin="dense"
+                name="varsitySport1_"
+                autoComplete="off"
+                label="First Varsity Sport"
+                defaultValue={this.state.varsitySport1}
+                fullWidth
+                onChange={this.handleChange}
+                InputProps={{
+                  endAdornment: varsitySports,
+                  inputProps: {
+                    list: "varsitySports",
+                  },
+                }}
+              />
+              <TextField
+                autofocus
+                margin="dense"
+                name="varsitySport2_"
+                autoComplete="off"
+                label="Second Varsity Sport"
+                defaultValue={this.state.varsitySport2}
+                fullWidth
+                onChange={this.handleChange}
+                InputProps={{
+                  endAdornment: varsitySports,
+                  inputProps: {
+                    list: "varsitySports",
+                  },
+                }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleVarsityClose} color="secondary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleSubmitVarsity} color="secondary">
+                Save Changes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </CardContent>
+      </Card>
+    </Grid>
+    <Grid item xs={12} md={4}>
+      <Card raised className="info-card">
+        <CardContent>
+          <div>
+            <Typography variant="h5">
+              Greek Organization
+              {[this.state.greekLife].filter(Boolean).length > 0 && (
+                <Tooltip title="Edit Greek organization" placement="right">
+                  <IconButton onClick={this.handleGreekOpen} className="button" >
+                    <EditIcon color="secondary" />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Typography>
+            {this.state.greekLife && <Typography>• {this.state.greekLife}</Typography>}
+            {!this.state.greekLife && (
+              <Tooltip title="Add Greek organization" placement="right">
+                <IconButton onClick={this.handleGreekOpen} className="button">
+                  <AddCircle color="secondary" />
+                </IconButton>
+              </Tooltip>
+            )}
+          </div>
+          <Dialog overlayStyle={{ backgroundColor: "transparent" }} open={this.state.greekOpen}>
+            <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+              Edit Greek Organization
+            </DialogTitle>
+            <DialogContent>
+              <Typography>If you are a member of any Greek Organizations, please indicate which one below.</Typography>
+              <TextField
+                autofocus
+                margin="dense"
+                name="greekLife_"
+                autoComplete="off"
+                label="Greek Organization"
+                defaultValue={this.state.greekLife}
+                fullWidth
+                onChange={this.handleChange}
+                InputProps={{
+                  endAdornment: greekLife,
+                  inputProps: {
+                    list: "greekLife",
+                  },
+                }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleGreekClose} color="secondary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleSubmitGreek} color="secondary">
+                Save Changes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </CardContent>
+      </Card>
+    </Grid>
+    </>)
+  }
+
+  renderInterestCard = (title, items, color) => {
+    return (
+      <Grid item xs={12} md={4}>
+        <Card raised className="info-card">
+          <CardContent>
+            <Typography variant="h5" style={{ color: color }}>
+              {title}
+            </Typography>
+            {items.map((item) => <p>• {item}</p>)}
+          </CardContent>
+        </Card>
+      </Grid>
+    )
+  }
+
+  renderInterests = () => {
     let palette = [
       "#16a085",
       "#27ae60",
@@ -751,7 +1159,487 @@ class profileView extends Component {
       "#ecf0f1",
       "#95a5a6",
     ];
-    let loading = this.state.loading;
+    return (<>
+      <Typography variant="h4">
+        Interests
+        <Tooltip title="Edit interests" placement="right">
+          <IconButton className="button" onClick={this.handleInterestsOpen}>
+            <EditIcon color="secondary" />
+          </IconButton>
+        </Tooltip>
+        <Dialog overlayStyle={{ backgroundColor: "transparent" }} open={this.state.interestsOpen}>
+          <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+            Edit Interests
+          </DialogTitle>
+          <DialogContent>
+            <Interests getInterests={this.handleInterests} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleInterestsClose} color="secondary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleSubmitInterests} color="secondary"
+              disabled={this.state.interests1_.length + this.state.interests2_.length + this.state.interests3_.length !== 10}
+            >
+              Save Changes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Typography>
+      <Grid container spacing={5}>
+        {this.renderInterestCard(
+          "Career and Academic",
+          this.state.interests1,
+          palette[7]
+        )}
+        {this.renderInterestCard(
+          "Physical Activity and Wellness",
+          this.state.interests2,
+          palette[0]
+        )}
+        {this.renderInterestCard(
+          "General Hobbies",
+          this.state.interests3,
+          palette[3]
+        )}
+      </Grid>
+    </>)
+  }
+
+  renderAdditionalInfo = () => {
+    return (<>
+      <Typography variant="h4">Additional Info</Typography>
+      <Grid container spacing={5}>
+        <Grid item xs={12} md={4}>
+          <Card raised className="info-card">
+            <CardContent style={{ display: 'flex', alignItems: 'center'}}>
+              <Music />
+              <Typography variant="h6" style={{ marginLeft: 5 }}>
+                Instruments
+                {[this.state.instrument1, this.state.instrument2, this.state.instrument3].filter(Boolean).length > 0 && (
+                  <Tooltip title="Edit instruments" placement="right">
+                    <IconButton onClick={this.handleInstrumentsOpen} className="button">
+                      <EditIcon color="secondary" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Typography>
+              {this.state.instrument1 && <Typography>• {this.state.instrument1}</Typography>}
+              {this.state.instrument2 && <Typography>• {this.state.instrument2}</Typography>}
+              {this.state.instrument3 && <Typography>• {this.state.instrument3}</Typography>}
+              {!this.state.instrument1 &&
+                !this.state.instrument2 &&
+                !this.state.instrument3 && (
+                  <Tooltip title="Add instrument" placement="right">
+                    <IconButton onClick={this.handleInstrumentsOpen} className="button">
+                      <AddCircle color="secondary" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                open={this.state.instrumentsOpen}
+              >
+                <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+                  Edit Instruments
+                </DialogTitle>
+                <DialogContent>
+                  <Typography>Insert Later</Typography>
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="instrument1_"
+                    autoComplete="off"
+                    name="instrument1_"
+                    label="Instrument 1"
+                    defaultValue={this.state.instrument1}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="instrument2_"
+                    autoComplete="off"
+                    name="instrument2_"
+                    label="Instrument 2"
+                    defaultValue={this.state.instrument2}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="instrument3_"
+                    autoComplete="off"
+                    name="instrument3_"
+                    label="Instrument 3"
+                    defaultValue={this.state.instrument3}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleInstrumentsClose} color="secondary">
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={this.handleSubmitInstruments}
+                    color="secondary"
+                    disabled={this.state.instrument1 === this.state.instrument1_ &&
+                      this.state.instrument2 === this.state.instrument2_ &&
+                      this.state.instrument3 === this.state.instrument3_
+                    }
+                  >
+                    Save Changes
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card raised className="info-card">
+            <CardContent style={{ display: 'flex', alignItems: 'center'}}>
+              <Sports />
+                <Typography variant="h6" style={{ marginLeft: 5 }}>
+                  Pick-Up Sports
+                  {[this.state.pickUpSport1, this.state.pickUpSport2, this.state.pickUpSport3].filter(Boolean).length > 0 && (
+                    <Tooltip title="Edit pickUpSports" placement="right">
+                      <IconButton onClick={this.handlePickUpSportsOpen} className="button">
+                        <EditIcon color="secondary" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </Typography>
+                {this.state.pickUpSport1 && <Typography>• {this.state.pickUpSport1}</Typography>}
+                {this.state.pickUpSport2 && <Typography>• {this.state.pickUpSport2}</Typography>}
+                {this.state.pickUpSport3 && <Typography>• {this.state.pickUpSport3}</Typography>}
+
+                {!this.state.pickUpSport1 && !this.state.pickUpSport2 && !this.state.pickUpSport3 && (
+                    <Tooltip title="Add pick up sport" placement="right">
+                      <IconButton onClick={this.handlePickUpSportsOpen} className="button">
+                        <AddCircle color="secondary" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                <Dialog
+                  overlayStyle={{ backgroundColor: "transparent" }}
+                  open={this.state.pickUpSportsOpen}
+                >
+                  <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+                    Edit Pick-Up Sports
+                  </DialogTitle>
+                  <DialogContent>
+                    <Typography>Insert Later</Typography>
+                    <TextField
+                      autofocus
+                      margin="dense"
+                      id="pickUpSport1_"
+                      autoComplete="off"
+                      name="pickUpSport1_"
+                      label="Pick-Up Sport 1"
+                      defaultValue={this.state.pickUpSport1}
+                      fullWidth
+                      type="text"
+                      onChange={this.handleChange}
+                    />
+                    <TextField
+                      autofocus
+                      margin="dense"
+                      id="pickUpSport2_"
+                      autoComplete="off"
+                      name="pickUpSport2_"
+                      label="Pick-Up Sport 2"
+                      defaultValue={this.state.pickUpSport2}
+                      fullWidth
+                      type="text"
+                      onChange={this.handleChange}
+                    />
+                    <TextField
+                      autofocus
+                      margin="dense"
+                      id="pickUpSport3_"
+                      autoComplete="off"
+                      name="pickUpSport3_"
+                      label="Pick-Up Sport 3"
+                      defaultValue={this.state.pickUpSport3}
+                      fullWidth
+                      type="text"
+                      onChange={this.handleChange}
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={this.handlePickUpSportsClose} color="secondary">
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={this.handleSubmitPickUpSports}
+                      color="secondary"
+                      disabled={this.state.pickUpSport1 === this.state.pickUpSport1_ &&
+                        this.state.pickUpSport2 === this.state.pickUpSport2_ &&
+                        this.state.pickUpSport3 === this.state.pickUpSport3_
+                      }
+                    >
+                      Save Changes
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </CardContent>
+            </Card>
+          </Grid>
+        <Grid item xs={12} md={4}>
+          <Card raised className="info-card">
+            <CardContent style={{ display: 'flex', alignItems: 'center'}}>
+              <Pets />
+                <Typography variant="h6" style={{ marginLeft: 5 }}>
+                  Pets
+                  {[this.state.pet1, this.state.pet2, this.state.pet3].filter(Boolean).length > 0 && (
+                    <Tooltip title="Edit pets" placement="right">
+                      <IconButton onClick={this.handlePetsOpen} className="button">
+                        <EditIcon color="secondary" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </Typography>
+              {this.state.pet1 && <Typography>• {this.state.pet1}</Typography>}
+              {this.state.pet2 && <Typography>• {this.state.pet2}</Typography>}
+              {this.state.pet3 && <Typography>• {this.state.pet3}</Typography>}
+
+              {!this.state.pet1 && !this.state.pet2 && !this.state.pet3 && (
+                  <Tooltip title="Add pet" placement="right">
+                    <IconButton onClick={this.handlePetsOpen} className="button">
+                      <AddCircle color="secondary" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                open={this.state.petsOpen}
+              >
+                <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+                  Edit Pets
+                </DialogTitle>
+                <DialogContent>
+                  <Typography>Insert Later</Typography>
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="pet1_"
+                    autoComplete="off"
+                    name="pet1_"
+                    label="Pet 1"
+                    defaultValue={this.state.pet1}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="pet2_"
+                    autoComplete="off"
+                    name="pet2_"
+                    label="Pet 2"
+                    defaultValue={this.state.pet2}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                  <TextField
+                    autofocus
+                    margin="dense"
+                    id="pet_"
+                    autoComplete="off"
+                    name="pet_"
+                    label="Pet 3"
+                    defaultValue={this.state.pet}
+                    fullWidth
+                    type="text"
+                    onChange={this.handleChange}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handlePetsClose} color="secondary">
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={this.handleSubmitPets}
+                    color="secondary"
+                    disabled={
+                      this.state.pet1 === this.state.pet1_ &&
+                      this.state.pet2 === this.state.pet2_ &&
+                      this.state.pet3 === this.state.pet3_
+                    }
+                  >
+                    Save Changes
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </>)
+  }
+
+  renderFavorites = () => {
+    return (<>
+      <Typography variant="h4">
+        Favorites
+        {!this.state.favoriteBook && !this.state.favoriteMovie &&
+          !this.state.favoriteShow && !this.state.favoriteArtist && (
+            <Tooltip title="Add favorites" placement="right">
+              <IconButton onClick={this.handleFavoritesOpen} className="button">
+                <AddCircle color="secondary" />
+              </IconButton>
+            </Tooltip>
+          )}
+        {[
+          this.state.favoriteBook, this.state.favoriteMovie, 
+          this.state.favoriteShow, this.state.favoriteArtist
+        ].filter(Boolean).length > 0 && (
+          <Tooltip title="Edit favorites" placement="right">
+            <IconButton onClick={this.handleFavoritesOpen} className="button">
+              <EditIcon color="secondary" />
+            </IconButton>
+          </Tooltip>
+        )}
+        <Dialog overlayStyle={{ backgroundColor: "transparent" }} open={this.state.favoritesOpen}>
+          <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+            Edit Favorites
+          </DialogTitle>
+          <DialogContent>
+            <TextField
+              autofocus
+              margin="dense"
+              id="favoriteBook_"
+              name="favoriteBook_"
+              autoComplete="off"
+              label="Book"
+              defaultValue={this.state.favoriteBook}
+              fullWidth
+              required
+              type="text"
+              onChange={this.handleChange}
+            />
+            <TextField
+              autofocus
+              margin="dense"
+              id="favoriteMovie_"
+              name="favoriteMovie_"
+              autoComplete="off"
+              label="Movie"
+              defaultValue={this.state.favoriteMovie}
+              fullWidth
+              required
+              type="text"
+              onChange={this.handleChange}
+            />
+            <TextField
+              autofocus
+              margin="dense"
+              id="favoriteShow_"
+              name="favoriteShow_"
+              autoComplete="off"
+              label="Show"
+              defaultValue={this.state.favoriteShow}
+              fullWidth
+              required
+              type="text"
+              onChange={this.handleChange}
+            />
+            <TextField
+              autofocus
+              margin="dense"
+              id="favoriteArtist_"
+              name="favoriteArtist_"
+              autoComplete="off"
+              label="Artist"
+              defaultValue={this.state.favoriteArtist}
+              fullWidth
+              required
+              type="text"
+              onChange={this.handleChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleFavoritesClose} color="secondary">
+              Cancel
+            </Button>
+            <Button
+              onClick={this.handleSubmitFavorites}
+              color="secondary"
+              disabled={
+                this.state.favoriteBook === this.state.favoriteBook_ &&
+                this.state.favoriteMovie === this.state.favoriteMovie_ &&
+                this.state.favoriteShow === this.state.favoriteShow_ &&
+                this.state.favoriteArtist === this.state.favoriteArtist_
+              }
+            >
+              Save Changes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Typography>
+      <Card raised>
+        <CardContent align="center">
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={3}>
+              <div>
+                <Book />
+                <Typography variant="body1">
+                  Book: {this.state.favoriteBook}
+                </Typography>
+              </div>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <div>
+                <Movie />
+                <Typography variant="body1">
+                  Movie: {this.state.favoriteMovie}
+                </Typography>
+              </div>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <div>
+                <Tv />
+                <Typography variant="body1">
+                  Show: {this.state.favoriteShow}
+                </Typography>
+              </div>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <div>
+                <Music />
+                <Typography variant="body1">
+                  Artist: {this.state.favoriteArtist}
+                </Typography>
+              </div>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </>)
+  }
+
+  renderCourses = () => {
+    let palette = [
+      "#16a085",
+      "#27ae60",
+      "#2980b9",
+      "#8e44ad",
+      "#2c3e50",
+      "#f1c40f",
+      "#e67e22",
+      "#e74c3c",
+      "#ecf0f1",
+      "#95a5a6",
+    ];
+    
     let code1 = this.state.courses[0].code;
     let code2 = this.state.courses[1].code;
     let code3 = this.state.courses[2].code;
@@ -764,18 +1652,189 @@ class profileView extends Component {
         indexArray.push(j);
       }
     }
+    
+    return (<>
+      <Typography variant="h4">Courses</Typography>
+      <Card raised>
+        <CardContent align="center">
+          <Grid container spacing={2}>
+            {indexArray.map((index) => (
+              <Grid item sm>
+                <Card style={{
+                    borderStyle: "solid",
+                    borderWidth: "3px",
+                    borderColor: this.state.courses[index].color,
+                    height: "100%",
+                  }}>
+                  <CardContent>
+                    <Typography variant="h5" style={{ color: this.state.courses[index].color }}>
+                      {this.state.courses[index].code}
+                    </Typography>
+                    <Typography variant="body1">
+                      {this.state.courses[index].name}
+                    </Typography>
+                    <Tooltip title="Change color" placement="right">
+                      <IconButton onClick={() => this.handleColorOpen(index)} style={{ marginBottom: "-20px" }}>
+                        <Dots color="secondary" />
+                      </IconButton>
+                    </Tooltip>
+                    <Dialog overlayStyle={{ backgroundColor: "transparent" }} open={this.state.colorOpen[index]}>
+                      <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+                        Edit Course Color
+                      </DialogTitle>
+                      <DialogContent>
+                        <TextField
+                          autofocus
+                          margin="dense"
+                          id="courseColor"
+                          name="courseColor"
+                          autoComplete="off"
+                          select
+                          label="Course Color"
+                          defaultValue={this.state.courses[index].color}
+                          onChange={this.handleChange}
+                          helperText="Please select a course color"
+                        >
+                          {palette.map((color) => (
+                            <MenuItem key={color} value={color}>
+                              <Typography variant="h6" style={{ backgroundColor: color, color: color }}>
+                                Color
+                              </Typography>
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={this.handleColorClose} color="secondary">
+                          Cancel
+                        </Button>
+                        <Button onClick={() => this.handleColorSave(index)} color="secondary"
+                          disabled={
+                            this.state.courses[index].color === this.state.courseColor ||
+                            this.state.courseColor === ""
+                          }
+                        >
+                          Save Changes
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                    {this.state.removeOpen && (
+                      <IconButton size="large" color="primary" onClick={() => this.handleRemoveCourse(index)}>
+                        <DeleteIcon fontSize="large" />
+                      </IconButton>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+            <Grid item sm>
+              {numCourses < 5 && (
+                <div>
+                  <IconButton variant="contained" color="secondary" onClick={this.handleAddOpen}>
+                    Add 
+                    <AddIcon style={{ marginLeft: '5px' }}/>
+                  </IconButton>
+                  <Dialog
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    open={this.state.addOpen}
+                    onClose={this.handleAddClose}
+                  >
+                    <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+                      Add Course
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText> Please enter the course code and course name below:</DialogContentText>
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="courseCode"
+                        name="addCourseCode"
+                        label="Code (e.g. ECON 0110)"
+                        fullWidth
+                        type="text"
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        type="text"
+                        margin="dense"
+                        id="courseName"
+                        name="addCourseName"
+                        label="Name (e.g. Principles of Economics)"
+                        fullWidth
+                        onChange={this.handleChange}
+                      />
+                      <TextField
+                        autofocus
+                        margin="dense"
+                        id="courseColor"
+                        name="addCourseColor"
+                        autoComplete="off"
+                        select
+                        label="Course Color"
+                        onChange={this.handleChange}
+                        helperText="Please select a course color"
+                      >
+                        {palette.map((color) => (
+                          <MenuItem key={color} value={color}>
+                            <Typography variant="h6" style={{
+                              backgroundColor: color,
+                              color: color,
+                              width: "100%",
+                            }}>
+                              Color
+                            </Typography>
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={this.handleAddClose} color="secondary">
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={this.handleAddCourse}
+                        color="secondary"
+                      >
+                        Add
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </div>
+              )}
+
+              {numCourses > 0 && (
+                <div>
+                  {!this.state.removeOpen && (
+                    <IconButton variant="contained" color="primary" onClick={this.toggleRemoveOpen}>
+                      Remove
+                      <DeleteIcon style={{ marginLeft: "5px" }}/>
+                    </IconButton>
+                  )}
+                  {this.state.removeOpen && (
+                    <Button variant="contained" color="primary" onClick={this.toggleRemoveOpen}>
+                      Cancel
+                    </Button>
+                  )}
+                </div>
+              )}
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </>)
+  }
+
+  render() {
+    let loading = this.state.loading;
 
     return (
       <div>
-        {loading && (
-          <div align="center">
-            <NavBar />
-          </div>
-        )}
+        {loading && <NavBar/>}
         {!loading && (
-          <div align="center">
+          <div>
             <NavBar />
-            <AppBar position="relative" color="default">
+            <AppBar position="relative" color="default" style={{ marginTop: '70px'}}>
               <Tabs
                 value={this.state.tabIndex}
                 onChange={this.handleTabChange}
@@ -788,1758 +1847,147 @@ class profileView extends Component {
               </Tabs>
             </AppBar>
             <TabPanel value={this.state.tabIndex} index={0}>
+            <div className="section-container">
               <Card raised>
-                <CardContent align="center">
-                  <Grid container spacing={1}>
-                    <Grid item sm>
-                      {/* <img
-              alt="Profile"
-              src={this.state.imageUrl}
-              style={{
-                width: 375,
-                height: 375,
-                objectFit: "cover",
-                borderRadius: "10%",
-                borderStyle: "solid",
-                borderColor: "red",
-                borderWidth: "2px",
-              }}
-            />
-            <input
-              type="file"
-              id="imageInput"
-              hidden="hidden"
-              onChange={this.handleImageChange}
-            />
-            <br />
-            <Tooltip title="Edit profile picture" placement="right">
-              <IconButton onClick={this.handleEditPicture} className="button">
-                <PhotoIcon color="secondary" />
-              </IconButton>
-            </Tooltip>
-            {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
-              <div>
-                <Typography variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
-              </div>
-            )} */}
-                    </Grid>
-                    <Grid item sm>
-                      <img
-                        alt="Profile"
-                        src={this.state.imageUrl}
-                        style={{
-                          width: 400,
-                          height: 400,
-                          objectFit: "cover",
-                          borderRadius: "10%",
-                          borderStyle: "solid",
-                          borderColor: "red",
-                          borderWidth: "2px",
-                        }}
-                      />
-                      <input
-                        type="file"
-                        id="imageInput"
-                        hidden="hidden"
-                        onChange={this.handleImageChange}
-                      />
-                      <br />
+                <CardContent>
+                  <Grid container>                
+                    <Grid item xs={12} md={4} className="profile-container-left">
+                      <div className="profile-img-wrap">
+                        <img className="profile-img" alt="Profile Picture" src={this.state.imageUrl}/>
+                      </div>
+                      <input type="file" id="imageInput" hidden="hidden" onChange={this.handleImageChange}/>
                       <Tooltip title="Edit profile picture" placement="right">
-                        <IconButton
-                          onClick={this.handleEditPicture}
-                          className="button"
-                        >
+                        <IconButton onClick={this.handleEditPicture} className="button">
                           <PhotoIcon color="secondary" />
                         </IconButton>
                       </Tooltip>
                       {this.state.imageUrl ===
                         "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
-                        <div>
-                          <Typography
-                            variant="h5"
-                            align="center"
-                            color="primary"
-                          >
-                            Please add an image to complete your profile.
-                          </Typography>
-                        </div>
+                        <p style={{ width: '100%', fontSize: 12, margin: 0}}>
+                          Please add an image to <br/> complete your profile.
+                        </p>
                       )}
                     </Grid>
-                    <Grid item sm>
-                      {/* <img
-              alt="Profile"
-              src={this.state.imageUrl}
-              style={{
-                width: 375,
-                height: 375,
-                objectFit: "cover",
-                borderRadius: "10%",
-                borderStyle: "solid",
-                borderColor: "red",
-                borderWidth: "2px",
-              }}
-            />
-            <input
-              type="file"
-              id="imageInput"
-              hidden="hidden"
-              onChange={this.handleImageChange}
-            />
-            <br />
-            <Tooltip title="Edit profile picture" placement="right">
-              <IconButton onClick={this.handleEditPicture} className="button">
-                <PhotoIcon color="secondary" />
-              </IconButton>
-            </Tooltip>
-            {this.state.imageUrl === "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
-              <div>
-                <Typography variant="h5" align="center" color="primary">Please add an image to complete your profile.</Typography>
-              </div>
-            )} */}
-                    </Grid>
-                  </Grid>
-
-                  {/* new test code */}
-                  {/* <Dialog
-                  overlayStyle={{ backgroundColor: "transparent" }}
-                  open={this.state.imageOpen}
-                >
-                  <DialogTitle
-                    style={{ cursor: "move" }}
-                    id="draggable-dialog-title"
-                  >
-                    Crop Image
-                  </DialogTitle>
-                  <DialogContent style={{ height: "600px", width: "600px" }}>
-                    <Crop img={this.state.imageUrl} />
-                    <MyEditor />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                      // onClick={this.handleCropImage}
-                      onClick={this.handleImageClose}
-                      color="secondary"
-                    >
-                      Cancel
-                    </Button>
-                  </DialogActions>
-                </Dialog> */}
-                  <br />
-                  <Card raised style={{ display: "inline-block" }}>
-                    <CardContent>
-                      <span>
-                        <Typography variant="h3" align="center">
-                          {this.state.firstName} {this.state.lastName}{" "}
-                          <Tooltip title="Edit basic info" placement="right">
-                            <IconButton
-                              onClick={this.handleBasicOpen}
-                              className="button"
-                            >
-                              <EditIcon color="secondary" />
-                            </IconButton>
-                          </Tooltip>
-                          <Dialog
-                            overlayStyle={{ backgroundColor: "transparent" }}
-                            open={this.state.basicOpen}
-                          >
-                            <DialogTitle
-                              style={{ cursor: "move" }}
-                              id="draggable-dialog-title"
-                            >
-                              Edit Basic Info
-                            </DialogTitle>
-                            <DialogContent>
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="firstName_"
-                                autoComplete="off"
-                                name="firstName_"
-                                label="First Name"
-                                defaultValue={this.state.firstName}
-                                required
-                                fullWidth
-                                type="text"
-                                onChange={this.handleChange}
-                              />
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="lastName_"
-                                autoComplete="off"
-                                name="lastName_"
-                                label="Last Name"
-                                defaultValue={this.state.lastName}
-                                required
-                                fullWidth
-                                type="text"
-                                onChange={this.handleChange}
-                              />
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="preferredPronouns_"
-                                name="preferredPronouns_"
-                                select
-                                fullWidth
-                                label="Preferred Pronouns"
-                                defaultValue={this.state.preferredPronouns}
-                                onChange={this.handleChange}
-                              >
-                                <MenuItem key="he/him" value="he/him">
-                                  he/him
-                                </MenuItem>
-                                <MenuItem key="she/her" value="she/her">
-                                  she/her
-                                </MenuItem>
-                                <MenuItem key="they/them" value="they/them">
-                                  they/them
-                                </MenuItem>
-                                <MenuItem key="ze/hir" value="ze/hir">
-                                  ze/hir
-                                </MenuItem>
-                                <MenuItem key="other" value="other">
-                                  other
-                                </MenuItem>
-                              </TextField>
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="classYear_"
-                                name="classYear_"
-                                select
-                                label="Graduating Class"
-                                defaultValue={this.state.classYear}
-                                onChange={this.handleChange}
-                                required
-                                fullWidth
-                              >
-                                <MenuItem key="2021.5" value="2021.5">
-                                  2021.5
-                                </MenuItem>
-                                <MenuItem key="2022" value="2022">
-                                  2022
-                                </MenuItem>
-                                <MenuItem key="2022.5" value="2022.5">
-                                  2022.5
-                                </MenuItem>
-                                <MenuItem key="2023" value="2023">
-                                  2023
-                                </MenuItem>
-                                <MenuItem key="2023.5" value="2023.5">
-                                  2023.5
-                                </MenuItem>
-                                <MenuItem key="2024" value="2024">
-                                  2024
-                                </MenuItem>
-                                <MenuItem key="2024.5" value="2024.5">
-                                  2024.5
-                                </MenuItem>
-                                <MenuItem key="2025" value="2025">
-                                  2025
-                                </MenuItem>
-                              </TextField>
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="major1_"
-                                name="major1_"
-                                autoComplete="off"
-                                label="First Concentration"
-                                defaultValue={this.state.major1}
-                                fullWidth
-                                required
-                                onChange={this.handleChange}
-                                InputProps={{
-                                  endAdornment: majorList,
-                                  inputProps: {
-                                    list: "majors",
-                                  },
-                                }}
-                              />
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                name="major2_"
-                                name="major2_"
-                                autoComplete="off"
-                                label="Second Concentration"
-                                defaultValue={this.state.major2}
-                                fullWidth
-                                onChange={this.handleChange}
-                                InputProps={{
-                                  endAdornment: majorList,
-                                  inputProps: {
-                                    list: "majors",
-                                  },
-                                }}
-                              />
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="major3_"
-                                name="major3_"
-                                autoComplete="off"
-                                label="Third Concentration"
-                                defaultValue={this.state.major3}
-                                fullWidth
-                                onChange={this.handleChange}
-                                InputProps={{
-                                  endAdornment: majorList,
-                                  inputProps: {
-                                    list: "majors",
-                                  },
-                                }}
-                              />
-                            </DialogContent>
-                            <DialogActions>
-                              <Button
-                                onClick={this.handleBasicClose}
-                                color="secondary"
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                onClick={this.handleSubmitBasic}
-                                color="secondary"
-                                disabled={
-                                  this.state.firstName_ === "" ||
-                                  this.state.lastName_ === "" ||
-                                  this.state.major1_ === "" ||
-                                  this.state.classYear_ === "" ||
-                                  this.sameBasic()
-                                }
-                              >
-                                Save Changes
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
-                        </Typography>
-                      </span>
-                      <Typography variant="h5">
-                        {this.state.preferredPronouns &&
-                          `(${this.state.preferredPronouns})`}
+                    <Grid item xs={12} md={8} className="profile-container-right">
+                      <Typography variant="h3">
+                        {this.state.firstName} {this.state.lastName}
+                        {this.renderEditBasicInfo()}
                       </Typography>
-                      <br />
-                      <Typography variant="h5">
-                        Class of {this.state.classYear}
-                      </Typography>
-                      <Typography variant="h5">
-                        Concentration(s): {this.state.major1}
+                      <p >
+                        {this.state.preferredPronouns && `(${this.state.preferredPronouns})`}
+                      </p>
+                      <p>Class of {this.state.classYear}</p>
+                      <p>
+                        Concentration 
+                        {[this.state.major1, this.state.major2, this.state.major3].filter(Boolean).length > 1 ? 's' : ''}
+                        :  
+                        {` ${this.state.major1}`}
                         {this.state.major2 && `, ${this.state.major2}`}
                         {this.state.major3 && `, ${this.state.major3}`}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                  <br />
-                  <br />
-                  {!this.state.bio && (
-                    <div>
-                      <br />
-                      <Button
-                        color="secondary"
-                        variant="outlined"
-                        onClick={this.handleBioOpen}
-                      >
-                        Add Bio
-                      </Button>
-                    </div>
-                  )}
-                  {this.state.bio && (
-                    <Card raised style={{ display: "inline-block" }}>
-                      <CardContent>
-                        <span>
-                          <Typography variant="h4" align="center">
-                            Bio
-                            <Tooltip title="Edit bio" placement="right">
-                              <IconButton
-                                onClick={this.handleBioOpen}
-                                className="button"
-                              >
-                                <EditIcon color="secondary" />
-                              </IconButton>
-                            </Tooltip>
-                          </Typography>
-                        </span>
-                        {this.state.bio}{" "}
-                      </CardContent>
-                    </Card>
-                  )}
-                  <Dialog
-                    overlayStyle={{ backgroundColor: "transparent" }}
-                    open={this.state.bioOpen}
-                    fullWidth
-                  >
-                    <DialogTitle
-                      style={{ cursor: "move" }}
-                      id="draggable-dialog-title"
-                    >
-                      Edit Bio
-                    </DialogTitle>
-                    <DialogContent>
-                      <TextField
-                        autofocus
-                        margin="dense"
-                        id="bio_"
-                        name="bio_"
-                        label="Bio"
-                        defaultValue={this.state.bio}
-                        multiline
-                        onChange={this.handleChange}
-                        rows={2}
-                        fullWidth
-                      />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleBioClose} color="secondary">
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={this.handleSubmitBio}
-                        color="secondary"
-                        disabled={
-                          this.state.bio_ === this.state.bio ||
-                          this.state.bio_.length >= 140
-                        }
-                      >
-                        Save Changes
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                  <br />
+                      </p>
 
-                  <br />
-                  <Grid container spacing={2}>
-                    <Grid item sm>
-                      <Card
-                        raised
-                        style={{
-                          borderStyle: "solid",
-                          borderWidth: "2px",
-                          borderColor: "red",
-                          height: "100%",
-                          marginBottom: "-5px",
-                        }}
-                      >
-                        <CardContent>
-                          <div>
-                            <span>
-                              <Typography variant="h5">
-                                Groups
-                                {[
-                                  this.state.group1,
-                                  this.state.group2,
-                                  this.state.group3,
-                                ].filter(Boolean).length > 0 && (
-                                  <Tooltip
-                                    title="Edit groups"
-                                    placement="right"
-                                  >
-                                    <IconButton
-                                      onClick={this.handleGroupsOpen}
-                                      className="button"
-                                      style={{
-                                        marginTop: "-10px",
-                                        marginBottom: "-10px",
-                                      }}
-                                    >
-                                      <EditIcon color="secondary" />
-                                    </IconButton>
-                                  </Tooltip>
-                                )}
-                              </Typography>
-                            </span>
-                            <br />
-                            {this.state.group1 && (
-                              <Typography>• {this.state.group1}</Typography>
-                            )}
-                            {this.state.group2 && (
-                              <Typography>• {this.state.group2}</Typography>
-                            )}
-                            {this.state.group3 && (
-                              <Typography>• {this.state.group3}</Typography>
-                            )}
-                            {!this.state.group1 &&
-                              !this.state.group2 &&
-                              !this.state.group3 && (
-                                <Tooltip title="Add group" placement="right">
-                                  <IconButton
-                                    onClick={this.handleGroupsOpen}
-                                    className="button"
-                                    style={{
-                                      marginTop: "-10px",
-                                      marginBottom: "-10px",
-                                    }}
-                                  >
-                                    <AddCircle color="secondary" />
-                                  </IconButton>
-                                </Tooltip>
-                              )}
-                          </div>
-                          <Dialog
-                            overlayStyle={{ backgroundColor: "transparent" }}
-                            open={this.state.groupsOpen}
-                          >
-                            <DialogTitle
-                              style={{ cursor: "move" }}
-                              id="draggable-dialog-title"
-                            >
-                              Edit Groups
-                            </DialogTitle>
-                            <DialogContent>
-                              <Typography>
-                                Please list up to 3 clubs, affinity groups, or
-                                student organizations you are involved with.
-                              </Typography>
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="group1_"
-                                autoComplete="off"
-                                name="group1_"
-                                label="Group 1"
-                                defaultValue={this.state.group1}
-                                fullWidth
-                                type="text"
-                                onChange={this.handleChange}
-                              />
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="group2_"
-                                autoComplete="off"
-                                name="group2_"
-                                label="Group 2"
-                                defaultValue={this.state.group2}
-                                fullWidth
-                                type="text"
-                                onChange={this.handleChange}
-                              />
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="group3_"
-                                autoComplete="off"
-                                name="group3_"
-                                label="Group 3"
-                                defaultValue={this.state.group3}
-                                fullWidth
-                                type="text"
-                                onChange={this.handleChange}
-                              />
-                            </DialogContent>
-                            <DialogActions>
-                              <Button
-                                onClick={this.handleGroupsClose}
-                                color="secondary"
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                onClick={this.handleSubmitGroups}
-                                color="secondary"
-                              >
-                                Save Changes
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                    <Grid item sm>
-                      <Card
-                        raised
-                        style={{
-                          borderStyle: "solid",
-                          borderWidth: "2px",
-                          borderColor: "red",
-                          height: "100%",
-                          marginBottom: "-5px",
-                        }}
-                      >
-                        <CardContent>
-                          <div>
-                            <span>
-                              <Typography variant="h5">
-                                Varsity Sports
-                                {[
-                                  this.state.varsitySport1,
-                                  this.state.varsitySport2,
-                                ].filter(Boolean).length > 0 && (
-                                  <Tooltip
-                                    title="Edit varsity sports"
-                                    placement="right"
-                                  >
-                                    <IconButton
-                                      onClick={this.handleVarsityOpen}
-                                      className="button"
-                                      style={{
-                                        marginTop: "-10px",
-                                        marginBottom: "-10px",
-                                      }}
-                                    >
-                                      <EditIcon color="secondary" />
-                                    </IconButton>
-                                  </Tooltip>
-                                )}
-                              </Typography>
-                            </span>
-                            <br />
-                            {this.state.varsitySport1 && (
-                              <Typography>
-                                • {this.state.varsitySport1}
-                              </Typography>
-                            )}
-                            {this.state.varsitySport2 && (
-                              <Typography>
-                                • {this.state.varsitySport2}
-                              </Typography>
-                            )}
-
-                            {!this.state.varsitySport1 &&
-                              !this.state.varsitySport2 && (
-                                <Tooltip
-                                  title="Add varsity sport"
-                                  placement="right"
-                                >
-                                  <IconButton
-                                    onClick={this.handleVarsityOpen}
-                                    className="button"
-                                    style={{
-                                      marginTop: "-10px",
-                                      marginBottom: "-10px",
-                                    }}
-                                  >
-                                    <AddCircle color="secondary" />
-                                  </IconButton>
-                                </Tooltip>
-                              )}
-                          </div>
-                          <Dialog
-                            overlayStyle={{ backgroundColor: "transparent" }}
-                            open={this.state.varsityOpen}
-                          >
-                            <DialogTitle
-                              style={{ cursor: "move" }}
-                              id="draggable-dialog-title"
-                            >
-                              Edit Varsity Sports
-                            </DialogTitle>
-                            <DialogContent>
-                              <Typography>
-                                If you are a member of any varsity sports teams,
-                                please indicate which ones below.
-                              </Typography>
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                name="varsitySport1_"
-                                autoComplete="off"
-                                label="First Varsity Sport"
-                                defaultValue={this.state.varsitySport1}
-                                fullWidth
-                                onChange={this.handleChange}
-                                InputProps={{
-                                  endAdornment: varsitySports,
-                                  inputProps: {
-                                    list: "varsitySports",
-                                  },
-                                }}
-                              />
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                name="varsitySport2_"
-                                autoComplete="off"
-                                label="Second Varsity Sport"
-                                defaultValue={this.state.varsitySport2}
-                                fullWidth
-                                onChange={this.handleChange}
-                                InputProps={{
-                                  endAdornment: varsitySports,
-                                  inputProps: {
-                                    list: "varsitySports",
-                                  },
-                                }}
-                              />
-                            </DialogContent>
-                            <DialogActions>
-                              <Button
-                                onClick={this.handleVarsityClose}
-                                color="secondary"
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                onClick={this.handleSubmitVarsity}
-                                color="secondary"
-                              >
-                                Save Changes
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                    <Grid item sm>
-                      <Card
-                        raised
-                        style={{
-                          borderStyle: "solid",
-                          borderWidth: "2px",
-                          borderColor: "red",
-                          height: "100%",
-                          marginBottom: "-5px",
-                        }}
-                      >
-                        <CardContent>
-                          <div>
-                            <span>
-                              <Typography variant="h5">
-                                Greek Organization
-                                {[this.state.greekLife].filter(Boolean).length >
-                                  0 && (
-                                  <Tooltip
-                                    title="Edit Greek organization"
-                                    placement="right"
-                                  >
-                                    <IconButton
-                                      onClick={this.handleGreekOpen}
-                                      className="button"
-                                      style={{
-                                        marginTop: "-10px",
-                                        marginBottom: "-10px",
-                                      }}
-                                    >
-                                      <EditIcon color="secondary" />
-                                    </IconButton>
-                                  </Tooltip>
-                                )}
-                              </Typography>
-                            </span>
-                            <br />
-                            {this.state.greekLife && (
-                              <Typography>• {this.state.greekLife}</Typography>
-                            )}
-
-                            {!this.state.greekLife && (
-                              <Tooltip
-                                title="Add Greek organization"
-                                placement="right"
-                              >
-                                <IconButton
-                                  onClick={this.handleGreekOpen}
-                                  className="button"
-                                  style={{
-                                    marginTop: "-10px",
-                                    marginBottom: "-10px",
-                                  }}
-                                >
-                                  <AddCircle color="secondary" />
+                      {!this.state.bio && (
+                        <Button color="secondary" variant="outlined" 
+                          onClick={this.handleBioOpen} 
+                          style={{ marginTop: '15px'}}
+                        >
+                          Add Bio
+                        </Button>
+                      )}
+                      {this.state.bio && (
+                        <Card raised style={{ display: "inline-block" }}>
+                          <CardContent>
+                            <Typography variant="h4" align="center">
+                              Bio
+                              <Tooltip title="Edit bio" placement="right">
+                                <IconButton onClick={this.handleBioOpen} className="button">
+                                  <EditIcon color="secondary" />
                                 </IconButton>
                               </Tooltip>
-                            )}
-                          </div>
-                          <Dialog
-                            overlayStyle={{ backgroundColor: "transparent" }}
-                            open={this.state.greekOpen}
-                          >
-                            <DialogTitle
-                              style={{ cursor: "move" }}
-                              id="draggable-dialog-title"
-                            >
-                              Edit Greek Organization
-                            </DialogTitle>
-                            <DialogContent>
-                              <Typography>
-                                If you are a member of any Greek Organizations,
-                                please indicate which one below.
-                              </Typography>
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                name="greekLife_"
-                                autoComplete="off"
-                                label="Greek Organization"
-                                defaultValue={this.state.greekLife}
-                                fullWidth
-                                onChange={this.handleChange}
-                                InputProps={{
-                                  endAdornment: greekLife,
-                                  inputProps: {
-                                    list: "greekLife",
-                                  },
-                                }}
-                              />
-                            </DialogContent>
-                            <DialogActions>
-                              <Button
-                                onClick={this.handleGreekClose}
-                                color="secondary"
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                onClick={this.handleSubmitGreek}
-                                color="secondary"
-                              >
-                                Save Changes
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-              <br />
-              <Card raised>
-                <CardContent align="center">
-                  <Typography variant="h3">
-                    Interests{" "}
-                    <Tooltip title="Edit interests" placement="right">
-                      <IconButton
-                        className="button"
-                        onClick={this.handleInterestsOpen}
-                      >
-                        <EditIcon color="secondary" />
-                      </IconButton>
-                    </Tooltip>
-                    <Dialog
-                      overlayStyle={{ backgroundColor: "transparent" }}
-                      open={this.state.interestsOpen}
-                    >
-                      <DialogTitle
-                        style={{ cursor: "move" }}
-                        id="draggable-dialog-title"
-                      >
-                        Edit Interests
-                      </DialogTitle>
-                      <DialogContent>
-                        <Interests getInterests={this.handleInterests} />
-                      </DialogContent>
-                      <DialogActions>
-                        <Button
-                          onClick={this.handleInterestsClose}
-                          color="secondary"
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          onClick={this.handleSubmitInterests}
-                          color="secondary"
-                          disabled={
-                            this.state.interests1_.length +
-                              this.state.interests2_.length +
-                              this.state.interests3_.length !==
-                            10
-                          }
-                        >
-                          Save Changes
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </Typography>
-                  <hr />
-                  <br />
-                  <Grid container spacing={2}>
-                    <Grid item sm>
-                      <Card
-                        raised
-                        style={{
-                          borderStyle: "solid",
-                          borderWidth: "2px",
-                          borderColor: `${palette[7]}`,
-                          height: "100%",
-                        }}
-                      >
-                        <CardContent>
-                          <Typography
-                            variant="h5"
-                            style={{ color: `${palette[7]}` }}
-                          >
-                            Career and Academic
-                          </Typography>
-                          <br />
-                          {this.state.interests1.map((interest) => {
-                            return <Typography>• {interest}</Typography>;
-                          })}
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                    <Grid item sm>
-                      <Card
-                        raised
-                        style={{
-                          borderStyle: "solid",
-                          borderWidth: "2px",
-                          borderColor: `${palette[0]}`,
-                          height: "100%",
-                        }}
-                      >
-                        <CardContent>
-                          <Typography
-                            variant="h5"
-                            style={{ color: `${palette[0]}` }}
-                          >
-                            Physical Activity and Wellness
-                          </Typography>
-                          <br />
-                          {this.state.interests2.map((interest) => {
-                            return <Typography>• {interest}</Typography>;
-                          })}
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                    <Grid item sm>
-                      <Card
-                        raised
-                        style={{
-                          borderStyle: "solid",
-                          borderWidth: "2px",
-                          borderColor: `${palette[3]}`,
-                          height: "100%",
-                        }}
-                      >
-                        <CardContent>
-                          <Typography
-                            variant="h5"
-                            style={{ color: `${palette[3]}` }}
-                          >
-                            General Hobbies
-                          </Typography>
-                          <br />
-                          {this.state.interests3.map((interest) => {
-                            return <Typography>• {interest}</Typography>;
-                          })}
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  </Grid>
-                  <br />
-                  <br />
-                  <Card raised style={{ marginBottom: "-5px" }}>
-                    <CardContent>
-                      <Typography variant="h4">Additional Info</Typography>
-                      <hr />
-                      <br />
-                      <Grid container>
-                        <Grid item sm>
-                          <div>
-                            <Music />
-                            <span>
-                              <Typography variant="h6">
-                                Instruments
-                                {[
-                                  this.state.instrument1,
-                                  this.state.instrument2,
-                                  this.state.instrument3,
-                                ].filter(Boolean).length > 0 && (
-                                  <Tooltip
-                                    title="Edit instruments"
-                                    placement="right"
-                                  >
-                                    <IconButton
-                                      onClick={this.handleInstrumentsOpen}
-                                      className="button"
-                                      style={{
-                                        marginTop: "-10px",
-                                        marginBottom: "-10px",
-                                      }}
-                                    >
-                                      <EditIcon color="secondary" />
-                                    </IconButton>
-                                  </Tooltip>
-                                )}
-                              </Typography>
-                            </span>
-                            <br />
-                            {this.state.instrument1 && (
-                              <Typography>
-                                • {this.state.instrument1}
-                              </Typography>
-                            )}
-                            {this.state.instrument2 && (
-                              <Typography>
-                                • {this.state.instrument2}
-                              </Typography>
-                            )}
-                            {this.state.instrument3 && (
-                              <Typography>
-                                • {this.state.instrument3}
-                              </Typography>
-                            )}
-                            {!this.state.instrument1 &&
-                              !this.state.instrument2 &&
-                              !this.state.instrument3 && (
-                                <Tooltip
-                                  title="Add instrument"
-                                  placement="right"
-                                >
-                                  <IconButton
-                                    onClick={this.handleInstrumentsOpen}
-                                    className="button"
-                                    style={{
-                                      marginTop: "-10px",
-                                      marginBottom: "-10px",
-                                    }}
-                                  >
-                                    <AddCircle color="secondary" />
-                                  </IconButton>
-                                </Tooltip>
-                              )}
-                            <Dialog
-                              overlayStyle={{ backgroundColor: "transparent" }}
-                              open={this.state.instrumentsOpen}
-                            >
-                              <DialogTitle
-                                style={{ cursor: "move" }}
-                                id="draggable-dialog-title"
-                              >
-                                Edit Instruments
-                              </DialogTitle>
-                              <DialogContent>
-                                <Typography>Insert Later</Typography>
-                                <TextField
-                                  autofocus
-                                  margin="dense"
-                                  id="instrument1_"
-                                  autoComplete="off"
-                                  name="instrument1_"
-                                  label="Instrument 1"
-                                  defaultValue={this.state.instrument1}
-                                  fullWidth
-                                  type="text"
-                                  onChange={this.handleChange}
-                                />
-                                <TextField
-                                  autofocus
-                                  margin="dense"
-                                  id="instrument2_"
-                                  autoComplete="off"
-                                  name="instrument2_"
-                                  label="Instrument 2"
-                                  defaultValue={this.state.instrument2}
-                                  fullWidth
-                                  type="text"
-                                  onChange={this.handleChange}
-                                />
-                                <TextField
-                                  autofocus
-                                  margin="dense"
-                                  id="instrument3_"
-                                  autoComplete="off"
-                                  name="instrument3_"
-                                  label="Instrument 3"
-                                  defaultValue={this.state.instrument3}
-                                  fullWidth
-                                  type="text"
-                                  onChange={this.handleChange}
-                                />
-                              </DialogContent>
-                              <DialogActions>
-                                <Button
-                                  onClick={this.handleInstrumentsClose}
-                                  color="secondary"
-                                >
-                                  Cancel
-                                </Button>
-                                <Button
-                                  onClick={this.handleSubmitInstruments}
-                                  color="secondary"
-                                  disabled={
-                                    this.state.instrument1 ===
-                                      this.state.instrument1_ &&
-                                    this.state.instrument2 ===
-                                      this.state.instrument2_ &&
-                                    this.state.instrument3 ===
-                                      this.state.instrument3_
-                                  }
-                                >
-                                  Save Changes
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                          </div>
-                        </Grid>
-                        <Grid item sm>
-                          <div>
-                            <Sports />
-                            <span>
-                              <Typography variant="h6">
-                                Pick-Up Sports
-                                {[
-                                  this.state.pickUpSport1,
-                                  this.state.pickUpSport2,
-                                  this.state.pickUpSport3,
-                                ].filter(Boolean).length > 0 && (
-                                  <Tooltip
-                                    title="Edit pickUpSports"
-                                    placement="right"
-                                  >
-                                    <IconButton
-                                      onClick={this.handlePickUpSportsOpen}
-                                      className="button"
-                                      style={{
-                                        marginTop: "-10px",
-                                        marginBottom: "-10px",
-                                      }}
-                                    >
-                                      <EditIcon color="secondary" />
-                                    </IconButton>
-                                  </Tooltip>
-                                )}
-                              </Typography>
-                            </span>
-                            <br />
-                            {this.state.pickUpSport1 && (
-                              <Typography>
-                                • {this.state.pickUpSport1}
-                              </Typography>
-                            )}
-                            {this.state.pickUpSport2 && (
-                              <Typography>
-                                • {this.state.pickUpSport2}
-                              </Typography>
-                            )}
-                            {this.state.pickUpSport3 && (
-                              <Typography>
-                                • {this.state.pickUpSport3}
-                              </Typography>
-                            )}
-                            {!this.state.pickUpSport1 &&
-                              !this.state.pickUpSport2 &&
-                              !this.state.pickUpSport3 && (
-                                <Tooltip
-                                  title="Add pick up sport"
-                                  placement="right"
-                                >
-                                  <IconButton
-                                    onClick={this.handlePickUpSportsOpen}
-                                    className="button"
-                                    style={{
-                                      marginTop: "-10px",
-                                      marginBottom: "-10px",
-                                    }}
-                                  >
-                                    <AddCircle color="secondary" />
-                                  </IconButton>
-                                </Tooltip>
-                              )}
-                            <Dialog
-                              overlayStyle={{ backgroundColor: "transparent" }}
-                              open={this.state.pickUpSportsOpen}
-                            >
-                              <DialogTitle
-                                style={{ cursor: "move" }}
-                                id="draggable-dialog-title"
-                              >
-                                Edit Pick-Up Sports
-                              </DialogTitle>
-                              <DialogContent>
-                                <Typography>Insert Later</Typography>
-                                <TextField
-                                  autofocus
-                                  margin="dense"
-                                  id="pickUpSport1_"
-                                  autoComplete="off"
-                                  name="pickUpSport1_"
-                                  label="Pick-Up Sport 1"
-                                  defaultValue={this.state.pickUpSport1}
-                                  fullWidth
-                                  type="text"
-                                  onChange={this.handleChange}
-                                />
-                                <TextField
-                                  autofocus
-                                  margin="dense"
-                                  id="pickUpSport2_"
-                                  autoComplete="off"
-                                  name="pickUpSport2_"
-                                  label="Pick-Up Sport 2"
-                                  defaultValue={this.state.pickUpSport2}
-                                  fullWidth
-                                  type="text"
-                                  onChange={this.handleChange}
-                                />
-                                <TextField
-                                  autofocus
-                                  margin="dense"
-                                  id="pickUpSport3_"
-                                  autoComplete="off"
-                                  name="pickUpSport3_"
-                                  label="Pick-Up Sport 3"
-                                  defaultValue={this.state.pickUpSport3}
-                                  fullWidth
-                                  type="text"
-                                  onChange={this.handleChange}
-                                />
-                              </DialogContent>
-                              <DialogActions>
-                                <Button
-                                  onClick={this.handlePickUpSportsClose}
-                                  color="secondary"
-                                >
-                                  Cancel
-                                </Button>
-                                <Button
-                                  onClick={this.handleSubmitPickUpSports}
-                                  color="secondary"
-                                  disabled={
-                                    this.state.pickUpSport1 ===
-                                      this.state.pickUpSport1_ &&
-                                    this.state.pickUpSport2 ===
-                                      this.state.pickUpSport2_ &&
-                                    this.state.pickUpSport3 ===
-                                      this.state.pickUpSport3_
-                                  }
-                                >
-                                  Save Changes
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                          </div>
-                        </Grid>
-                        <Grid item sm>
-                          <div>
-                            <Pets />
-                            <span>
-                              <Typography variant="h6">
-                                Pets
-                                {[
-                                  this.state.pet1,
-                                  this.state.pet2,
-                                  this.state.pet3,
-                                ].filter(Boolean).length > 0 && (
-                                  <Tooltip title="Edit pets" placement="right">
-                                    <IconButton
-                                      onClick={this.handlePetsOpen}
-                                      className="button"
-                                      style={{
-                                        marginTop: "-10px",
-                                        marginBottom: "-10px",
-                                      }}
-                                    >
-                                      <EditIcon color="secondary" />
-                                    </IconButton>
-                                  </Tooltip>
-                                )}
-                              </Typography>
-                            </span>
-                            <br />
-                            {this.state.pet1 && (
-                              <Typography>• {this.state.pet1}</Typography>
-                            )}
-                            {this.state.pet2 && (
-                              <Typography>• {this.state.pet2}</Typography>
-                            )}
-                            {this.state.pet3 && (
-                              <Typography>• {this.state.pet3}</Typography>
-                            )}
-                            {!this.state.pet1 &&
-                              !this.state.pet2 &&
-                              !this.state.pet3 && (
-                                <Tooltip title="Add pet" placement="right">
-                                  <IconButton
-                                    onClick={this.handlePetsOpen}
-                                    className="button"
-                                    style={{
-                                      marginTop: "-10px",
-                                      marginBottom: "-10px",
-                                    }}
-                                  >
-                                    <AddCircle color="secondary" />
-                                  </IconButton>
-                                </Tooltip>
-                              )}
-                            <Dialog
-                              overlayStyle={{ backgroundColor: "transparent" }}
-                              open={this.state.petsOpen}
-                            >
-                              <DialogTitle
-                                style={{ cursor: "move" }}
-                                id="draggable-dialog-title"
-                              >
-                                Edit Pets
-                              </DialogTitle>
-                              <DialogContent>
-                                <Typography>Insert Later</Typography>
-                                <TextField
-                                  autofocus
-                                  margin="dense"
-                                  id="pet1_"
-                                  autoComplete="off"
-                                  name="pet1_"
-                                  label="Pet 1"
-                                  defaultValue={this.state.pet1}
-                                  fullWidth
-                                  type="text"
-                                  onChange={this.handleChange}
-                                />
-                                <TextField
-                                  autofocus
-                                  margin="dense"
-                                  id="pet2_"
-                                  autoComplete="off"
-                                  name="pet2_"
-                                  label="Pet 2"
-                                  defaultValue={this.state.pet2}
-                                  fullWidth
-                                  type="text"
-                                  onChange={this.handleChange}
-                                />
-                                <TextField
-                                  autofocus
-                                  margin="dense"
-                                  id="pet_"
-                                  autoComplete="off"
-                                  name="pet_"
-                                  label="Pet 3"
-                                  defaultValue={this.state.pet}
-                                  fullWidth
-                                  type="text"
-                                  onChange={this.handleChange}
-                                />
-                              </DialogContent>
-                              <DialogActions>
-                                <Button
-                                  onClick={this.handlePetsClose}
-                                  color="secondary"
-                                >
-                                  Cancel
-                                </Button>
-                                <Button
-                                  onClick={this.handleSubmitPets}
-                                  color="secondary"
-                                  disabled={
-                                    this.state.pet1 === this.state.pet1_ &&
-                                    this.state.pet2 === this.state.pet2_ &&
-                                    this.state.pet3 === this.state.pet3_
-                                  }
-                                >
-                                  Save Changes
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                          </div>
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
-                </CardContent>
-              </Card>
-              <br />
-              <Card raised>
-                <CardContent align="center">
-                  <Typography variant="h3">
-                    Favorites{" "}
-                    {!this.state.favoriteBook &&
-                      !this.state.favoriteMovie &&
-                      !this.state.favoriteShow &&
-                      !this.state.favoriteArtist && (
-                        <Tooltip title="Add favorites" placement="right">
-                          <IconButton
-                            onClick={this.handleFavoritesOpen}
-                            className="button"
-                          >
-                            <AddCircle color="secondary" />
-                          </IconButton>
-                        </Tooltip>
-                      )}
-                    {[
-                      this.state.favoriteBook,
-                      this.state.favoriteMovie,
-                      this.state.favoriteShow,
-                      this.state.favoriteArtist,
-                    ].filter(Boolean).length > 0 && (
-                      <Tooltip title="Edit favorites" placement="right">
-                        <IconButton
-                          onClick={this.handleFavoritesOpen}
-                          className="button"
-                        >
-                          <EditIcon color="secondary" />
-                        </IconButton>
-                      </Tooltip>
-                    )}
-                    <Dialog
-                      overlayStyle={{ backgroundColor: "transparent" }}
-                      open={this.state.favoritesOpen}
-                    >
-                      <DialogTitle
-                        style={{ cursor: "move" }}
-                        id="draggable-dialog-title"
-                      >
-                        Edit Favorites
-                      </DialogTitle>
-                      <DialogContent>
-                        <TextField
-                          autofocus
-                          margin="dense"
-                          id="favoriteBook_"
-                          name="favoriteBook_"
-                          autoComplete="off"
-                          label="Book"
-                          defaultValue={this.state.favoriteBook}
-                          fullWidth
-                          required
-                          type="text"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          autofocus
-                          margin="dense"
-                          id="favoriteMovie_"
-                          name="favoriteMovie_"
-                          autoComplete="off"
-                          label="Movie"
-                          defaultValue={this.state.favoriteMovie}
-                          fullWidth
-                          required
-                          type="text"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          autofocus
-                          margin="dense"
-                          id="favoriteShow_"
-                          name="favoriteShow_"
-                          autoComplete="off"
-                          label="Show"
-                          defaultValue={this.state.favoriteShow}
-                          fullWidth
-                          required
-                          type="text"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          autofocus
-                          margin="dense"
-                          id="favoriteArtist_"
-                          name="favoriteArtist_"
-                          autoComplete="off"
-                          label="Artist"
-                          defaultValue={this.state.favoriteArtist}
-                          fullWidth
-                          required
-                          type="text"
-                          onChange={this.handleChange}
-                        />
-                      </DialogContent>
-                      <DialogActions>
-                        <Button
-                          onClick={this.handleFavoritesClose}
-                          color="secondary"
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          onClick={this.handleSubmitFavorites}
-                          color="secondary"
-                          disabled={
-                            this.state.favoriteBook ===
-                              this.state.favoriteBook_ &&
-                            this.state.favoriteMovie ===
-                              this.state.favoriteMovie_ &&
-                            this.state.favoriteShow ===
-                              this.state.favoriteShow_ &&
-                            this.state.favoriteArtist ===
-                              this.state.favoriteArtist_
-                          }
-                        >
-                          Save Changes
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </Typography>
-                  <hr />
-                  <br />
-                  <Grid container spacing={2}>
-                    <Grid item sm>
-                      <div>
-                        <Book />
-                        <Typography variant="body1">
-                          Book: {this.state.favoriteBook}
-                        </Typography>
-                      </div>
-                    </Grid>
-                    <Grid item sm>
-                      <div>
-                        <Movie />
-                        <Typography variant="body1">
-                          Movie: {this.state.favoriteMovie}
-                        </Typography>
-                      </div>
-                    </Grid>
-                    <Grid item sm>
-                      <div>
-                        <Tv />
-                        <Typography variant="body1">
-                          Show: {this.state.favoriteShow}
-                        </Typography>
-                      </div>
-                    </Grid>
-                    <Grid item sm>
-                      <div>
-                        <Music />
-                        <Typography variant="body1">
-                          Artist: {this.state.favoriteArtist}
-                        </Typography>
-                      </div>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-              <br />
-              <Card raised>
-                <CardContent align="center">
-                  <Typography variant="h3">Courses</Typography>
-                  <hr />
-                  <br />
-                  <Grid container spacing={2}>
-                    {indexArray.map((index) => (
-                      <Grid item sm>
-                        <Card
-                          style={{
-                            borderStyle: "solid",
-                            borderWidth: "3px",
-                            borderColor: `${this.state.courses[index].color}`,
-                            height: "100%",
-                          }}
-                        >
-                          <CardContent>
-                            <Typography
-                              variant="h5"
-                              style={{
-                                color: `${this.state.courses[index].color}`,
-                              }}
-                            >
-                              {this.state.courses[index].code}
                             </Typography>
-                            <Typography variant="body1">
-                              {this.state.courses[index].name}
-                            </Typography>
-                            <Tooltip title="Change color" placement="right">
-                              <IconButton
-                                onClick={() => this.handleColorOpen(index)}
-                                style={{ marginBottom: "-20px" }}
-                              >
-                                <Dots color="secondary" />
-                              </IconButton>
-                            </Tooltip>
-                            <Dialog
-                              overlayStyle={{ backgroundColor: "transparent" }}
-                              open={this.state.colorOpen[index]}
-                            >
-                              <DialogTitle
-                                style={{ cursor: "move" }}
-                                id="draggable-dialog-title"
-                              >
-                                Edit Course Color
-                              </DialogTitle>
-                              <DialogContent>
-                                <TextField
-                                  autofocus
-                                  margin="dense"
-                                  id="courseColor"
-                                  name="courseColor"
-                                  autoComplete="off"
-                                  select
-                                  label="Course Color"
-                                  defaultValue={this.state.courses[index].color}
-                                  onChange={this.handleChange}
-                                  helperText="Please select a course color"
-                                >
-                                  {palette.map((color) => (
-                                    <MenuItem key={color} value={color}>
-                                      <Typography
-                                        variant="h6"
-                                        style={{
-                                          backgroundColor: color,
-                                          color: color,
-                                        }}
-                                      >
-                                        Color
-                                      </Typography>
-                                    </MenuItem>
-                                  ))}
-                                </TextField>
-                              </DialogContent>
-                              <DialogActions>
-                                <Button
-                                  onClick={this.handleColorClose}
-                                  color="secondary"
-                                >
-                                  Cancel
-                                </Button>
-                                <Button
-                                  onClick={() => this.handleColorSave(index)}
-                                  color="secondary"
-                                  disabled={
-                                    this.state.courses[index].color ===
-                                      this.state.courseColor ||
-                                    this.state.courseColor === ""
-                                  }
-                                >
-                                  Save Changes
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                            {this.state.removeOpen && (
-                              <div>
-                                <br />
-                                <IconButton
-                                  size="large"
-                                  color="primary"
-                                  onClick={() => this.handleRemoveCourse(index)}
-                                  style={{
-                                    marginBottom: "-30px",
-                                    marginTop: "-15px",
-                                  }}
-                                >
-                                  <DeleteIcon fontSize="large" />
-                                </IconButton>
-                              </div>
-                            )}
+                            {this.state.bio}
                           </CardContent>
                         </Card>
-                      </Grid>
-                    ))}
-                    <Grid item sm>
-                      {numCourses < 5 && (
-                        <div>
-                          <Tooltip title="Add course" placement="right">
-                            <IconButton
-                              variant="contained"
-                              color="secondary"
-                              onClick={this.handleAddOpen}
-                              style={{ marginTop: "10px" }}
-                            >
-                              Add <span style={{ marginRight: "5px" }} />{" "}
-                              <AddIcon />
-                            </IconButton>
-                          </Tooltip>
-                          <Dialog
-                            overlayStyle={{ backgroundColor: "transparent" }}
-                            open={this.state.addOpen}
-                            onClose={this.handleAddClose}
-                          >
-                            <DialogTitle
-                              style={{ cursor: "move" }}
-                              id="draggable-dialog-title"
-                            >
-                              Add Course
-                            </DialogTitle>
-                            <DialogContent>
-                              <DialogContentText>
-                                Please enter the course code and course name
-                                below:
-                              </DialogContentText>
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="courseCode"
-                                name="addCourseCode"
-                                label="Code (e.g. ECON 0110)"
-                                fullWidth
-                                type="text"
-                                onChange={this.handleChange}
-                              />
-                              <TextField
-                                autofocus
-                                type="text"
-                                margin="dense"
-                                id="courseName"
-                                name="addCourseName"
-                                label="Name (e.g. Principles of Economics)"
-                                fullWidth
-                                onChange={this.handleChange}
-                              />
-                              <TextField
-                                autofocus
-                                margin="dense"
-                                id="courseColor"
-                                name="addCourseColor"
-                                autoComplete="off"
-                                select
-                                label="Course Color"
-                                onChange={this.handleChange}
-                                helperText="Please select a course color"
-                              >
-                                {palette.map((color) => (
-                                  <MenuItem key={color} value={color}>
-                                    <Typography
-                                      variant="h6"
-                                      style={{
-                                        backgroundColor: color,
-                                        color: color,
-                                        width: "100%",
-                                      }}
-                                    >
-                                      Color
-                                    </Typography>
-                                  </MenuItem>
-                                ))}
-                              </TextField>
-                            </DialogContent>
-                            <DialogActions>
-                              <Button
-                                onClick={this.handleAddClose}
-                                color="secondary"
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                onClick={this.handleAddCourse}
-                                color="secondary"
-                              >
-                                Add
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
-                        </div>
                       )}
-                      <br />
-
-                      {numCourses > 0 && (
-                        <div>
-                          {numCourses === 5 && (
-                            <div>
-                              <br />
-                              <br />
-                            </div>
-                          )}
-                          {!this.state.removeOpen && (
-                            <div>
-                              <Tooltip title="Remove course" placement="right">
-                                <IconButton
-                                  variant="contained"
-                                  color="primary"
-                                  onClick={this.toggleRemoveOpen}
-                                  style={{ marginTop: "-25px" }}
-                                >
-                                  Remove <span style={{ marginRight: "5px" }} />{" "}
-                                  <DeleteIcon />
-                                </IconButton>
-                              </Tooltip>
-                            </div>
-                          )}
-                          {this.state.removeOpen && (
+                      <Dialog overlayStyle={{ backgroundColor: "transparent" }} open={this.state.bioOpen} fullWidth>
+                        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+                          Edit Bio
+                        </DialogTitle>
+                        <DialogContent>
+                          <TextField
+                            autofocus
+                            margin="dense"
+                            id="bio_"
+                            name="bio_"
+                            label="Bio"
+                            defaultValue={this.state.bio}
+                            multiline
+                            onChange={this.handleChange}
+                            rows={2}
+                            fullWidth
+                          />
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={this.handleBioClose} color="secondary">
+                            Cancel
+                          </Button>
+                          <Button onClick={this.handleSubmitBio} color="secondary"
+                            disabled={
+                              this.state.bio_ === this.state.bio ||
+                              this.state.bio_.length >= 140
+                            }
+                          >
+                            Save Changes
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                      {/* new test code */}
+                          {/* <Dialog
+                          overlayStyle={{ backgroundColor: "transparent" }}
+                          open={this.state.imageOpen}
+                        >
+                          <DialogTitle
+                            style={{ cursor: "move" }}
+                            id="draggable-dialog-title"
+                          >
+                            Crop Image
+                          </DialogTitle>
+                          <DialogContent style={{ height: "600px", width: "600px" }}>
+                            <Crop img={this.state.imageUrl} />
+                            <MyEditor />
+                          </DialogContent>
+                          <DialogActions>
                             <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={this.toggleRemoveOpen}
+                              // onClick={this.handleCropImage}
+                              onClick={this.handleImageClose}
+                              color="secondary"
                             >
                               Cancel
                             </Button>
-                          )}
-                        </div>
-                      )}
+                          </DialogActions>
+                        </Dialog> */}
                     </Grid>
                   </Grid>
                 </CardContent>
               </Card>
-              <br />
+            </div>
+            <div class="section-container">
+              <Grid container spacing={5}>
+                {this.renderOrganizations()}
+              </Grid>
+            </div>
+              <div className="section-container">
+                {this.renderInterests()}
+              </div>
+              <div className="section-container">
+                {this.renderAdditionalInfo()}
+              </div>
+              <div className="section-container">
+                {this.renderFavorites()}
+              </div>
+              <div className="section-container">
+                {this.renderCourses()}
+              </div>
             </TabPanel>
             <TabPanel value={this.state.tabIndex} index={1}></TabPanel>
           </div>

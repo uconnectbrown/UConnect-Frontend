@@ -19,7 +19,7 @@ class NavBar extends Component {
 
   render() {
     return (
-      <AppBar>
+      <AppBar color="secondary">
         <Toolbar className="nav-container">
           <Button color="inherit" component={Link} to="/profileView">
             Profile
