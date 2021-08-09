@@ -20,6 +20,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
 
 export class messageView extends Component {
+  //
   state = {
     ownId: "",
     ownImage: "",
