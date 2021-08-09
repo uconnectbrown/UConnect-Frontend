@@ -178,7 +178,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
           <Typography variant="h5">
             Career and Academic
           </Typography>
-          <Grid container spacing={2} className="interest-options-container">
+          <Grid container spacing={2} className="options-container">
             {interests1.map((interest, index) => (
               <Grid item key={index}>
                 <Button
@@ -203,8 +203,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
           <Typography variant="h5">
             Physical Activity and Wellness
           </Typography>
-          <br />
-          <Grid container spacing={2} justifyContent="center">
+          <Grid container spacing={2} className="options-container">
             {interests2.map((interest, index) => (
               <Grid item>
                 <Button
@@ -229,7 +228,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
           <Typography variant="h5">
             General Hobbies
           </Typography>
-          <Grid container spacing={2} justifyContent="center">
+          <Grid container spacing={2} className="options-container">
             {interests3.map((interest, index) => (
               <Grid item>
                 <Button

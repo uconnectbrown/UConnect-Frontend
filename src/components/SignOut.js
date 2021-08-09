@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 // Components
 import App from "../App.js";
 
-function SignOut() {
+function SignOut(props) {
   let history = useHistory();
 
   async function signout() {
@@ -14,8 +14,9 @@ function SignOut() {
     history.push("/");
   }
   return (
-    <div>
+    <div style={props.style}>
       <Button
+        size="large"
         color="inherit"
         onClick={() => {
           signout();

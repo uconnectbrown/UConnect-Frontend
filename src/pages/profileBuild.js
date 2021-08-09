@@ -201,7 +201,7 @@ class profileBuild extends Component {
 
     return (
       <form noValidate onSubmit={this.handleSubmit}>
-        <SignOut />
+        <SignOut style={{ marginTop: '-50px' }}/>
         <Grid container className="section-container">
           <Grid item sm>
             <Typography variant="h2" className={classes.pageTitle}>
@@ -376,7 +376,7 @@ class profileBuild extends Component {
           </Grid>
         </Grid>
 
-        <Grid container className="section-container" style={{ backgroundColor: 'white' }}>
+        <Grid container className="section-container">
           <Grid item sm>
             <div class="header-icon-wrap">
               <h2>Interests</h2>
@@ -389,7 +389,7 @@ class profileBuild extends Component {
                 }
             </div>
             <p>Please select 10 categories in which you are interested.</p>
-            <Interests getInterests={this.handleInterests} />
+            <Interests getInterests={this.handleInterests}/>
           </Grid>
         </Grid>
 
