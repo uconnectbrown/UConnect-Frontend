@@ -111,7 +111,7 @@ class studentView extends Component {
         recipientImage: this.state.imageUrl,
         recipientId: this.props.location.state.recipientId,
         // Props that courseView needs
-        code: this.props.location.state.code,
+        code: this.props.location.state.code, // messageView also needs
         name: this.props.location.state.name,
         color: this.props.location.state.color,
       },

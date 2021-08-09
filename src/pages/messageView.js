@@ -21,18 +21,6 @@ import Grid from "@material-ui/core/Grid";
 
 export class messageView extends Component {
   state = {
-    // // Props that courseView needs
-    // code: "",
-    // name: "",
-    // color: "",
-    // numCourses: "",
-    // Props that studentView needs
-    recipientId: "",
-    // Props that messageView needs passed in
-    recipientName: "",
-    recipientImage: "",
-    previousPage: "",
-    // Other props that messageView needs
     ownId: "",
     ownImage: "",
     ownName: "",
@@ -43,23 +31,7 @@ export class messageView extends Component {
   componentDidMount() {
     if (!this.props.location.state) {
       this.props.history.push("/messagesView");
-    } else {
-      this.setState({
-        // // Props that courseView needs
-        // code: this.props.location.state.code,
-        // name: this.props.location.state.name,
-        // color: this.props.location.state.color,
-        // numCourses: this.props.location.state.numCourses,
-        // Props that studentView needs
-
-        // Props that messageView needs
-        recipientId: this.props.location.state.recipientId, // studentView needs
-        recipientName: this.props.location.state.recipientName,
-        recipientImage: this.props.location.state.recipientImage,
-        previousPage: this.props.location.state.previousPage,
-      });
     }
-
     axios
       .get(`/senderInfo/${auth.currentUser.email}`)
       .then((res) => {
@@ -93,7 +65,6 @@ export class messageView extends Component {
           code: this.props.location.state.code,
           name: this.props.location.state.name,
           color: this.props.location.state.color,
-          numCourses: this.props.location.state.numCourses,
         },
       });
     } else if (this.state.previousPage == "messagesView") {
@@ -105,7 +76,6 @@ export class messageView extends Component {
           code: this.props.location.state.code,
           name: this.props.location.state.name,
           color: this.props.location.state.color,
-          numCourses: this.props.location.state.numCourses,
           recipientId: this.props.location.state.recipientId,
         },
       });
@@ -113,6 +83,10 @@ export class messageView extends Component {
   };
 
   render() {
+    let image = this.props.location.state.recipientImage;
+    let name = this.props.location.state.recipientName;
+    let id = this.props.location.state.recipientId;
+    let codeNS = this.props.location.state.code.replace(/\s/g, "");
     return (
       <div>
         {this.state.loading && (
@@ -145,11 +119,11 @@ export class messageView extends Component {
                   <Grid item sm align="center">
                     <Avatar
                       alt="recipient"
-                      src={this.state.recipientImage}
+                      src={image}
                       style={{ width: "70px", height: "70px" }}
                     />
                     <Typography variant="body1">
-                      {this.state.recipientName.split(" ")[0]}
+                      {name.split(" ")[0]}
                     </Typography>
                   </Grid>
                   <Grid item sm align="right">
@@ -169,10 +143,10 @@ export class messageView extends Component {
             </AppBar>
 
             <Chat
-              recipientName={this.state.recipientName}
-              recipientImage={this.state.recipientImage}
-              recipientId={this.state.recipientId}
-              code={this.props.location.state.code.replace(/\s/g, "")}
+              recipientName={name}
+              recipientImage={image}
+              recipientId={id}
+              code={codeNS}
               ownId={this.state.ownId}
               ownImage={this.state.ownImage}
               ownName={this.state.ownName}

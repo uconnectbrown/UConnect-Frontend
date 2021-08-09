@@ -17,7 +17,6 @@ import MessageIcon from "@material-ui/icons/Sms";
 
 export class feedView extends Component {
   state = {
-    code: "",
     ownId: "",
     ownImage: "",
     ownName: "",
@@ -28,10 +27,6 @@ export class feedView extends Component {
     if (!this.props.location.state) {
       this.props.history.push("/messagesView");
     } else {
-      this.setState({
-        code: this.props.location.state.code,
-      });
-
       axios
         .get(`/senderInfo/${auth.currentUser.email}`)
         .then((res) => {
@@ -61,6 +56,8 @@ export class feedView extends Component {
   };
 
   render() {
+    let code = this.props.location.state.code;
+    let codeNS = this.props.location.state.code.replace(/\s/g, "");
     return (
       <div>
         {!this.state.loading && (
@@ -80,9 +77,7 @@ export class feedView extends Component {
                     </IconButton>
                   </Grid>
                   <Grid item sm align="center">
-                    <Typography variant="h4">
-                      Course Feed for {this.state.code}
-                    </Typography>
+                    <Typography variant="h4">Course Feed for {code}</Typography>
                   </Grid>
                   <Grid item sm align="right">
                     {" "}
@@ -102,7 +97,7 @@ export class feedView extends Component {
             </AppBar>
 
             <Feed
-              courseCode={this.state.code.replace(/\s/g, "")}
+              courseCode={codeNS}
               ownId={this.state.ownId}
               ownImage={this.state.ownImage}
               ownName={this.state.ownName}

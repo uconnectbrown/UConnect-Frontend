@@ -21,59 +21,36 @@ import MessageIcon from "@material-ui/icons/Sms";
 
 export class groupMessageView extends Component {
   state = {
-    // // Props that courseView needs
-    // code: "",
-    // name: "",
-    // color: "",
-    // numCourses: "",
-    // Props that groupMessageView needs
-    recipientNames: [],
-    recipientImages: [],
-    recipientIds: [],
     ownId: "",
     ownImage: "",
     ownName: "",
     roomId: "",
     loading: true,
-    previousPage: "",
   };
 
   componentDidMount() {
     if (!this.props.location.state) {
       this.props.history.push("/messagesView");
     } else {
-      this.setState({
-        // // Props that courseView needs
-        // code: this.props.location.state.code,
-        // name: this.props.location.state.name,
-        // color: this.props.location.state.color,
-        // numCourses: this.props.location.state.numCourses,
-        // Props that groupMesssageView needs
-        recipientNames: this.props.location.state.recipientNames,
-        recipientImages: this.props.location.state.recipientImages,
-        recipientIds: this.props.location.state.recipientIds,
-        previousPage: this.props.location.state.previousPage,
-      });
+      axios
+        .get(`/senderInfo/${auth.currentUser.email}`)
+        .then((res) => {
+          this.setState({
+            ownId: res.data.emailId,
+            ownImage: res.data.imageUrl,
+            ownName: res.data.firstName + " " + res.data.lastName,
+          });
+          let alphaId = this.props.location.state.allIds.sort().join(" ");
+          console.log(alphaId);
+          this.setState({
+            roomId: md5(alphaId),
+          });
+        })
+        .then(() => {
+          this.setState({ loading: false });
+        })
+        .catch((err) => console.error(err));
     }
-
-    axios
-      .get(`/senderInfo/${auth.currentUser.email}`)
-      .then((res) => {
-        this.setState({
-          ownId: res.data.emailId,
-          ownImage: res.data.imageUrl,
-          ownName: res.data.firstName + " " + res.data.lastName,
-        });
-        let alphaId = this.props.location.state.allIds.sort().join(" ");
-        console.log(alphaId);
-        this.setState({
-          roomId: md5(alphaId),
-        });
-      })
-      .then(() => {
-        this.setState({ loading: false });
-      })
-      .catch((err) => console.error(err));
   }
 
   handleBack = () => {
@@ -84,7 +61,6 @@ export class groupMessageView extends Component {
           code: this.props.location.state.code,
           name: this.props.location.state.name,
           color: this.props.location.state.color,
-          numCourses: this.props.location.state.numCourses,
         },
       });
     } else {
@@ -97,6 +73,13 @@ export class groupMessageView extends Component {
   };
 
   render() {
+    let images = this.props.location.state.recipientImages;
+    let image1 = this.props.location.state.recipientImages[0];
+    let image2 = this.props.location.state.recipientImages[1];
+    let image3 = this.props.location.state.recipientImages[2];
+    let names = this.props.location.state.recipientNames;
+    let ids = this.props.location.state.recipientIds;
+    let codeNS = this.props.location.state.code.replace(/\s/g, "");
     return (
       <div>
         {this.state.loading && (
@@ -131,29 +114,12 @@ export class groupMessageView extends Component {
                         justifyContent: "center",
                       }}
                     >
-                      {this.state.recipientImages[0] && (
-                        <Avatar
-                          alt="recipient0"
-                          src={this.state.recipientImages[0]}
-                        />
-                      )}
-                      {this.state.recipientImages[1] && (
-                        <Avatar
-                          alt="recipient1"
-                          src={this.state.recipientImages[1]}
-                        />
-                      )}
-                      {this.state.recipientImages[2] && (
-                        <Avatar
-                          alt="recipient2"
-                          src={this.state.recipientImages[2]}
-                        />
-                      )}
+                      {image1 && <Avatar alt="recipient0" src={image1} />}
+                      {image2 && <Avatar alt="recipient1" src={image2} />}
+                      {image3 && <Avatar alt="recipient2" src={image3} />}
                     </AvatarGroup>
                     <Typography variant="body1">
-                      {this.state.recipientNames.map(
-                        (name) => name.split(" ")[0] + ", "
-                      )}
+                      {names.map((name) => name.split(" ")[0] + ", ")}
                     </Typography>
                   </Grid>
                   <Grid item sm align="right">
@@ -173,10 +139,10 @@ export class groupMessageView extends Component {
             </AppBar>
 
             <GroupChat
-              recipientNames={this.state.recipientNames}
-              recipientImages={this.state.recipientImages}
-              recipientIds={this.state.recipientIds}
-              courseCode={this.props.location.state.code.replace(/\s/g, "")}
+              recipientNames={names}
+              recipientImages={images}
+              recipientIds={ids}
+              courseCode={codeNS}
               ownId={this.state.ownId}
               ownImage={this.state.ownImage}
               ownName={this.state.ownName}

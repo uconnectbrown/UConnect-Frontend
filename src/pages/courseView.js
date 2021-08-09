@@ -50,7 +50,6 @@ class courseView extends Component {
   };
 
   componentDidMount() {
-    console.log(majorList);
     if (!this.props.location.state) {
       this.props.history.push("/coursesView");
     } else {
@@ -63,48 +62,22 @@ class courseView extends Component {
             students: res.data,
             selected: res.data.map((student) => false),
           });
+          let compScores = res.data
+            .map((student, index) => {
+              return [student.compScores[0], index];
+            })
+            .sort((a, b) => (a[0] < b[0] ? 1 : b[0] < a[0] ? -1 : 0));
+          this.setState({
+            featured: [
+              res.data[compScores[0][1]],
+              res.data[compScores[1][1]],
+              res.data[compScores[2][1]],
+            ],
+            loading: false,
+          });
         })
-        .then(() => {
-          let compScores = this.state.students.map((student) => {
-            return student.compScores[0];
-          });
-          let compScores_ = this.state.students.map((student) => {
-            return student.compScores[0];
-          });
-          compScores.sort((a, b) => (a < b ? 1 : b < a ? -1 : 0));
-          // console.log(compScores)
-          let featuredProfiles = [];
-          let indices = [];
-          for (let i = 0; i < 3; i++) {
-            let index = compScores_.indexOf(compScores[i]);
-            indices.push(index);
-            featuredProfiles.push(this.state.students[index]);
-          }
-          const numStudents = this.state.students.length;
-          let indexArray = [];
-          for (let i = 0; i < numStudents; i++) {
-            indexArray.push(i);
-          }
-          let newProfiles = [];
-          indexArray.map((index) => {
-            if (indices.includes(index)) {
-              let newProfile = this.state.students[index];
-              newProfile["featured"] = true;
-              newProfiles.push(newProfile);
-            } else {
-              let newProfile = this.state.students[index];
-              newProfile["featured"] = false;
-              newProfiles.push(newProfile);
-            }
-          });
-          this.setState(
-            { featured: featuredProfiles, students: newProfiles },
-            () => {
-              console.log(this.state.students);
-              this.setState({ loading: false });
-            }
-          );
-        })
+
+        .then(() => {})
         .catch((err) => console.log(err));
     }
   }
@@ -124,17 +97,16 @@ class courseView extends Component {
     });
   };
 
-  handleFeaturedClickOpen = (index) => {
+  handleFClickOpen = (index) => {
     this.setState({ open: true });
     this.props.history.push({
       pathname: "/studentView",
       state: {
-        // Props upon return
+        // Props that courseView needs upon return
         code: this.props.location.state.code,
         name: this.props.location.state.name,
         color: this.props.location.state.color,
-        numCourses: this.props.location.state.numCourses,
-        // Prop for studentView
+        // Props that studentView needs
         recipientId: this.state.featured[index].email.split("@")[0],
       },
     });
@@ -151,10 +123,9 @@ class courseView extends Component {
           recipientId: this.state.messageIds[0],
           previousPage: "courseView",
           // Props that courseView needs upon return
-          code: this.props.location.state.code,
+          code: this.props.location.state.code, // messageView also needs
           name: this.props.location.state.name,
           color: this.props.location.state.color,
-          numCourses: this.props.location.state.numCourses,
         },
       });
     } else if (this.state.selected.filter(Boolean).length > 1) {
@@ -166,12 +137,11 @@ class courseView extends Component {
           recipientImages: this.state.messageImages,
           recipientIds: this.state.messageIds,
           previousPage: "courseView",
+          allIds: this.state.allIds,
           // Props that courseView needs upon return
-          code: this.props.location.state.code,
+          code: this.props.location.state.code, // groupMessageView also needs
           name: this.props.location.state.name,
           color: this.props.location.state.color,
-          numCourses: this.props.location.state.numCourses,
-          allIds: this.state.allIds,
         },
       });
     }
@@ -1107,7 +1077,7 @@ class courseView extends Component {
                           <ButtonBase
                             size="large"
                             color="primary"
-                            onClick={() => this.handleFeaturedClickOpen(index)}
+                            onClick={() => this.handleFClickOpen(index)}
                             style={{ width: "100%" }}
                           >
                             <CardContent>
