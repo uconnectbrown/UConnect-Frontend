@@ -29,6 +29,7 @@ import majorList from "../resources/majors";
 import emptyProfile from "../resources/emptyProfile";
 
 // Styling
+import "./profileBuild.css"
 const styles = (theme) => ({
   ...theme.spreadThis,
 });
@@ -180,127 +181,112 @@ class profileBuild extends Component {
     this.setState({ fifthCourse: true });
   };
 
+  getClassYears = () => {
+    const currYear = new Date().getFullYear()
+    const years = []
+
+    for (let i = currYear; i <= currYear + 4; i += 0.5) {
+      years.push(String(i))
+    }
+
+    return years
+  }
+
   render() {
     const { classes } = this.props;
     const { errors, loading } = this.state;
+
+    const classYears = this.getClassYears()
+    const pronouns = ['he/him', 'she/her', 'they/them', 'ze/hir', 'other']
+
     return (
       <form noValidate onSubmit={this.handleSubmit}>
         <SignOut />
-        <Grid container className={classes.form}>
+        <Grid container className="section-container">
           <Grid item sm>
             <Typography variant="h2" className={classes.pageTitle}>
               Build Profile
             </Typography>
-
-            <span align="center">
-              <h2>
-                Basic Info{" "}
-                {this.state.firstName === "" ||
-                this.state.lastName === "" ||
-                this.state.class === "" ||
-                this.state.major1 === "" ? (
-                  <UncheckedButton color="primary" />
-                ) : (
-                  <CheckedCircle color="secondary" />
-                )}
-              </h2>
-            </span>
-            <PBTextField
-              name="firstName"
-              label="First Name"
-              handleChange={this.handleChange}
-              value={this.state.firstName}
-              className={classes.textField}
-            />
-            <PBTextField
-              name="lastName"
-              label="Last Name"
-              handleChange={this.handleChange}
-              value={this.state.lastName}
-              className={classes.textField}
-            />
-            <TextField
-              id="classYear"
-              name="classYear"
-              select
-              label="Class of ..."
-              className={classes.textField}
-              value={this.state.classYear}
-              onChange={this.handleChange}
-              variant="outlined"
-              required
-              helperText="Please select your graduating class"
-              size={"small"}
-            >
-              <MenuItem key="2021.5" value="2021.5">
-                2021.5
-              </MenuItem>
-              <MenuItem key="2022" value="2022">
-                2022
-              </MenuItem>
-              <MenuItem key="2022.5" value="2022.5">
-                2022.5
-              </MenuItem>
-              <MenuItem key="2023" value="2023">
-                2023
-              </MenuItem>
-              <MenuItem key="2023.5" value="2023.5">
-                2023.5
-              </MenuItem>
-              <MenuItem key="2024" value="2024">
-                2024
-              </MenuItem>
-              <MenuItem key="2024.5" value="2024.5">
-                2024.5
-              </MenuItem>
-              <MenuItem key="2025" value="2025">
-                2025
-              </MenuItem>
-            </TextField>
-            <br />
-            <span>
-              <TextField
-                variant="outlined"
-                name="major1"
-                autoComplete="off"
-                size={"small"}
-                label="Concentration"
-                className={classes.textField}
-                required
-                onChange={this.handleChange}
-                InputProps={{
-                  endAdornment: majorList,
-                  inputProps: {
-                    list: "majors",
-                  },
-                }}
-                helperText='Feel free to enter an independent
-                major or put "Undecided".'
-              />
-              {!this.state.secondMajor && (
-                <Tooltip
-                  title="Add Second Concentration"
-                  placement="top"
-                  style={{ marginTop: "5px" }}
+            <div class="header-icon-wrap">
+              <h2>Basic Info</h2>
+              {this.state.firstName === "" ||
+              this.state.lastName === "" ||
+              this.state.class === "" ||
+              this.state.major1 === "" ? 
+                <UncheckedButton color="primary" fontSize='small'/> :
+                <CheckedCircle color="secondary" fontSize='small'/>
+              }
+            </div>
+            <Grid container className="info-input-container">
+              <Grid item xs={12} md={6}>
+                <PBTextField
+                  name="firstName"
+                  label="First Name"
+                  handleChange={this.handleChange}
+                  value={this.state.firstName}
+                  className={classes.textField}
+                  style={{ width: '80%' }}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <PBTextField
+                  name="lastName"
+                  label="Last Name"
+                  handleChange={this.handleChange}
+                  value={this.state.lastName}
+                  className={classes.textField}
+                  style={{ width: '80%' }}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  id="preferredPronouns"
+                  name="preferredPronouns"
+                  select
+                  label="Preferred Pronouns"
+                  className={classes.textField}
+                  value={this.state.preferredPronouns}
+                  onChange={this.handleChange}
+                  variant="outlined"
+                  size={"small"}
+                  helperText="Please select your preferred pronouns"
+                  style={{ width: '80%' }}
                 >
-                  <IconButton onClick={this.handleSecondMajor}>
-                    <AddIcon color="secondary" />
-                  </IconButton>
-                </Tooltip>
-              )}
-            </span>
-            <span>
-              {this.state.secondMajor && (
-                <div>
-                  <br />
+                  {pronouns.map(p => {
+                    return <MenuItem key={p} value={p}>{p}</MenuItem>
+                  })}
+                </TextField>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  id="classYear"
+                  name="classYear"
+                  select
+                  label="Class of ..."
+                  className={classes.textField}
+                  value={this.state.classYear}
+                  onChange={this.handleChange}
+                  variant="outlined"
+                  required
+                  helperText="Please select your graduating class"
+                  size={"small"}
+                  style={{ width: '80%' }}
+                >
+                  {classYears.map(year => {
+                    return <MenuItem key={year} value={year}>{year}</MenuItem>
+                  })}
+                </TextField>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <span>
                   <TextField
-                    style={{ marginTop: "-10px" }}
                     variant="outlined"
-                    name="major2"
+                    name="major1"
                     autoComplete="off"
                     size={"small"}
-                    label="Second Concentration"
+                    label="Concentration"
                     className={classes.textField}
+                    required
                     onChange={this.handleChange}
                     InputProps={{
                       endAdornment: majorList,
@@ -308,154 +294,167 @@ class profileBuild extends Component {
                         list: "majors",
                       },
                     }}
+                    helperText='Feel free to enter an independent
+                    major or put "Undecided".'
+                    style={{ width: '80%' }}
                   />
-                  {!this.state.thirdMajor && (
+                  {!this.state.secondMajor && (
                     <Tooltip
-                      title="Add Third Concentration"
+                      title="Add Second Concentration"
                       placement="top"
-                      style={{ marginTop: "-10px" }}
+                      style={{ marginTop: "5px" }}
                     >
-                      <IconButton onClick={this.handleThirdMajor}>
+                      <IconButton onClick={this.handleSecondMajor}>
                         <AddIcon color="secondary" />
                       </IconButton>
                     </Tooltip>
                   )}
-                </div>
-              )}
-            </span>
-            <span>
-              {this.state.thirdMajor && (
-                <div>
-                  <br />
-                  <TextField
-                    style={{ marginTop: "-10px", marginBottom: "-10px" }}
-                    variant="outlined"
-                    name="major3"
-                    autoComplete="off"
-                    size={"small"}
-                    label="Third Concentration"
-                    className={classes.textField}
-                    onChange={this.handleChange}
-                    InputProps={{
-                      endAdornment: majorList,
-                      inputProps: {
-                        list: "majors",
-                      },
-                    }}
-                  />
-                </div>
-              )}
-            </span>
-            <br />
-            <TextField
-              id="preferredPronouns"
-              name="preferredPronouns"
-              select
-              label="Preferred Pronouns"
-              className={classes.textField}
-              value={this.state.preferredPronouns}
-              onChange={this.handleChange}
-              variant="outlined"
-              size={"small"}
-              helperText="Please select your preferred pronouns"
-            >
-              <MenuItem key="he/him" value="he/him">
-                he/him
-              </MenuItem>
-              <MenuItem key="she/her" value="she/her">
-                she/her
-              </MenuItem>
-              <MenuItem key="they/them" value="they/them">
-                they/them
-              </MenuItem>
-              <MenuItem key="ze/hir" value="ze/hir">
-                ze/hir
-              </MenuItem>
-              <MenuItem key="other" value="other">
-                other
-              </MenuItem>
-            </TextField>
+                </span>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <span>
+                  {this.state.secondMajor && (
+                    <div>
+                      <TextField
+                        style={{ marginTop: "-10px" }}
+                        variant="outlined"
+                        name="major2"
+                        autoComplete="off"
+                        size={"small"}
+                        label="Second Concentration"
+                        className={classes.textField}
+                        onChange={this.handleChange}
+                        InputProps={{
+                          endAdornment: majorList,
+                          inputProps: {
+                            list: "majors",
+                          },
+                        }}
+                        style={{ width: '80%' }}
+                      />
+                      {!this.state.thirdMajor && (
+                        <Tooltip
+                          title="Add Third Concentration"
+                          placement="top"
+                          style={{ marginTop: "5px" }}
+                        >
+                          <IconButton onClick={this.handleThirdMajor}>
+                            <AddIcon color="secondary" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                    </div>
+                  )}
+                </span>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <span>
+                  {this.state.thirdMajor && (
+                    <div>
+                      <TextField
+                        style={{ marginTop: "-10px", marginBottom: "-10px" }}
+                        variant="outlined"
+                        name="major3"
+                        autoComplete="off"
+                        size={"small"}
+                        label="Third Concentration"
+                        className={classes.textField}
+                        onChange={this.handleChange}
+                        InputProps={{
+                          endAdornment: majorList,
+                          inputProps: {
+                            list: "majors",
+                          },
+                        }}
+                        style={{ width: '80%' }}
+                      />
+                    </div>
+                  )}
+                </span>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
 
-            <h2>
-              Interests{" "}
+        <Grid container className="section-container" style={{ backgroundColor: 'white' }}>
+          <Grid item sm>
+            <div class="header-icon-wrap">
+              <h2>Interests</h2>
               {this.state.interests1.length +
                 this.state.interests2.length +
                 this.state.interests3.length !==
-              10 ? (
-                <UncheckedButton style={{ marginTop: "5px" }} color="primary" />
-              ) : (
-                <CheckedCircle style={{ marginTop: "5px" }} color="secondary" />
-              )}
-            </h2>
-            <h3>Please select 10 categories in which you are interested.</h3>
+                10 ? 
+                  <UncheckedButton color="primary" fontSize="small"/> :
+                  <CheckedCircle color="secondary" fontSize="small"/>
+                }
+            </div>
+            <p>Please select 10 categories in which you are interested.</p>
+            <Interests getInterests={this.handleInterests} />
           </Grid>
         </Grid>
-        <Interests getInterests={this.handleInterests} />
 
-        <Grid container className={classes.form}>
-          <Grid item sm />
+        <Grid container className="section-container">
           <Grid item sm>
-            <h2>
-              Courses{" "}
+            <div class="header-icon-wrap">
+              <h2>Courses</h2>
               {[
                 this.state.course1.code,
                 this.state.course2.code,
                 this.state.course3.code,
                 this.state.course4.code,
                 this.state.course5.code,
-              ].filter(Boolean).length > 1 ? (
-                <CheckedCircle style={{ marginTop: "5px" }} color="secondary" />
-              ) : (
-                <UncheckedButton style={{ marginTop: "5px" }} color="primary" />
+              ].filter(Boolean).length > 1 ? 
+                <CheckedCircle color="secondary" fontSize="small"/> :
+                <UncheckedButton color="primary" fontSize="small"/>
+              }
+            </div>
+            
+            <Grid container spacing={3}>
+              <PBCourseGrid
+                course="Course #1"
+                className={classes.textField}
+                value={this.state.course1}
+                handleChange={this.handleCourse1}
+                required={true}
+              />
+              <PBCourseGrid
+                course="Course #2"
+                className={classes.textField}
+                value={this.state.course2}
+                handleChange={this.handleCourse2}
+                required={true}
+              />
+              <PBCourseGrid
+                course="Course #3"
+                className={classes.textField}
+                value={this.state.course3}
+                handleChange={this.handleCourse3}
+              />
+              <PBCourseGrid
+                course="Course #4"
+                className={classes.textField}
+                value={this.state.course4}
+                handleChange={this.handleCourse4}
+              />
+
+              {!this.state.fifthCourse && (
+                <Tooltip title="Add Fifth Course" placement="top">
+                  <IconButton onClick={this.handleFifthCourse}>
+                    <AddIcon color="secondary" />
+                  </IconButton>
+                </Tooltip>
               )}
-            </h2>
+
+              {this.state.fifthCourse && (
+                <PBCourseGrid
+                  course="Course #5"
+                  className={classes.textField}
+                  value={this.state.course5}
+                  handleChange={this.handlecourse5}
+                />
+              )}
+            </Grid>
           </Grid>
-          <Grid item sm />
-        </Grid>
-        <Grid container className={classes.form} align="center" spacing={5}>
-          <PBCourseGrid
-            course="Course #1"
-            className={classes.textField}
-            value={this.state.course1}
-            handleChange={this.handleCourse1}
-            required={true}
-          />
-          <PBCourseGrid
-            course="Course #2"
-            className={classes.textField}
-            value={this.state.course2}
-            handleChange={this.handleCourse2}
-            required={true}
-          />
-          <PBCourseGrid
-            course="Course #3"
-            className={classes.textField}
-            value={this.state.course3}
-            handleChange={this.handleCourse3}
-          />
-          <PBCourseGrid
-            course="Course #4"
-            className={classes.textField}
-            value={this.state.course4}
-            handleChange={this.handleCourse4}
-          />
-
-          {!this.state.fifthCourse && (
-            <Tooltip title="Add Fifth Course" placement="top">
-              <IconButton onClick={this.handleFifthCourse}>
-                <AddIcon color="secondary" />
-              </IconButton>
-            </Tooltip>
-          )}
-
-          {this.state.fifthCourse && (
-            <PBCourseGrid
-              course="Course #5"
-              className={classes.textField}
-              value={this.state.course5}
-              handleChange={this.handlecourse5}
-            />
-          )}
         </Grid>
         <Grid container align="center">
           <Grid item sm />
@@ -473,7 +472,8 @@ class profileBuild extends Component {
             <Button
               type="submit"
               variant="contained"
-              color="primary"
+              color="secondary"
+              size="large"
               className={classes.Button}
               disabled={loading}
             >

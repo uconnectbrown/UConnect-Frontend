@@ -16,6 +16,7 @@ function PBTextField(props) {
         required
         variant="outlined"
         size={"small"}
+        style={props.style}
       />
     </div>
   );
