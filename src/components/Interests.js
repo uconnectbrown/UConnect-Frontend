@@ -280,7 +280,12 @@ export default function CustomizedSteppers(props) {
       }
     }
     if (activeStep === 2) {
-      props.getInterests(interests1, interests2, interests3);
+      if (interests3.length > 0) {
+        props.getInterests(interests1, interests2, interests3);
+        setNotDone(false);
+      } else {
+        setNotDone(true);
+      }
     }
   };
 
