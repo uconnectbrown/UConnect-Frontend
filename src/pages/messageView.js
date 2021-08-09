@@ -31,26 +31,30 @@ export class messageView extends Component {
   componentDidMount() {
     if (!this.props.location.state) {
       this.props.history.push("/messagesView");
+    } else {
+      axios
+        .get(`/senderInfo/${auth.currentUser.email}`)
+        .then((res) => {
+          this.setState({
+            ownId: res.data.emailId,
+            ownImage: res.data.imageUrl,
+            ownName: res.data.firstName + " " + res.data.lastName,
+          });
+          let alphaId = [
+            res.data.emailId,
+            this.props.location.state.recipientId,
+          ]
+            .sort()
+            .join(" ");
+          this.setState({
+            roomId: md5(alphaId),
+          });
+        })
+        .then(() => {
+          this.setState({ loading: false });
+        })
+        .catch((err) => console.error(err));
     }
-    axios
-      .get(`/senderInfo/${auth.currentUser.email}`)
-      .then((res) => {
-        this.setState({
-          ownId: res.data.emailId,
-          ownImage: res.data.imageUrl,
-          ownName: res.data.firstName + " " + res.data.lastName,
-        });
-        let alphaId = [res.data.emailId, this.props.location.state.recipientId]
-          .sort()
-          .join(" ");
-        this.setState({
-          roomId: md5(alphaId),
-        });
-      })
-      .then(() => {
-        this.setState({ loading: false });
-      })
-      .catch((err) => console.error(err));
   }
 
   handleMessage = () => {
