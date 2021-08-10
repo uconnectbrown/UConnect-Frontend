@@ -1,0 +1,9 @@
+.options-container {
+    justify-content: center;
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+}
+
+.progress-bar {
+    margin-bottom: 1.5rem;
+}

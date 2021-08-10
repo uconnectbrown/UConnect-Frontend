@@ -1,6 +1,5 @@
 // Setup
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -15,27 +14,17 @@ import SignOut from "./SignOut";
 // Body
 function Welcome() {
   return (
-    <div>
-      <Grid
-        container
-        align="center"
-        style={{
-          marginTop: "0px",
-        }}
-      >
-        <Grid item sm />
-        <Grid item sm>
-          <Card raised>
-            <CardContent>
-              <Typography variant="h3">Welcome to UConnect!</Typography>
-              <br />
-              <SignIn />
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item sm />
+    <Grid container align="center" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <Grid item xs={10} md={4}>
+        <Card raised>
+          <CardContent>
+            <Typography variant="h3">Welcome to UConnect!</Typography>
+            <br />
+            <SignIn />
+          </CardContent>
+        </Card>
       </Grid>
-    </div>
+    </Grid>
   );
 }
 

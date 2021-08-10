@@ -10,6 +10,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import SignOut from "./SignOut.js";
 
+// Styles
+import './NavBar.css'
+
 class NavBar extends Component {
   logoutUser = () => {
     localStorage.clear();
@@ -19,19 +22,19 @@ class NavBar extends Component {
 
   render() {
     return (
-      <AppBar>
+      <AppBar color="secondary">
         <Toolbar className="nav-container">
-          <Button color="inherit" component={Link} to="/profileView">
+          <Button color="inherit" component={Link} to="/profileView" size="large">
             Profile
           </Button>
-          <Button color="inherit" component={Link} to="/coursesView">
+          <Button color="inherit" component={Link} to="/coursesView" size="large">
             Courses
           </Button>
-          <Button color="inherit" component={Link} to="/messagesView">
+          <Button color="inherit" component={Link} to="/messagesView" size="large">
             Messages
           </Button>
 
-          <SignOut />
+          <SignOut style={{ position: 'absolute', right: '10%' }}/>
         </Toolbar>
       </AppBar>
     );

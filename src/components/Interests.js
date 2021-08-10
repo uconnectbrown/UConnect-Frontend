@@ -16,6 +16,9 @@ import Grid from "@material-ui/core/Grid";
 // Components
 import ProgressBar from "./ProgressBar.js";
 
+// Styles
+import "./Interests.css"
+
 // Resources
 import {
   CandAinterests,
@@ -172,12 +175,10 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
     case 0:
       return (
         <div>
-          <Typography component={"span"} variant="h5" align="center">
+          <Typography variant="h5">
             Career and Academic
           </Typography>
-          <br />
-          <br />
-          <Grid container spacing={2} justifyContent="center">
+          <Grid container spacing={2} className="options-container">
             {interests1.map((interest, index) => (
               <Grid item key={index}>
                 <Button
@@ -199,11 +200,10 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
     case 1:
       return (
         <div>
-          <Typography component={"span"} variant="h5" align="center">
+          <Typography variant="h5">
             Physical Activity and Wellness
           </Typography>
-          <br />
-          <Grid container spacing={2} justifyContent="center">
+          <Grid container spacing={2} className="options-container">
             {interests2.map((interest, index) => (
               <Grid item>
                 <Button
@@ -225,11 +225,10 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
     case 2:
       return (
         <div>
-          <Typography component={"span"} variant="h5" align="center">
+          <Typography variant="h5">
             General Hobbies
           </Typography>
-          <br />
-          <Grid container spacing={2} justifyContent="center">
+          <Grid container spacing={2} className="options-container">
             {interests3.map((interest, index) => (
               <Grid item>
                 <Button
@@ -335,10 +334,9 @@ export default function CustomizedSteppers(props) {
           </StepLabel>
         </Step>
       </Stepper>
-      <br />
 
       <div align="center">
-        <Typography component={"span"} className={classes.instructions}>
+        <Typography className={classes.instructions}>
           {GetStepContent(
             activeStep,
             sendInterests1,
@@ -346,19 +344,12 @@ export default function CustomizedSteppers(props) {
             sendInterests3
           )}
         </Typography>
-        <br />
 
-        <Grid container>
-          <Grid item sm />
-          <Grid item sm>
-            <ProgressBar step={total} />
-            {total}/10
-            {}
-          </Grid>
-          <Grid item sm />
-        </Grid>
+        <div style={{ marginBottom: '1.5rem' }}>
+          <ProgressBar step={total} />
+          {total}/10
+        </div>
 
-        <br />
         <Button
           disabled={activeStep === 0}
           onClick={handleBack}
@@ -379,7 +370,7 @@ export default function CustomizedSteppers(props) {
           {activeStep > 1 ? "Finish" : "Next"}
         </Button>
         {notDone && (
-          <Typography component={"span"} variant="body1">
+          <Typography variant="body1">
             Please select at least 1 category in this section
           </Typography>
         )}
