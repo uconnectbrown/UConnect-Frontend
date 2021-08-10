@@ -12,6 +12,7 @@ import profileViewState from "../resources/profileViewState";
 import majorList from "../resources/majors";
 import varsitySports from "../resources/varsitySports";
 import greekLife from "../resources/greekLife";
+import { instrumentsList, pickUpSportsList, petsList } from "../resources/additionalInfo";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
