@@ -84,6 +84,7 @@ const profileViewState = {
   colorOpen: [false, false, false, false, false],
   addOpen: false,
   removeOpen: false,
+  crop: false,
   // Miscellaneous
   firstTime: false,
   loading: true,
