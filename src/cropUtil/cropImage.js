@@ -74,7 +74,7 @@ export const generateDownload = async (imageSrc, crop) => {
   canvas.toBlob(
     (blob) => {
       const formData = new FormData();
-      formData.append("image", blob, "123456.jpg");
+      formData.append("image", blob, "image.jpg");
       axios
         .post(`/image/${auth.currentUser.email}`, formData)
         .then((data) => {

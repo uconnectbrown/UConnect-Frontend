@@ -1,20 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import { useHistory } from "react-router";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+
+// MUI Stuff
 import Typography from "@material-ui/core/Typography";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import { auth } from "../firebase";
 import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
+import IconButton from "@material-ui/core/IconButton";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 function Messages(props) {
   dayjs.extend(relativeTime);
   const history = useHistory();
+  const numMessages = props.messages.length;
+  const [dialogs, setDialogs] = useState(props.messages.map((index) => false));
   const handleMessage = (
     recipientName,
     recipientNames,
@@ -55,7 +67,7 @@ function Messages(props) {
   return (
     <div>
       <GridList cols={3} spacing={20} cellHeight="auto">
-        {props.messages.map((message) => (
+        {props.messages.map((message, index) => (
           <div>
             <GridListTile item sm>
               <Card
@@ -64,10 +76,13 @@ function Messages(props) {
                   borderStyle: "solid",
                   borderWidth: "2px",
                   borderColor: `red`,
-                  height: "125px",
+                  height: "200px",
                 }}
                 align="center"
               >
+                <IconButton style={{ marginRight: "100%" }}>
+                  <MoreHorizIcon />
+                </IconButton>
                 <CardContent>
                   <ButtonBase
                     size="large"
@@ -143,6 +158,22 @@ function Messages(props) {
                 </CardContent>
               </Card>
             </GridListTile>
+            <Dialog
+              overlayStyle={{ backgroundColor: "transparent" }}
+              open={dialogs[index]}
+            >
+              <DialogTitle
+                style={{ cursor: "move" }}
+                id="draggable-dialog-title"
+              >
+                Edit Course Color
+              </DialogTitle>
+              <DialogContent></DialogContent>
+              <DialogActions>
+                <Button color="secondary">Cancel</Button>
+                <Button color="secondary">Save Changes</Button>
+              </DialogActions>
+            </Dialog>
           </div>
         ))}
       </GridList>
