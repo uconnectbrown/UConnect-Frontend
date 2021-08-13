@@ -16,13 +16,14 @@ import Welcome from "./components/Welcome";
 // Pages
 import profileBuild from "./pages/profileBuild";
 import profileView from "./pages/profileView";
-import coursesView from "./pages/coursesView";
+import Home from "./pages/Home";
 import messageView from "./pages/messageView";
 import courseView from "./pages/courseView";
 import studentView from "./pages/studentView";
 import messagesView from "./pages/messagesView";
 import feedView from "./pages/feedView";
 import groupMessageView from "./pages/groupMessageView";
+import universityView from "./pages/universityView";
 
 // Styling
 const theme = createTheme(themeFile);
@@ -37,20 +38,8 @@ function App() {
           <Router>
             <div className="container">
               <Switch>
-                <Route exact path="/" component={coursesView} />
+                <Route exact path="/" component={Home} />
                 <Route exact path="/profileBuild" component={profileBuild} />
-                <Route exact path="/profileView" component={profileView} />
-                <Route exact path="/coursesView" component={coursesView} />
-                <Route exact path="/messageView" component={messageView} />
-                <Route exact path="/courseView" component={courseView} />
-                <Route exact path="/studentView" component={studentView} />
-                <Route exact path="/messagesView" component={messagesView} />
-                <Route exact path="/feedView" component={feedView} />
-                <Route
-                  exact
-                  path="/groupMessageView"
-                  component={groupMessageView}
-                />
               </Switch>
             </div>
           </Router>

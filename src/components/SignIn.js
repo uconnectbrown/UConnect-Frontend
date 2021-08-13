@@ -13,7 +13,7 @@ function SignIn() {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          history.push("/coursesView");
+          history.push("/");
         } else {
           history.push({
             pathname: "/profileBuild",

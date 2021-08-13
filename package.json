@@ -1,5 +1,5 @@
 {
-  "name": "uconnect-client",
+  "name": "UConnect-Frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -25,6 +25,7 @@
     "jwt-decode": "^3.1.2",
     "konva": "^8.1.1",
     "material-ui": "^1.0.0-beta.47",
+    "material-ui-search-bar": "^1.0.0",
     "md5": "^2.3.0",
     "react": "^17.0.2",
     "react-addons-update": "^15.6.3",
