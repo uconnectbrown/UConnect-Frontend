@@ -12,6 +12,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import SendIcon from "@material-ui/icons/Send";
 import CheckIcon from "@material-ui/icons/Check";
+import MessageIcon from "@material-ui/icons/Message";
 import Book from "@material-ui/icons/MenuBook";
 import Movie from "@material-ui/icons/Movie";
 import Tv from "@material-ui/icons/Tv";
@@ -22,20 +23,23 @@ import DialogContent from "@material-ui/core/DialogContent";
 
 // Body
 function Student(props) {
-  const email = auth.currentUser.email;
   const emailId = auth.currentUser.email.split("@")[0];
+  const studentId = props.studentId;
   const [student, setStudent] = useState(null);
   const [indexArray, setIndexArray] = useState([]);
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
     getStudent();
+  }, []);
+
+  useEffect(() => {
     checkStatus();
   }, []);
 
   const getStudent = () => {
     axios
-      .get(`/user/${props.emailId}`)
+      .get(`/user/${studentId}`)
       .then((res) => {
         setStudent(res.data.user);
         let arr = [];
@@ -50,18 +54,12 @@ function Student(props) {
   };
 
   const checkStatus = () => {
-    let promises = [
-      axios.get(`/inc/${emailId}/${props.emailId}`),
-      axios.get(`/out/${emailId}/${props.emailId}`),
-      axios.get(`/con/${emailId}/${props.emailId}`),
-    ];
-    Promise.all(promises)
-      .then((results) => {
-        if (results[0].data) setStatus("inc");
-        if (results[1].data) setStatus("out");
-        if (results[2].data) setStatus("con");
-        else setStatus("none");
+    axios
+      .get(`/status/${emailId}/${studentId}`)
+      .then((res) => {
+        setStatus(res.data);
       })
+
       .catch((err) => console.log(err));
   };
 
@@ -76,7 +74,7 @@ function Student(props) {
         return senderInfo;
       })
       .then((info) => {
-        axios.post(`/request/${email}/${student.email}`, info);
+        axios.post(`/request/${emailId}/${studentId}`, info);
       })
       .then(() => {
         setStatus("out");
@@ -85,12 +83,28 @@ function Student(props) {
   };
 
   const acceptRequest = () => {
-    axios
-      .get(`/accept/${student.email}/${email}`)
-      .then(() => {
-        setStatus("con");
+    let info = {
+      senderName: student.firstName + " " + student.lastName,
+      senderImageUrl: student.imageUrl,
+      senderClassYear: student.classYear,
+    };
+    db.doc(`/profiles/${emailId}`)
+      .get()
+      .then((doc) => {
+        info.receiverName = doc.data().firstName + " " + doc.data().lastName;
+        info.receiverImageUrl = doc.data().imageUrl;
+        info.receiverClassYear = doc.data().classYear;
+        console.log(info);
+        return info;
       })
-      .catch((err) => console.log(err));
+      .then((info) => {
+        axios
+          .post(`/accept/${studentId}/${emailId}`, info)
+          .then(() => {
+            setStatus("con");
+          })
+          .catch((err) => console.log(err));
+      });
   };
 
   return (
@@ -119,7 +133,9 @@ function Student(props) {
               </IconButton>
             )}
 
-            {status === "inc" && (
+            {status === "out" && <Typography>request sent</Typography>}
+
+            {status === "in" && (
               <IconButton
                 edge="start"
                 color="inherit"
@@ -131,7 +147,12 @@ function Student(props) {
               </IconButton>
             )}
 
-            {status === "con" && <Typography>Connected</Typography>}
+            {status === "con" && (
+              <IconButton edge="start" color="inherit" aria-label="back">
+                <MessageIcon />
+                <span style={{ marginRight: "5px" }} />
+              </IconButton>
+            )}
 
             <CardContent align="center">
               <Grid container spacing={1}>

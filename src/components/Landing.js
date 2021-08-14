@@ -23,7 +23,8 @@ import Dialog from "@material-ui/core/Dialog";
 
 function Landing() {
   const [featured, setFeatured] = useState([]);
-  const [emailId, setEmailId] = useState(null);
+  const [studentId, setStudentId] = useState(null);
+  const emailId = auth.currentUser.email.split("@")[0];
 
   useEffect(() => {
     getFeatured();
@@ -31,7 +32,7 @@ function Landing() {
 
   const getFeatured = () => {
     axios
-      .get(`/featured/${auth.currentUser.email}`)
+      .get(`/featured/${emailId}`)
       .then((res) => {
         setFeatured(res.data.featured);
       })
@@ -39,17 +40,17 @@ function Landing() {
   };
 
   const handleOpenStudent = (index) => {
-    setEmailId(featured[index].emailId);
+    setStudentId(featured[index].emailId);
   };
 
   const handleCloseStudent = () => {
-    setEmailId(null);
+    setStudentId(null);
   };
 
   return (
     <div>
-      <Dialog fullScreen open={emailId}>
-        <Student emailId={emailId} handleClose={handleCloseStudent} />
+      <Dialog fullScreen open={studentId}>
+        <Student studentId={studentId} handleClose={handleCloseStudent} />
       </Dialog>
       Connect
       <SearchBar />
