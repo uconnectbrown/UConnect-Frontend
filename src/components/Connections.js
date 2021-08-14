@@ -23,34 +23,48 @@ import Dialog from "@material-ui/core/Dialog";
 
 function Connections() {
   const [pending, setPending] = useState([]);
-  const [emailId, setEmailId] = useState("");
+  const [connections, setConnections] = useState([]);
+  const [studentId, setStudentId] = useState("");
+  const emailId = auth.currentUser.email.split("@")[0];
 
   useEffect(() => {
     getPending();
   }, []);
 
+  useEffect(() => {
+    getConnections();
+  }, []);
+
   const getPending = () => {
     axios
-      .get(`/pending/${auth.currentUser.email}`)
+      .get(`/pending/${emailId}`)
       .then((res) => {
-        console.log(res.data.pending);
         setPending(res.data.pending);
       })
       .catch((err) => console.log(err));
   };
 
+  const getConnections = () => {
+    axios
+      .get(`/connections/${emailId}`)
+      .then((res) => {
+        setConnections(res.data.connections);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleOpenStudent = (index) => {
-    setEmailId(pending[index].emailId);
+    setStudentId(pending[index].emailId);
   };
 
   const handleCloseStudent = () => {
-    setEmailId("");
+    setStudentId("");
   };
 
   return (
     <div>
-      <Dialog fullScreen open={emailId}>
-        <Student emailId={emailId} handleClose={handleCloseStudent} />
+      <Dialog fullScreen open={studentId}>
+        <Student studentId={studentId} handleClose={handleCloseStudent} />
       </Dialog>
       Pending Connections
       <GridList cols={5} spacing={10} cellHeight="auto">
@@ -116,7 +130,7 @@ function Connections() {
         </Grid>
       </Grid>
       <GridList cols={5} spacing={10} cellHeight="auto">
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => {
+        {connections.map((connection) => {
           return (
             <GridListTile item component="Card" sm>
               <Card align="center">
@@ -124,11 +138,9 @@ function Connections() {
                   <img
                     width="50px"
                     alt="Profile Picture"
-                    src={
-                      "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media&token=6aa9ff82-c1a6-4e1f-a743-67a828790599"
-                    }
+                    src={connection.imageUrl}
                   />
-                  <Typography variant="body2">Jane Smith '23</Typography>
+                  <Typography variant="body2">{connection}</Typography>
                 </CardContent>
               </Card>
             </GridListTile>
