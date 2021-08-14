@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import SendIcon from "@material-ui/icons/Send";
+import CheckIcon from "@material-ui/icons/Check";
 import Book from "@material-ui/icons/MenuBook";
 import Movie from "@material-ui/icons/Movie";
 import Tv from "@material-ui/icons/Tv";
@@ -21,10 +22,15 @@ import DialogContent from "@material-ui/core/DialogContent";
 
 // Body
 function Student(props) {
+  const email = auth.currentUser.email;
+  const emailId = auth.currentUser.email.split("@")[0];
   const [student, setStudent] = useState(null);
   const [indexArray, setIndexArray] = useState([]);
+  const [status, setStatus] = useState(null);
+
   useEffect(() => {
     getStudent();
+    checkStatus();
   }, []);
 
   const getStudent = () => {
@@ -43,9 +49,25 @@ function Student(props) {
       .catch((err) => console.log(err));
   };
 
+  const checkStatus = () => {
+    let promises = [
+      axios.get(`/inc/${emailId}/${props.emailId}`),
+      axios.get(`/out/${emailId}/${props.emailId}`),
+      axios.get(`/con/${emailId}/${props.emailId}`),
+    ];
+    Promise.all(promises)
+      .then((results) => {
+        if (results[0].data) setStatus("inc");
+        if (results[1].data) setStatus("out");
+        if (results[2].data) setStatus("con");
+        else setStatus("none");
+      })
+      .catch((err) => console.log(err));
+  };
+
   const sendRequest = () => {
     let senderInfo = {};
-    db.doc(`/profiles/${auth.currentUser.email.split("@")[0]}`)
+    db.doc(`/profiles/${emailId}`)
       .get()
       .then((doc) => {
         senderInfo.name = doc.data().firstName + " " + doc.data().lastName;
@@ -54,18 +76,26 @@ function Student(props) {
         return senderInfo;
       })
       .then((info) => {
-        console.log(info);
-        axios.post(`/request/${auth.currentUser.email}/${student.email}`, info);
+        axios.post(`/request/${email}/${student.email}`, info);
       })
       .then(() => {
-        return;
+        setStatus("out");
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const acceptRequest = () => {
+    axios
+      .get(`/accept/${student.email}/${email}`)
+      .then(() => {
+        setStatus("con");
       })
       .catch((err) => console.log(err));
   };
 
   return (
     <DialogContent>
-      {student && (
+      {student && status && (
         <div>
           <Card raised>
             <IconButton
@@ -77,15 +107,32 @@ function Student(props) {
               <CloseIcon />
               <span style={{ marginRight: "5px" }} />
             </IconButton>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="back"
-              onClick={sendRequest}
-            >
-              <SendIcon />
-              <span style={{ marginRight: "5px" }} />
-            </IconButton>
+            {status === "nil" && (
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="back"
+                onClick={sendRequest}
+              >
+                <SendIcon />
+                <span style={{ marginRight: "5px" }} />
+              </IconButton>
+            )}
+
+            {status === "inc" && (
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="back"
+                onClick={acceptRequest}
+              >
+                <CheckIcon />
+                <span style={{ marginRight: "5px" }} />
+              </IconButton>
+            )}
+
+            {status === "con" && <Typography>Connected</Typography>}
+
             <CardContent align="center">
               <Grid container spacing={1}>
                 <Grid item sm></Grid>

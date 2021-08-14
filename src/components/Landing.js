@@ -23,7 +23,7 @@ import Dialog from "@material-ui/core/Dialog";
 
 function Landing() {
   const [featured, setFeatured] = useState([]);
-  const [emailId, setEmailId] = useState("");
+  const [emailId, setEmailId] = useState(null);
 
   useEffect(() => {
     getFeatured();
@@ -43,7 +43,7 @@ function Landing() {
   };
 
   const handleCloseStudent = () => {
-    setEmailId("");
+    setEmailId(null);
   };
 
   return (
