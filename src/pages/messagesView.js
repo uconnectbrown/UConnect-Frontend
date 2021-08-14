@@ -8,7 +8,6 @@ import { db, auth } from "../firebase";
 // Components
 import NavBar from "../components/NavBar";
 import Messages from "../components/Messages";
-import CourseFeed from "../components/CourseFeed";
 
 // MUI Stuff
 import Card from "@material-ui/core/Card";
@@ -206,35 +205,30 @@ class messagesView extends Component {
             </AppBar>
             {this.state.courseCodes[0] && (
               <TabPanel value={this.state.tabIndex} index={0}>
-                <CourseFeed code={this.state.courseCodes[0]}></CourseFeed>
                 <br />
                 <Messages messages={messages[0]} />
               </TabPanel>
             )}
             {this.state.courseCodes[1] && (
               <TabPanel value={this.state.tabIndex} index={1}>
-                <CourseFeed code={this.state.courseCodes[1]}></CourseFeed>
                 <br />
                 <Messages messages={messages[1]} />
               </TabPanel>
             )}
             {this.state.courseCodes[2] && (
               <TabPanel value={this.state.tabIndex} index={2}>
-                <CourseFeed code={this.state.courseCodes[2]}></CourseFeed>
                 <br />
                 <Messages messages={messages[2]} />
               </TabPanel>
             )}
             {this.state.courseCodes[3] && (
               <TabPanel value={this.state.tabIndex} index={3}>
-                <CourseFeed code={this.state.courseCodes[3]}></CourseFeed>
                 <br />
                 <Messages messages={messages[3]} />
               </TabPanel>
             )}
             {this.state.courseCodes[4] && (
               <TabPanel value={this.state.tabIndex} index={4}>
-                <CourseFeed code={this.state.courseCodes[4]}></CourseFeed>
                 <br />
                 <Messages messages={messages[4]} />
               </TabPanel>

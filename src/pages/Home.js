@@ -11,10 +11,6 @@ import Notifications from "../components/Notifications";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
@@ -30,29 +26,57 @@ function Home() {
           <Button fullWidth variant="contained" onClick={() => setPage("Home")}>
             Home
           </Button>
-          <Button fullWidth variant="contained" onClick={() => setPage("Messages")}>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => setPage("Messages")}
+          >
             Messages
           </Button>
-          <Button fullWidth variant="contained" onClick={() => setPage("Connections")}>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => setPage("Connections")}
+          >
             Connections
           </Button>
-          <Button fullWidth variant="contained" onClick={() => setCourseOpen(true)}>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => setCourseOpen(true)}
+          >
             Courses
           </Button>
           {courseOpen && (
             <div>
-              <Button fullWidth variant="contained" onClick={() => (setPage("courseOne"), setCourseOpen(false))}>
-            CODE 0001
-          </Button>
-          <Button fullWidth variant="contained" onClick={() => (setPage("courseTwo"), setCourseOpen(false))}>
-            CODE 0002
-          </Button>
-          <Button fullWidth variant="contained" onClick={() => (setPage("courseThree"), setCourseOpen(false))}>
-            CODE 0003
-          </Button>
-          <Button fullWidth variant="contained" onClick={() => (setPage("courseFour"), setCourseOpen(false))}>
-            CODE 0004
-          </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => (setPage("courseOne"), setCourseOpen(false))}
+              >
+                CODE 0001
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => (setPage("courseTwo"), setCourseOpen(false))}
+              >
+                CODE 0002
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => (setPage("courseThree"), setCourseOpen(false))}
+              >
+                CODE 0003
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => (setPage("courseFour"), setCourseOpen(false))}
+              >
+                CODE 0004
+              </Button>
             </div>
           )}
 
@@ -74,26 +98,21 @@ function Home() {
             </Select>
           </FormControl> */}
 
-          {page !== "Home" && (
-            <Notifications />
-          )}
+          {page !== "Home" && <Notifications />}
         </Grid>
         <Grid item xs={9} align="left">
           {page === "Home" && (
             <div>
-            <Landing />
-            <Notifications />
+              <Landing />
+              <Notifications />
             </div>
           )}
-          {page === "Messages" && (
-            <Typography>Messages</Typography>
-          )}
-          {page === "Connections" && (
-            <Connections />
-          )}
-          {(page === "courseOne" || page === "courseTwo" || page === "courseThree" || page === "courseFour") && (
-            <Course />
-          )}
+          {page === "Messages" && <Typography>Messages</Typography>}
+          {page === "Connections" && <Connections />}
+          {(page === "courseOne" ||
+            page === "courseTwo" ||
+            page === "courseThree" ||
+            page === "courseFour") && <Course />}
         </Grid>
       </Grid>
     </div>

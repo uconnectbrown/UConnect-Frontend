@@ -21,8 +21,6 @@ import messageView from "./pages/messageView";
 import courseView from "./pages/courseView";
 import studentView from "./pages/studentView";
 import messagesView from "./pages/messagesView";
-import feedView from "./pages/feedView";
-import groupMessageView from "./pages/groupMessageView";
 import universityView from "./pages/universityView";
 
 // Styling
@@ -47,7 +45,7 @@ function App() {
           <Router>
             <div className="container">
               <Switch>
-                <Route exact path="/" component={Welcome} />
+                <Route exact path="/welcome" component={Welcome} />
               </Switch>
             </div>
           </Router>

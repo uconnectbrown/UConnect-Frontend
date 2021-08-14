@@ -11,7 +11,7 @@ function SignOut(props) {
 
   async function signout() {
     await auth.signOut();
-    history.push("/");
+    history.push("/welcome");
   }
   return (
     <div style={props.style}>
