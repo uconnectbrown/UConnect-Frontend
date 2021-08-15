@@ -28,6 +28,7 @@ function Student(props) {
   const [student, setStudent] = useState(null);
   const [indexArray, setIndexArray] = useState([]);
   const [status, setStatus] = useState(null);
+  let requests = props.requests;
 
   useEffect(() => {
     getStudent();
@@ -65,9 +66,11 @@ function Student(props) {
 
   const sendRequest = () => {
     let senderInfo = {};
+    let numRequests;
     db.doc(`/profiles/${emailId}`)
       .get()
       .then((doc) => {
+        numRequests = doc.data().requests;
         senderInfo.name = doc.data().firstName + " " + doc.data().lastName;
         senderInfo.imageUrl = doc.data().imageUrl;
         senderInfo.classYear = doc.data().classYear;
@@ -78,6 +81,7 @@ function Student(props) {
       })
       .then(() => {
         setStatus("out");
+        props.handleRequest();
       })
       .catch((err) => console.log(err));
   };
@@ -121,6 +125,7 @@ function Student(props) {
               <CloseIcon />
               <span style={{ marginRight: "5px" }} />
             </IconButton>
+
             {status === "nil" && (
               <IconButton
                 edge="start"

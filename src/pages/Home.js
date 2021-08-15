@@ -1,5 +1,6 @@
 // Setup
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { db, auth } from "../firebase";
 
 // Components
 import NavBar from "../components/NavBar";
@@ -17,10 +18,43 @@ import Typography from "@material-ui/core/Typography";
 // Body
 function Home() {
   const [page, setPage] = useState("Home");
-  const [courseOpen, setCourseOpen] = useState(false);
+  const [dropDown, setDropDown] = useState(false);
+  const [courses, setCourses] = useState(null);
+  const [requests, setRequests] = useState(null);
+  const emailId = auth.currentUser.email.split("@")[0];
+  const [code, setCode] = useState(null);
+
+  useEffect(() => {
+    getRequests();
+  }, []);
+
+  useEffect(() => {
+    getCourses();
+  }, []);
+
+  const getRequests = () => {
+    db.doc(`/profiles/${emailId}`)
+      .get()
+      .then((doc) => {
+        setRequests(doc.data().requests);
+      });
+  };
+
+  const decRequests = () => {
+    setRequests(requests - 1);
+  };
+
+  const getCourses = () => {
+    db.doc(`/profiles/${emailId}`)
+      .get()
+      .then((doc) => {
+        setCourses(doc.data().courses);
+      });
+  };
+
   return (
     <div align="center">
-      <NavBar />
+      <NavBar requests={requests} />
       <Grid container spacing={3}>
         <Grid item xs={3}>
           <Button fullWidth variant="contained" onClick={() => setPage("Home")}>
@@ -43,76 +77,44 @@ function Home() {
           <Button
             fullWidth
             variant="contained"
-            onClick={() => setCourseOpen(true)}
+            onClick={() => setDropDown(!dropDown)}
           >
             Courses
           </Button>
-          {courseOpen && (
+
+          {courses && dropDown && (
             <div>
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={() => (setPage("courseOne"), setCourseOpen(false))}
-              >
-                CODE 0001
-              </Button>
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={() => (setPage("courseTwo"), setCourseOpen(false))}
-              >
-                CODE 0002
-              </Button>
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={() => (setPage("courseThree"), setCourseOpen(false))}
-              >
-                CODE 0003
-              </Button>
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={() => (setPage("courseFour"), setCourseOpen(false))}
-              >
-                CODE 0004
-              </Button>
+              {courses.map((course) => {
+                if (course.code) {
+                  return (
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      onClick={() => {
+                        setCode(course.code);
+                        setPage("Course");
+                      }}
+                    >
+                      {course.code}
+                    </Button>
+                  );
+                }
+              })}
             </div>
           )}
-
-          {/* <FormControl fullWidth>
-            <InputLabel>Courses</InputLabel>
-            <Select>
-              <MenuItem value="CODE0001">
-                <Button onClick={() => setPage("courseOne")}>CODE 0001</Button>
-              </MenuItem>
-              <MenuItem value="CODE0002">
-                <Button onClick={() => setPage("courseTwo")}>CODE 0002</Button>
-              </MenuItem>
-              <MenuItem value="CODE0003">
-                <Button onClick={() => setPage("courseThree")}>CODE 0003</Button>
-              </MenuItem>
-              <MenuItem value="CODE0004">
-                <Button onClick={() => setPage("courseFour")}>CODE 0004</Button>
-              </MenuItem>
-            </Select>
-          </FormControl> */}
 
           {page !== "Home" && <Notifications />}
         </Grid>
         <Grid item xs={9} align="left">
           {page === "Home" && (
             <div>
-              <Landing />
+              <Landing handleRequest={decRequests} requests={requests} />
               <Notifications />
             </div>
           )}
           {page === "Messages" && <Typography>Messages</Typography>}
           {page === "Connections" && <Connections />}
-          {(page === "courseOne" ||
-            page === "courseTwo" ||
-            page === "courseThree" ||
-            page === "courseFour") && <Course />}
+          {page === "Course" && code && <Course code={code} />}
         </Grid>
       </Grid>
     </div>

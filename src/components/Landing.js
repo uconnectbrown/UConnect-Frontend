@@ -21,7 +21,7 @@ import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
 
-function Landing() {
+function Landing(props) {
   const [featured, setFeatured] = useState([]);
   const [studentId, setStudentId] = useState(null);
   const emailId = auth.currentUser.email.split("@")[0];
@@ -49,8 +49,13 @@ function Landing() {
 
   return (
     <div>
-      <Dialog fullScreen open={studentId}>
-        <Student studentId={studentId} handleClose={handleCloseStudent} />
+      <Dialog open={studentId}>
+        <Student
+          studentId={studentId}
+          handleClose={handleCloseStudent}
+          handleRequest={props.handleRequest}
+          requests={props.requests}
+        />
       </Dialog>
       Connect
       <SearchBar />

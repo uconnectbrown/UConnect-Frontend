@@ -23,7 +23,7 @@ import Dialog from "@material-ui/core/Dialog";
 
 function Connections() {
   const [pending, setPending] = useState([]);
-  const [connections, setConnections] = useState([]);
+  const [connections, setConnections] = useState(null);
   const [studentId, setStudentId] = useState("");
   const emailId = auth.currentUser.email.split("@")[0];
 
@@ -39,6 +39,7 @@ function Connections() {
     axios
       .get(`/pending/${emailId}`)
       .then((res) => {
+        console.log(res.data.pending);
         setPending(res.data.pending);
       })
       .catch((err) => console.log(err));
@@ -53,12 +54,18 @@ function Connections() {
       .catch((err) => console.log(err));
   };
 
-  const handleOpenStudent = (index) => {
+  const handleOpenPStudent = (index) => {
     setStudentId(pending[index].emailId);
+  };
+
+  const handleOpenCStudent = (index) => {
+    setStudentId(connections[index].emailId);
   };
 
   const handleCloseStudent = () => {
     setStudentId("");
+    getPending();
+    getConnections();
   };
 
   return (
@@ -75,7 +82,7 @@ function Connections() {
                 <ButtonBase
                   size="large"
                   color="primary"
-                  onClick={() => handleOpenStudent(index)}
+                  onClick={() => handleOpenPStudent(index)}
                   style={{ width: "100%" }}
                 >
                   <CardContent>
@@ -92,61 +99,74 @@ function Connections() {
           );
         })}
       </GridList>
-      All Connections
-      <SearchBar />
-      <Grid container spacing={10}>
-        <Grid item>
-          <FormControl style={{ minWidth: 120 }}>
-            <InputLabel>Class Year</InputLabel>
-            <Select>
-              <MenuItem value="2022">2022</MenuItem>
-              <MenuItem value="2023">2023</MenuItem>
-              <MenuItem value="2024">2024</MenuItem>
-              <MenuItem value="2025">2025</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <FormControl style={{ minWidth: 120 }}>
-            <InputLabel>Interests</InputLabel>
-            <Select>
-              <MenuItem value="2022">2022</MenuItem>
-              <MenuItem value="2023">2023</MenuItem>
-              <MenuItem value="2024">2024</MenuItem>
-              <MenuItem value="2025">2025</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <FormControl style={{ minWidth: 120 }}>
-            <InputLabel>Concentration</InputLabel>
-            <Select>
-              <MenuItem value="2022">2022</MenuItem>
-              <MenuItem value="2023">2023</MenuItem>
-              <MenuItem value="2024">2024</MenuItem>
-              <MenuItem value="2025">2025</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-      <GridList cols={5} spacing={10} cellHeight="auto">
-        {connections.map((connection) => {
-          return (
-            <GridListTile item component="Card" sm>
-              <Card align="center">
-                <CardContent>
-                  <img
-                    width="50px"
-                    alt="Profile Picture"
-                    src={connection.imageUrl}
-                  />
-                  <Typography variant="body2">{connection}</Typography>
-                </CardContent>
-              </Card>
-            </GridListTile>
-          );
-        })}
-      </GridList>
+      {connections && (
+        <div>
+          All Connections
+          <SearchBar />
+          <Grid container spacing={10}>
+            <Grid item>
+              <FormControl style={{ minWidth: 120 }}>
+                <InputLabel>Class Year</InputLabel>
+                <Select>
+                  <MenuItem value="2022">2022</MenuItem>
+                  <MenuItem value="2023">2023</MenuItem>
+                  <MenuItem value="2024">2024</MenuItem>
+                  <MenuItem value="2025">2025</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl style={{ minWidth: 120 }}>
+                <InputLabel>Interests</InputLabel>
+                <Select>
+                  <MenuItem value="2022">2022</MenuItem>
+                  <MenuItem value="2023">2023</MenuItem>
+                  <MenuItem value="2024">2024</MenuItem>
+                  <MenuItem value="2025">2025</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl style={{ minWidth: 120 }}>
+                <InputLabel>Concentration</InputLabel>
+                <Select>
+                  <MenuItem value="2022">2022</MenuItem>
+                  <MenuItem value="2023">2023</MenuItem>
+                  <MenuItem value="2024">2024</MenuItem>
+                  <MenuItem value="2025">2025</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <GridList cols={5} spacing={10} cellHeight="auto">
+            {connections.map((connection, index) => {
+              return (
+                <GridListTile item component="Card" sm>
+                  <Card align="center">
+                    <ButtonBase
+                      size="large"
+                      color="primary"
+                      onClick={() => handleOpenCStudent(index)}
+                      style={{ width: "100%" }}
+                    >
+                      <CardContent>
+                        <img
+                          width="50px"
+                          alt="Profile Picture"
+                          src={connection.imageUrl}
+                        />
+                        <Typography variant="body2">
+                          {connection.name}
+                        </Typography>
+                      </CardContent>
+                    </ButtonBase>
+                  </Card>
+                </GridListTile>
+              );
+            })}
+          </GridList>
+        </div>
+      )}
     </div>
   );
 }

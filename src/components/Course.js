@@ -1,5 +1,7 @@
 // Setup
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { auth } from "../firebase";
+import axios from "axios";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -16,10 +18,28 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 
-function Course() {
+function Course(props) {
+  const code = props.code;
+  const codeNS = code.replace(/\s/g, "");
+  const email = auth.currentUser.email;
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    getStudents();
+  }, []);
+
+  const getStudents = () => {
+    axios
+      .get(`/students/${email}/${codeNS}`)
+      .then((res) => {
+        console.log(res.data);
+        setStudents(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div>
-      Course Code
+      {code}
       <SearchBar />
       <Grid container spacing={10}>
         <Grid item>
@@ -57,7 +77,7 @@ function Course() {
         </Grid>
       </Grid>
       <GridList cols={5} spacing={10} cellHeight="auto">
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => {
+        {students.map((student) => {
           return (
             <GridListTile item component="Card" sm>
               <Card align="center">
@@ -65,11 +85,11 @@ function Course() {
                   <img
                     width="50px"
                     alt="Profile Picture"
-                    src={
-                      "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media&token=6aa9ff82-c1a6-4e1f-a743-67a828790599"
-                    }
+                    src={student.imageUrl}
                   />
-                  <Typography variant="body2">Jane Smith '23</Typography>
+                  <Typography variant="body2">
+                    {student.firstName + " " + student.lastName}
+                  </Typography>
                 </CardContent>
               </Card>
             </GridListTile>
