@@ -5,6 +5,7 @@ import { auth } from "../firebase";
 
 // Components
 import Student from "./Student";
+import Message from "./Message";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -25,7 +26,9 @@ function Connections() {
   const [pending, setPending] = useState([]);
   const [connections, setConnections] = useState(null);
   const [studentId, setStudentId] = useState("");
+  const [messageOpen, setMessageOpen] = useState(false);
   const emailId = auth.currentUser.email.split("@")[0];
+  const [studentInfo, setStudentInfo] = useState([]);
 
   useEffect(() => {
     getPending();
@@ -68,10 +71,29 @@ function Connections() {
     getConnections();
   };
 
+  const handleOpenMessage = (id, image, name) => {
+    setStudentInfo([id, image, name]);
+    setMessageOpen(true);
+  };
+
+  const handleCloseMessage = () => {
+    setMessageOpen(false);
+  };
+
   return (
     <div>
-      <Dialog fullScreen open={studentId}>
-        <Student studentId={studentId} handleClose={handleCloseStudent} />
+      <Dialog open={studentId}>
+        <Student
+          studentId={studentId}
+          handleClose={handleCloseStudent}
+          handleOpenMessage={handleOpenMessage}
+        />
+      </Dialog>
+      <Dialog open={messageOpen && studentInfo}>
+        <Message
+          handleCloseMessage={handleCloseMessage}
+          studentInfo={studentInfo}
+        />
       </Dialog>
       Pending Connections
       <GridList cols={5} spacing={10} cellHeight="auto">

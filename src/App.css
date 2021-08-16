@@ -49,9 +49,9 @@ p {
 }
 
 .sendMsg {
-  position: fixed;
+  /* position: fixed; */
   display: flex;
-  width: 100%;
+  /* width: 100%;
   max-width: 1200px;
   bottom: 0;
   z-index: 1;
@@ -59,7 +59,7 @@ p {
   margin-left: -5px;
   padding: 10px;
   padding-bottom: 30px;
-  background-color: #fafafa;
+  background-color: #fafafa; */
 }
 
 .msgs {

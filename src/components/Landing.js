@@ -20,7 +20,6 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
-import { getSuggestedQuery } from "@testing-library/react";
 
 function Landing(props) {
   const [featured, setFeatured] = useState([]);
@@ -33,15 +32,7 @@ function Landing(props) {
 
   useEffect(() => {
     getFeatured();
-    makeSearch();
   }, []);
-
-  const makeSearch = (query) => {
-    axios.get(`/all/${email}`).then((res) => {
-      console.log(res.data.filter((student) => student.firstName === query));
-      setStudents(res.data.filter((student) => student.firstName === query));
-    });
-  };
 
   const getFeatured = () => {
     axios
@@ -50,6 +41,13 @@ function Landing(props) {
         setFeatured(res.data.featured);
       })
       .catch((err) => console.log(err));
+  };
+
+  const makeSearch = (query) => {
+    axios.get(`/all/${email}`).then((res) => {
+      console.log(res.data.filter((student) => student.firstName === query));
+      setStudents(res.data.filter((student) => student.firstName === query));
+    });
   };
 
   const handleOpenStudent = (index) => {

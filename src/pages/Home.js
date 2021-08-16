@@ -9,6 +9,7 @@ import Connections from "../components/Connections";
 import Messages from "../components/Messages";
 import Course from "../components/Course";
 import Notifications from "../components/Notifications";
+import Profile from "../components/Profile";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -23,6 +24,7 @@ function Home() {
   const [requests, setRequests] = useState(null);
   const emailId = auth.currentUser.email.split("@")[0];
   const [code, setCode] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     getRequests();
@@ -30,6 +32,10 @@ function Home() {
 
   useEffect(() => {
     getCourses();
+  }, []);
+
+  useEffect(() => {
+    getImageUrl();
   }, []);
 
   const getRequests = () => {
@@ -52,9 +58,26 @@ function Home() {
       });
   };
 
+  const getImageUrl = () => {
+    db.doc(`/profiles/${emailId}`)
+      .get()
+      .then((doc) => {
+        setImageUrl(doc.data().imageUrl);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleProfile = () => {
+    setPage("Profile");
+  };
+
   return (
     <div align="center">
-      <NavBar requests={requests} />
+      <NavBar
+        requests={requests}
+        imageUrl={imageUrl}
+        handleProfile={handleProfile}
+      />
       <Grid container spacing={3}>
         <Grid item xs={3}>
           <Button fullWidth variant="contained" onClick={() => setPage("Home")}>
@@ -117,6 +140,7 @@ function Home() {
           {page === "Course" && code && (
             <Course code={code} handleRequest={decRequests} />
           )}
+          {page === "Profile" && <Profile />}
         </Grid>
       </Grid>
     </div>

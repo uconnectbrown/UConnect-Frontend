@@ -1,48 +1,76 @@
 // Setup
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { db, auth } from "../firebase";
+
+// Components
+import NavBar from "../components/NavBar";
+import Interests from "../components/Interests.js";
+import Crop from "../cropUtil/Crop.js";
+
+// Resources
+import majorList from "../resources/majors";
+import varsitySports from "../resources/varsitySports";
+import greekLife from "../resources/greekLife";
+import {
+  instrumentsList,
+  pickUpSportsList,
+  petsList,
+} from "../resources/additionalInfo";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import SendIcon from "@material-ui/icons/Send";
-import CheckIcon from "@material-ui/icons/Check";
-import MessageIcon from "@material-ui/icons/Message";
+import AddIcon from "@material-ui/icons/Add";
+import AddCircle from "@material-ui/icons/AddCircle";
+import DeleteIcon from "@material-ui/icons/Delete";
+import PhotoIcon from "@material-ui/icons/PhotoCamera";
+import EditIcon from "@material-ui/icons/Edit";
+import Tooltip from "@material-ui/core/Tooltip";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Dots from "@material-ui/icons/MoreHoriz";
 import Book from "@material-ui/icons/MenuBook";
 import Movie from "@material-ui/icons/Movie";
 import Tv from "@material-ui/icons/Tv";
 import Music from "@material-ui/icons/MusicNote";
 import Pets from "@material-ui/icons/Pets";
 import Sports from "@material-ui/icons/SportsBasketball";
-import DialogContent from "@material-ui/core/DialogContent";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import PropTypes from "prop-types";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Box from "@material-ui/core/Box";
+
+// Styles
+import "./profileView.css";
 
 // Body
-function Student(props) {
+function Profile() {
   const emailId = auth.currentUser.email.split("@")[0];
-  const studentId = props.studentId;
-  const [student, setStudent] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [indexArray, setIndexArray] = useState([]);
-  const [status, setStatus] = useState(null);
-  let requests = props.requests;
 
   useEffect(() => {
-    getStudent();
+    getProfile();
   }, []);
 
-  useEffect(() => {
-    checkStatus();
-  }, []);
-
-  const getStudent = () => {
+  const getProfile = () => {
     axios
-      .get(`/user/${studentId}`)
+      .get(`/user/${emailId}`)
       .then((res) => {
-        setStudent(res.data.user);
+        setProfile(res.data.user);
         let arr = [];
         for (let j = 0; j < 5; j++) {
           if (res.data.user.courses[j].code) {
@@ -54,129 +82,18 @@ function Student(props) {
       .catch((err) => console.log(err));
   };
 
-  const checkStatus = () => {
-    axios
-      .get(`/status/${emailId}/${studentId}`)
-      .then((res) => {
-        setStatus(res.data);
-      })
-
-      .catch((err) => console.log(err));
-  };
-
-  const sendRequest = () => {
-    let senderInfo = {};
-    let numRequests;
-    db.doc(`/profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        numRequests = doc.data().requests;
-        senderInfo.name = doc.data().firstName + " " + doc.data().lastName;
-        senderInfo.imageUrl = doc.data().imageUrl;
-        senderInfo.classYear = doc.data().classYear;
-        return senderInfo;
-      })
-      .then((info) => {
-        axios.post(`/request/${emailId}/${studentId}`, info);
-      })
-      .then(() => {
-        setStatus("out");
-        props.handleRequest();
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const acceptRequest = () => {
-    let info = {
-      senderName: student.firstName + " " + student.lastName,
-      senderImageUrl: student.imageUrl,
-      senderClassYear: student.classYear,
-    };
-    db.doc(`/profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        info.receiverName = doc.data().firstName + " " + doc.data().lastName;
-        info.receiverImageUrl = doc.data().imageUrl;
-        info.receiverClassYear = doc.data().classYear;
-        console.log(info);
-        return info;
-      })
-      .then((info) => {
-        axios
-          .post(`/accept/${studentId}/${emailId}`, info)
-          .then(() => {
-            setStatus("con");
-          })
-          .catch((err) => console.log(err));
-      });
-  };
-
   return (
-    <DialogContent>
-      {student && status && (
+    <div>
+      {profile && (
         <div>
           <Card raised>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="back"
-              onClick={props.handleClose}
-            >
-              <CloseIcon />
-              <span style={{ marginRight: "5px" }} />
-            </IconButton>
-
-            {status === "nil" && (
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="back"
-                onClick={sendRequest}
-              >
-                <SendIcon />
-                <span style={{ marginRight: "5px" }} />
-              </IconButton>
-            )}
-
-            {status === "out" && <Typography>request sent</Typography>}
-
-            {status === "in" && (
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="back"
-                onClick={acceptRequest}
-              >
-                <CheckIcon />
-                <span style={{ marginRight: "5px" }} />
-              </IconButton>
-            )}
-
-            {status === "con" && (
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="back"
-                onClick={() =>
-                  props.handleOpenMessage(
-                    studentId,
-                    student.imageUrl,
-                    student.firstName + " " + student.lastName
-                  )
-                }
-              >
-                <MessageIcon />
-                <span style={{ marginRight: "5px" }} />
-              </IconButton>
-            )}
-
             <CardContent align="center">
               <Grid container spacing={1}>
                 <Grid item sm></Grid>
                 <Grid item sm>
                   <img
                     alt="Profile"
-                    src={student.imageUrl}
+                    src={profile.imageUrl}
                     style={{
                       width: 400,
                       height: 400,
@@ -197,27 +114,27 @@ function Student(props) {
                 <CardContent>
                   <span>
                     <Typography variant="h3" align="center">
-                      {student.firstName} {student.lastName}{" "}
+                      {profile.firstName} {profile.lastName}{" "}
                     </Typography>
                   </span>
                   <Typography variant="h5">
-                    {student.preferredPronouns &&
-                      `(${student.preferredPronouns})`}
+                    {profile.preferredPronouns &&
+                      `(${profile.preferredPronouns})`}
                   </Typography>
                   <br />
                   <Typography variant="h5">
-                    Class of {student.classYear}
+                    Class of {profile.classYear}
                   </Typography>
                   <Typography variant="h5">
-                    Concentration(s): {student.major1}
-                    {student.major2 && `, ${student.major2}`}
-                    {student.major3 && `, ${student.major3}`}
+                    Concentration(s): {profile.major1}
+                    {profile.major2 && `, ${profile.major2}`}
+                    {profile.major3 && `, ${profile.major3}`}
                   </Typography>
                 </CardContent>
               </Card>
               <br />
               <br />
-              {student.bio && (
+              {profile.bio && (
                 <Card raised style={{ display: "inline-block" }}>
                   <CardContent>
                     <span>
@@ -225,7 +142,7 @@ function Student(props) {
                         Bio
                       </Typography>
                     </span>
-                    {student.bio}{" "}
+                    {profile.bio}{" "}
                   </CardContent>
                 </Card>
               )}
@@ -248,14 +165,14 @@ function Student(props) {
                           <Typography variant="h5">Groups</Typography>
                         </span>
                         <br />
-                        {student.group1 && (
-                          <Typography>• {student.group1}</Typography>
+                        {profile.group1 && (
+                          <Typography>• {profile.group1}</Typography>
                         )}
-                        {student.group2 && (
-                          <Typography>• {student.group2}</Typography>
+                        {profile.group2 && (
+                          <Typography>• {profile.group2}</Typography>
                         )}
-                        {student.group3 && (
-                          <Typography>• {student.group3}</Typography>
+                        {profile.group3 && (
+                          <Typography>• {profile.group3}</Typography>
                         )}
                       </div>
                     </CardContent>
@@ -278,11 +195,11 @@ function Student(props) {
                           <Typography variant="h5">Varsity Sports</Typography>
                         </span>
                         <br />
-                        {student.varsitySport1 && (
-                          <Typography>• {student.varsitySport1}</Typography>
+                        {profile.varsitySport1 && (
+                          <Typography>• {profile.varsitySport1}</Typography>
                         )}
-                        {student.varsitySport2 && (
-                          <Typography>• {student.varsitySport2}</Typography>
+                        {profile.varsitySport2 && (
+                          <Typography>• {profile.varsitySport2}</Typography>
                         )}
                       </div>
                     </CardContent>
@@ -307,8 +224,8 @@ function Student(props) {
                           </Typography>
                         </span>
                         <br />
-                        {student.greekLife && (
-                          <Typography>• {student.greekLife}</Typography>
+                        {profile.greekLife && (
+                          <Typography>• {profile.greekLife}</Typography>
                         )}
                       </div>
                     </CardContent>
@@ -337,7 +254,7 @@ function Student(props) {
                     <CardContent>
                       <Typography variant="h5">Career and Academic</Typography>
                       <br />
-                      {student.interests1.map((interest) => {
+                      {profile.interests1.map((interest) => {
                         return <Typography>• {interest}</Typography>;
                       })}
                     </CardContent>
@@ -358,7 +275,7 @@ function Student(props) {
                         Physical Activity and Wellness
                       </Typography>
                       <br />
-                      {student.interests2.map((interest) => {
+                      {profile.interests2.map((interest) => {
                         return <Typography>• {interest}</Typography>;
                       })}
                     </CardContent>
@@ -376,7 +293,7 @@ function Student(props) {
                     <CardContent>
                       <Typography variant="h5">General Hobbies</Typography>
                       <br />
-                      {student.interests3.map((interest) => {
+                      {profile.interests3.map((interest) => {
                         return <Typography>• {interest}</Typography>;
                       })}
                     </CardContent>
@@ -398,14 +315,14 @@ function Student(props) {
                           <Typography variant="h6">Instruments</Typography>
                         </span>
                         <br />
-                        {student.instrument1 && (
-                          <Typography>• {student.instrument1}</Typography>
+                        {profile.instrument1 && (
+                          <Typography>• {profile.instrument1}</Typography>
                         )}
-                        {student.instrument2 && (
-                          <Typography>• {student.instrument2}</Typography>
+                        {profile.instrument2 && (
+                          <Typography>• {profile.instrument2}</Typography>
                         )}
-                        {student.instrument3 && (
-                          <Typography>• {student.instrument3}</Typography>
+                        {profile.instrument3 && (
+                          <Typography>• {profile.instrument3}</Typography>
                         )}
                       </div>
                     </Grid>
@@ -416,14 +333,14 @@ function Student(props) {
                           <Typography variant="h6">Pick-Up Sports</Typography>
                         </span>
                         <br />
-                        {student.pickUpSport1 && (
-                          <Typography>• {student.pickUpSport1}</Typography>
+                        {profile.pickUpSport1 && (
+                          <Typography>• {profile.pickUpSport1}</Typography>
                         )}
-                        {student.pickUpSport2 && (
-                          <Typography>• {student.pickUpSport2}</Typography>
+                        {profile.pickUpSport2 && (
+                          <Typography>• {profile.pickUpSport2}</Typography>
                         )}
-                        {student.pickUpSport3 && (
-                          <Typography>• {student.pickUpSport3}</Typography>
+                        {profile.pickUpSport3 && (
+                          <Typography>• {profile.pickUpSport3}</Typography>
                         )}
                       </div>
                     </Grid>
@@ -434,14 +351,14 @@ function Student(props) {
                           <Typography variant="h6">Pets</Typography>
                         </span>
                         <br />
-                        {student.pet1 && (
-                          <Typography>• {student.pet1}</Typography>
+                        {profile.pet1 && (
+                          <Typography>• {profile.pet1}</Typography>
                         )}
-                        {student.pet2 && (
-                          <Typography>• {student.pet2}</Typography>
+                        {profile.pet2 && (
+                          <Typography>• {profile.pet2}</Typography>
                         )}
-                        {student.pet3 && (
-                          <Typography>• {student.pet3}</Typography>
+                        {profile.pet3 && (
+                          <Typography>• {profile.pet3}</Typography>
                         )}
                       </div>
                     </Grid>
@@ -461,7 +378,7 @@ function Student(props) {
                   <div>
                     <Book />
                     <Typography variant="body1">
-                      Book: {student.favoriteBook}
+                      Book: {profile.favoriteBook}
                     </Typography>
                   </div>
                 </Grid>
@@ -469,7 +386,7 @@ function Student(props) {
                   <div>
                     <Movie />
                     <Typography variant="body1">
-                      Movie: {student.favoriteMovie}
+                      Movie: {profile.favoriteMovie}
                     </Typography>
                   </div>
                 </Grid>
@@ -477,7 +394,7 @@ function Student(props) {
                   <div>
                     <Tv />
                     <Typography variant="body1">
-                      Show: {student.favoriteShow}
+                      Show: {profile.favoriteShow}
                     </Typography>
                   </div>
                 </Grid>
@@ -485,7 +402,7 @@ function Student(props) {
                   <div>
                     <Music />
                     <Typography variant="body1">
-                      Artist: {student.favoriteArtist}
+                      Artist: {profile.favoriteArtist}
                     </Typography>
                   </div>
                 </Grid>
@@ -505,7 +422,7 @@ function Student(props) {
                       style={{
                         borderStyle: "solid",
                         borderWidth: "3px",
-                        borderColor: `${student.courses[index].color}`,
+                        borderColor: `${profile.courses[index].color}`,
                         height: "100%",
                       }}
                     >
@@ -513,13 +430,13 @@ function Student(props) {
                         <Typography
                           variant="h5"
                           style={{
-                            color: `${student.courses[index].color}`,
+                            color: `${profile.courses[index].color}`,
                           }}
                         >
-                          {student.courses[index].code}
+                          {profile.courses[index].code}
                         </Typography>
                         <Typography variant="body1">
-                          {student.courses[index].name}
+                          {profile.courses[index].name}
                         </Typography>
                       </CardContent>
                     </Card>
@@ -531,8 +448,8 @@ function Student(props) {
           <br />
         </div>
       )}
-    </DialogContent>
+    </div>
   );
 }
 
-export default Student;
+export default Profile;

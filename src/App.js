@@ -15,7 +15,6 @@ import Welcome from "./components/Welcome";
 
 // Pages
 import profileBuild from "./pages/profileBuild";
-import profileView from "./pages/profileView";
 import Home from "./pages/Home";
 import messageView from "./pages/messageView";
 import courseView from "./pages/courseView";
@@ -36,6 +35,7 @@ function App() {
           <Router>
             <div className="container">
               <Switch>
+                <Route exact path="/" component={Welcome} />
                 <Route exact path="/home" component={Home} />
                 <Route exact path="/profileBuild" component={profileBuild} />
               </Switch>

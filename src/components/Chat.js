@@ -5,23 +5,18 @@ import SendMessage from "./SendMessage";
 function Chat(props) {
   const scroll = useRef();
   const [messages, setMessages] = useState([]);
-  const recipientName = props.recipientName;
-  const recipientImage = props.recipientImage;
-  const recipientId = props.recipientId;
-  const courseCode = props.code;
+  const studentName = props.studentName;
+  const studentImageUrl = props.studentImageUrl;
+  const studentId = props.studentId;
   const ownId = props.ownId;
-  const ownImage = props.ownImage;
+  const ownImageUrl = props.ownImageUrl;
   const ownName = props.ownName;
   const roomId = props.roomId;
 
   useEffect(() => {
-    // const courseCode = props.courseCode;
-    // const roomId = props.roomId;
-    db.collection("courses")
-      .doc(courseCode)
-      .collection("allMessages")
+    db.collection("messages")
       .doc(roomId)
-      .collection("messages")
+      .collection("chat")
       .orderBy("createdAt")
       .limit(50)
       .onSnapshot((snapshot) => {
@@ -38,7 +33,7 @@ function Chat(props) {
             className={`msg ${message.ownId === ownId ? "sent" : "received"}`}
           >
             <img
-              src={message.ownImage}
+              src={message.ownImageUrl}
               alt=""
               style={{
                 borderRadius: "10%",
@@ -55,13 +50,12 @@ function Chat(props) {
 
       <SendMessage
         scroll={scroll}
-        recipientName={recipientName}
-        recipientImage={recipientImage}
-        recipientId={recipientId}
-        courseCode={courseCode}
+        studentName={studentName}
+        studentImageUrl={studentImageUrl}
+        studentId={studentId}
         ownId={ownId}
         ownName={ownName}
-        ownImage={ownImage}
+        ownImageUrl={ownImageUrl}
         roomId={roomId}
       />
       <div ref={scroll}></div>

@@ -7,12 +7,11 @@ import { Input, Button } from "@material-ui/core";
 // Body
 function SendMessage({
   scroll,
-  recipientImage,
-  recipientName,
-  recipientId,
-  courseCode,
+  studentImageUrl,
+  studentName,
+  studentId,
   ownName,
-  ownImage,
+  ownImageUrl,
   roomId,
   ownId,
 }) {
@@ -22,42 +21,34 @@ function SendMessage({
     e.preventDefault();
 
     await Promise.all([
-      db
-        .collection("courses")
-        .doc(courseCode)
-        .collection("allMessages")
-        .doc(roomId)
-        .collection("messages")
-        .add({
-          text: msg,
-          ownImage,
-          ownId,
-          createdAt: new Date().toISOString(),
-        }),
+      db.collection("messages").doc(roomId).collection("chat").add({
+        text: msg,
+        ownImageUrl,
+        ownId,
+        createdAt: new Date().toISOString(),
+      }),
 
       db
         .collection("profiles")
         .doc(ownId)
-        .collection(`${courseCode} messages`)
+        .collection(`messages`)
         .doc(roomId)
         .set({
-          course: courseCode,
-          recipientName: recipientName,
-          recipientImage: recipientImage,
+          recipientName: studentName,
+          recipientImage: studentImageUrl,
           roomId,
-          recipientId: recipientId,
+          recipientId: studentId,
           mostRecent: new Date().toISOString(),
         }),
 
       db
         .collection("profiles")
-        .doc(recipientId)
-        .collection(`${courseCode} messages`)
+        .doc(studentId)
+        .collection(`messages`)
         .doc(roomId)
         .set({
-          course: courseCode,
           recipientName: ownName,
-          recipientImage: ownImage,
+          recipientImage: ownImageUrl,
           roomId,
           recipientId: ownId,
           mostRecent: new Date().toISOString(),
