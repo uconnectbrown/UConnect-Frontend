@@ -36,7 +36,7 @@ function App() {
           <Router>
             <div className="container">
               <Switch>
-                <Route exact path="/" component={Home} />
+                <Route exact path="/home" component={Home} />
                 <Route exact path="/profileBuild" component={profileBuild} />
               </Switch>
             </div>
@@ -45,7 +45,7 @@ function App() {
           <Router>
             <div className="container">
               <Switch>
-                <Route exact path="/welcome" component={Welcome} />
+                <Route exact path="/" component={Welcome} />
               </Switch>
             </div>
           </Router>

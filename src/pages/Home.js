@@ -114,7 +114,9 @@ function Home() {
           )}
           {page === "Messages" && <Typography>Messages</Typography>}
           {page === "Connections" && <Connections />}
-          {page === "Course" && code && <Course code={code} />}
+          {page === "Course" && code && (
+            <Course code={code} handleRequest={decRequests} />
+          )}
         </Grid>
       </Grid>
     </div>

@@ -3,10 +3,12 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../firebase";
 import axios from "axios";
 
+// Components
+import Student from "./Student";
+
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
-
-import Button from "@material-ui/core/Button";
+import ButtonBase from "@material-ui/core/ButtonBase";
 import SearchBar from "material-ui-search-bar";
 import InputLabel from "@material-ui/core/InputLabel";
 import CardContent from "@material-ui/core/CardContent";
@@ -17,12 +19,14 @@ import GridListTile from "@material-ui/core/GridListTile";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
+import Dialog from "@material-ui/core/Dialog";
 
 function Course(props) {
   const code = props.code;
   const codeNS = code.replace(/\s/g, "");
   const email = auth.currentUser.email;
   const [students, setStudents] = useState([]);
+  const [studentId, setStudentId] = useState("");
 
   useEffect(() => {
     getStudents();
@@ -37,8 +41,24 @@ function Course(props) {
       })
       .catch((err) => console.log(err));
   };
+
+  const handleOpenStudent = (index) => {
+    setStudentId(students[index].email.split("@")[0]);
+  };
+
+  const handleCloseStudent = () => {
+    setStudentId("");
+  };
+
   return (
     <div>
+      <Dialog open={studentId}>
+        <Student
+          studentId={studentId}
+          handleClose={handleCloseStudent}
+          handleRequest={props.handleRequest}
+        />
+      </Dialog>
       {code}
       <SearchBar />
       <Grid container spacing={10}>
@@ -77,20 +97,27 @@ function Course(props) {
         </Grid>
       </Grid>
       <GridList cols={5} spacing={10} cellHeight="auto">
-        {students.map((student) => {
+        {students.map((student, index) => {
           return (
             <GridListTile item component="Card" sm>
               <Card align="center">
-                <CardContent>
-                  <img
-                    width="50px"
-                    alt="Profile Picture"
-                    src={student.imageUrl}
-                  />
-                  <Typography variant="body2">
-                    {student.firstName + " " + student.lastName}
-                  </Typography>
-                </CardContent>
+                <ButtonBase
+                  size="large"
+                  color="primary"
+                  onClick={() => handleOpenStudent(index)}
+                  style={{ width: "100%" }}
+                >
+                  <CardContent>
+                    <img
+                      width="50px"
+                      alt="Profile Picture"
+                      src={student.imageUrl}
+                    />
+                    <Typography variant="body2">
+                      {student.firstName + " " + student.lastName}
+                    </Typography>
+                  </CardContent>
+                </ButtonBase>
               </Card>
             </GridListTile>
           );

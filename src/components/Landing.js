@@ -20,15 +20,28 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
+import { getSuggestedQuery } from "@testing-library/react";
 
 function Landing(props) {
   const [featured, setFeatured] = useState([]);
+  const [students, setStudents] = useState(null);
+  const [query, setQuery] = useState("");
+  const [searching, setSearching] = useState(false);
   const [studentId, setStudentId] = useState(null);
   const emailId = auth.currentUser.email.split("@")[0];
+  const email = auth.currentUser.email;
 
   useEffect(() => {
     getFeatured();
+    makeSearch();
   }, []);
+
+  const makeSearch = (query) => {
+    axios.get(`/all/${email}`).then((res) => {
+      console.log(res.data.filter((student) => student.firstName === query));
+      setStudents(res.data.filter((student) => student.firstName === query));
+    });
+  };
 
   const getFeatured = () => {
     axios
@@ -40,6 +53,10 @@ function Landing(props) {
   };
 
   const handleOpenStudent = (index) => {
+    setStudentId(students[index].email.split("@")[0]);
+  };
+
+  const handleOpenFStudent = (index) => {
     setStudentId(featured[index].emailId);
   };
 
@@ -58,7 +75,14 @@ function Landing(props) {
         />
       </Dialog>
       Connect
-      <SearchBar />
+      <SearchBar
+        value={query}
+        onChange={(newValue) => setQuery(newValue)}
+        onRequestSearch={() => {
+          makeSearch(query);
+          setSearching(true);
+        }}
+      />
       <Grid container spacing={10}>
         <Grid item>
           <FormControl style={{ minWidth: 120 }}>
@@ -94,11 +118,11 @@ function Landing(props) {
           </FormControl>
         </Grid>
       </Grid>
-      <GridList cols={10} spacing={10} cellHeight="auto">
-        {featured.map((student, index) => {
-          return (
-            <GridListTile item component="Card" sm>
-              <Card align="center">
+      {students && (
+        <div>
+          {students.map((student, index) => {
+            return (
+              <Card>
                 <ButtonBase
                   size="large"
                   color="primary"
@@ -111,14 +135,47 @@ function Landing(props) {
                       alt="Profile Picture"
                       src={student.imageUrl}
                     />
-                    <Typography variant="body2">{student.name}</Typography>
+                    <Typography variant="body2">
+                      {student.firstName + " " + student.lastName}
+                    </Typography>
+                    <Typography variant="body2">{student.classYear}</Typography>
+                    <Typography variant="body2">
+                      {student.majors.map((major) => major)}
+                    </Typography>
                   </CardContent>
                 </ButtonBase>
               </Card>
-            </GridListTile>
-          );
-        })}
-      </GridList>
+            );
+          })}
+        </div>
+      )}
+      {!searching && !query && (
+        <GridList cols={10} spacing={10} cellHeight="auto">
+          {featured.map((student, index) => {
+            return (
+              <GridListTile item component="Card" sm>
+                <Card align="center">
+                  <ButtonBase
+                    size="large"
+                    color="primary"
+                    onClick={() => handleOpenFStudent(index)}
+                    style={{ width: "100%" }}
+                  >
+                    <CardContent>
+                      <img
+                        width="45px"
+                        alt="Profile Picture"
+                        src={student.imageUrl}
+                      />
+                      <Typography variant="body2">{student.name}</Typography>
+                    </CardContent>
+                  </ButtonBase>
+                </Card>
+              </GridListTile>
+            );
+          })}
+        </GridList>
+      )}
     </div>
   );
 }

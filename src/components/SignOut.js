@@ -3,15 +3,12 @@ import { auth } from "../firebase.js";
 import { Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
-// Components
-import App from "../App.js";
-
 function SignOut(props) {
   let history = useHistory();
 
   async function signout() {
     await auth.signOut();
-    history.push("/welcome");
+    history.push("/");
   }
   return (
     <div style={props.style}>
