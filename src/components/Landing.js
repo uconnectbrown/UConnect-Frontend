@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { auth } from "../firebase.js";
+import Select from "react-select";
 
 // Components
 import Student from "./Student";
@@ -10,36 +11,35 @@ import Student from "./Student";
 import Grid from "@material-ui/core/Grid";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import SearchBar from "material-ui-search-bar";
-import InputLabel from "@material-ui/core/InputLabel";
+
 import CardContent from "@material-ui/core/CardContent";
-import MenuItem from "@material-ui/core/MenuItem";
+
 import Card from "@material-ui/core/Card";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+
+// Resources
+import { classYears, majors } from "../resources/searchOptions";
 
 function Landing(props) {
   const [featured, setFeatured] = useState([]);
   const [students, setStudents] = useState([]);
-  const [indexArray, setIndexArray] = useState([]);
-  const [newIndexArray, setNewIndexArray] = useState([]);
+  const [searchMode, setSearchMode] = useState(false);
   const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
-  const [searchCriteria, setSearchCriteria] = useState("");
   const [studentId, setStudentId] = useState(null);
   const emailId = auth.currentUser.email.split("@")[0];
   const email = auth.currentUser.email;
+  const [classYears_, setClassYears] = useState([]);
+  const [majors_, setMajors] = useState([]);
 
   useEffect(() => {
     getFeatured();
-  }, []);
-
-  useEffect(() => {
-    getStudents();
   }, []);
 
   const getFeatured = () => {
@@ -51,26 +51,46 @@ function Landing(props) {
       .catch((err) => console.log(err));
   };
 
-  const getStudents = () => {
-    axios.get(`/all/${email}`).then((res) => {
-      setStudents(res.data);
-    }).then(() => {
-      const numStudents = students.length;
-  let arr = [];
-    for (let i = 0; i < numStudents; i++) {
-      arr.push(i);
-    }
-    setIndexArray(arr);
-    })
-  }  
+  const searchField = (years, majors) => {
+    axios
+      .get(`/all/${email}`)
+      .then((res) => {
+        setStudents(
+          res.data.filter(
+            (student) =>
+              (years.includes(student.classYear) || years !== []) &&
+              (majors.includes(student.majors[0]) || majors !== [])
+          )
+        );
+      })
+      .catch((err) => console.log(err));
+  };
 
-  // const makeSearch = (query) => {
-  //   axios.get(`/all/${email}`).then((res) => {
-  //     console.log(res.data.filter((student) => student.firstName.toString().toLowerCase().includes(query.target.value.toString().toLowerCase())));
-  //     setStudents(res.data.filter((student) => student.firstName.toString().toLowerCase().includes(query.target.value.toString().toLowerCase())));
-  //   });
-  //   return;
-  // };
+  const filterName = (fn, ln, query) => {
+    fn = fn.toLowerCase().trim();
+    ln = ln.toLowerCase().trim();
+    query = query.toLowerCase().trim();
+    if (fn.split(query)[0] === "") return true;
+    if (ln === query) return true;
+    if (query.split(" ").length === 2) {
+      let query1 = query.split(" ")[0];
+      let query2 = query.split(" ")[1];
+      if (fn.split(query1)[0] === "" && ln.split(query2)[0] === "") return true;
+    }
+  };
+
+  const searchName = (query) => {
+    axios
+      .get(`/all/${email}`)
+      .then((res) => {
+        setStudents(
+          res.data.filter((student) =>
+            filterName(student.firstName, student.lastName, query)
+          )
+        );
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleOpenStudent = (index) => {
     setStudentId(students[index].email.split("@")[0]);
@@ -84,28 +104,6 @@ function Landing(props) {
     setStudentId(null);
   };
 
-  const handleFilter = (event) => {
-    setSearching(true)
-    setSearchCriteria(event.target.value)
-  };
-
-  const handleSearch = (students, query, indexArray) => {
-    setNewIndexArray(indexArray.map((index) => {
-        if (
-            `${students[index]["firstName"]} ${students[index]["lastName"]}`
-              .toString()
-              .toLowerCase()
-              .includes(
-                query.toString().toLowerCase()
-              )
-          ) {
-            return index;
-          }
-      }).filter((index) => {
-        return index !== undefined;
-      }))
-    }
-
   return (
     <div>
       <Dialog open={studentId}>
@@ -116,57 +114,89 @@ function Landing(props) {
           requests={props.requests}
         />
       </Dialog>
-      Connect
-      <SearchBar
-        value={query}
-        onChange={(newValue) => setQuery(newValue)}
-        onRequestSearch={() => {
-          // makeSearch(query);
-          handleSearch(students, query, indexArray)
-          setSearching(true)
-        }}
-      />
+      <Typography variant="h3">Connect</Typography>
+      {searchMode && (
+        <SearchBar
+          value={query}
+          onChange={(newValue) => setQuery(newValue)}
+          onRequestSearch={() => {
+            searchName(query);
+            setSearching(true);
+          }}
+        />
+      )}
       <Grid container spacing={10}>
         <Grid item>
-          <FormControl style={{ minWidth: 120 }}>
-            <InputLabel>Class Year</InputLabel>
-            <Select value={searchCriteria} onChange={handleFilter}>
-              <MenuItem value="2022">2022</MenuItem>
-              <MenuItem value="2023">2023</MenuItem>
-              <MenuItem value="2024">2024</MenuItem>
-              <MenuItem value="2025">2025</MenuItem>
-            </Select>
-          </FormControl>
+          Class Year(s)
+          <Select
+            isMulti
+            name="classYears"
+            options={classYears}
+            onChange={(option) => {
+              setClassYears(option.map((option) => option.value));
+            }}
+          />
         </Grid>
         <Grid item>
-          <FormControl style={{ minWidth: 120 }}>
-            <InputLabel>Interests</InputLabel>
-            <Select>
-              <MenuItem value="2022">2022</MenuItem>
-              <MenuItem value="2023">2023</MenuItem>
-              <MenuItem value="2024">2024</MenuItem>
-              <MenuItem value="2025">2025</MenuItem>
-            </Select>
-          </FormControl>
+          Concentration(s)
+          <Select
+            isMulti
+            name="concentration"
+            options={majors}
+            onChange={(option) => {
+              setMajors(option.map((option) => option.value));
+            }}
+          />
+        </Grid>
+
+        <Grid item>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              if (searchMode) {
+                searchName(query);
+              } else {
+                searchField(classYears_, majors_);
+              }
+              setSearching(true);
+            }}
+          >
+            Search
+          </Button>
         </Grid>
         <Grid item>
-          <FormControl style={{ minWidth: 120 }}>
-            <InputLabel>Concentration</InputLabel>
-            <Select>
-              <MenuItem value="2022">2022</MenuItem>
-              <MenuItem value="2023">2023</MenuItem>
-              <MenuItem value="2024">2024</MenuItem>
-              <MenuItem value="2025">2025</MenuItem>
-            </Select>
-          </FormControl>
+          <Button
+            variant="contained"
+            disabled={!searching}
+            color="primary"
+            onClick={() => {
+              setStudents([]);
+              setClassYears([]);
+              setSearching(false);
+              setQuery("");
+            }}
+          >
+            Clear Search
+          </Button>
         </Grid>
         <Grid item>
-          <Button onClick={() => setSearching(false)}>Clear Search</Button>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={searchMode}
+                onChange={() => setSearchMode(!searchMode)}
+                name="checkedB"
+                color="primary"
+              />
+            }
+            label="Search By Name"
+          />
         </Grid>
       </Grid>
       {searching && (
         <div>
-          {newIndexArray.map((index) => {
+          {students.map((student, index) => {
             return (
               <Card>
                 <ButtonBase
@@ -179,14 +209,14 @@ function Landing(props) {
                     <img
                       width="45px"
                       alt="Profile Picture"
-                      src={students[index].imageUrl}
+                      src={student.imageUrl}
                     />
                     <Typography variant="body2">
-                      {students[index].firstName + " " + students[index].lastName}
+                      {student.firstName + " " + student.lastName}
                     </Typography>
-                    <Typography variant="body2">{students[index].classYear}</Typography>
+                    <Typography variant="body2">{student.classYear}</Typography>
                     <Typography variant="body2">
-                      {students[index].majors.map((major) => major)}
+                      {student.majors.map((major) => major)}
                     </Typography>
                   </CardContent>
                 </ButtonBase>
@@ -195,7 +225,7 @@ function Landing(props) {
           })}
         </div>
       )}
-      {!searching && (
+      {!searching && !query && !classYears_ && (
         <GridList cols={10} spacing={10} cellHeight="auto">
           {featured.map((student, index) => {
             return (

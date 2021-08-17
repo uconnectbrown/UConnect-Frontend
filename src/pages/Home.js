@@ -10,11 +10,11 @@ import Messages from "../components/Messages";
 import Course from "../components/Course";
 import Notifications from "../components/Notifications";
 import Profile from "../components/Profile";
+import InterestFilter from "../components/InterestFilter";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 
 // Body
 function Home() {
@@ -93,6 +93,13 @@ function Home() {
           <Button
             fullWidth
             variant="contained"
+            onClick={() => setPage("Interests")}
+          >
+            Interests
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
             onClick={() => setPage("Connections")}
           >
             Connections
@@ -135,7 +142,8 @@ function Home() {
               <Notifications />
             </div>
           )}
-          {page === "Messages" && <Typography>Messages</Typography>}
+          {page === "Messages" && <Messages />}
+          {page === "Interests" && <InterestFilter />}
           {page === "Connections" && <Connections />}
           {page === "Course" && code && (
             <Course code={code} handleRequest={decRequests} />

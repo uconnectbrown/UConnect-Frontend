@@ -59,8 +59,8 @@ class profileBuild extends Component {
 
     const newUserData = {
       // Basic Info
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
+      firstName: this.state.firstName.trim(),
+      lastName: this.state.lastName.trim(),
       classYear: this.state.classYear,
       majors: [this.state.major1, this.state.major2, this.state.major3],
       preferredPronouns: this.state.preferredPronouns,

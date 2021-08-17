@@ -15,8 +15,8 @@ import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import DialogContent from "@material-ui/core/DialogContent";
 
+// Body
 function Message(props) {
-  //
   const [roomId, setRoomId] = useState("");
   const [studentId, setStudentId] = useState("");
   const [studentImageUrl, setStudentImageUrl] = useState("");
@@ -69,7 +69,6 @@ function Message(props) {
           <Typography variant="body1">{studentName.split(" ")[0]}</Typography>
         </Grid>
       </Grid>
-      {roomId}
       {roomId && (
         <Chat
           studentName={studentName}

@@ -16,11 +16,6 @@ import Welcome from "./components/Welcome";
 // Pages
 import profileBuild from "./pages/profileBuild";
 import Home from "./pages/Home";
-import messageView from "./pages/messageView";
-import courseView from "./pages/courseView";
-import studentView from "./pages/studentView";
-import messagesView from "./pages/messagesView";
-import universityView from "./pages/universityView";
 
 // Styling
 const theme = createTheme(themeFile);
