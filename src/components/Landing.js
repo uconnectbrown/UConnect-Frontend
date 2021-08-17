@@ -20,18 +20,26 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
+import Button from "@material-ui/core/Button";
 
 function Landing(props) {
   const [featured, setFeatured] = useState([]);
-  const [students, setStudents] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [indexArray, setIndexArray] = useState([]);
+  const [newIndexArray, setNewIndexArray] = useState([]);
   const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
+  const [searchCriteria, setSearchCriteria] = useState("");
   const [studentId, setStudentId] = useState(null);
   const emailId = auth.currentUser.email.split("@")[0];
   const email = auth.currentUser.email;
 
   useEffect(() => {
     getFeatured();
+  }, []);
+
+  useEffect(() => {
+    getStudents();
   }, []);
 
   const getFeatured = () => {
@@ -43,12 +51,27 @@ function Landing(props) {
       .catch((err) => console.log(err));
   };
 
-  const makeSearch = (query) => {
+  const getStudents = () => {
     axios.get(`/all/${email}`).then((res) => {
-      console.log(res.data.filter((student) => student.firstName === query));
-      setStudents(res.data.filter((student) => student.firstName === query));
-    });
-  };
+      setStudents(res.data);
+      console.log(res.data)
+    }).then(() => {
+      const numStudents = students.length;
+  let arr = [];
+    for (let i = 0; i < numStudents; i++) {
+      arr.push(i);
+    }
+    setIndexArray(arr);
+    })
+  }  
+
+  // const makeSearch = (query) => {
+  //   axios.get(`/all/${email}`).then((res) => {
+  //     console.log(res.data.filter((student) => student.firstName.toString().toLowerCase().includes(query.target.value.toString().toLowerCase())));
+  //     setStudents(res.data.filter((student) => student.firstName.toString().toLowerCase().includes(query.target.value.toString().toLowerCase())));
+  //   });
+  //   return;
+  // };
 
   const handleOpenStudent = (index) => {
     setStudentId(students[index].email.split("@")[0]);
@@ -60,6 +83,17 @@ function Landing(props) {
 
   const handleCloseStudent = () => {
     setStudentId(null);
+  };
+
+  const handleFilter = (event) => {
+    setSearching(true)
+    setSearchCriteria(event.target.value)
+    // if (students === null) {
+    //   axios.get(`/all/${email}`).then((res) => {
+    //     console.log(res.data.filter((student) => student.classYear.toString().toLowerCase().includes(event.target.value.toString().toLowerCase())));
+    //     setStudents(res.data.filter((student) => student.classYear.toString().toLowerCase().includes(event.target.value.toString().toLowerCase())));
+    //   });
+    // }
   };
 
   return (
@@ -77,15 +111,21 @@ function Landing(props) {
         value={query}
         onChange={(newValue) => setQuery(newValue)}
         onRequestSearch={() => {
-          makeSearch(query);
-          setSearching(true);
+          // makeSearch(query);
+          {query !== "" && (
+            setSearching(true)
+          )}
+          {query === "" && (
+            setSearching(false)
+          )}
+
         }}
       />
       <Grid container spacing={10}>
         <Grid item>
           <FormControl style={{ minWidth: 120 }}>
             <InputLabel>Class Year</InputLabel>
-            <Select>
+            <Select value={searchCriteria} onChange={handleFilter}>
               <MenuItem value="2022">2022</MenuItem>
               <MenuItem value="2023">2023</MenuItem>
               <MenuItem value="2024">2024</MenuItem>
@@ -116,9 +156,106 @@ function Landing(props) {
           </FormControl>
         </Grid>
       </Grid>
-      {students && (
+      {searching && (
         <div>
-          {students.map((student, index) => {
+          <Button onClick={() => setSearching(false)}>Stop Searching</Button>
+          {/* {newIndexArray === [] && (
+        setNewIndexArray(indexArray.map((index) => {
+            if (query !== "" && searchCriteria === "") {
+              if (
+                `${students[index]["firstName"]} ${students[index]["lastName"]}`
+                  .toString()
+                  .toLowerCase()
+                  .includes(
+                    query.toString().toLowerCase()
+                  )
+              ) {
+                return index;
+              }
+            } else if (query !== "" && searchCriteria !== "") {
+              if (
+                `${students[index]["firstName"]} ${students[index]["lastName"]}`
+                  .toString()
+                  .toLowerCase()
+                  .includes(
+                    query.toString().toLowerCase()
+                  ) &&
+                `${students[index]["classYear"]}`
+                  .toString()
+                  .toLowerCase()
+                  .includes(
+                    searchCriteria.toString().toLowerCase()
+                  )
+              ) {
+                return index;
+              }
+            } else if (query === "" && searchCriteria !== "") {
+              if (
+                `${students[index]["classYear"]}`
+                  .toString()
+                  .toLowerCase()
+                  .includes(
+                    searchCriteria.toString().toLowerCase()
+                  )
+              ) {
+                return index;
+              }
+            } else {
+              return index;
+            }
+          }).filter((index) => {
+            return index !== undefined;
+          }))
+  )}
+  {newIndexArray !== [] && (
+        setNewIndexArray(newIndexArray.map((index) => {
+            if (query !== "" && searchCriteria === "") {
+              if (
+                `${students[index]["firstName"]} ${students[index]["lastName"]}`
+                  .toString()
+                  .toLowerCase()
+                  .includes(
+                    query.toString().toLowerCase()
+                  )
+              ) {
+                return index;
+              }
+            } else if (query !== "" && searchCriteria !== "") {
+              if (
+                `${students[index]["firstName"]} ${students[index]["lastName"]}`
+                  .toString()
+                  .toLowerCase()
+                  .includes(
+                    query.toString().toLowerCase()
+                  ) &&
+                `${students[index]["classYear"]}`
+                  .toString()
+                  .toLowerCase()
+                  .includes(
+                    searchCriteria.toString().toLowerCase()
+                  )
+              ) {
+                return index;
+              }
+            } else if (query === "" && searchCriteria !== "") {
+              if (
+                `${students[index]["classYear"]}`
+                  .toString()
+                  .toLowerCase()
+                  .includes(
+                    searchCriteria.toString().toLowerCase()
+                  )
+              ) {
+                return index;
+              }
+            } else {
+              return index;
+            }
+          }).filter((index) => {
+            return index !== undefined;
+          }))
+  )} */}
+          {newIndexArray.map((index) => {
             return (
               <Card>
                 <ButtonBase
@@ -131,14 +268,14 @@ function Landing(props) {
                     <img
                       width="45px"
                       alt="Profile Picture"
-                      src={student.imageUrl}
+                      src={students[index].imageUrl}
                     />
                     <Typography variant="body2">
-                      {student.firstName + " " + student.lastName}
+                      {students[index].firstName + " " + students[index].lastName}
                     </Typography>
-                    <Typography variant="body2">{student.classYear}</Typography>
+                    <Typography variant="body2">{students[index].classYear}</Typography>
                     <Typography variant="body2">
-                      {student.majors.map((major) => major)}
+                      {students[index].majors.map((major) => major)}
                     </Typography>
                   </CardContent>
                 </ButtonBase>
@@ -147,7 +284,7 @@ function Landing(props) {
           })}
         </div>
       )}
-      {!searching && !query && (
+      {!searching && (
         <GridList cols={10} spacing={10} cellHeight="auto">
           {featured.map((student, index) => {
             return (
