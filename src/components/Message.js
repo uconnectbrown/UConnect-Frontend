@@ -69,6 +69,7 @@ function Message(props) {
           <Typography variant="body1">{studentName.split(" ")[0]}</Typography>
         </Grid>
       </Grid>
+
       {roomId && (
         <Chat
           studentName={studentName}

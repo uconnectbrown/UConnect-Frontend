@@ -108,6 +108,7 @@ function Messages() {
       </GridList>
 
       <Grid item xs={8} align="left">
+        {roomId}
         {roomId && (
           <Chat
             studentName={studentName}
