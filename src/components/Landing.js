@@ -54,7 +54,6 @@ function Landing(props) {
   const getStudents = () => {
     axios.get(`/all/${email}`).then((res) => {
       setStudents(res.data);
-      console.log(res.data)
     }).then(() => {
       const numStudents = students.length;
   let arr = [];
@@ -88,13 +87,24 @@ function Landing(props) {
   const handleFilter = (event) => {
     setSearching(true)
     setSearchCriteria(event.target.value)
-    // if (students === null) {
-    //   axios.get(`/all/${email}`).then((res) => {
-    //     console.log(res.data.filter((student) => student.classYear.toString().toLowerCase().includes(event.target.value.toString().toLowerCase())));
-    //     setStudents(res.data.filter((student) => student.classYear.toString().toLowerCase().includes(event.target.value.toString().toLowerCase())));
-    //   });
-    // }
   };
+
+  const handleSearch = (students, query, indexArray) => {
+    setNewIndexArray(indexArray.map((index) => {
+        if (
+            `${students[index]["firstName"]} ${students[index]["lastName"]}`
+              .toString()
+              .toLowerCase()
+              .includes(
+                query.toString().toLowerCase()
+              )
+          ) {
+            return index;
+          }
+      }).filter((index) => {
+        return index !== undefined;
+      }))
+    }
 
   return (
     <div>
@@ -112,13 +122,8 @@ function Landing(props) {
         onChange={(newValue) => setQuery(newValue)}
         onRequestSearch={() => {
           // makeSearch(query);
-          {query !== "" && (
-            setSearching(true)
-          )}
-          {query === "" && (
-            setSearching(false)
-          )}
-
+          handleSearch(students, query, indexArray)
+          setSearching(true)
         }}
       />
       <Grid container spacing={10}>
@@ -155,106 +160,12 @@ function Landing(props) {
             </Select>
           </FormControl>
         </Grid>
+        <Grid item>
+          <Button onClick={() => setSearching(false)}>Clear Search</Button>
+        </Grid>
       </Grid>
       {searching && (
         <div>
-          <Button onClick={() => setSearching(false)}>Stop Searching</Button>
-          {/* {newIndexArray === [] && (
-        setNewIndexArray(indexArray.map((index) => {
-            if (query !== "" && searchCriteria === "") {
-              if (
-                `${students[index]["firstName"]} ${students[index]["lastName"]}`
-                  .toString()
-                  .toLowerCase()
-                  .includes(
-                    query.toString().toLowerCase()
-                  )
-              ) {
-                return index;
-              }
-            } else if (query !== "" && searchCriteria !== "") {
-              if (
-                `${students[index]["firstName"]} ${students[index]["lastName"]}`
-                  .toString()
-                  .toLowerCase()
-                  .includes(
-                    query.toString().toLowerCase()
-                  ) &&
-                `${students[index]["classYear"]}`
-                  .toString()
-                  .toLowerCase()
-                  .includes(
-                    searchCriteria.toString().toLowerCase()
-                  )
-              ) {
-                return index;
-              }
-            } else if (query === "" && searchCriteria !== "") {
-              if (
-                `${students[index]["classYear"]}`
-                  .toString()
-                  .toLowerCase()
-                  .includes(
-                    searchCriteria.toString().toLowerCase()
-                  )
-              ) {
-                return index;
-              }
-            } else {
-              return index;
-            }
-          }).filter((index) => {
-            return index !== undefined;
-          }))
-  )}
-  {newIndexArray !== [] && (
-        setNewIndexArray(newIndexArray.map((index) => {
-            if (query !== "" && searchCriteria === "") {
-              if (
-                `${students[index]["firstName"]} ${students[index]["lastName"]}`
-                  .toString()
-                  .toLowerCase()
-                  .includes(
-                    query.toString().toLowerCase()
-                  )
-              ) {
-                return index;
-              }
-            } else if (query !== "" && searchCriteria !== "") {
-              if (
-                `${students[index]["firstName"]} ${students[index]["lastName"]}`
-                  .toString()
-                  .toLowerCase()
-                  .includes(
-                    query.toString().toLowerCase()
-                  ) &&
-                `${students[index]["classYear"]}`
-                  .toString()
-                  .toLowerCase()
-                  .includes(
-                    searchCriteria.toString().toLowerCase()
-                  )
-              ) {
-                return index;
-              }
-            } else if (query === "" && searchCriteria !== "") {
-              if (
-                `${students[index]["classYear"]}`
-                  .toString()
-                  .toLowerCase()
-                  .includes(
-                    searchCriteria.toString().toLowerCase()
-                  )
-              ) {
-                return index;
-              }
-            } else {
-              return index;
-            }
-          }).filter((index) => {
-            return index !== undefined;
-          }))
-  )} */}
           {newIndexArray.map((index) => {
             return (
               <Card>
