@@ -51,20 +51,25 @@ function Landing(props) {
       .catch((err) => console.log(err));
   };
 
-  const searchField = (years, majors) => {
+  const searchField = (years, majors_) => {
     axios
       .get(`/all/${email}`)
       .then((res) => {
         setStudents(
           res.data.filter(
             (student) =>
-              (years.includes(student.classYear) || years !== []) &&
-              (majors.includes(student.majors[0]) || majors !== [])
+              filterField(student.classYear, student.majors, years, majors_)
           )
         );
       })
       .catch((err) => console.log(err));
   };
+
+  const filterField = (classYear, majors, years, majors_) => {
+    const compare = (a1, a2) => a1.filter((v) => a2.includes(v)).length;
+    if (years.includes(classYear)) return true;
+    if (compare(majors, majors_) > 0) return true;
+  }
 
   const filterName = (fn, ln, query) => {
     fn = fn.toLowerCase().trim();
@@ -225,7 +230,7 @@ function Landing(props) {
           })}
         </div>
       )}
-      {!searching && !query && !classYears_ && (
+      {(!searching && query === "" && classYears_ === [] && majors_ === []) && (
         <GridList cols={10} spacing={10} cellHeight="auto">
           {featured.map((student, index) => {
             return (
