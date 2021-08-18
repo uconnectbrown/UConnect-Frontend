@@ -90,13 +90,13 @@ function Home() {
           >
             Messages
           </Button>
-          <Button
+          {/* <Button
             fullWidth
             variant="contained"
             onClick={() => setPage("Interests")}
           >
             Interests
-          </Button>
+          </Button> */}
           <Button
             fullWidth
             variant="contained"
@@ -123,6 +123,7 @@ function Home() {
                       onClick={() => {
                         setCode(course.code);
                         setPage("Course");
+                        setDropDown(!dropDown);
                       }}
                     >
                       {course.code}
