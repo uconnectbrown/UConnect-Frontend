@@ -69,7 +69,6 @@ function Student(props) {
     db.doc(`/profiles/${emailId}`)
       .get()
       .then((doc) => {
-        numRequests = doc.data().requests;
         senderInfo.name = doc.data().firstName + " " + doc.data().lastName;
         senderInfo.imageUrl = doc.data().imageUrl;
         senderInfo.classYear = doc.data().classYear;
