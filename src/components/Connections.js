@@ -29,6 +29,7 @@ function Connections() {
   const [messageOpen, setMessageOpen] = useState(false);
   const emailId = auth.currentUser.email.split("@")[0];
   const [studentInfo, setStudentInfo] = useState([]);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     getPending();
@@ -42,7 +43,6 @@ function Connections() {
     axios
       .get(`/pending/${emailId}`)
       .then((res) => {
-        console.log(res.data.pending);
         setPending(res.data.pending);
       })
       .catch((err) => console.log(err));
@@ -52,6 +52,7 @@ function Connections() {
     axios
       .get(`/connections/${emailId}`)
       .then((res) => {
+        console.log(res.data.connections)
         setConnections(res.data.connections);
       })
       .catch((err) => console.log(err));
@@ -78,6 +79,32 @@ function Connections() {
 
   const handleCloseMessage = () => {
     setMessageOpen(false);
+  };
+
+  const filterName = (name, query) => {
+    let fn = name.split(" ")[0].toLowerCase().trim();
+    let ln = name.split(" ")[1].toLowerCase().trim();
+    query = query.toLowerCase().trim();
+    if (fn.split(query)[0] === "") return true;
+    if (ln === query) return true;
+    if (query.split(" ").length === 2) {
+      let query1 = query.split(" ")[0];
+      let query2 = query.split(" ")[1];
+      if (fn.split(query1)[0] === "" && ln.split(query2)[0] === "") return true;
+    }
+  };
+
+  const searchName = (query) => {
+    axios
+      .get(`/connections/${emailId}`)
+      .then((res) => {
+        setConnections(
+          res.data.connections.filter((student) =>
+            filterName(student.name, query)
+          )
+        );
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -121,45 +148,16 @@ function Connections() {
           );
         })}
       </GridList>
+      <Typography>All Connections</Typography>
+      <SearchBar
+          value={query}
+          onChange={(newValue) => setQuery(newValue)}
+          onRequestSearch={() => {
+            searchName(query);
+          }}
+        />
       {connections && (
         <div>
-          All Connections
-          <SearchBar />
-          <Grid container spacing={10}>
-            <Grid item>
-              <FormControl style={{ minWidth: 120 }}>
-                <InputLabel>Class Year</InputLabel>
-                <Select>
-                  <MenuItem value="2022">2022</MenuItem>
-                  <MenuItem value="2023">2023</MenuItem>
-                  <MenuItem value="2024">2024</MenuItem>
-                  <MenuItem value="2025">2025</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item>
-              <FormControl style={{ minWidth: 120 }}>
-                <InputLabel>Interests</InputLabel>
-                <Select>
-                  <MenuItem value="2022">2022</MenuItem>
-                  <MenuItem value="2023">2023</MenuItem>
-                  <MenuItem value="2024">2024</MenuItem>
-                  <MenuItem value="2025">2025</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item>
-              <FormControl style={{ minWidth: 120 }}>
-                <InputLabel>Concentration</InputLabel>
-                <Select>
-                  <MenuItem value="2022">2022</MenuItem>
-                  <MenuItem value="2023">2023</MenuItem>
-                  <MenuItem value="2024">2024</MenuItem>
-                  <MenuItem value="2025">2025</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
           <GridList cols={5} spacing={10} cellHeight="auto">
             {connections.map((connection, index) => {
               return (
@@ -180,6 +178,7 @@ function Connections() {
                         <Typography variant="body2">
                           {connection.name}
                         </Typography>
+                        <Typography variant="body2">{connection.classYear}</Typography>
                       </CardContent>
                     </ButtonBase>
                   </Card>

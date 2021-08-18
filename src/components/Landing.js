@@ -39,10 +39,11 @@ function Landing(props) {
   const [majors_, setMajors] = useState([]);
   const [studentInfo, setStudentInfo] = useState([]);
   const [messageOpen, setMessageOpen] = useState(false);
+  const [clear, setClear] = useState(false);
 
   useEffect(() => {
     getFeatured();
-  }, []);
+  }, [clear]);
 
   const getFeatured = () => {
     axios
@@ -68,9 +69,15 @@ function Landing(props) {
 
   const filterField = (classYear, majors, years, majors_) => {
     const compare = (a1, a2) => a1.filter((v) => a2.includes(v)).length;
-    if (years.includes(classYear)) return true;
-    if (compare(majors, majors_) > 0) return true;
-  };
+    console.log(years, majors_)
+    if (years.length > 0 && majors_.length > 0) {
+      if (years.includes(classYear) && compare(majors, majors_) > 0) return true;
+    } else if (years.length > 0 && majors_.length === 0) {
+      if (years.includes(classYear)) return true;
+    } else if (years.length === 0 && majors_.length > 0) {
+      if (compare(majors, majors_) > 0) return true;
+    }
+  }
 
   const filterName = (fn, ln, query) => {
     fn = fn.toLowerCase().trim();
@@ -97,6 +104,14 @@ function Landing(props) {
       })
       .catch((err) => console.log(err));
   };
+
+  const canSearch = (query, classYears_, majors_) => {
+    if (searchMode) {
+      if (query !== "") return true;
+    } else {
+      if (classYears_.length > 0 || majors_.length > 0) return true;
+    }
+  }
 
   const handleOpenStudent = (index) => {
     setStudentId(students[index].email.split("@")[0]);
@@ -181,6 +196,7 @@ function Landing(props) {
           <Button
             variant="contained"
             color="secondary"
+            disabled={!canSearch(query, classYears_, majors_)}
             onClick={() => {
               if (searchMode) {
                 searchName(query);
@@ -202,6 +218,7 @@ function Landing(props) {
               setClassYears([]);
               setMajors([]);
               setQuery("");
+              setClear(!clear);
             }}
           >
             Clear Search
