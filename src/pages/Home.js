@@ -21,7 +21,7 @@ import Button from "@material-ui/core/Button";
 function Home() {
   const [page, setPage] = useState("Home");
   const [dropDown, setDropDown] = useState(false);
-  const [courses, setCourses] = useState(null);
+  const [courses, setCourses] = useState([]);
   const [requests, setRequests] = useState(null);
   const emailId = auth.currentUser.email.split("@")[0];
   const [code, setCode] = useState(null);
@@ -44,7 +44,8 @@ function Home() {
       .get()
       .then((doc) => {
         setRequests(doc.data().requests);
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const decRequests = () => {
@@ -56,7 +57,8 @@ function Home() {
       .get()
       .then((doc) => {
         setCourses(doc.data().courses);
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const getImageUrl = () => {
@@ -135,7 +137,7 @@ function Home() {
             </div>
           )}
 
-        <Notifications />
+          <Notifications />
         </Grid>
         <Grid item xs={9} align="left">
           {page === "Home" && (

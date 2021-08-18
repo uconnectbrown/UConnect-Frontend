@@ -66,7 +66,6 @@ function Student(props) {
 
   const sendRequest = () => {
     let senderInfo = {};
-    let numRequests;
     db.doc(`/profiles/${emailId}`)
       .get()
       .then((doc) => {
