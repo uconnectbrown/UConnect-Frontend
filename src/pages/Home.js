@@ -11,6 +11,7 @@ import Course from "../components/Course";
 import Notifications from "../components/Notifications";
 import Profile from "../components/Profile";
 import InterestFilter from "../components/InterestFilter";
+import Events from "../components/Events";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -134,13 +135,13 @@ function Home() {
             </div>
           )}
 
-          {page !== "Home" && <Notifications />}
+        <Notifications />
         </Grid>
         <Grid item xs={9} align="left">
           {page === "Home" && (
             <div>
               <Landing handleRequest={decRequests} requests={requests} />
-              <Notifications />
+              <Events />
             </div>
           )}
           {page === "Messages" && <Messages />}
