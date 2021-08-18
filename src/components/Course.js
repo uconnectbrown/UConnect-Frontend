@@ -5,6 +5,7 @@ import axios from "axios";
 
 // Components
 import Student from "./Student";
+import Message from "./Message";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -23,20 +24,21 @@ import Dialog from "@material-ui/core/Dialog";
 
 function Course(props) {
   const code = props.code;
-  const codeNS = code.replace(/\s/g, "");
+  const codeNS = props.code.replace(/\s/g, "");
   const email = auth.currentUser.email;
   const [students, setStudents] = useState([]);
   const [studentId, setStudentId] = useState("");
+  const [messageOpen, setMessageOpen] = useState(false);
+  const [studentInfo, setStudentInfo] = useState([]);
 
   useEffect(() => {
     getStudents();
-  }, []);
+  }, [props.code]);
 
   const getStudents = () => {
     axios
       .get(`/students/${email}/${codeNS}`)
       .then((res) => {
-        console.log(res.data);
         setStudents(res.data);
       })
       .catch((err) => console.log(err));
@@ -44,6 +46,15 @@ function Course(props) {
 
   const handleOpenStudent = (index) => {
     setStudentId(students[index].email.split("@")[0]);
+  };
+
+  const handleOpenMessage = (id, image, name) => {
+    setStudentInfo([id, image, name]);
+    setMessageOpen(true);
+  };
+
+  const handleCloseMessage = () => {
+    setMessageOpen(false);
   };
 
   const handleCloseStudent = () => {
@@ -57,6 +68,13 @@ function Course(props) {
           studentId={studentId}
           handleClose={handleCloseStudent}
           handleRequest={props.handleRequest}
+          handleOpenMessage={handleOpenMessage}
+        />
+      </Dialog>
+      <Dialog open={messageOpen && studentInfo}>
+        <Message
+          handleCloseMessage={handleCloseMessage}
+          studentInfo={studentInfo}
         />
       </Dialog>
       {code}

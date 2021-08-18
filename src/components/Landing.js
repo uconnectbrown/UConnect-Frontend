@@ -6,6 +6,7 @@ import Select from "react-select";
 
 // Components
 import Student from "./Student";
+import Message from "./Message";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -31,12 +32,13 @@ function Landing(props) {
   const [students, setStudents] = useState([]);
   const [searchMode, setSearchMode] = useState(false);
   const [query, setQuery] = useState("");
-  const [searching, setSearching] = useState(false);
   const [studentId, setStudentId] = useState(null);
   const emailId = auth.currentUser.email.split("@")[0];
   const email = auth.currentUser.email;
   const [classYears_, setClassYears] = useState([]);
   const [majors_, setMajors] = useState([]);
+  const [studentInfo, setStudentInfo] = useState([]);
+  const [messageOpen, setMessageOpen] = useState(false);
 
   useEffect(() => {
     getFeatured();
@@ -56,9 +58,8 @@ function Landing(props) {
       .get(`/all/${email}`)
       .then((res) => {
         setStudents(
-          res.data.filter(
-            (student) =>
-              filterField(student.classYear, student.majors, years, majors_)
+          res.data.filter((student) =>
+            filterField(student.classYear, student.majors, years, majors_)
           )
         );
       })
@@ -69,7 +70,7 @@ function Landing(props) {
     const compare = (a1, a2) => a1.filter((v) => a2.includes(v)).length;
     if (years.includes(classYear)) return true;
     if (compare(majors, majors_) > 0) return true;
-  }
+  };
 
   const filterName = (fn, ln, query) => {
     fn = fn.toLowerCase().trim();
@@ -109,6 +110,15 @@ function Landing(props) {
     setStudentId(null);
   };
 
+  const handleOpenMessage = (id, image, name) => {
+    setStudentInfo([id, image, name]);
+    setMessageOpen(true);
+  };
+
+  const handleCloseMessage = () => {
+    setMessageOpen(false);
+  };
+
   return (
     <div>
       <Dialog open={studentId}>
@@ -117,42 +127,55 @@ function Landing(props) {
           handleClose={handleCloseStudent}
           handleRequest={props.handleRequest}
           requests={props.requests}
+          handleOpenMessage={handleOpenMessage}
+        />
+      </Dialog>
+      <Dialog open={messageOpen && studentInfo}>
+        <Message
+          handleCloseMessage={handleCloseMessage}
+          studentInfo={studentInfo}
         />
       </Dialog>
       <Typography variant="h3">Connect</Typography>
-      {searchMode && (
-        <SearchBar
-          value={query}
-          onChange={(newValue) => setQuery(newValue)}
-          onRequestSearch={() => {
-            searchName(query);
-            setSearching(true);
-          }}
-        />
-      )}
+
       <Grid container spacing={10}>
-        <Grid item>
-          Class Year(s)
-          <Select
-            isMulti
-            name="classYears"
-            options={classYears}
-            onChange={(option) => {
-              setClassYears(option.map((option) => option.value));
-            }}
-          />
-        </Grid>
-        <Grid item>
-          Concentration(s)
-          <Select
-            isMulti
-            name="concentration"
-            options={majors}
-            onChange={(option) => {
-              setMajors(option.map((option) => option.value));
-            }}
-          />
-        </Grid>
+        {searchMode && (
+          <Grid item>
+            <SearchBar
+              value={query}
+              onChange={(newValue) => setQuery(newValue)}
+              onRequestSearch={() => {
+                searchName(query);
+              }}
+            />
+          </Grid>
+        )}
+        {!searchMode && (
+          <Grid item>
+            Class Year(s)
+            <Select
+              isMulti
+              name="classYears"
+              options={classYears}
+              onChange={(option) => {
+                setClassYears(option.map((option) => option.value));
+              }}
+            />
+          </Grid>
+        )}
+        {!searchMode && (
+          <Grid item>
+            Concentration(s)
+            <Select
+              isMulti
+              name="concentration"
+              options={majors}
+              onChange={(option) => {
+                setMajors(option.map((option) => option.value));
+              }}
+            />
+          </Grid>
+        )}
 
         <Grid item>
           <Button
@@ -164,21 +187,20 @@ function Landing(props) {
               } else {
                 searchField(classYears_, majors_);
               }
-              setSearching(true);
             }}
           >
             Search
           </Button>
-        </Grid>
-        <Grid item>
           <Button
             variant="contained"
-            disabled={!searching}
+            disabled={
+              query === "" && classYears_.length === 0 && majors_.length === 0
+            }
             color="primary"
             onClick={() => {
               setStudents([]);
               setClassYears([]);
-              setSearching(false);
+              setMajors([]);
               setQuery("");
             }}
           >
@@ -190,7 +212,12 @@ function Landing(props) {
             control={
               <Switch
                 checked={searchMode}
-                onChange={() => setSearchMode(!searchMode)}
+                onChange={() => {
+                  setSearchMode(!searchMode);
+                  setQuery("");
+                  setClassYears([]);
+                  setMajors([]);
+                }}
                 name="checkedB"
                 color="primary"
               />
@@ -199,7 +226,7 @@ function Landing(props) {
           />
         </Grid>
       </Grid>
-      {searching && (
+      {students && (
         <div>
           {students.map((student, index) => {
             return (
@@ -230,7 +257,7 @@ function Landing(props) {
           })}
         </div>
       )}
-      {(!searching && query === "" && classYears_ === [] && majors_ === []) && (
+      {query === "" && classYears_.length === 0 && majors_.length === 0 && (
         <GridList cols={10} spacing={10} cellHeight="auto">
           {featured.map((student, index) => {
             return (

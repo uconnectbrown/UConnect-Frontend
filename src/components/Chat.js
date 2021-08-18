@@ -11,18 +11,18 @@ function Chat(props) {
   const ownId = props.ownId;
   const ownImageUrl = props.ownImageUrl;
   const ownName = props.ownName;
-  const roomId = props.roomId;
+  const [roomId, setRoomId] = useState(props.roomId);
 
   useEffect(() => {
     db.collection("messages")
-      .doc(roomId)
+      .doc(props.roomId)
       .collection("chat")
       .orderBy("createdAt")
       .limit(50)
       .onSnapshot((snapshot) => {
         setMessages(snapshot.docs.map((doc) => doc.data()));
       });
-  }, []);
+  }, [props.roomId]);
 
   return (
     <div className="msgs">

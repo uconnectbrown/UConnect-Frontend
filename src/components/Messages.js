@@ -34,30 +34,25 @@ function Messages() {
     getMessages();
   }, []);
 
-  useEffect(() => {
-    getSenderInfo();
-  }, []);
-
   const getMessages = () => {
-    axios
-      .get(`/messages/${emailId}`)
-      .then((res) => {
-        setMessages(res.data);
-        setStudentId(res.data[0].recipientId);
-        setStudentImageUrl(res.data[0].recipientImage);
-        setStudentName(res.data[0].recipientName);
-      })
-      .catch((err) => console.error(err));
-  };
+    let promises = [
+      axios.get(`/messages/${emailId}`),
+      axios.get(`/senderInfo/${auth.currentUser.email}`),
+    ];
 
-  const getSenderInfo = () => {
-    axios
-      .get(`/senderInfo/${auth.currentUser.email}`)
+    Promise.all(promises)
       .then((res) => {
-        setOwnId(res.data.emailId);
-        setOwnImageUrl(res.data.imageUrl);
-        setOwnName(res.data.firstName + " " + res.data.lastName);
-        setRoomId(md5([res.data.emailId, studentId].sort().join(" ")));
+        setMessages(res[0].data);
+        setStudentName(res[0].data[0].recipientName);
+        setStudentImageUrl(res[0].data[0].studentImageUrl);
+        setStudentId(res[0].data[0].recipientName);
+        setOwnName(res[1].data.firstName + " " + res[1].data.lastName);
+        setOwnImageUrl(res[1].data.imageUrl);
+        setOwnId(res[1].data.emailId);
+        return [res[0].data[0].recipientId, res[1].data.emailId];
+      })
+      .then((alphaId) => {
+        setRoomId(md5(alphaId.sort().join(" ")));
       })
       .catch((err) => console.error(err));
   };
@@ -71,44 +66,42 @@ function Messages() {
   };
 
   return (
-    <Grid container spacing={1}>
-      <GridList cols={1} cellHeight="auto">
+    <Grid container spacing={2}>
+      <Grid item xs={3}>
         {messages.map((message, index) => {
           return (
-            <GridListTile item component="Card" sm>
-              <Card
-                align="center"
-                style={{
-                  backgroundColor: index === selectedM ? "gray" : "white",
+            <Card
+              align="center"
+              style={{
+                backgroundColor: index === selectedM ? "gray" : "white",
+                height: "90px",
+              }}
+            >
+              <ButtonBase
+                size="large"
+                color="primary"
+                style={{ width: "100%" }}
+                onClick={() => {
+                  setMessage(index);
                 }}
               >
-                <ButtonBase
-                  size="large"
-                  color="primary"
-                  style={{ width: "100%" }}
-                  onClick={() => {
-                    setMessage(index);
-                  }}
-                >
-                  <CardContent>
-                    <img
-                      width="50px"
-                      alt="Profile Picture"
-                      src={message.recipientImage}
-                    />
-                    <Typography variant="body2">
-                      {message.recipientName}
-                    </Typography>
-                  </CardContent>
-                </ButtonBase>
-              </Card>
-            </GridListTile>
+                <CardContent>
+                  <img
+                    height="50px"
+                    alt="Profile Picture"
+                    src={message.recipientImage}
+                  />
+                  <Typography variant="body2">
+                    {message.recipientName}
+                  </Typography>
+                </CardContent>
+              </ButtonBase>
+            </Card>
           );
         })}
-      </GridList>
+      </Grid>
 
       <Grid item xs={8} align="left">
-        {roomId}
         {roomId && (
           <Chat
             studentName={studentName}
