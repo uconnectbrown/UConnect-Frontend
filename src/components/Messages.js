@@ -42,10 +42,11 @@ function Messages() {
 
     Promise.all(promises)
       .then((res) => {
+        console.log(res);
         setMessages(res[0].data);
         setStudentName(res[0].data[0].recipientName);
-        setStudentImageUrl(res[0].data[0].studentImageUrl);
-        setStudentId(res[0].data[0].recipientName);
+        setStudentImageUrl(res[0].data[0].recipientImage);
+        setStudentId(res[0].data[0].recipientId);
         setOwnName(res[1].data.firstName + " " + res[1].data.lastName);
         setOwnImageUrl(res[1].data.imageUrl);
         setOwnId(res[1].data.emailId);

@@ -31,7 +31,7 @@ function Landing(props) {
   const emailId = auth.currentUser.email.split("@")[0];
   const email = auth.currentUser.email;
   const [featured, setFeatured] = useState([]);
-  const [students, setStudents] = useState([]);
+  const [students, setStudents] = useState(null);
   const [searchMode, setSearchMode] = useState(false);
   const [query, setQuery] = useState("");
   const [studentId, setStudentId] = useState("");
@@ -64,6 +64,9 @@ function Landing(props) {
           )
         );
       })
+      .then(() => {
+        setSearching(true);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -76,6 +79,9 @@ function Landing(props) {
             filterName(student.firstName, student.lastName, query)
           )
         );
+      })
+      .then(() => {
+        setSearching(true);
       })
       .catch((err) => console.log(err));
   };
@@ -157,7 +163,6 @@ function Landing(props) {
               onChange={(newValue) => setQuery(newValue)}
               onRequestSearch={() => {
                 searchName(query);
-                setSearching(true);
               }}
             />
           </Grid>
@@ -166,12 +171,14 @@ function Landing(props) {
           <Grid item>
             Class Year(s)
             <Select
+              closeMenuOnSelect={
+                classYears_.length === classYears.length - 1 ? true : false
+              }
               isMulti
               name="classYears"
+              value={classYears_}
               options={classYears}
-              onChange={(option) => {
-                setClassYears(option.map((option) => option.value));
-              }}
+              onChange={(options) => setClassYears(options)}
             />
           </Grid>
         )}
@@ -179,12 +186,14 @@ function Landing(props) {
           <Grid item>
             Concentration(s)
             <Select
+              closeMenuOnSelect={
+                majors_.length === majors.length - 1 ? true : false
+              }
               isMulti
               name="concentration"
+              value={majors_}
               options={majors}
-              onChange={(option) => {
-                setMajors(option.map((option) => option.value));
-              }}
+              onChange={(options) => setMajors(options)}
             />
           </Grid>
         )}
@@ -196,30 +205,33 @@ function Landing(props) {
               color="secondary"
               disabled={!canSearch(classYears_, majors_)}
               onClick={() => {
-                searchField(classYears_, majors_);
-                setSearching(true);
+                setSearching(false);
+                searchField(
+                  classYears_.map((option) => option.value),
+                  majors_.map((option) => option.value)
+                );
               }}
             >
               Search
             </Button>
-            </Grid>
-            )}
-            <Grid item>
-            <Button
-              variant="contained"
-              disabled={!searching}
-              color="primary"
-              onClick={() => {
-                setStudents([]);
-                setClassYears([]);
-                setMajors([]);
-                setQuery("");
-                setSearching(false);
-              }}
-            >
-              Clear Search
-            </Button>
           </Grid>
+        )}
+        <Grid item>
+          <Button
+            variant="contained"
+            disabled={!searching}
+            color="primary"
+            onClick={() => {
+              setStudents([]);
+              setClassYears([]);
+              setMajors([]);
+              setQuery("");
+              setSearching(false);
+            }}
+          >
+            Clear Search
+          </Button>
+        </Grid>
         <Grid item>
           <FormControlLabel
             control={

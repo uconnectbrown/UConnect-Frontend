@@ -33,17 +33,16 @@ function Course(props) {
   const code = props.code;
   const codeNS = props.code.replace(/\s/g, "");
   const email = auth.currentUser.email;
-  const [students, setStudents] = useState([]);
+  const [students, setStudents] = useState(null);
   const [studentId, setStudentId] = useState("");
   const [messageOpen, setMessageOpen] = useState(false);
   const [studentInfo, setStudentInfo] = useState([]);
-
   const [searchMode, setSearchMode] = useState(false);
   const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
   const [classYears_, setClassYears] = useState([]);
   const [majors_, setMajors] = useState([]);
-  const [clear, setClear] = useState(false)
+  const [clear, setClear] = useState(false);
 
   useEffect(() => {
     getStudents();
@@ -81,33 +80,36 @@ function Course(props) {
     } else {
       if (classYears_.length > 0 || majors_.length > 0) return true;
     }
-  }
+  };
 
   const searchField = (years, majors_) => {
     axios
       .get(`/students/${email}/${codeNS}`)
       .then((res) => {
         setStudents(
-          res.data.filter(
-            (student) =>
-              filterField(student.classYear, student.majors, years, majors_)
+          res.data.filter((student) =>
+            filterField(student.classYear, student.majors, years, majors_)
           )
         );
+      })
+      .then(() => {
+        setSearching(true);
       })
       .catch((err) => console.log(err));
   };
 
   const filterField = (classYear, majors, years, majors_) => {
     const compare = (a1, a2) => a1.filter((v) => a2.includes(v)).length;
-    console.log(years, majors_)
+    console.log(years, majors_);
     if (years.length > 0 && majors_.length > 0) {
-      if (years.includes(classYear) && compare(majors, majors_) > 0) return true;
+      if (years.includes(classYear) && compare(majors, majors_) > 0)
+        return true;
     } else if (years.length > 0 && majors_.length === 0) {
       if (years.includes(classYear)) return true;
     } else if (years.length === 0 && majors_.length > 0) {
       if (compare(majors, majors_) > 0) return true;
     }
-  }
+  };
 
   const filterName = (fn, ln, query) => {
     fn = fn.toLowerCase().trim();
@@ -131,6 +133,9 @@ function Course(props) {
             filterName(student.firstName, student.lastName, query)
           )
         );
+      })
+      .then(() => {
+        setSearching(true);
       })
       .catch((err) => console.log(err));
   };
@@ -164,49 +169,52 @@ function Course(props) {
       )}
       <Grid container spacing={10}>
         {!searchMode && (
-        <Grid item>
-          Class Year(s)
-          <Select
-            isMulti
-            name="classYears"
-            options={classYears}
-            onChange={(option) => {
-              setClassYears(option.map((option) => option.value));
-            }}
-          />
-        </Grid>
-        )}
-        {!searchMode && (
-        <Grid item>
-          Concentration(s)
-          <Select
-            isMulti
-            name="concentration"
-            options={majors}
-            onChange={(option) => {
-              setMajors(option.map((option) => option.value));
-            }}
-          />
-        </Grid>
-        )}
-        {!searchMode && (
-        <Grid item>
-          <Button
-            variant="contained"
-            color="secondary"
-            disabled={!canSearch(query, classYears_, majors_)}
-            onClick={() => {
-              if (searchMode) {
-                searchName(query);
-              } else {
-                searchField(classYears_, majors_);
+          <Grid item>
+            Class Year(s)
+            <Select
+              closeMenuOnSelect={
+                classYears_.length === classYears.length - 1 ? true : false
               }
-              setSearching(true);
-            }}
-          >
-            Search
-          </Button>
-        </Grid>
+              isMulti
+              name="classYears"
+              options={classYears}
+              value={classYears_}
+              onChange={(options) => setClassYears(options)}
+            />
+          </Grid>
+        )}
+        {!searchMode && (
+          <Grid item>
+            Concentration(s)
+            <Select
+              closeMenuOnSelect={
+                majors_.length === majors.length - 1 ? true : false
+              }
+              isMulti
+              name="concentration"
+              options={majors}
+              value={majors_}
+              onChange={(options) => setMajors(options)}
+            />
+          </Grid>
+        )}
+        {!searchMode && (
+          <Grid item>
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={!canSearch(query, classYears_, majors_)}
+              onClick={() => {
+                setSearching(false);
+                searchField(
+                  classYears_.map((option) => option.value),
+                  majors_.map((option) => option.value)
+                );
+              }}
+            >
+              Search
+            </Button>
+          </Grid>
         )}
         <Grid item>
           <Button
@@ -216,6 +224,7 @@ function Course(props) {
             onClick={() => {
               setStudents([]);
               setClassYears([]);
+              setMajors([]);
               setSearching(false);
               setQuery("");
               setClear(!clear);
@@ -238,37 +247,41 @@ function Course(props) {
           />
         </Grid>
       </Grid>
-      <GridList cols={5} spacing={10} cellHeight="auto">
-        {students.map((student, index) => {
-          return (
-            <GridListTile item component="Card" sm>
-              <Card align="center">
-                <ButtonBase
-                  size="large"
-                  color="primary"
-                  onClick={() => handleOpenStudent(index)}
-                  style={{ width: "100%" }}
-                >
-                  <CardContent>
-                    <img
-                      width="50px"
-                      alt="Profile Picture"
-                      src={student.imageUrl}
-                    />
-                    <Typography variant="body2">
-                      {student.firstName + " " + student.lastName}
-                    </Typography>
-                    <Typography variant="body2">{student.classYear}</Typography>
-                    <Typography variant="body2">
-                      {student.majors.map((major) => major)}
-                    </Typography>
-                  </CardContent>
-                </ButtonBase>
-              </Card>
-            </GridListTile>
-          );
-        })}
-      </GridList>
+      {students && (
+        <GridList cols={5} spacing={10} cellHeight="auto">
+          {students.map((student, index) => {
+            return (
+              <GridListTile item component="Card" sm>
+                <Card align="center">
+                  <ButtonBase
+                    size="large"
+                    color="primary"
+                    onClick={() => handleOpenStudent(index)}
+                    style={{ width: "100%" }}
+                  >
+                    <CardContent>
+                      <img
+                        width="50px"
+                        alt="Profile Picture"
+                        src={student.imageUrl}
+                      />
+                      <Typography variant="body2">
+                        {student.firstName + " " + student.lastName}
+                      </Typography>
+                      <Typography variant="body2">
+                        {student.classYear}
+                      </Typography>
+                      <Typography variant="body2">
+                        {student.majors.map((major) => major)}
+                      </Typography>
+                    </CardContent>
+                  </ButtonBase>
+                </Card>
+              </GridListTile>
+            );
+          })}
+        </GridList>
+      )}
     </div>
   );
 }
