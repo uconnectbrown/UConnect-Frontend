@@ -39,6 +39,7 @@ function Landing(props) {
   const [majors_, setMajors] = useState([]);
   const [studentInfo, setStudentInfo] = useState([]);
   const [messageOpen, setMessageOpen] = useState(false);
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     getFeatured();
@@ -156,6 +157,7 @@ function Landing(props) {
               onChange={(newValue) => setQuery(newValue)}
               onRequestSearch={() => {
                 searchName(query);
+                setSearching(true);
               }}
             />
           </Grid>
@@ -195,24 +197,29 @@ function Landing(props) {
               disabled={!canSearch(classYears_, majors_)}
               onClick={() => {
                 searchField(classYears_, majors_);
+                setSearching(true);
               }}
             >
               Search
             </Button>
+            </Grid>
+            )}
+            <Grid item>
             <Button
               variant="contained"
-              disabled={classYears_.length === 0 && majors_.length === 0}
+              disabled={!searching}
               color="primary"
               onClick={() => {
                 setStudents([]);
                 setClassYears([]);
                 setMajors([]);
+                setQuery("");
+                setSearching(false);
               }}
             >
               Clear Search
             </Button>
           </Grid>
-        )}
         <Grid item>
           <FormControlLabel
             control={
@@ -263,7 +270,7 @@ function Landing(props) {
           })}
         </div>
       )}
-      {query === "" && classYears_.length === 0 && majors_.length === 0 && (
+      {!searching && (
         <GridList cols={10} spacing={10} cellHeight="auto">
           {featured.map((student, index) => {
             return (

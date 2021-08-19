@@ -163,6 +163,7 @@ function Course(props) {
         />
       )}
       <Grid container spacing={10}>
+        {!searchMode && (
         <Grid item>
           Class Year(s)
           <Select
@@ -174,6 +175,8 @@ function Course(props) {
             }}
           />
         </Grid>
+        )}
+        {!searchMode && (
         <Grid item>
           Concentration(s)
           <Select
@@ -185,7 +188,8 @@ function Course(props) {
             }}
           />
         </Grid>
-
+        )}
+        {!searchMode && (
         <Grid item>
           <Button
             variant="contained"
@@ -203,6 +207,7 @@ function Course(props) {
             Search
           </Button>
         </Grid>
+        )}
         <Grid item>
           <Button
             variant="contained"
