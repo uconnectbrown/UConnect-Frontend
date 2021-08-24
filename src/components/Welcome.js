@@ -15,10 +15,10 @@ import SignOut from "./SignOut";
 function Welcome() {
   return (
     <Grid container align="center" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-      <Grid item xs={10} md={4}>
+      <Grid item xs={10} md={2}>
         <Card raised>
           <CardContent>
-            <Typography variant="h3">Welcome to UConnect!</Typography>
+            <Typography variant="h2">UConnect</Typography>
             <br />
             <SignIn />
           </CardContent>

@@ -1,20 +1,37 @@
 h4 {
+    text-align: left;
+    font-family: Avenir Book;
+    
+}
+
+h3{
     text-align: center;
+    font-size:40px;
+    font-family: Avenir Heavy;
+}
+
+
+h2{
+    text-align: left;
+    font-size:20px;
+    font-family: Avenir Heavy;
 }
 
 .profile-img {
-    width: 150px;
-    height: 150px;
+    width: 450px;
+    height: 450px;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: 20%;
 }
 
 .profile-card {
     box-shadow: 10px 10px 8px 8px #dbdbdb;
-    border-radius: 1rem;
-    margin: 1rem;
-    padding: 2rem;
+    border-radius: 5rem;
+    margin: 6rem;
+    padding: 1rem;
+    height: 1500px;
     display: flex;
+
 }
 
 .column-1 {
@@ -27,4 +44,12 @@ h4 {
 
 .column-2 {
     width: 70%;
+}
+
+.section-container {
+    padding-left:10rem;
+    padding-right:10rem;
+    padding: bottom 2rem;
+    height: 25%;
+    align-items: center;
 }

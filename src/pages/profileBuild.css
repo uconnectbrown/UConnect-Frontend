@@ -4,8 +4,9 @@ h2 {
 }
 
 p {
-    font-size: 1rem;
+    font-size: 4rem;
     margin-left: 0;
+    font-family: Avenir Heavy;
 }
 
 .section-container {

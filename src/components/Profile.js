@@ -87,18 +87,37 @@ function Profile() {
       {profile && (
         <div className="profile-card">
           <div className="column-1">
-            <img alt="Profile" src={profile.imageUrl} className="profile-img"/>
-            <p>{profile.firstName} {profile.lastName}</p>
+            <div className="section-container">
+              <img alt="Profile" src={profile.imageUrl} className="profile-img"/>
+              <p><center>{profile.firstName} {profile.lastName}</center></p>
+            </div>
+            <div className="section-container">
+              <h3><center>City, Country</center></h3>
+              <h3><center>Preferred Pronouns</center></h3>
+              <h3><center>Class Year</center></h3>
+              <h3><center>Major</center></h3>
+            </div>
+            <div className="section-container">
+            <h4>bio:</h4>
+            <h2>Groups:</h2>
+            <h2>Varsity Sports:</h2>
+            <h2>GreekLife:</h2>
+            </div> 
+            <div className="section-container">
+            </div> 
           </div>
           <div className="column-2">
             <div className="section-container">
-              <h4>Interests</h4>
+              <h3>Courses</h3>
             </div>
             <div className="section-container">
-              <h4>Additional Info</h4>
+              <h3>Interests</h3>
             </div>
             <div className="section-container">
-              <h4>Favourites</h4>
+              <h3>Additional Info</h3>
+            </div>
+            <div className="section-container">
+              <h3>Favourites</h3>
             </div>
           </div>
         </div>
