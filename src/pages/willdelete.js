@@ -1,10 +1,11 @@
 // Setup
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { db, auth } from "../firebase";
 
 // Components
 import NavBar from "../components/NavBar";
-import Landing from "../components/Landing";
+import Landing from "../components/Home";
 import Connections from "../components/Connections";
 import Messages from "../components/Messages";
 import Course from "../components/Course";
@@ -27,49 +28,6 @@ function Home() {
   const [code, setCode] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
 
-  useEffect(() => {
-    getRequests();
-  }, []);
-
-  useEffect(() => {
-    getCourses();
-  }, []);
-
-  useEffect(() => {
-    getImageUrl();
-  }, []);
-
-  const getRequests = () => {
-    db.doc(`/profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        setRequests(doc.data().requests);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const decRequests = () => {
-    setRequests(requests - 1);
-  };
-
-  const getCourses = () => {
-    db.doc(`/profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        setCourses(doc.data().courses);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const getImageUrl = () => {
-    db.doc(`/profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        setImageUrl(doc.data().imageUrl);
-      })
-      .catch((err) => console.log(err));
-  };
-
   const handleProfile = () => {
     setPage("Profile");
   };
@@ -86,13 +44,16 @@ function Home() {
           <Button fullWidth variant="contained" onClick={() => setPage("Home")}>
             Home
           </Button>
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={() => setPage("Messages")}
-          >
-            Messages
-          </Button>
+          <Link to="/messages">
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={() => setPage("Messages")}
+            >
+              Messages
+            </Button>
+          </Link>
+
           {/* <Button
             fullWidth
             variant="contained"
@@ -140,7 +101,7 @@ function Home() {
           <Notifications />
         </Grid>
         <Grid item xs={9} align="left">
-          {page === "Home" && (
+          {/* {page === "Home" && (
             <div>
               <Landing handleRequest={decRequests} requests={requests} />
               <Events />
@@ -152,7 +113,7 @@ function Home() {
           {page === "Course" && code && (
             <Course code={code} handleRequest={decRequests} />
           )}
-          {page === "Profile" && <Profile />}
+          {page === "Profile" && <Profile />} */}
         </Grid>
       </Grid>
     </div>

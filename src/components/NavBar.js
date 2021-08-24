@@ -1,6 +1,7 @@
 // Setup
 import React, { useState, useEffect } from "react";
 import { db, auth } from "../firebase";
+import { Link } from "react-router-dom";
 
 // MUI Stuff
 import AppBar from "@material-ui/core/AppBar";
@@ -15,19 +16,18 @@ function NavBar(props) {
   {
     return (
       <AppBar color="secondary">
-        <Toolbar className="nav-container">
+        <Toolbar>
           Requests: {props.requests}
           <SignOut style={{ position: "absolute", right: "10%" }} />
-          <Button
-            style={{ position: "absolute", right: "15%" }}
-            onClick={props.handleProfile}
-          >
-            <img
-              alt="imageUrl"
-              src={props.imageUrl}
-              style={{ width: "50px" }}
-            />
-          </Button>
+          <Link to="/profile">
+            <Button>
+              <img
+                alt="imageUrl"
+                src={props.imageUrl}
+                style={{ width: "50px" }}
+              />
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
     );
