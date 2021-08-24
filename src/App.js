@@ -18,6 +18,8 @@ import profileBuild from "./pages/profileBuild";
 import Home from "./pages/Home";
 
 // Styling
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const theme = createTheme(themeFile);
 
 // Body
@@ -28,7 +30,7 @@ function App() {
       <div className="App">
         {user ? (
           <Router>
-            <div className="container">
+            <div className="app-container">
               <Switch>
                 <Route exact path="/" component={Welcome} />
                 <Route exact path="/home" component={Home} />

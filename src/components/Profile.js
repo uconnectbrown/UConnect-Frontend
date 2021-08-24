@@ -53,7 +53,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 
-// Styles
+import { Container, Row, Col } from "react-bootstrap";
 import "./Profile.css";
 
 // Body
@@ -83,27 +83,27 @@ function Profile() {
   };
 
   return (
-    <div>
+    <Container className="px-5 py-3">
       {profile && (
-        <div className="profile-card">
-          <div className="column-1">
+        <Row className="profile-card">
+          <Col sm={5}>
             <img alt="Profile" src={profile.imageUrl} className="profile-img"/>
             <p>{profile.firstName} {profile.lastName}</p>
-          </div>
-          <div className="column-2">
-            <div className="section-container">
+          </Col>
+          <Col sm={7}>
+            <Row className="section-container">
               <h4>Interests</h4>
-            </div>
-            <div className="section-container">
+            </Row>
+            <Row className="section-container">
               <h4>Additional Info</h4>
-            </div>
-            <div className="section-container">
+            </Row>
+            <Row className="section-container">
               <h4>Favourites</h4>
-            </div>
-          </div>
-        </div>
+            </Row>
+          </Col>
+        </Row>
       )}
-    </div>
+    </Container>
   );
 }
 

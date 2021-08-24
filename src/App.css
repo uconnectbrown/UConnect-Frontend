@@ -4,7 +4,7 @@ body {
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
 }
-.container {
+.app-container {
   margin-top: 70px;
 }
 .nav-container {
