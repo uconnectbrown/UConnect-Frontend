@@ -18,6 +18,8 @@ import profileBuild from "./pages/profileBuild";
 import Home from "./pages/Home";
 
 // Styling
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const theme = createTheme(themeFile);
 
 // Body
