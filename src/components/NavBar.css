@@ -1,4 +1,24 @@
-.nav-container {
-    width: 100%;
-    padding-left: 5% !important;
+button {
+    border-width: 0;
+    background-color: transparent;
+}
+
+.top-bar {
+    background-color: #f0f0f0 !important;
+}
+
+.nav-profile-img {
+    width: 40px;
+    border-radius: 50%;
+    margin: 0.5rem;
+}
+
+.requests-tracker {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: white;
+    border-radius: 20px;
+    margin-right: 2rem;
 }

@@ -1,37 +1,54 @@
-// Setup
-import React, { useState, useEffect } from "react";
-import { db, auth } from "../firebase";
+import React from "react";
 
-// MUI Stuff
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import SignOut from "./SignOut.js";
-import Button from "@material-ui/core/Button";
+import { Navbar, Container } from "react-bootstrap";
+import { faBullseye } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-// Styles
 import "./NavBar.css";
 
 function NavBar(props) {
   {
     return (
-      <AppBar color="secondary">
-        <Toolbar className="nav-container">
-          Requests: {props.requests}
-          <SignOut style={{ position: "absolute", right: "10%" }} />
-          <Button
-            style={{ position: "absolute", right: "15%" }}
-            onClick={props.handleProfile}
-          >
-            <img
-              alt="imageUrl"
-              src={props.imageUrl}
-              style={{ width: "50px" }}
-            />
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <Navbar variant="light" className="top-bar">
+        <Container>
+          <Navbar.Brand>
+            <div className="d-inline-block m-2">
+              <FontAwesomeIcon icon={faBullseye} size="lg"/>
+              {/* <img alt="UConnect Logo" src={require("../assets/Logo.png")}/> */}
+            </div>
+            <h3 className="d-inline-block align-middle">UConnect</h3>
+          </Navbar.Brand>
+          <div>
+            <button onClick={props.handleProfile} className="requests-tracker">
+              <div style={{ fontSize: 14}}>
+                Requests: {props.requests}
+              </div>
+            </button>
+            <button onClick={props.handleProfile}>
+              <img alt="Profile Picture" src={props.imageUrl} className="nav-profile-img"/>
+            </button>
+          </div>
+        </Container>
+      </Navbar>
     );
   }
 }
 
 export default NavBar;
+
+      // <AppBar color="secondary">
+      //   <Toolbar className="nav-container">
+      //     Requests: {props.requests}
+      //     <SignOut style={{ position: "absolute", right: "10%" }} />
+      //     <Button
+      //       style={{ position: "absolute", right: "15%" }}
+      //       onClick={props.handleProfile}
+      //     >
+            // <img
+            //   alt="imageUrl"
+            //   src={props.imageUrl}
+            //   style={{ width: "50px" }}
+            // />
+      //     </Button>
+      //   </Toolbar>
+      // </AppBar>

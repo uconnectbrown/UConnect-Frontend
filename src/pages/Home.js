@@ -76,102 +76,70 @@ function Home() {
   };
 
   return (
-    <Container>
+    <>
       <NavBar requests={requests} imageUrl={imageUrl} handleProfile={handleProfile}/>
-      <Row className='px-3 py-4'>
-        <Col xs={2}>  
-          <Nav defaultActiveKey='/home' className='flex-column'>
-            <Button variant="outline-light" className='nav-button' onClick={() => setPage("Home")}>
-              <FontAwesomeIcon icon={faHome} style={{ width: '100%'}}/>
-              Home
-            </Button>
-            <Button variant="outline-light" className='nav-button' onClick={() => setPage("Messages")}>
-              <FontAwesomeIcon icon={faCommentAlt} style={{ width: '100%'}}/>
-              Messages
-            </Button>
-            <Button variant="outline-light" className='nav-button' onClick={() => setPage("Connections")}>
-              <FontAwesomeIcon icon={faUserFriends} style={{ width: '100%'}}/> 
-              Connections
-            </Button>
-            <div 
-              onMouseEnter={() => setshowDropdown(true)} 
-              onMouseLeave={() => setshowDropdown(false)}
-            >
-              <Button variant="outline-light" className='nav-button dropdown' >
-                <FontAwesomeIcon icon={faDesktop} style={{ width: '100%'}}/> 
-                Courses
-              {showDropdown &&
-                <ButtonGroup vertical style={{ width: '100%'}}> 
-                  {courses.map((course) => {
-                    if (!course.code) return null
-                    return <Button variant="outline-light" className='nav-button'
-                      onClick={() => {
-                        setCode(course.code);
-                        setPage("Course");
-                        // setDropDown(!dropDown);
-                      }}>
-                      {course.code}
-                    </Button>
-                  })}
-                </ButtonGroup>
-              }
+      <Container>
+        <Row className='px-3 py-4'>
+          <Col xs={2}>  
+            <Nav defaultActiveKey='/home' className='flex-column'>
+              <Button variant="outline-light" className='nav-button' onClick={() => setPage("Home")}>
+                <FontAwesomeIcon icon={faHome} style={{ width: '100%'}}/>
+                Home
               </Button>
-            </div>
-          </Nav>
-          {/* <Notifications/> */}
-        </Col>
-        <Col xs={10}>
-          {/* {page === "Home" && (
-            <div>
-              <Landing handleRequest={decRequests} requests={requests} />
-              <Events />
-            </div>
-          )}
-          {page === "Messages" && <Messages />}
-          {page === "Interests" && <InterestFilter />}
-          {page === "Connections" && <Connections />}
-          {page === "Course" && code && (
-            <Course code={code} handleRequest={decRequests} />
-          )}
-          {page === "Profile" && <Profile />} */}
-        </Col>
-      </Row>
-    </Container>
+              <Button variant="outline-light" className='nav-button' onClick={() => setPage("Messages")}>
+                <FontAwesomeIcon icon={faCommentAlt} style={{ width: '100%'}}/>
+                Messages
+              </Button>
+              <Button variant="outline-light" className='nav-button' onClick={() => setPage("Connections")}>
+                <FontAwesomeIcon icon={faUserFriends} style={{ width: '100%'}}/> 
+                Connections
+              </Button>
+              <div 
+                onMouseEnter={() => setshowDropdown(true)} 
+                onMouseLeave={() => setshowDropdown(false)}
+              >
+                <Button variant="outline-light" className='nav-button dropdown' >
+                  <FontAwesomeIcon icon={faDesktop} style={{ width: '100%'}}/> 
+                  Courses
+                {showDropdown &&
+                  <ButtonGroup vertical style={{ width: '100%'}}> 
+                    {courses.map((course) => {
+                      if (!course.code) return null
+                      return <Button variant="outline-light" className='nav-button'
+                        onClick={() => {
+                          setCode(course.code);
+                          setPage("Course");
+                          // setDropDown(!dropDown);
+                        }}>
+                        {course.code}
+                      </Button>
+                    })}
+                  </ButtonGroup>
+                }
+                </Button>
+              </div>
+            </Nav>
+            {/* <Notifications/> */}
+          </Col>
+          <Col xs={10}>
+            {/* {page === "Home" && (
+              <div>
+                <Landing handleRequest={decRequests} requests={requests} />
+                <Events />
+              </div>
+            )}
+            {page === "Messages" && <Messages />}
+            {page === "Interests" && <InterestFilter />}
+            {page === "Connections" && <Connections />}
+            {page === "Course" && code && (
+              <Course code={code} handleRequest={decRequests} />
+            )}
+            {page === "Profile" && <Profile />} */}
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 
 export default Home;
-
-    // <div align='center'>
-    //       <Button
-    //         fullWidth
-    //         variant="contained"
-    //         onClick={() => setDropDown(!dropDown)}
-    //       >
-    //         Courses
-    //       </Button>
-
-    //       {courses && dropDown && (
-    //         <div>
-    //           {courses.map((course) => {
-    //             if (course.code) {
-    //               return (
-    //                 <Button
-    //                   fullWidth
-    //                   variant="contained"
-    //                   onClick={() => {
-                        // setCode(course.code);
-                        // setPage("Course");
-                        // setDropDown(!dropDown);
-    //                   }}
-    //                 >
-    //                   {course.code}
-    //                 </Button>
-    //               );
-    //             }
-    //           })}
-    //         </div>
-    //       )}
-
-    //       <Notifications />
-    //     </Grid>

@@ -30,21 +30,17 @@ function App() {
       <div className="App">
         {user ? (
           <Router>
-            <div className="container">
-              <Switch>
-                <Route exact path="/" component={Welcome} />
-                <Route exact path="/home" component={Home} />
-                <Route exact path="/profileBuild" component={profileBuild} />
-              </Switch>
-            </div>
+            <Switch>
+              <Route exact path="/" component={Welcome} />
+              <Route exact path="/home" component={Home} />
+              <Route exact path="/profileBuild" component={profileBuild} />
+            </Switch>
           </Router>
         ) : (
           <Router>
-            <div className="container">
               <Switch>
                 <Route exact path="/" component={Welcome} />
               </Switch>
-            </div>
           </Router>
         )}
       </div>
