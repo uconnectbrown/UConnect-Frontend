@@ -26,10 +26,15 @@ h2{
 
 .profile-card {
     box-shadow: 10px 10px 8px 8px #dbdbdb;
+<<<<<<< HEAD
     border-radius: 5rem;
     margin: 6rem;
     padding: 1rem;
     height: 1500px;
+=======
+    border-radius: 1rem;
+    padding: 2rem;
+>>>>>>> 07b3ceda97cadb47400714a93c9e226ba739bab7
     display: flex;
 
 }
