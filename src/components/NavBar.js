@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { Navbar, Container } from "react-bootstrap";
 import { faBullseye } from "@fortawesome/free-solid-svg-icons"
@@ -24,9 +25,11 @@ function NavBar(props) {
                 Requests: {props.requests}
               </div>
             </button>
-            <button onClick={props.handleProfile}>
-              <img alt="Profile Picture" src={props.imageUrl} className="nav-profile-img"/>
-            </button>
+            <Link to="/profile">
+              <button>
+                <img alt="Profile Picture" src={props.imageUrl} className="nav-profile-img"/>
+              </button>
+            </Link>
           </div>
         </Container>
       </Navbar>

@@ -10,10 +10,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 // Pages
 import profileBuild from "./pages/profileBuild";
 
-// Styling
+import { Container, Row, Col } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const theme = createTheme(themeFile);
 // Components
 import Welcome from "./components/Welcome";
 import NavBar from "./components/NavBar";
@@ -47,9 +46,11 @@ function App() {
   // Courses
   const [courses, setCourses] = useState([]);
   const [code, setCode] = useState("");
+
   useEffect(() => {
     if (emailId && exists) getCourses();
   }, [emailId]);
+
   const getCourses = () => {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -57,7 +58,9 @@ function App() {
         setCourses(doc.data().courses);
       })
       .catch((err) => console.log(err));
+    console.log(courses)
   };
+
   const handleCode = (c) => {
     setCode(c);
   };
@@ -107,37 +110,37 @@ function App() {
       {user && exists ? (
         <Router>
           <NavBar requests={requests} imageUrl={imageUrl} reset={reset} />
-          <div className="container">
-            <Grid container spacing={3}>
-              <Grid item xs={3}>
+          <Container fluid>
+            <Row className='px-3 py-4'>
+              <Col xs={2}>
                 <SideBar courses={courses} handleCode={handleCode} />
-              </Grid>
-              <Grid item xs={9}>
+              </Col>
+              <Col xs={10}>
                 <Switch>
-                  <Route exact path="/home">
-                    <Home requests={requests} handleRequest={decRequests} />
-                  </Route>
-                  <Route exact path="/messages" component={Messages} />
-                  <Route exact path="/connections" component={Connections} />
-                  <Route exact path="/profile" component={Profile} />
-                  <Route path="/courses/:codeParam">
-                    <Course code={code} handleRequest={decRequests} />
-                  </Route>
-                </Switch>
-              </Grid>
-            </Grid>
-          </div>
+                    <Route exact path="/home">
+                      <Home requests={requests} handleRequest={decRequests} />
+                    </Route>
+                    <Route exact path="/messages" component={Messages} />
+                    <Route exact path="/connections" component={Connections} />
+                    <Route exact path="/profile" component={Profile} />
+                    <Route path="/courses/:codeParam">
+                      <Course code={code} handleRequest={decRequests} />
+                    </Route>
+                  </Switch>
+              </Col>
+            </Row>
+          </Container>
         </Router>
       ) : (
         <Router>
-          <div className="container">
+          <Container fluid>
             <Switch>
               <Route exact path="/">
                 <Welcome de={de} dne={dne} />
               </Route>
               <Route exact path="/profileBuild" component={profileBuild} />
             </Switch>
-          </div>
+          </Container>
         </Router>
       )}
     </div>
