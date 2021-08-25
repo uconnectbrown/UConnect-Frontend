@@ -26,8 +26,8 @@ import Switch from "@material-ui/core/Switch";
 import { classYears, majors } from "../resources/searchOptions";
 
 function Home(props) {
-  const emailId = auth.currentUser.email.split("@")[0];
-  const email = auth.currentUser.email;
+  const [emailId, setEmailId] = useState(null);
+  const [email, setEmail] = useState(null);
   const [featured, setFeatured] = useState([]);
   const [students, setStudents] = useState(null);
   const [searchMode, setSearchMode] = useState(false);
@@ -40,7 +40,14 @@ function Home(props) {
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    getFeatured();
+    if (auth.currentUser) {
+      setEmailId(auth.currentUser.email.split("@")[0]);
+      setEmail(auth.currentUser.email);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (emailId) getFeatured();
   }, []);
 
   const getFeatured = () => {

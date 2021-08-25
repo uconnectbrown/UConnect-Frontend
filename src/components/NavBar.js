@@ -20,7 +20,7 @@ function NavBar(props) {
           Requests: {props.requests}
           <SignOut
             style={{ position: "absolute", right: "10%" }}
-            signOut={props.signOut}
+            reset={props.reset}
           />
           <Link to="/profile">
             <Button>

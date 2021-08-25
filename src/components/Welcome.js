@@ -12,7 +12,7 @@ import SignIn from "./SignIn";
 import SignOut from "./SignOut";
 
 // Body
-function Welcome() {
+function Welcome(props) {
   return (
     <Grid
       container
@@ -24,7 +24,7 @@ function Welcome() {
           <CardContent>
             <Typography variant="h3">Welcome to UConnect!</Typography>
             <br />
-            <SignIn />
+            <SignIn de={props.de} dne={props.dne} />
           </CardContent>
         </Card>
       </Grid>

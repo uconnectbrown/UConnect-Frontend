@@ -27,30 +27,25 @@ import Grid from "@material-ui/core/Grid";
 function App() {
   // Authentication
   const [user] = useAuthState(auth);
-  const [exists, setExists] = useState(null);
   const [emailId, setEmailId] = useState(null);
-  const checkExists = (e) => {
-    db.doc(`/profiles/${e}`)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          setExists(true);
-        } else {
-          setExists(false);
-        }
-      });
+  const [exists, setExists] = useState(null);
+  const dne = () => {
+    setExists(false);
   };
+  const de = () => {
+    setExists(true);
+  };
+
   useEffect(() => {
     if (user) setEmailId(auth.currentUser.email.split("@")[0]);
-    checkExists(auth.currentUser.email.split("@")[0]);
   }, [user]);
 
   // Courses
   const [courses, setCourses] = useState([]);
   const [code, setCode] = useState("");
   useEffect(() => {
-    if (exists) getCourses();
-  }, [exists]);
+    if (emailId && exists) getCourses();
+  }, [emailId]);
   const getCourses = () => {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -66,8 +61,8 @@ function App() {
   // Requests
   const [requests, setRequests] = useState(null);
   useEffect(() => {
-    if (exists) getRequests();
-  }, [exists]);
+    if (emailId && exists) getRequests();
+  }, [emailId]);
   const getRequests = () => {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -83,8 +78,8 @@ function App() {
   // Image URL
   const [imageUrl, setImageUrl] = useState("");
   useEffect(() => {
-    if (exists) getImageUrl();
-  }, [exists]);
+    if (emailId && exists) getImageUrl();
+  }, [emailId]);
   const getImageUrl = () => {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -94,11 +89,20 @@ function App() {
       .catch((err) => console.log(err));
   };
 
+  // Reset states
+  const reset = () => {
+    setImageUrl("");
+    setRequests(null);
+    setCourses([]);
+    setCode("");
+    setEmailId(null);
+  };
+
   return (
     <div className="App">
       {user && exists ? (
         <Router>
-          <NavBar requests={requests} imageUrl={imageUrl} />
+          <NavBar requests={requests} imageUrl={imageUrl} reset={reset} />
           <div className="container">
             <Grid container spacing={3}>
               <Grid item xs={3}>
@@ -125,7 +129,7 @@ function App() {
           <div className="container">
             <Switch>
               <Route exact path="/">
-                <Welcome />
+                <Welcome de={de} dne={dne} />
               </Route>
               <Route exact path="/profileBuild" component={profileBuild} />
             </Switch>

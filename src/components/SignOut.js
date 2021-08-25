@@ -16,8 +16,8 @@ function SignOut(props) {
         size="large"
         color="inherit"
         onClick={() => {
-          props.signOut();
           signout();
+          props.reset();
         }}
       >
         Sign Out
