@@ -24,7 +24,7 @@ function Welcome(props) {
           <CardContent>
             <Typography variant="h3">Welcome to UConnect!</Typography>
             <br />
-            <SignIn de={props.de} dne={props.dne} />
+            <SignIn denyAccess={props.denyAccess} grantAccess={props.grantAccess}/>
           </CardContent>
         </Card>
       </Grid>

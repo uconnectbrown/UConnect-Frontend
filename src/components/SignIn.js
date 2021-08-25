@@ -13,12 +13,12 @@ function SignIn(props) {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          props.de();
-          history.push("/home");
+          props.grantAccess();
+          history.push("/#/home");
         } else {
-          props.dne();
+          props.denyAccess();
           history.push({
-            pathname: "/profileBuild",
+            pathname: "/#/profileBuild",
           });
         }
       });

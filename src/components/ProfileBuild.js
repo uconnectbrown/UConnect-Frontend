@@ -84,11 +84,11 @@ function ProfileBuild(props) {
       .post("/signup", newUserData)
       .then(() => {
         setUserData({ ...userData, validProfile: true });
-        props.de();
+        props.grantAccess();
       })
       .then(() => {
         history.push({
-          pathname: "/home",
+          pathname: "/#/home",
         });
       })
       .catch((err) => {
@@ -176,7 +176,6 @@ function ProfileBuild(props) {
                 value={userData.location}
                 variant="outlined"
                 size={"small"}
-                required
                 style={{ width: "80%" }}
               />
             </Grid>
