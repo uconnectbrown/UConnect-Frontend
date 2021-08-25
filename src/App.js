@@ -7,9 +7,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { db, auth } from "./firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-// Pages
-import profileBuild from "./pages/profileBuild";
-
 // Components
 import Welcome from "./components/Welcome";
 import NavBar from "./components/NavBar";
@@ -18,6 +15,7 @@ import Messages from "./components/Messages";
 import Home from "./components/Home";
 import Connections from "./components/Connections";
 import Profile from "./components/Profile";
+import ProfileBuild from "./components/ProfileBuild";
 import Course from "./components/Course";
 
 // MUI Stuff
@@ -37,8 +35,9 @@ function App() {
   };
 
   useEffect(() => {
-    if (user) setEmailId(auth.currentUser.email.split("@")[0]);
-  }, [user]);
+    if (auth.currentUser && exists)
+      setEmailId(auth.currentUser.email.split("@")[0]);
+  }, [exists]);
 
   // Courses
   const [courses, setCourses] = useState([]);
@@ -96,6 +95,7 @@ function App() {
     setCourses([]);
     setCode("");
     setEmailId(null);
+    setExists(null);
   };
 
   return (
@@ -131,7 +131,9 @@ function App() {
               <Route exact path="/">
                 <Welcome de={de} dne={dne} />
               </Route>
-              <Route exact path="/profileBuild" component={profileBuild} />
+              <Route exact path="/profileBuild">
+                <ProfileBuild de={de} />
+              </Route>
             </Switch>
           </div>
         </Router>

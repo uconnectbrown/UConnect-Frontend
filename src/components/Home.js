@@ -48,7 +48,7 @@ function Home(props) {
 
   useEffect(() => {
     if (emailId) getFeatured();
-  }, []);
+  }, [emailId]);
 
   const getFeatured = () => {
     axios
