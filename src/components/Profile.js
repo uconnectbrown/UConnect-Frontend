@@ -83,64 +83,158 @@ function Profile() {
   };
 
   return (
-    <Container className="px-5 py-3">
+    <Container className="px-0 py-3">
       {profile && (
-<<<<<<< HEAD
-        <div className="profile-card">
-          <div className="column-1">
-            <div className="section-container">
-              <img alt="Profile" src={profile.imageUrl} className="profile-img"/>
-              <p><center>{profile.firstName} {profile.lastName}</center></p>
-            </div>
-            <div className="section-container">
-              <h3><center>City, Country</center></h3>
-              <h3><center>Preferred Pronouns</center></h3>
-              <h3><center>Class Year</center></h3>
-              <h3><center>Major</center></h3>
-            </div>
-            <div className="section-container">
-            <h4>bio:</h4>
-            <h2>Groups:</h2>
-            <h2>Varsity Sports:</h2>
-            <h2>GreekLife:</h2>
-            </div> 
-            <div className="section-container">
-            </div> 
-          </div>
-          <div className="column-2">
-            <div className="section-container">
-              <h3>Courses</h3>
-            </div>
-            <div className="section-container">
-              <h3>Interests</h3>
-            </div>
-            <div className="section-container">
-              <h3>Additional Info</h3>
-            </div>
-            <div className="section-container">
-              <h3>Favourites</h3>
-            </div>
-          </div>
-        </div>
-=======
         <Row className="profile-card">
-          <Col sm={5}>
-            <img alt="Profile" src={profile.imageUrl} className="profile-img"/>
-            <p>{profile.firstName} {profile.lastName}</p>
+          <Col sm={4}>
+             <center><img alt="Profile" src={profile.imageUrl} className="profile-img"/></center>
+            <p><center> {profile.firstName} {profile.lastName}</center></p>
+            <h4><center> {profile.preferredPronouns}</center></h4>
+            <h4><center>Class of {profile.classYear}</center></h4>
+            <h4><center>Computer Science {profile.major1}</center></h4>
+            <br></br>
+              <p id="normaltext"><strong>Bio: </strong>Interested in the intersection between tech and art!{profile.bio}</p>
+              <p id="normaltext"><strong>Group: </strong>{profile.group1}</p>
+              <p id="normaltext"><strong>Varsity Sports: </strong>{profile.varsitySport1}</p>
+              <p id="normaltext"><strong>Greek Life: </strong>{profile.greekLife}</p>
           </Col>
-          <Col sm={7}>
+          <Col sm={8}>
             <Row className="section-container">
-              <h4>Interests</h4>
+              <p id="subheading"><center>Courses</center></p>
+              <Col>
+                <div class="card">
+                <div class="course-body">
+                  <div class="course-title"><center>CODE 0001{profile.course1}</center></div>
+                   <div class="course-text"><center>Principles of Economics</center></div>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <div class="card">
+                <div class="course-body">
+                  <div class="course-title"><center>CODE 0002{profile.course1}</center></div>
+                   <div class="course-text"><center>Principles of Economics</center></div>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <div class="card">
+                <div class="course-body">
+                  <div class="course-title"><center>CODE 0003{profile.course1}</center></div>
+                   <div class="course-text"><center>Principles of Economics</center></div>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <div class="card">
+                <div class="course-body">
+                  <div class="course-title"><center>CODE 0004{profile.course1}</center></div>
+                   <div class="course-text"><center>Principles of Economics</center></div>
+                </div>
+                </div>
+               </Col>
             </Row>
-            <Row className="section-container">
-              <h4>Additional Info</h4>
+            <Row className="section-container2">
+             <p id="subheading"><center>Interests</center></p>
+              <Col sm={4}>
+                 <p id="normaltext"><center><strong>Career and Academic</strong></center></p>
+                <div class="card" id="interest-card">
+                <div class="interest-body">
+                  <p id="normaltext"><center>{profile.interests1}</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col sm={4}>
+                <p id="normaltext"><center><strong>Physical Activity and Wellness</strong></center></p>
+                <div class="card" id="interest-card">
+                <div class="interest-body">
+                 <p id="normaltext"><center>{profile.interests2}</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col sm={4}>
+                <p id="normaltext"><center><strong>General Hobbies</strong></center></p>
+                <div class="card" id="interest-card">
+                <div class="interest-body">
+                  <p id="normaltext"><center>{profile.interests3}</center></p>
+                </div>
+                </div>
+               </Col>
             </Row>
-            <Row className="section-container">
-              <h4>Favourites</h4>
+            <Row className="section-container3">
+              <p id="subheading"><center>Additional Info</center></p>
+              <Col>
+                 <p id="normaltext"><center><strong>Pick Up Sports</strong></center></p>
+                <div class="card" id="adinfo-card">
+                <div class="adinfo-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <p id="normaltext"><center><strong>Instruments</strong></center></p>
+                <div class="card" id="adinfo-card">
+                <div class="adinfo-body">
+                 <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <p id="normaltext"><center><strong>Gaming</strong></center></p>
+                <div class="card" id="adinfo-card">
+                <div class="adinfo-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <p id="normaltext"><center><strong>Pets</strong></center></p>
+                <div class="card" id="adinfo-card">
+                <div class="adinfo-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+            </Row>
+            <Row className="section-container4">
+              <p id="subheading"><center>Favourites</center></p>
+              <Col sm={3}>
+              <p id="normaltext"><center><strong>Movies</strong></center></p>
+                <div class="card" id="fav-card">
+                <div class="fav-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col sm={3}>
+              <p id="normaltext"><center><strong>Artists/Bands</strong></center></p>
+                <div class="card" id="fav-card">
+                <div class="fav-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col sm={3}>
+              <p id="normaltext"><center><strong>Food</strong></center></p>
+                <div class="card" id="fav-card">
+                <div class="fav-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col sm={3}>
+              <p id="normaltext"><center><strong>Celebrity</strong></center></p>
+                <div class="card" id="fav-card">
+                <div class="fav-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               
+               
             </Row>
           </Col>
         </Row>
->>>>>>> 07b3ceda97cadb47400714a93c9e226ba739bab7
       )}
     </Container>
   );
