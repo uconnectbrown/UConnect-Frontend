@@ -45,12 +45,6 @@ class profileBuild extends Component {
     this.state = emptyProfile;
   }
 
-  componentDidMount() {
-    if (!this.props.location.state) {
-      this.props.history.push("/");
-    }
-  }
-
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
@@ -101,7 +95,7 @@ class profileBuild extends Component {
       })
       .then(() => {
         this.props.history.push({
-          pathname: "/profileView",
+          pathname: "/home",
         });
       })
       .catch((err) => {

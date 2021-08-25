@@ -1,42 +1,27 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
 
 function SideBar(props) {
-  const [page, setPage] = useState("home");
   const [dropDown, setDropDown] = useState(false);
   const courses = props.courses;
   return (
     <div>
       <Link to="/home" style={{ textDecoration: "none" }}>
-        <Button
-          fullWidth
-          variant="contained"
-          color={page === "home" ? "primary" : "default"}
-          onClick={() => setPage("home")}
-        >
+        <Button fullWidth variant="contained">
           Home
         </Button>
       </Link>
       <Link to="/messages" style={{ textDecoration: "none" }}>
-        <Button
-          fullWidth
-          variant="contained"
-          color={page === "messages" ? "primary" : "default"}
-          onClick={() => setPage("messages")}
-        >
+        <Button fullWidth variant="contained">
           Messages
         </Button>
       </Link>
       <Link to="/connections" style={{ textDecoration: "none" }}>
-        <Button
-          fullWidth
-          variant="contained"
-          color={page === "connections" ? "primary" : "default"}
-          onClick={() => setPage("connections")}
-        >
+        <Button fullWidth variant="contained">
           Connections
         </Button>
       </Link>
@@ -44,7 +29,6 @@ function SideBar(props) {
       <Button
         fullWidth
         variant="contained"
-        color={page === "courses" ? "primary" : "default"}
         onClick={() => {
           setDropDown(!dropDown);
         }}
@@ -64,7 +48,6 @@ function SideBar(props) {
                     variant="contained"
                     onClick={() => {
                       setDropDown(!dropDown);
-                      setPage("courses");
                       props.handleCode(course.code);
                     }}
                   >

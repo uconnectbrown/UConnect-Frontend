@@ -27,13 +27,30 @@ import Grid from "@material-ui/core/Grid";
 function App() {
   // Authentication
   const [user] = useAuthState(auth);
-  const emailId = "ethan_huang1";
+  const [exists, setExists] = useState(null);
+  const [emailId, setEmailId] = useState(null);
+  const checkExists = (e) => {
+    db.doc(`/profiles/${e}`)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          setExists(true);
+        } else {
+          setExists(false);
+        }
+      });
+  };
+  useEffect(() => {
+    if (user) setEmailId(auth.currentUser.email.split("@")[0]);
+    checkExists(auth.currentUser.email.split("@")[0]);
+  }, [user]);
+
   // Courses
   const [courses, setCourses] = useState([]);
-  const [code, setCode] = useState(null);
+  const [code, setCode] = useState("");
   useEffect(() => {
-    getCourses();
-  }, []);
+    if (exists) getCourses();
+  }, [exists]);
   const getCourses = () => {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -49,8 +66,8 @@ function App() {
   // Requests
   const [requests, setRequests] = useState(null);
   useEffect(() => {
-    getRequests();
-  }, []);
+    if (exists) getRequests();
+  }, [exists]);
   const getRequests = () => {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -66,8 +83,8 @@ function App() {
   // Image URL
   const [imageUrl, setImageUrl] = useState("");
   useEffect(() => {
-    getImageUrl();
-  }, []);
+    if (exists) getImageUrl();
+  }, [exists]);
   const getImageUrl = () => {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -79,7 +96,7 @@ function App() {
 
   return (
     <div className="App">
-      {user ? (
+      {user && exists ? (
         <Router>
           <NavBar requests={requests} imageUrl={imageUrl} />
           <div className="container">
@@ -95,7 +112,6 @@ function App() {
                   <Route exact path="/messages" component={Messages} />
                   <Route exact path="/connections" component={Connections} />
                   <Route exact path="/profile" component={Profile} />
-                  <Route exact path="/profileBuild" component={profileBuild} />
                   <Route path="/courses/:codeParam">
                     <Course code={code} handleRequest={decRequests} />
                   </Route>
@@ -108,7 +124,10 @@ function App() {
         <Router>
           <div className="container">
             <Switch>
-              <Route exact path="/" component={Welcome} />
+              <Route exact path="/">
+                <Welcome />
+              </Route>
+              <Route exact path="/profileBuild" component={profileBuild} />
             </Switch>
           </div>
         </Router>

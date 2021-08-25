@@ -14,7 +14,11 @@ import SignOut from "./SignOut";
 // Body
 function Welcome() {
   return (
-    <Grid container align="center" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+    <Grid
+      container
+      align="center"
+      style={{ width: "100%", display: "flex", justifyContent: "center" }}
+    >
       <Grid item xs={10} md={4}>
         <Card raised>
           <CardContent>

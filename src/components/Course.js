@@ -33,10 +33,8 @@ import { classYears, majors } from "../resources/searchOptions";
 
 function Course(props) {
   const { codeParam } = useParams();
-  const code = codeParam
-    ? codeParam.substring(0, 4) + " " + codeParam.substring(4, 8)
-    : props.code;
-  const codeNS = codeParam ? codeParam : props.code.replace(/\s/g, "");
+  const code = props.code;
+  const codeNS = codeParam;
   const email = auth.currentUser.email;
   const [students, setStudents] = useState(null);
   const [studentId, setStudentId] = useState("");

@@ -18,7 +18,10 @@ function NavBar(props) {
       <AppBar color="secondary">
         <Toolbar>
           Requests: {props.requests}
-          <SignOut style={{ position: "absolute", right: "10%" }} />
+          <SignOut
+            style={{ position: "absolute", right: "10%" }}
+            signOut={props.signOut}
+          />
           <Link to="/profile">
             <Button>
               <img

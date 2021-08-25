@@ -16,8 +16,7 @@ function SignIn() {
           history.push("/home");
         } else {
           history.push({
-            pathname: "/profile",
-            state: { validRoute: true },
+            pathname: "/profileBuild",
           });
         }
       });
