@@ -37,18 +37,20 @@ function NavBar(props) {
 export default NavBar;
 
       // <AppBar color="secondary">
-      //   <Toolbar className="nav-container">
+      //   <Toolbar>
       //     Requests: {props.requests}
-      //     <SignOut style={{ position: "absolute", right: "10%" }} />
-      //     <Button
-      //       style={{ position: "absolute", right: "15%" }}
-      //       onClick={props.handleProfile}
-      //     >
-            // <img
-            //   alt="imageUrl"
-            //   src={props.imageUrl}
-            //   style={{ width: "50px" }}
-            // />
-      //     </Button>
+      //     <SignOut
+      //       style={{ position: "absolute", right: "10%" }}
+      //       reset={props.reset}
+      //     />
+      //     <Link to="/profile">
+      //       <Button>
+      //         <img
+      //           alt="imageUrl"
+      //           src={props.imageUrl}
+      //           style={{ width: "50px" }}
+      //         />
+      //       </Button>
+      //     </Link>
       //   </Toolbar>
       // </AppBar>

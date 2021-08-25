@@ -5,7 +5,7 @@ import { db, auth } from "../firebase.js";
 import { Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
-function SignIn() {
+function SignIn(props) {
   let history = useHistory();
 
   function checkExists(emailId) {
@@ -13,11 +13,12 @@ function SignIn() {
       .get()
       .then((doc) => {
         if (doc.exists) {
+          props.de();
           history.push("/home");
         } else {
+          props.dne();
           history.push({
             pathname: "/profileBuild",
-            state: { validRoute: true },
           });
         }
       });

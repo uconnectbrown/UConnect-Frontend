@@ -4,11 +4,13 @@ exports.validProfile = (profile) => {
     profile.lastName &&
     profile.classYear &&
     profile.majors.filter(Boolean).length > 0 &&
-    profile.courses.filter((course) => course.code.length > 4).length > 1 &&
     profile.interests1.length +
       profile.interests2.length +
       profile.interests3.length ===
-      10
+      10 &&
+    profile.interests1.length > 0 &&
+    profile.interests2.length > 0 &&
+    profile.interests3.length > 0
   ) {
     return true;
   }

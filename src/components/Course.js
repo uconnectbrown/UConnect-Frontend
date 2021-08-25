@@ -1,5 +1,7 @@
 // Setup
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 import { auth } from "../firebase";
 import axios from "axios";
 
@@ -30,8 +32,9 @@ import Button from "@material-ui/core/Button";
 import { classYears, majors } from "../resources/searchOptions";
 
 function Course(props) {
+  const { codeParam } = useParams();
   const code = props.code;
-  const codeNS = props.code.replace(/\s/g, "");
+  const codeNS = codeParam;
   const email = auth.currentUser.email;
   const [students, setStudents] = useState(null);
   const [studentId, setStudentId] = useState("");
@@ -46,7 +49,7 @@ function Course(props) {
 
   useEffect(() => {
     getStudents();
-  }, [clear, code]);
+  }, [clear, code, codeParam]);
 
   const getStudents = () => {
     axios

@@ -1,17 +1,17 @@
 // Set-up
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { auth } from "../firebase";
 import md5 from "md5";
 
 // Components
-import Chat from "../components/Chat";
+import Chat from "./Chat";
+import NavBar from "./NavBar";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
-
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -67,55 +67,56 @@ function Messages() {
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={3}>
-        {messages.map((message, index) => {
-          return (
-            <Card
-              align="center"
-              style={{
-                backgroundColor: index === selectedM ? "gray" : "white",
-                height: "90px",
-              }}
-            >
-              <ButtonBase
-                size="large"
-                color="primary"
-                style={{ width: "100%" }}
-                onClick={() => {
-                  setMessage(index);
+    <div>
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
+          {messages.map((message, index) => {
+            return (
+              <Card
+                align="center"
+                style={{
+                  backgroundColor: index === selectedM ? "gray" : "white",
+                  height: "90px",
                 }}
               >
-                <CardContent>
-                  <img
-                    height="50px"
-                    alt="Profile Picture"
-                    src={message.recipientImage}
-                  />
-                  <Typography variant="body2">
-                    {message.recipientName}
-                  </Typography>
-                </CardContent>
-              </ButtonBase>
-            </Card>
-          );
-        })}
+                <ButtonBase
+                  size="large"
+                  color="primary"
+                  style={{ width: "100%" }}
+                  onClick={() => {
+                    setMessage(index);
+                  }}
+                >
+                  <CardContent>
+                    <img
+                      height="50px"
+                      alt="Profile Picture"
+                      src={message.recipientImage}
+                    />
+                    <Typography variant="body2">
+                      {message.recipientName}
+                    </Typography>
+                  </CardContent>
+                </ButtonBase>
+              </Card>
+            );
+          })}
+        </Grid>
+        <Grid item xs={8}>
+          {roomId && (
+            <Chat
+              studentName={studentName}
+              studentImageUrl={studentImageUrl}
+              studentId={studentId}
+              ownId={ownId}
+              ownImageUrl={ownImageUrl}
+              ownName={ownName}
+              roomId={roomId}
+            />
+          )}
+        </Grid>
       </Grid>
-
-      <Grid item xs={8} align="left">
-        {roomId && (
-          <Chat
-            studentName={studentName}
-            studentImageUrl={studentImageUrl}
-            studentId={studentId}
-            ownId={ownId}
-            ownImageUrl={ownImageUrl}
-            ownName={ownName}
-            roomId={roomId}
-          />
-        )}
-      </Grid>
-    </Grid>
+    </div>
   );
 }
 

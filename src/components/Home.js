@@ -12,9 +12,7 @@ import Message from "./Message";
 import Grid from "@material-ui/core/Grid";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import SearchBar from "material-ui-search-bar";
-
 import CardContent from "@material-ui/core/CardContent";
-
 import Card from "@material-ui/core/Card";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -27,9 +25,9 @@ import Switch from "@material-ui/core/Switch";
 // Resources
 import { classYears, majors } from "../resources/searchOptions";
 
-function Landing(props) {
-  const emailId = auth.currentUser.email.split("@")[0];
-  const email = auth.currentUser.email;
+function Home(props) {
+  const [emailId, setEmailId] = useState(null);
+  const [email, setEmail] = useState(null);
   const [featured, setFeatured] = useState([]);
   const [students, setStudents] = useState(null);
   const [searchMode, setSearchMode] = useState(false);
@@ -42,7 +40,14 @@ function Landing(props) {
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    getFeatured();
+    if (auth.currentUser) {
+      setEmailId(auth.currentUser.email.split("@")[0]);
+      setEmail(auth.currentUser.email);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (emailId) getFeatured();
   }, []);
 
   const getFeatured = () => {
@@ -282,7 +287,7 @@ function Landing(props) {
           })}
         </div>
       )}
-      {!searching && (
+      {!searching && featured && (
         <GridList cols={10} spacing={10} cellHeight="auto">
           {featured.map((student, index) => {
             return (
@@ -313,4 +318,4 @@ function Landing(props) {
   );
 }
 
-export default Landing;
+export default Home;

@@ -12,15 +12,19 @@ import SignIn from "./SignIn";
 import SignOut from "./SignOut";
 
 // Body
-function Welcome() {
+function Welcome(props) {
   return (
-    <Grid container align="center" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+    <Grid
+      container
+      align="center"
+      style={{ width: "100%", display: "flex", justifyContent: "center" }}
+    >
       <Grid item xs={10} md={4}>
         <Card raised>
           <CardContent>
             <Typography variant="h3">Welcome to UConnect!</Typography>
             <br />
-            <SignIn />
+            <SignIn de={props.de} dne={props.dne} />
           </CardContent>
         </Card>
       </Grid>
