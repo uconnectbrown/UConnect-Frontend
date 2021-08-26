@@ -1,7 +1,14 @@
 // Setup
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  HashRouter,
+  Route,
+  Switch,
+  useLocation,
+  Link,
+} from "react-router-dom";
 import axios from "axios";
 
 // Authentication
@@ -26,6 +33,7 @@ import Course from "./components/Course";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
 axios.defaults.baseURL =
   "https://us-east4-uconnect-5eebd.cloudfunctions.net/api";
@@ -123,10 +131,24 @@ function App() {
     setDeny(null);
   };
 
+  const NoMatch = () => {
+    const { pathname } = useLocation();
+
+    return (
+      <h3>
+        Page not found. Click
+        <Link to="/home">
+          <Button>here</Button>
+        </Link>
+        to go back to UConnect
+      </h3>
+    );
+  };
+
   return (
     <div className="App">
       {user && deny === false ? (
-        <Router>
+        <HashRouter>
           <NavBar requests={requests} imageUrl={imageUrl} reset={reset} />
           <Container fluid>
             <Row className='px-3 py-4'>
@@ -135,33 +157,39 @@ function App() {
               </Col>
               <Col xs={10}>
                 <Switch>
-                  <Route exact path="/#/home">
+                  <Route exact path="/">
                     <Home requests={requests} handleRequest={decRequests} />
                   </Route>
-                  <Route exact path="/#/messages" component={Messages} />
-                  <Route exact path="/#/connections" component={Connections} />
-                  <Route exact path="/#/profile" component={Profile} />
-                  <Route path="/#/courses/:codeParam">
+                  <Route exact path="/home">
+                    <Home requests={requests} handleRequest={decRequests} />
+                  </Route>
+                  <Route exact path="/messages" component={Messages} />
+                  <Route exact path="/connections" component={Connections} />
+                  <Route exact path="/profile" component={Profile} />
+                  <Route path="/courses/:codeParam">
                     <Course code={code} handleRequest={decRequests} />
+                  </Route>
+                  <Route path="*">
+                    <NoMatch />
                   </Route>
                 </Switch>
               </Col>
             </Row>
           </Container>
-        </Router>
+        </HashRouter>
       ) : (
-        <Router>
+        <HashRouter>
           <Container fluid>
             <Switch>
               <Route exact path="/">
                 <Welcome denyAccess={denyAccess} grantAccess={grantAccess} />
               </Route>
-              <Route exact path="/#/profileBuild">
+              <Route exact path="/profileBuild">
                 <ProfileBuild grantAccess={grantAccess} />
               </Route>
             </Switch>
           </Container>
-        </Router>
+        </HashRouter>
       )}
     </div>
   );

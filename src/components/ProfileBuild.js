@@ -88,7 +88,7 @@ function ProfileBuild(props) {
       })
       .then(() => {
         history.push({
-          pathname: "/#/home",
+          pathname: "/home",
         });
       })
       .catch((err) => {
