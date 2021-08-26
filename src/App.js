@@ -15,6 +15,10 @@ import axios from "axios";
 import { db, auth } from "./firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+
+import { Container, Row, Col } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 // Components
 import Welcome from "./components/Welcome";
 import NavBar from "./components/NavBar";
@@ -145,12 +149,12 @@ function App() {
       {user && deny === false ? (
         <HashRouter>
           <NavBar requests={requests} imageUrl={imageUrl} reset={reset} />
-          <div className="container">
-            <Grid container spacing={3}>
-              <Grid item xs={3}>
+          <Container fluid>
+            <Row className='px-3 py-4'>
+              <Col xs={2}>
                 <SideBar courses={courses} handleCode={handleCode} />
-              </Grid>
-              <Grid item xs={9}>
+              </Col>
+              <Col xs={10}>
                 <Switch>
                   <Route exact path="/">
                     <Home requests={requests} handleRequest={decRequests} />
@@ -168,13 +172,13 @@ function App() {
                     <NoMatch />
                   </Route>
                 </Switch>
-              </Grid>
-            </Grid>
-          </div>
+              </Col>
+            </Row>
+          </Container>
         </HashRouter>
       ) : (
         <HashRouter>
-          <div className="container">
+          <Container fluid>
             <Switch>
               <Route exact path="/">
                 <Welcome denyAccess={denyAccess} grantAccess={grantAccess} />
@@ -183,7 +187,7 @@ function App() {
                 <ProfileBuild grantAccess={grantAccess} />
               </Route>
             </Switch>
-          </div>
+          </Container>
         </HashRouter>
       )}
     </div>
