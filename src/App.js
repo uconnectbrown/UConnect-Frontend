@@ -34,8 +34,10 @@ import Course from "./components/Course";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
-axios.defaults.baseURL =
-  "https://us-east4-uconnect-5eebd.cloudfunctions.net/api";
+// Styling
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const theme = createTheme(themeFile);
 
 // Body
 function App() {
