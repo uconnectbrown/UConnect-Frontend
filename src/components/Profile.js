@@ -18,44 +18,8 @@ import {
   petsList,
 } from "../resources/additionalInfo";
 
-// MUI Stuff
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/Add";
-import AddCircle from "@material-ui/icons/AddCircle";
-import DeleteIcon from "@material-ui/icons/Delete";
-import PhotoIcon from "@material-ui/icons/PhotoCamera";
-import EditIcon from "@material-ui/icons/Edit";
-import Tooltip from "@material-ui/core/Tooltip";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Dots from "@material-ui/icons/MoreHoriz";
-import Book from "@material-ui/icons/MenuBook";
-import Movie from "@material-ui/icons/Movie";
-import Tv from "@material-ui/icons/Tv";
-import Music from "@material-ui/icons/MusicNote";
-import Pets from "@material-ui/icons/Pets";
-import Sports from "@material-ui/icons/SportsBasketball";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Box from "@material-ui/core/Box";
-
 import { Container, Row, Col } from "react-bootstrap";
 import "./Profile.css";
-import { FormatAlignRight } from "@material-ui/icons";
 
 // Body
 function Profile() {
@@ -87,12 +51,12 @@ function Profile() {
     <Container className="px-0 py-3">
       {profile && (
         <Row className="profile-card">
-          <Col sm={4}>
-             <center><img alt="Profile" src={profile.imageUrl} className="profile-img"/></center>
-            <p><center> {profile.firstName} {profile.lastName}</center></p>
-            <h4><center> {profile.preferredPronouns}</center></h4>
-            <h4><center>Class of {profile.classYear}</center></h4>
-            <h4><center>Computer Science {profile.major1}</center></h4>
+          <Col sm={4} style={{ justifyContent: 'center' }}>
+            <img alt="Profile" src={profile.imageUrl} className="profile-img"/>
+            <p>{profile.firstName} {profile.lastName}</p>
+            <h4> {profile.preferredPronouns}</h4>
+            <h4>Class of {profile.classYear}</h4>
+            <h4>Computer Science {profile.major1}</h4>
             <br></br>
               <p id="normaltext"><strong>Bio: </strong>Interested in the intersection between tech and art!{profile.bio}</p>
               <p id="normaltext"><strong>Group: </strong>{profile.group1}</p>
@@ -100,150 +64,111 @@ function Profile() {
               <p id="normaltext"><strong>Greek Life: </strong>{profile.greekLife}</p>
           </Col>
           <Col sm={8}>
-            <Row className="section-container0">
-             <Col></Col>
-             <Col></Col>
-             <Col></Col>
-             <Col></Col>
-             <Col></Col>
-             <Col></Col>
-             <Col></Col>
-             <Col>
-             <button type="button" class="btn btn-outline-primary btn-sm">Edit</button>
-             </Col>
+            <Row className="section-container0" style={{ justifyContent: 'flex-end', margin: '1rem'}}>
+              <button type="button" class="btn btn-outline-primary btn-sm" style={{ width: '5rem' }}>
+                Edit
+              </button>
            </Row>
             <Row className="section-container1">
-              <Col>
+              <Col sm={3}>
                 <div class="card">
-                <div class="course-body">
-                  <div class="course-title"><center>CODE 0001{profile.course1}</center></div>
-                   <div class="course-text"><center>Principles of Economics</center></div>
-                </div>
+                  <div class="course-title">CODE 0001{profile.course1}</div>
+                  <div class="course-text">Principles of Economics</div>
                 </div>
                </Col>
-               <Col>
+               <Col sm={3}>
                 <div class="card">
-                <div class="course-body">
-                  <div class="course-title"><center>CODE 0002{profile.course1}</center></div>
-                   <div class="course-text"><center>Principles of Economics</center></div>
-                </div>
+                  <div class="course-title">CODE 0002{profile.course1}</div>
+                  <div class="course-text">Principles of Economics</div>
                 </div>
                </Col>
-               <Col>
+               <Col sm={3}>
                 <div class="card">
-                <div class="course-body">
-                  <div class="course-title"><center>CODE 0003{profile.course1}</center></div>
-                   <div class="course-text"><center>Principles of Economics</center></div>
-                </div>
+                  <div class="course-title">CODE 0003{profile.course1}</div>
+                  <div class="course-text">Principles of Economics</div>
                 </div>
                </Col>
-               <Col>
+               <Col sm={3}>
                 <div class="card">
-                <div class="course-body">
-                  <div class="course-title"><center>CODE 0004{profile.course1}</center></div>
-                   <div class="course-text"><center>Principles of Economics</center></div>
-                </div>
+                  <div class="course-title">CODE 0004{profile.course1}</div>
+                  <div class="course-text">Principles of Economics</div>
                 </div>
                </Col>
             </Row>
             <Row className="section-container2">
-             <p id="subheading"><center>Interests</center></p>
+             <p id="subheading">Interests</p>
               <Col sm={4}>
-                 <p id="normaltext"><center><strong>Career and Academic</strong></center></p>
+                 <p id="normaltext"><strong>Career and Academic</strong></p>
                 <div class="card" id="interest-card">
-                <div class="interest-body">
-                  <p id="normaltext"><center>{profile.interests1.map((interest)=>interest+ ", ")}</center></p>
-                </div>
+                  <p id="normaltext">{profile.interests1.map((interest)=>interest+ ", ")}</p>
                 </div>
                </Col>
                <Col sm={4}>
-                <p id="normaltext"><center><strong>Physical Activity and Wellness</strong></center></p>
+                <p id="normaltext"><strong>Physical Activity and Wellness</strong></p>
                 <div class="card" id="interest-card">
-                <div class="interest-body">
-                 <p id="normaltext"><center>{profile.interests2.map((interest)=>interest+ ", ")}</center></p>
-                </div>
+                 <p id="normaltext">{profile.interests2.map((interest)=>interest+ ", ")}</p>
                 </div>
                </Col>
                <Col sm={4}>
-                <p id="normaltext"><center><strong>General Hobbies</strong></center></p>
+                <p id="normaltext"><strong>General Hobbies</strong></p>
                 <div class="card" id="interest-card">
-                <div class="interest-body">
-                  <p id="normaltext"><center>{profile.interests3.map((interest)=>interest+ ", ")}</center></p>
-                </div>
+                  <p id="normaltext">{profile.interests3.map((interest)=>interest+ ", ")}</p>
                 </div>
                </Col>
             </Row>
             <Row className="section-container3">
-              <p id="subheading"><center>Additional Info</center></p>
-              <Col>
-                 <p id="normaltext"><center><strong>Pick Up Sports</strong></center></p>
+              <p id="subheading">Additional Info</p>
+              <Col sm={3}>
+                <p id="normaltext"><strong>Pick Up Sports</strong></p>
                 <div class="card" id="adinfo-card">
-                <div class="adinfo-body">
-                  <p id="normaltext"><center>text</center></p>
-                </div>
+                  <p id="normaltext">text</p>
                 </div>
                </Col>
-               <Col>
-                <p id="normaltext"><center><strong>Instruments</strong></center></p>
+               <Col sm={3}>
+                <p id="normaltext"><strong>Instruments</strong></p>
                 <div class="card" id="adinfo-card">
-                <div class="adinfo-body">
-                 <p id="normaltext"><center>text</center></p>
-                </div>
+                 <p id="normaltext">text</p>
                 </div>
                </Col>
-               <Col>
-                <p id="normaltext"><center><strong>Gaming</strong></center></p>
+               <Col sm={3}>
+                <p id="normaltext"><strong>Gaming</strong></p>
                 <div class="card" id="adinfo-card">
-                <div class="adinfo-body">
-                  <p id="normaltext"><center>text</center></p>
-                </div>
+                  <p id="normaltext">text</p>
                 </div>
                </Col>
-               <Col>
-                <p id="normaltext"><center><strong>Pets</strong></center></p>
+               <Col sm={3}>
+                <p id="normaltext"><strong>Pets</strong></p>
                 <div class="card" id="adinfo-card">
-                <div class="adinfo-body">
-                  <p id="normaltext"><center>text</center></p>
-                </div>
+                  <p id="normaltext">text</p>
                 </div>
                </Col>
             </Row>
             <Row className="section-container4">
-              <p id="subheading"><center>Favourites</center></p>
+              <p id="subheading">Favourites</p>
               <Col sm={3}>
-              <p id="normaltext"><center><strong>Movies</strong></center></p>
+              <p id="normaltext"><strong>Movies</strong></p>
                 <div class="card" id="fav-card">
-                <div class="fav-body">
-                  <p id="normaltext"><center>text</center></p>
-                </div>
+                  <p id="normaltext">text</p>
                 </div>
                </Col>
                <Col sm={3}>
-              <p id="normaltext"><center><strong>Artists/Bands</strong></center></p>
+              <p id="normaltext"><strong>Artists/Bands</strong></p>
                 <div class="card" id="fav-card">
-                <div class="fav-body">
-                  <p id="normaltext"><center>text</center></p>
-                </div>
+                  <p id="normaltext">text</p>
                 </div>
                </Col>
                <Col sm={3}>
-              <p id="normaltext"><center><strong>Food</strong></center></p>
+              <p id="normaltext"><strong>Food</strong></p>
                 <div class="card" id="fav-card">
-                <div class="fav-body">
-                  <p id="normaltext"><center>text</center></p>
-                </div>
+                  <p id="normaltext">text</p>
                 </div>
                </Col>
                <Col sm={3}>
-              <p id="normaltext"><center><strong>Celebrity</strong></center></p>
+              <p id="normaltext"><strong>Celebrity</strong></p>
                 <div class="card" id="fav-card">
-                <div class="fav-body">
-                  <p id="normaltext"><center>text</center></p>
-                </div>
+                  <p id="normaltext">text</p>
                 </div>
                </Col>
-               
-               
             </Row>
           </Col>
         </Row>
