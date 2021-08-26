@@ -53,8 +53,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 
-// Styles
-import "./profileView.css";
+import { Container, Row, Col } from "react-bootstrap";
+import "./Profile.css";
+import { FormatAlignRight } from "@material-ui/icons";
 
 // Body
 function Profile() {
@@ -83,372 +84,171 @@ function Profile() {
   };
 
   return (
-    <div>
+    <Container className="px-0 py-3">
       {profile && (
-        <div>
-          <Card raised>
-            <CardContent align="center">
-              <Grid container spacing={1}>
-                <Grid item sm></Grid>
-                <Grid item sm>
-                  <img
-                    alt="Profile"
-                    src={profile.imageUrl}
-                    style={{
-                      width: 400,
-                      height: 400,
-                      objectFit: "cover",
-                      borderRadius: "10%",
-                      borderStyle: "solid",
-                      borderColor: "red",
-                      borderWidth: "2px",
-                    }}
-                  />
-                  <br />
-                </Grid>
-                <Grid item sm></Grid>
-              </Grid>
-
-              <br />
-              <Card raised style={{ display: "inline-block" }}>
-                <CardContent>
-                  <span>
-                    <Typography variant="h3" align="center">
-                      {profile.firstName} {profile.lastName}{" "}
-                    </Typography>
-                  </span>
-                  <Typography variant="h5">
-                    {profile.preferredPronouns &&
-                      `(${profile.preferredPronouns})`}
-                  </Typography>
-                  <br />
-                  <Typography variant="h5">
-                    Class of {profile.classYear}
-                  </Typography>
-                  <Typography variant="h5">
-                    Concentration(s): {profile.major1}
-                    {profile.major2 && `, ${profile.major2}`}
-                    {profile.major3 && `, ${profile.major3}`}
-                  </Typography>
-                </CardContent>
-              </Card>
-              <br />
-              <br />
-              {profile.bio && (
-                <Card raised style={{ display: "inline-block" }}>
-                  <CardContent>
-                    <span>
-                      <Typography variant="h4" align="center">
-                        Bio
-                      </Typography>
-                    </span>
-                    {profile.bio}{" "}
-                  </CardContent>
-                </Card>
-              )}
-              <br />
-              <Grid container spacing={2}>
-                <Grid item sm>
-                  <Card
-                    raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: "red",
-                      height: "100%",
-                      marginBottom: "-5px",
-                    }}
-                  >
-                    <CardContent>
-                      <div>
-                        <span>
-                          <Typography variant="h5">Groups</Typography>
-                        </span>
-                        <br />
-                        {profile.group1 && (
-                          <Typography>• {profile.group1}</Typography>
-                        )}
-                        {profile.group2 && (
-                          <Typography>• {profile.group2}</Typography>
-                        )}
-                        {profile.group3 && (
-                          <Typography>• {profile.group3}</Typography>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item sm>
-                  <Card
-                    raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: "red",
-                      height: "100%",
-                      marginBottom: "-5px",
-                    }}
-                  >
-                    <CardContent>
-                      <div>
-                        <span>
-                          <Typography variant="h5">Varsity Sports</Typography>
-                        </span>
-                        <br />
-                        {profile.varsitySport1 && (
-                          <Typography>• {profile.varsitySport1}</Typography>
-                        )}
-                        {profile.varsitySport2 && (
-                          <Typography>• {profile.varsitySport2}</Typography>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item sm>
-                  <Card
-                    raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: "red",
-                      height: "100%",
-                      marginBottom: "-5px",
-                    }}
-                  >
-                    <CardContent>
-                      <div>
-                        <span>
-                          <Typography variant="h5">
-                            Greek Organization
-                          </Typography>
-                        </span>
-                        <br />
-                        {profile.greekLife && (
-                          <Typography>• {profile.greekLife}</Typography>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-          <br />
-          <Card raised>
-            <CardContent align="center">
-              <Typography variant="h3">Interests </Typography>
-              <hr />
-              <br />
-              <Grid container spacing={2}>
-                <Grid item sm>
-                  <Card
-                    raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-
-                      height: "100%",
-                    }}
-                  >
-                    <CardContent>
-                      <Typography variant="h5">Career and Academic</Typography>
-                      <br />
-                      {profile.interests1.map((interest) => {
-                        return <Typography>• {interest}</Typography>;
-                      })}
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item sm>
-                  <Card
-                    raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-
-                      height: "100%",
-                    }}
-                  >
-                    <CardContent>
-                      <Typography variant="h5">
-                        Physical Activity and Wellness
-                      </Typography>
-                      <br />
-                      {profile.interests2.map((interest) => {
-                        return <Typography>• {interest}</Typography>;
-                      })}
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item sm>
-                  <Card
-                    raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      height: "100%",
-                    }}
-                  >
-                    <CardContent>
-                      <Typography variant="h5">General Hobbies</Typography>
-                      <br />
-                      {profile.interests3.map((interest) => {
-                        return <Typography>• {interest}</Typography>;
-                      })}
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Grid>
-              <br />
-              <br />
-              <Card raised style={{ marginBottom: "-5px" }}>
-                <CardContent>
-                  <Typography variant="h4">Additional Info</Typography>
-                  <hr />
-                  <br />
-                  <Grid container>
-                    <Grid item sm>
-                      <div>
-                        <Music />
-                        <span>
-                          <Typography variant="h6">Instruments</Typography>
-                        </span>
-                        <br />
-                        {profile.instrument1 && (
-                          <Typography>• {profile.instrument1}</Typography>
-                        )}
-                        {profile.instrument2 && (
-                          <Typography>• {profile.instrument2}</Typography>
-                        )}
-                        {profile.instrument3 && (
-                          <Typography>• {profile.instrument3}</Typography>
-                        )}
-                      </div>
-                    </Grid>
-                    <Grid item sm>
-                      <div>
-                        <Sports />
-                        <span>
-                          <Typography variant="h6">Pick-Up Sports</Typography>
-                        </span>
-                        <br />
-                        {profile.pickUpSport1 && (
-                          <Typography>• {profile.pickUpSport1}</Typography>
-                        )}
-                        {profile.pickUpSport2 && (
-                          <Typography>• {profile.pickUpSport2}</Typography>
-                        )}
-                        {profile.pickUpSport3 && (
-                          <Typography>• {profile.pickUpSport3}</Typography>
-                        )}
-                      </div>
-                    </Grid>
-                    <Grid item sm>
-                      <div>
-                        <Pets />
-                        <span>
-                          <Typography variant="h6">Pets</Typography>
-                        </span>
-                        <br />
-                        {profile.pet1 && (
-                          <Typography>• {profile.pet1}</Typography>
-                        )}
-                        {profile.pet2 && (
-                          <Typography>• {profile.pet2}</Typography>
-                        )}
-                        {profile.pet3 && (
-                          <Typography>• {profile.pet3}</Typography>
-                        )}
-                      </div>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </CardContent>
-          </Card>
-          <br />
-          <Card raised>
-            <CardContent align="center">
-              <Typography variant="h3">Favorites </Typography>
-              <hr />
-              <br />
-              <Grid container spacing={2}>
-                <Grid item sm>
-                  <div>
-                    <Book />
-                    <Typography variant="body1">
-                      Book: {profile.favoriteBook}
-                    </Typography>
-                  </div>
-                </Grid>
-                <Grid item sm>
-                  <div>
-                    <Movie />
-                    <Typography variant="body1">
-                      Movie: {profile.favoriteMovie}
-                    </Typography>
-                  </div>
-                </Grid>
-                <Grid item sm>
-                  <div>
-                    <Tv />
-                    <Typography variant="body1">
-                      Show: {profile.favoriteShow}
-                    </Typography>
-                  </div>
-                </Grid>
-                <Grid item sm>
-                  <div>
-                    <Music />
-                    <Typography variant="body1">
-                      Artist: {profile.favoriteArtist}
-                    </Typography>
-                  </div>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-          <br />
-          <Card raised>
-            <CardContent align="center">
-              <Typography variant="h3">Courses</Typography>
-              <hr />
-              <br />
-              <Grid container spacing={2}>
-                {indexArray.map((index) => (
-                  <Grid item sm>
-                    <Card
-                      style={{
-                        borderStyle: "solid",
-                        borderWidth: "3px",
-                        borderColor: `${profile.courses[index].color}`,
-                        height: "100%",
-                      }}
-                    >
-                      <CardContent>
-                        <Typography
-                          variant="h5"
-                          style={{
-                            color: `${profile.courses[index].color}`,
-                          }}
-                        >
-                          {profile.courses[index].code}
-                        </Typography>
-                        <Typography variant="body1">
-                          {profile.courses[index].name}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </CardContent>
-          </Card>
-          <br />
-        </div>
+        <Row className="profile-card">
+          <Col sm={4}>
+             <center><img alt="Profile" src={profile.imageUrl} className="profile-img"/></center>
+            <p><center> {profile.firstName} {profile.lastName}</center></p>
+            <h4><center> {profile.preferredPronouns}</center></h4>
+            <h4><center>Class of {profile.classYear}</center></h4>
+            <h4><center>Computer Science {profile.major1}</center></h4>
+            <br></br>
+              <p id="normaltext"><strong>Bio: </strong>Interested in the intersection between tech and art!{profile.bio}</p>
+              <p id="normaltext"><strong>Group: </strong>{profile.group1}</p>
+              <p id="normaltext"><strong>Varsity Sports: </strong>{profile.varsitySport1}</p>
+              <p id="normaltext"><strong>Greek Life: </strong>{profile.greekLife}</p>
+          </Col>
+          <Col sm={8}>
+            <Row className="section-container0">
+             <Col></Col>
+             <Col></Col>
+             <Col></Col>
+             <Col></Col>
+             <Col></Col>
+             <Col></Col>
+             <Col></Col>
+             <Col>
+             <button type="button" class="btn btn-outline-primary btn-sm">Edit</button>
+             </Col>
+           </Row>
+            <Row className="section-container1">
+              <Col>
+                <div class="card">
+                <div class="course-body">
+                  <div class="course-title"><center>CODE 0001{profile.course1}</center></div>
+                   <div class="course-text"><center>Principles of Economics</center></div>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <div class="card">
+                <div class="course-body">
+                  <div class="course-title"><center>CODE 0002{profile.course1}</center></div>
+                   <div class="course-text"><center>Principles of Economics</center></div>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <div class="card">
+                <div class="course-body">
+                  <div class="course-title"><center>CODE 0003{profile.course1}</center></div>
+                   <div class="course-text"><center>Principles of Economics</center></div>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <div class="card">
+                <div class="course-body">
+                  <div class="course-title"><center>CODE 0004{profile.course1}</center></div>
+                   <div class="course-text"><center>Principles of Economics</center></div>
+                </div>
+                </div>
+               </Col>
+            </Row>
+            <Row className="section-container2">
+             <p id="subheading"><center>Interests</center></p>
+              <Col sm={4}>
+                 <p id="normaltext"><center><strong>Career and Academic</strong></center></p>
+                <div class="card" id="interest-card">
+                <div class="interest-body">
+                  <p id="normaltext"><center>{profile.interests1.map((interest)=>interest+ ", ")}</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col sm={4}>
+                <p id="normaltext"><center><strong>Physical Activity and Wellness</strong></center></p>
+                <div class="card" id="interest-card">
+                <div class="interest-body">
+                 <p id="normaltext"><center>{profile.interests2.map((interest)=>interest+ ", ")}</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col sm={4}>
+                <p id="normaltext"><center><strong>General Hobbies</strong></center></p>
+                <div class="card" id="interest-card">
+                <div class="interest-body">
+                  <p id="normaltext"><center>{profile.interests3.map((interest)=>interest+ ", ")}</center></p>
+                </div>
+                </div>
+               </Col>
+            </Row>
+            <Row className="section-container3">
+              <p id="subheading"><center>Additional Info</center></p>
+              <Col>
+                 <p id="normaltext"><center><strong>Pick Up Sports</strong></center></p>
+                <div class="card" id="adinfo-card">
+                <div class="adinfo-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <p id="normaltext"><center><strong>Instruments</strong></center></p>
+                <div class="card" id="adinfo-card">
+                <div class="adinfo-body">
+                 <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <p id="normaltext"><center><strong>Gaming</strong></center></p>
+                <div class="card" id="adinfo-card">
+                <div class="adinfo-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col>
+                <p id="normaltext"><center><strong>Pets</strong></center></p>
+                <div class="card" id="adinfo-card">
+                <div class="adinfo-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+            </Row>
+            <Row className="section-container4">
+              <p id="subheading"><center>Favourites</center></p>
+              <Col sm={3}>
+              <p id="normaltext"><center><strong>Movies</strong></center></p>
+                <div class="card" id="fav-card">
+                <div class="fav-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col sm={3}>
+              <p id="normaltext"><center><strong>Artists/Bands</strong></center></p>
+                <div class="card" id="fav-card">
+                <div class="fav-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col sm={3}>
+              <p id="normaltext"><center><strong>Food</strong></center></p>
+                <div class="card" id="fav-card">
+                <div class="fav-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               <Col sm={3}>
+              <p id="normaltext"><center><strong>Celebrity</strong></center></p>
+                <div class="card" id="fav-card">
+                <div class="fav-body">
+                  <p id="normaltext"><center>text</center></p>
+                </div>
+                </div>
+               </Col>
+               
+               
+            </Row>
+          </Col>
+        </Row>
       )}
-    </div>
+    </Container>
   );
 }
 

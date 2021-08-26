@@ -31,8 +31,10 @@ import Course from "./components/Course";
 // MUI Stuff
 import Button from "@material-ui/core/Button";
 
-axios.defaults.baseURL =
-  "https://us-east4-uconnect-5eebd.cloudfunctions.net/api";
+// Styling
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const theme = createTheme(themeFile);
 
 // Body
 function App() {
