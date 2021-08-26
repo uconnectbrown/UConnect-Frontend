@@ -6,7 +6,6 @@ import {
   HashRouter,
   Route,
   Switch,
-  useLocation,
   Link,
 } from "react-router-dom";
 import axios from "axios";
@@ -15,9 +14,8 @@ import axios from "axios";
 import { db, auth } from "./firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-
 import { Container, Row, Col } from "react-bootstrap";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // Components
 import Welcome from "./components/Welcome";
@@ -31,7 +29,6 @@ import ProfileBuild from "./components/ProfileBuild";
 import Course from "./components/Course";
 
 // MUI Stuff
-import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
 axios.defaults.baseURL =
@@ -131,12 +128,10 @@ function App() {
   };
 
   const NoMatch = () => {
-    const { pathname } = useLocation();
-
     return (
       <h3>
         Page not found. Click
-        <Link to="/home">
+        <Link to="/">
           <Button>here</Button>
         </Link>
         to go back to UConnect
@@ -150,7 +145,7 @@ function App() {
         <HashRouter>
           <NavBar requests={requests} imageUrl={imageUrl} reset={reset} />
           <Container fluid>
-            <Row className='px-3 py-4'>
+            <Row className="px-3 py-4">
               <Col xs={2}>
                 <SideBar courses={courses} handleCode={handleCode} />
               </Col>
@@ -185,6 +180,9 @@ function App() {
               </Route>
               <Route exact path="/profileBuild">
                 <ProfileBuild grantAccess={grantAccess} />
+              </Route>
+              <Route path="*">
+                <NoMatch />
               </Route>
             </Switch>
           </Container>
