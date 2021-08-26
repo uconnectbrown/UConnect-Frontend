@@ -5,6 +5,8 @@ import { Navbar, Container } from "react-bootstrap";
 import { faBullseye } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import Logo from "../assets/Logo.png"
+
 import "./NavBar.css";
 
 function NavBar(props) {
@@ -14,8 +16,7 @@ function NavBar(props) {
         <Container>
           <Navbar.Brand>
             <div className="d-inline-block m-2">
-              <FontAwesomeIcon icon={faBullseye} size="lg"/>
-              {/* <img alt="UConnect Logo" src={require("../assets/Logo.png")}/> */}
+              <img alt="UConnect Logo" src={Logo} style={{ width: '40px', heigh: '40px' }}/>
             </div>
             <h3 className="d-inline-block align-middle">UConnect</h3>
           </Navbar.Brand>

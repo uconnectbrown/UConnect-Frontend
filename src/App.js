@@ -15,8 +15,6 @@ import axios from "axios";
 import { db, auth } from "./firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-// Pages
-import profileBuild from "./pages/profileBuild";
 
 import { Container, Row, Col } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -29,6 +27,7 @@ import Messages from "./components/Messages";
 import Home from "./components/Home";
 import Connections from "./components/Connections";
 import Profile from "./components/Profile";
+import ProfileBuild from "./components/ProfileBuild";
 import Course from "./components/Course";
 
 // MUI Stuff
