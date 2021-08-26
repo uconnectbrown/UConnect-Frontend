@@ -32,9 +32,7 @@ import Course from "./components/Course";
 import Button from "@material-ui/core/Button";
 
 // Styling
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-const theme = createTheme(themeFile);
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // Body
 function App() {
