@@ -10,17 +10,17 @@ function SideBar(props) {
   const courses = props.courses;
   return (
     <div>
-      <Link to="/#/home" style={{ textDecoration: "none" }}>
+      <Link to="/home" style={{ textDecoration: "none" }}>
         <Button fullWidth variant="contained">
           Home
         </Button>
       </Link>
-      <Link to="/#/messages" style={{ textDecoration: "none" }}>
+      <Link to="/messages" style={{ textDecoration: "none" }}>
         <Button fullWidth variant="contained">
           Messages
         </Button>
       </Link>
-      <Link to="/#/connections" style={{ textDecoration: "none" }}>
+      <Link to="/connections" style={{ textDecoration: "none" }}>
         <Button fullWidth variant="contained">
           Connections
         </Button>
@@ -40,7 +40,7 @@ function SideBar(props) {
         <div>
           {courses.map((course) => {
             if (course.code) {
-              let link = "/#/courses/" + course.code.replace(/\s/g, "");
+              let link = "/courses/" + course.code.replace(/\s/g, "");
               return (
                 <Link to={link} style={{ textDecoration: "none" }}>
                   <Button

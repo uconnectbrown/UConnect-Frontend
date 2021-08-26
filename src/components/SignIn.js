@@ -14,11 +14,11 @@ function SignIn(props) {
       .then((doc) => {
         if (doc.exists) {
           props.grantAccess();
-          history.push("/#/home");
+          history.push("/home");
         } else {
           props.denyAccess();
           history.push({
-            pathname: "/#/profileBuild",
+            pathname: "/profileBuild",
           });
         }
       });
