@@ -42,18 +42,21 @@ function Messages() {
 
     Promise.all(promises)
       .then((res) => {
-        console.log(res);
-        setMessages(res[0].data);
-        setStudentName(res[0].data[0].recipientName);
-        setStudentImageUrl(res[0].data[0].recipientImage);
-        setStudentId(res[0].data[0].recipientId);
-        setOwnName(res[1].data.firstName + " " + res[1].data.lastName);
-        setOwnImageUrl(res[1].data.imageUrl);
-        setOwnId(res[1].data.emailId);
-        return [res[0].data[0].recipientId, res[1].data.emailId];
+        if (res[0].data.length > 0) {
+          setMessages(res[0].data);
+          setStudentName(res[0].data[0].recipientName);
+          setStudentImageUrl(res[0].data[0].recipientImage);
+          setStudentId(res[0].data[0].recipientId);
+          setOwnName(res[1].data.firstName + " " + res[1].data.lastName);
+          setOwnImageUrl(res[1].data.imageUrl);
+          setOwnId(res[1].data.emailId);
+          return [res[0].data[0].recipientId, res[1].data.emailId];
+        } else return;
       })
       .then((alphaId) => {
-        setRoomId(md5(alphaId.sort().join(" ")));
+        if (alphaId) {
+          setRoomId(md5(alphaId.sort().join(" ")));
+        }
       })
       .catch((err) => console.error(err));
   };
@@ -70,37 +73,41 @@ function Messages() {
     <div>
       <Grid container spacing={2}>
         <Grid item xs={3}>
-          {messages.map((message, index) => {
-            return (
-              <Card
-                align="center"
-                style={{
-                  backgroundColor: index === selectedM ? "gray" : "white",
-                  height: "90px",
-                }}
-              >
-                <ButtonBase
-                  size="large"
-                  color="primary"
-                  style={{ width: "100%" }}
-                  onClick={() => {
-                    setMessage(index);
-                  }}
-                >
-                  <CardContent>
-                    <img
-                      height="50px"
-                      alt="Profile Picture"
-                      src={message.recipientImage}
-                    />
-                    <Typography variant="body2">
-                      {message.recipientName}
-                    </Typography>
-                  </CardContent>
-                </ButtonBase>
-              </Card>
-            );
-          })}
+          {messages && (
+            <div>
+              {messages.map((message, index) => {
+                return (
+                  <Card
+                    align="center"
+                    style={{
+                      backgroundColor: index === selectedM ? "gray" : "white",
+                      height: "90px",
+                    }}
+                  >
+                    <ButtonBase
+                      size="large"
+                      color="primary"
+                      style={{ width: "100%" }}
+                      onClick={() => {
+                        setMessage(index);
+                      }}
+                    >
+                      <CardContent>
+                        <img
+                          height="50px"
+                          alt="Profile Picture"
+                          src={message.recipientImage}
+                        />
+                        <Typography variant="body2">
+                          {message.recipientName}
+                        </Typography>
+                      </CardContent>
+                    </ButtonBase>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
         </Grid>
         <Grid item xs={8}>
           {roomId && (

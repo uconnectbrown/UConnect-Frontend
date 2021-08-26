@@ -8,6 +8,7 @@ const emptyProfile = {
   major2: "",
   major3: "",
   pronouns: "",
+  location: "",
   // Interests
   interests1: [],
   interests2: [],

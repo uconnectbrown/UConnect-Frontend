@@ -4,6 +4,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { auth } from "../firebase";
+import { useHistory } from "react-router-dom";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -18,15 +19,14 @@ import UncheckedButton from "@material-ui/icons/RadioButtonUnchecked";
 import CheckedCircle from "@material-ui/icons/CheckCircleOutline";
 
 // Components
-import Interests from "../components/Interests.js";
-import SignOut from "../components/SignOut";
+import Interests from "./Interests.js";
 
 // Import Data
 import majorList from "../resources/majors";
 import emptyProfile from "../resources/emptyProfile";
 
 // Styling
-import "./profileBuild.css";
+import "./ProfileBuild.css";
 const styles = (theme) => ({
   ...theme.spreadThis,
 });
@@ -36,6 +36,8 @@ const { validProfile } = require("../util/validators");
 
 // Body
 function ProfileBuild(props) {
+  let history = useHistory();
+
   const [userData, setUserData] = useState(emptyProfile);
   const [email, setEmail] = useState(null);
   const classYears = ["2022", "2023", "2024", "2025"];
@@ -64,6 +66,7 @@ function ProfileBuild(props) {
       classYear: userData.classYear,
       majors: [userData.major1, userData.major2, userData.major3],
       pronouns: userData.pronouns,
+      location: userData.location,
       email,
       // Interests
       interests1: userData.interests1,
@@ -73,34 +76,28 @@ function ProfileBuild(props) {
 
     // TO-DO: Check courses validator
     if (!validProfile(newUserData)) {
-      console.log("invalid profile");
       setUserData({ ...userData, validProfile: false });
       return;
     }
 
-    console.log(newUserData);
-
-    // axios
-    //   .post("/signup", newUserData)
-    //   .then(() => {
-    //     setUserData({ ...userData, validProfile: true });
-    //   })
-    //   .then(() => {
-    //     return axios.get(`/update/${auth.currentUser.email}`);
-    //   })
-    //   .then(() => {
-    //     this.props.history.push({
-    //       pathname: "/home",
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    axios
+      .post("/signup", newUserData)
+      .then(() => {
+        setUserData({ ...userData, validProfile: true });
+        props.grantAccess();
+      })
+      .then(() => {
+        history.push({
+          pathname: "/#/home",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <form noValidate onSubmit={handleSubmit}>
-      <SignOut style={{ marginTop: "-50px" }} />
       <Grid container className="section-container">
         <Grid item sm>
           <Typography variant="h2" className={classes.pageTitle}>
@@ -168,6 +165,19 @@ function ProfileBuild(props) {
                   );
                 })}
               </TextField>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Location"
+                className={classes.textField}
+                onChange={(event) =>
+                  setUserData({ ...userData, location: event.target.value })
+                }
+                value={userData.location}
+                variant="outlined"
+                size={"small"}
+                style={{ width: "80%" }}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
@@ -330,7 +340,6 @@ function ProfileBuild(props) {
         <Grid item sm />
         <Grid item sm>
           <h3>
-            {userData.interests3}
             Thank you for taking the time to build your profile and welcome to
             UConnect!
           </h3>

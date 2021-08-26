@@ -2,6 +2,7 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import axios from "axios";
 
 // Authentication
 import { db, auth } from "./firebase.js";
@@ -26,31 +27,49 @@ import Course from "./components/Course";
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
 
+axios.defaults.baseURL =
+  "https://us-east4-uconnect-5eebd.cloudfunctions.net/api";
+
 // Body
 function App() {
   // Authentication
   const [user] = useAuthState(auth);
   const [emailId, setEmailId] = useState(null);
-  const [exists, setExists] = useState(null);
-  const dne = () => {
-    setExists(false);
+  const [deny, setDeny] = useState(null);
+
+  const denyAccess = () => {
+    setDeny(true);
   };
-  const de = () => {
-    setExists(true);
+
+  const grantAccess = () => {
+    setDeny(false);
   };
 
   useEffect(() => {
-    if (user) setEmailId(auth.currentUser.email.split("@")[0]);
+    if (auth.currentUser) {
+      setEmailId(auth.currentUser.email.split("@")[0]);
+      checkUser(auth.currentUser.email.split("@")[0]);
+    }
   }, [user]);
+
+  const checkUser = (e) => {
+    db.doc(`/profiles/${e}`)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          setDeny(false);
+        } else {
+          setDeny(true);
+        }
+      });
+  };
 
   // Courses
   const [courses, setCourses] = useState([]);
   const [code, setCode] = useState("");
-
   useEffect(() => {
-    if (emailId && exists) getCourses();
-  }, [emailId]);
-
+    if (deny === false) getCourses();
+  }, [deny]);
   const getCourses = () => {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -58,9 +77,7 @@ function App() {
         setCourses(doc.data().courses);
       })
       .catch((err) => console.log(err));
-    console.log(courses)
   };
-
   const handleCode = (c) => {
     setCode(c);
   };
@@ -68,8 +85,8 @@ function App() {
   // Requests
   const [requests, setRequests] = useState(null);
   useEffect(() => {
-    if (emailId && exists) getRequests();
-  }, [emailId]);
+    if (deny === false) getRequests();
+  }, [deny]);
   const getRequests = () => {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -85,8 +102,8 @@ function App() {
   // Image URL
   const [imageUrl, setImageUrl] = useState("");
   useEffect(() => {
-    if (emailId && exists) getImageUrl();
-  }, [emailId]);
+    if (deny === false) getImageUrl();
+  }, [deny]);
   const getImageUrl = () => {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -103,11 +120,12 @@ function App() {
     setCourses([]);
     setCode("");
     setEmailId(null);
+    setDeny(null);
   };
 
   return (
     <div className="App">
-      {user && exists ? (
+      {user && deny === false ? (
         <Router>
           <NavBar requests={requests} imageUrl={imageUrl} reset={reset} />
           <Container fluid>
@@ -117,16 +135,16 @@ function App() {
               </Col>
               <Col xs={10}>
                 <Switch>
-                    <Route exact path="/home">
-                      <Home requests={requests} handleRequest={decRequests} />
-                    </Route>
-                    <Route exact path="/messages" component={Messages} />
-                    <Route exact path="/connections" component={Connections} />
-                    <Route exact path="/profile" component={Profile} />
-                    <Route path="/courses/:codeParam">
-                      <Course code={code} handleRequest={decRequests} />
-                    </Route>
-                  </Switch>
+                  <Route exact path="/#/home">
+                    <Home requests={requests} handleRequest={decRequests} />
+                  </Route>
+                  <Route exact path="/#/messages" component={Messages} />
+                  <Route exact path="/#/connections" component={Connections} />
+                  <Route exact path="/#/profile" component={Profile} />
+                  <Route path="/#/courses/:codeParam">
+                    <Course code={code} handleRequest={decRequests} />
+                  </Route>
+                </Switch>
               </Col>
             </Row>
           </Container>
@@ -136,9 +154,11 @@ function App() {
           <Container fluid>
             <Switch>
               <Route exact path="/">
-                <Welcome de={de} dne={dne} />
+                <Welcome denyAccess={denyAccess} grantAccess={grantAccess} />
               </Route>
-              <Route exact path="/profileBuild" component={profileBuild} />
+              <Route exact path="/#/profileBuild">
+                <ProfileBuild grantAccess={grantAccess} />
+              </Route>
             </Switch>
           </Container>
         </Router>
