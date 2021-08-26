@@ -76,45 +76,14 @@ function Profile() {
     <Container className="px-0 py-3">
       {profile && (
         <Row className="profile-card">
-          <Col sm={4}>
-            <center>
-              <img
-                alt="Profile"
-                src={profile.imageUrl}
-                className="profile-img"
-              />
-            </center>
-            {!edit && (
-              <p>
-                <center>
-                  {profile.firstName} {profile.lastName}
-                </center>
-              </p>
-            )}
-            {edit && (
-              <React.Fragment>
-                <input
-                  value={newProfile.firstName}
-                  name="firstName"
-                  onChange={handleChange}
-                />
-                <input
-                  value={newProfile.lastName}
-                  name="lastName"
-                  onChange={handleChange}
-                />
-              </React.Fragment>
-            )}
-
-            <h4>
-              <center> {profile.preferredPronouns}</center>
-            </h4>
-            <h4>
-              <center>Class of {profile.classYear}</center>
-            </h4>
-            <h4>
-              <center>Computer Science {profile.major1}</center>
-            </h4>
+          <Col sm={4} style={{ justifyContent: "center" }}>
+            <img alt="Profile" src={profile.imageUrl} className="profile-img" />
+            <p>
+              {profile.firstName} {profile.lastName}
+            </p>
+            <h4> {profile.preferredPronouns}</h4>
+            <h4>Class of {profile.classYear}</h4>
+            <h4>Computer Science {profile.major1}</h4>
             <br></br>
             <p id="normaltext">
               <strong>Bio: </strong>Interested in the intersection between tech
@@ -134,261 +103,144 @@ function Profile() {
             </p>
           </Col>
           <Col sm={8}>
-            <Row className="section-container0">
-              <Col></Col>
-              <Col></Col>
-              <Col></Col>
-              <Col></Col>
-              <Col></Col>
-              <Col></Col>
-              <Col></Col>
-              <Col>
-                {!edit && (
-                  <button
-                    onClick={() => setEdit(true)}
-                    type="button"
-                    class="btn btn-outline-primary btn-sm"
-                  >
-                    Edit
-                  </button>
-                )}
-
-                {edit && (
-                  <button
-                    onClick={() => {
-                      setEdit(false);
-                      editProfile();
-                    }}
-                    type="button"
-                    class="btn btn-outline-primary btn-sm"
-                  >
-                    Save
-                  </button>
-                )}
-              </Col>
+            <Row
+              className="section-container0"
+              style={{ justifyContent: "flex-end", margin: "1rem" }}
+            >
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                style={{ width: "5rem" }}
+              >
+                Edit
+              </button>
             </Row>
             <Row className="section-container1">
-              <Col>
+              <Col sm={3}>
                 <div class="card">
-                  <div class="course-body">
-                    <div class="course-title">
-                      <center>CODE 0001{profile.course1}</center>
-                    </div>
-                    <div class="course-text">
-                      <center>Principles of Economics</center>
-                    </div>
-                  </div>
+                  <div class="course-title">CODE 0001{profile.course1}</div>
+                  <div class="course-text">Principles of Economics</div>
                 </div>
               </Col>
-              <Col>
+              <Col sm={3}>
                 <div class="card">
-                  <div class="course-body">
-                    <div class="course-title">
-                      <center>CODE 0002{profile.course1}</center>
-                    </div>
-                    <div class="course-text">
-                      <center>Principles of Economics</center>
-                    </div>
-                  </div>
+                  <div class="course-title">CODE 0002{profile.course1}</div>
+                  <div class="course-text">Principles of Economics</div>
                 </div>
               </Col>
-              <Col>
+              <Col sm={3}>
                 <div class="card">
-                  <div class="course-body">
-                    <div class="course-title">
-                      <center>CODE 0003{profile.course1}</center>
-                    </div>
-                    <div class="course-text">
-                      <center>Principles of Economics</center>
-                    </div>
-                  </div>
+                  <div class="course-title">CODE 0003{profile.course1}</div>
+                  <div class="course-text">Principles of Economics</div>
                 </div>
               </Col>
-              <Col>
+              <Col sm={3}>
                 <div class="card">
-                  <div class="course-body">
-                    <div class="course-title">
-                      <center>CODE 0004{profile.course1}</center>
-                    </div>
-                    <div class="course-text">
-                      <center>Principles of Economics</center>
-                    </div>
-                  </div>
+                  <div class="course-title">CODE 0004{profile.course1}</div>
+                  <div class="course-text">Principles of Economics</div>
                 </div>
               </Col>
             </Row>
             <Row className="section-container2">
-              <p id="subheading">
-                <center>Interests</center>
-              </p>
+              <p id="subheading">Interests</p>
               <Col sm={4}>
                 <p id="normaltext">
-                  <center>
-                    <strong>Career and Academic</strong>
-                  </center>
+                  <strong>Career and Academic</strong>
                 </p>
                 <div class="card" id="interest-card">
-                  <div class="interest-body">
-                    <p id="normaltext">
-                      <center>
-                        {profile.interests1.map((interest) => interest + ", ")}
-                      </center>
-                    </p>
-                  </div>
+                  <p id="normaltext">
+                    {profile.interests1.map((interest) => interest + ", ")}
+                  </p>
                 </div>
               </Col>
               <Col sm={4}>
                 <p id="normaltext">
-                  <center>
-                    <strong>Physical Activity and Wellness</strong>
-                  </center>
+                  <strong>Physical Activity and Wellness</strong>
                 </p>
                 <div class="card" id="interest-card">
-                  <div class="interest-body">
-                    <p id="normaltext">
-                      <center>
-                        {profile.interests2.map((interest) => interest + ", ")}
-                      </center>
-                    </p>
-                  </div>
+                  <p id="normaltext">
+                    {profile.interests2.map((interest) => interest + ", ")}
+                  </p>
                 </div>
               </Col>
               <Col sm={4}>
                 <p id="normaltext">
-                  <center>
-                    <strong>General Hobbies</strong>
-                  </center>
+                  <strong>General Hobbies</strong>
                 </p>
                 <div class="card" id="interest-card">
-                  <div class="interest-body">
-                    <p id="normaltext">
-                      <center>
-                        {profile.interests3.map((interest) => interest + ", ")}
-                      </center>
-                    </p>
-                  </div>
+                  <p id="normaltext">
+                    {profile.interests3.map((interest) => interest + ", ")}
+                  </p>
                 </div>
               </Col>
             </Row>
             <Row className="section-container3">
-              <p id="subheading">
-                <center>Additional Info</center>
-              </p>
-              <Col>
+              <p id="subheading">Additional Info</p>
+              <Col sm={3}>
                 <p id="normaltext">
-                  <center>
-                    <strong>Pick Up Sports</strong>
-                  </center>
+                  <strong>Pick Up Sports</strong>
                 </p>
                 <div class="card" id="adinfo-card">
-                  <div class="adinfo-body">
-                    <p id="normaltext">
-                      <center>text</center>
-                    </p>
-                  </div>
+                  <p id="normaltext">text</p>
                 </div>
               </Col>
-              <Col>
+              <Col sm={3}>
                 <p id="normaltext">
-                  <center>
-                    <strong>Instruments</strong>
-                  </center>
+                  <strong>Instruments</strong>
                 </p>
                 <div class="card" id="adinfo-card">
-                  <div class="adinfo-body">
-                    <p id="normaltext">
-                      <center>text</center>
-                    </p>
-                  </div>
+                  <p id="normaltext">text</p>
                 </div>
               </Col>
-              <Col>
+              <Col sm={3}>
                 <p id="normaltext">
-                  <center>
-                    <strong>Gaming</strong>
-                  </center>
+                  <strong>Gaming</strong>
                 </p>
                 <div class="card" id="adinfo-card">
-                  <div class="adinfo-body">
-                    <p id="normaltext">
-                      <center>text</center>
-                    </p>
-                  </div>
+                  <p id="normaltext">text</p>
                 </div>
               </Col>
-              <Col>
+              <Col sm={3}>
                 <p id="normaltext">
-                  <center>
-                    <strong>Pets</strong>
-                  </center>
+                  <strong>Pets</strong>
                 </p>
                 <div class="card" id="adinfo-card">
-                  <div class="adinfo-body">
-                    <p id="normaltext">
-                      <center>text</center>
-                    </p>
-                  </div>
+                  <p id="normaltext">text</p>
                 </div>
               </Col>
             </Row>
             <Row className="section-container4">
-              <p id="subheading">
-                <center>Favourites</center>
-              </p>
+              <p id="subheading">Favourites</p>
               <Col sm={3}>
                 <p id="normaltext">
-                  <center>
-                    <strong>Movies</strong>
-                  </center>
+                  <strong>Movies</strong>
                 </p>
                 <div class="card" id="fav-card">
-                  <div class="fav-body">
-                    <p id="normaltext">
-                      <center>text</center>
-                    </p>
-                  </div>
+                  <p id="normaltext">text</p>
                 </div>
               </Col>
               <Col sm={3}>
                 <p id="normaltext">
-                  <center>
-                    <strong>Artists/Bands</strong>
-                  </center>
+                  <strong>Artists/Bands</strong>
                 </p>
                 <div class="card" id="fav-card">
-                  <div class="fav-body">
-                    <p id="normaltext">
-                      <center>text</center>
-                    </p>
-                  </div>
+                  <p id="normaltext">text</p>
                 </div>
               </Col>
               <Col sm={3}>
                 <p id="normaltext">
-                  <center>
-                    <strong>Food</strong>
-                  </center>
+                  <strong>Food</strong>
                 </p>
                 <div class="card" id="fav-card">
-                  <div class="fav-body">
-                    <p id="normaltext">
-                      <center>text</center>
-                    </p>
-                  </div>
+                  <p id="normaltext">text</p>
                 </div>
               </Col>
               <Col sm={3}>
                 <p id="normaltext">
-                  <center>
-                    <strong>Celebrity</strong>
-                  </center>
+                  <strong>Celebrity</strong>
                 </p>
                 <div class="card" id="fav-card">
-                  <div class="fav-body">
-                    <p id="normaltext">
-                      <center>text</center>
-                    </p>
-                  </div>
+                  <p id="normaltext">text</p>
                 </div>
               </Col>
             </Row>

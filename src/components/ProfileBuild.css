@@ -1,15 +1,15 @@
-h2 {
+.profile-build-container h2 {
     margin: 0;
     margin-right: 7px;
 }
 
-p {
+.profile-build-container p {
     font-size: 2.5rem;
     margin-left: 0;
     font-family: Avenir ;
 }
 
-.section-container {
+.profile-build-container {
     padding-left: 10rem;
     padding-right: 10rem;
     padding-bottom: 2rem;
@@ -22,7 +22,7 @@ p {
 }
 
 @media (max-width: 960px) {
-    .section-container {
+    .profile-build-container {
         padding-left: 2rem;
         padding-right: 2rem;
         padding-bottom: 1rem;

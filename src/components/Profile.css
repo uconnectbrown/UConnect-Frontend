@@ -1,16 +1,18 @@
-h4 {
+.profile-card h4 {
     font-family: Avenir Medium;
+    font-size: 18px;
     align-content: center;
+    text-align: center;
 }
 
-h3{
+.profile-card h3 {
     text-align: center;
     font-size: 3px;
     font-family: Avenir Book;
 }
 
 
-h2{
+.profile-card h2 {
     text-align: left;
     font-family: Avenir Book;
 }
@@ -23,8 +25,8 @@ h2{
     padding-bottom: 0rem;
 }
 .profile-img {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
     border-radius: 20%;
 }
@@ -35,8 +37,6 @@ h2{
     padding: 2rem;
     margin: 1rem;
     display: flex;
-    width: 1300px;
-    height: 800px;
 }
 
 #normaltext{
@@ -91,10 +91,8 @@ h2{
     align-items: center;
 }
 .card{
-    width: 150px;
-    height:60px;
-    border-radius: 10%;
-    margin-top: 0px;
+    height: 60px;
+    border-radius: 10px;
     background-color: rgb(174, 199, 182);
     
 }
@@ -113,18 +111,9 @@ h2{
 
 
 }
-.course-body{
-    width: 150px;
-    height:60px;
-    border-radius: 10%;
-    padding:0px;
-    background-color: rgb(174, 199, 182);
-
-}
 
 #interest-card{
-    width: 250px;
-    height:150px;
+    height: 150px;
     border-radius:5%;
     background-color:rgb(233, 228, 255);
 }
@@ -133,39 +122,17 @@ h2{
     font-family: Avenir Medium;
     font-size: 0.7rem;
     margin-top: 2px;
-
-}
-.interest-body{
-    width: 240px;
-    height:90px;
-    padding:0px;
-    border-radius: 5%;
-    background-color:rgb(233, 228, 255);
-
 }
 
 #adinfo-card{
-    width: 150px;
-    height:150px;
+    height: 150px;
     border-radius: 10%;
     background-color:rgb(233, 228, 255);
-    outline-color:rgb(233, 228, 255);
-
     align-items: stretch;
     display: flex;
     justify-content: center;
     align-items: center;
 
-}
-
-.adinfo-body{
-    width: 120px;
-    height:150px;
-    border-radius: 10%;
-    background-color:rgb(233, 228, 255);
-    outline-color:rgb(233, 228, 255);
-    
- 
 }
 
 #fav-card{
@@ -175,15 +142,5 @@ h2{
     margin-right: 5px;
     border-radius: 5%;
     background-color:rgb(233, 228, 255);
-    outline-color:rgb(233, 228, 255);
-}
-
-.fav-body{
-    width: 150px;
-    height:80px;
-    border-radius: 5%;
-    background-color:rgb(233, 228, 255);
-    outline-color:rgb(233, 228, 255);
-    
 }
 

@@ -98,7 +98,7 @@ function ProfileBuild(props) {
 
   return (
     <form noValidate onSubmit={handleSubmit}>
-      <Grid container className="section-container">
+      <Grid container className="profile-build-container">
         <Grid item sm>
           <Typography variant="h2" className={classes.pageTitle}>
             Build Profile
@@ -315,7 +315,7 @@ function ProfileBuild(props) {
         </Grid>
       </Grid>
 
-      <Grid container className="section-container">
+      <Grid container className="profile-build-container">
         <Grid item sm>
           <div class="header-icon-wrap">
             <h2>Interests</h2>
