@@ -55,6 +55,7 @@ import Box from "@material-ui/core/Box";
 
 import { Container, Row, Col } from "react-bootstrap";
 import "./Profile.css";
+import { FormatAlignRight } from "@material-ui/icons";
 
 // Body
 function Profile() {
@@ -99,8 +100,19 @@ function Profile() {
               <p id="normaltext"><strong>Greek Life: </strong>{profile.greekLife}</p>
           </Col>
           <Col sm={8}>
-            <Row className="section-container">
-              <p id="subheading"><center>Courses</center></p>
+            <Row className="section-container0">
+             <Col></Col>
+             <Col></Col>
+             <Col></Col>
+             <Col></Col>
+             <Col></Col>
+             <Col></Col>
+             <Col></Col>
+             <Col>
+             <button type="button" class="btn btn-outline-primary btn-sm">Edit</button>
+             </Col>
+           </Row>
+            <Row className="section-container1">
               <Col>
                 <div class="card">
                 <div class="course-body">
@@ -140,7 +152,7 @@ function Profile() {
                  <p id="normaltext"><center><strong>Career and Academic</strong></center></p>
                 <div class="card" id="interest-card">
                 <div class="interest-body">
-                  <p id="normaltext"><center>{profile.interests1}</center></p>
+                  <p id="normaltext"><center>{profile.interests1.map((interest)=>interest+ ", ")}</center></p>
                 </div>
                 </div>
                </Col>
@@ -148,7 +160,7 @@ function Profile() {
                 <p id="normaltext"><center><strong>Physical Activity and Wellness</strong></center></p>
                 <div class="card" id="interest-card">
                 <div class="interest-body">
-                 <p id="normaltext"><center>{profile.interests2}</center></p>
+                 <p id="normaltext"><center>{profile.interests2.map((interest)=>interest+ ", ")}</center></p>
                 </div>
                 </div>
                </Col>
@@ -156,7 +168,7 @@ function Profile() {
                 <p id="normaltext"><center><strong>General Hobbies</strong></center></p>
                 <div class="card" id="interest-card">
                 <div class="interest-body">
-                  <p id="normaltext"><center>{profile.interests3}</center></p>
+                  <p id="normaltext"><center>{profile.interests3.map((interest)=>interest+ ", ")}</center></p>
                 </div>
                 </div>
                </Col>

@@ -32,7 +32,7 @@ h2{
 .profile-card {
     box-shadow: 10px 10px 8px 8px #dbdbdb;
     border-radius: 5rem;
-    padding: 3rem;
+    padding: 2rem;
     margin: 1rem;
     display: flex;
     width: 1300px;
@@ -46,12 +46,24 @@ h2{
     padding-top: 0px;
 }
 
-.section-container {
+.section-container0 {
+    padding-left:0rem;
+    padding-right:0rem;
+    height: 4%;
+    align-items: center;
+    
+}
+
+.section-container1 {
     padding-left:0rem;
     padding-right:0rem;
     padding: bottom 1rem;
-    height: 15%;
+    height: 10%;
     align-items: center;
+}
+
+.btn-primary{
+    width: 5px;
 }
 
 .section-container2 {
@@ -66,15 +78,16 @@ h2{
     padding-left:0rem;
     padding-right:0rem;
     padding: bottom 1rem;
-    height: 30%;
+    height: 25%;
     align-items: center;
 }
 
 .section-container4 {
+    padding-top: 2.5rem;
     padding-left:0rem;
     padding-right:0rem;
     padding: bottom 1rem;
-    height: 25%;
+    height: 20%;
     align-items: center;
 }
 .card{
@@ -103,6 +116,7 @@ h2{
 .course-body{
     width: 150px;
     height:60px;
+    border-radius: 10%;
     padding:0px;
     background-color: rgb(174, 199, 182);
 
@@ -111,9 +125,8 @@ h2{
 #interest-card{
     width: 250px;
     height:150px;
-    border-radius: 5%;
+    border-radius:5%;
     background-color:rgb(233, 228, 255);
-    outline-color:rgb(233, 228, 255);
 }
 
 .interests{
@@ -125,20 +138,19 @@ h2{
 .interest-body{
     width: 240px;
     height:90px;
-    border-radius: 10%;
+    padding:0px;
+    border-radius: 5%;
     background-color:rgb(233, 228, 255);
-    outline-color:rgb(233, 228, 255);
 
 }
 
 #adinfo-card{
-    width: 130px;
+    width: 150px;
     height:150px;
     border-radius: 10%;
     background-color:rgb(233, 228, 255);
     outline-color:rgb(233, 228, 255);
-    margin-left: 10px;
-    margin-right: 10px;
+
     align-items: stretch;
     display: flex;
     justify-content: center;
@@ -152,14 +164,15 @@ h2{
     border-radius: 10%;
     background-color:rgb(233, 228, 255);
     outline-color:rgb(233, 228, 255);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    
+ 
 }
 
 #fav-card{
     width: 160px;
     height:80px;
+    margin-left: 5px;
+    margin-right: 5px;
     border-radius: 5%;
     background-color:rgb(233, 228, 255);
     outline-color:rgb(233, 228, 255);
@@ -171,5 +184,6 @@ h2{
     border-radius: 5%;
     background-color:rgb(233, 228, 255);
     outline-color:rgb(233, 228, 255);
+    
 }
 
