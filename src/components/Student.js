@@ -5,7 +5,6 @@ import { db, auth } from "../firebase";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -20,6 +19,10 @@ import Music from "@material-ui/icons/MusicNote";
 import Pets from "@material-ui/icons/Pets";
 import Sports from "@material-ui/icons/SportsBasketball";
 import DialogContent from "@material-ui/core/DialogContent";
+
+import ConnectButton from "./ConnectButton";
+import { Container, Row, Col, Card, Button } from "react-bootstrap"
+import "./Student.css";
 
 // Body
 function Student(props) {
@@ -109,20 +112,48 @@ function Student(props) {
       });
   };
 
+  const renderCourses = () => {
+    return student.courses.map(c => {
+      if (!c.name) return null;
+      return <div 
+        className="modal-profile-courses d-flex flex-column text-center align-items-center justify-content-center"
+        // onClick={}
+      >
+        <div>{c.code}</div>
+        <div style={{ fontSize: '10px' }}>{c.name}</div>
+      </div>
+    })
+  }
+
+  if (!(student && status)) return null;
+
+  return (
+    <Container className="modal-profile-wrap d-flex py-3">
+      <Col sm={4} className="align-items-center text-center px-3">
+        <img className="modal-profile-img" alt="Profile Picture" src={student.imageUrl}/>
+        <div style={{ fontSize: '1.5em', fontStyle: 'bold' }}>
+          {student.firstName + " " + student.lastName}
+        </div>
+        <div>{student.preferredPronouns && `(${student.preferredPronouns})`}</div>
+        <div>Class of {student.classYear}</div>
+        <div>{student.majors.map((major) => major)}</div>
+        <div className="modal-bio">{student.bio}</div>
+        <ConnectButton status={status} sendRequest={sendRequest} acceptRequest={acceptRequest}/>
+      </Col>
+      <Col sm={8} className="px-3">
+        <Row>
+          {renderCourses()}
+        </Row>
+      </Col>
+    </Container>
+  )
+
   return (
     <DialogContent>
       {student && status && (
         <div>
           <Card raised>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="back"
-              onClick={props.handleClose}
-            >
-              <CloseIcon />
-              <span style={{ marginRight: "5px" }} />
-            </IconButton>
+            {/* <IconButton><CloseIcon /></IconButton> */}
 
             {status === "nil" && (
               <IconButton
@@ -169,77 +200,9 @@ function Student(props) {
             )}
 
             <CardContent align="center">
-              <Grid container spacing={1}>
-                <Grid item sm></Grid>
-                <Grid item sm>
-                  <img
-                    alt="Profile"
-                    src={student.imageUrl}
-                    style={{
-                      width: 400,
-                      height: 400,
-                      objectFit: "cover",
-                      borderRadius: "10%",
-                      borderStyle: "solid",
-                      borderColor: "red",
-                      borderWidth: "2px",
-                    }}
-                  />
-                  <br />
-                </Grid>
-                <Grid item sm></Grid>
-              </Grid>
-
-              <br />
-              <Card raised style={{ display: "inline-block" }}>
-                <CardContent>
-                  <span>
-                    <Typography variant="h3" align="center">
-                      {student.firstName} {student.lastName}{" "}
-                    </Typography>
-                  </span>
-                  <Typography variant="h5">
-                    {student.preferredPronouns &&
-                      `(${student.preferredPronouns})`}
-                  </Typography>
-                  <br />
-                  <Typography variant="h5">
-                    Class of {student.classYear}
-                  </Typography>
-                  <Typography variant="h5">
-                    Concentration(s): {student.major1}
-                    {student.major2 && `, ${student.major2}`}
-                    {student.major3 && `, ${student.major3}`}
-                  </Typography>
-                </CardContent>
-              </Card>
-              <br />
-              <br />
-              {student.bio && (
-                <Card raised style={{ display: "inline-block" }}>
-                  <CardContent>
-                    <span>
-                      <Typography variant="h4" align="center">
-                        Bio
-                      </Typography>
-                    </span>
-                    {student.bio}{" "}
-                  </CardContent>
-                </Card>
-              )}
-              <br />
               <Grid container spacing={2}>
                 <Grid item sm>
-                  <Card
-                    raised
-                    style={{
-                      borderStyle: "solid",
-                      borderWidth: "2px",
-                      borderColor: "red",
-                      height: "100%",
-                      marginBottom: "-5px",
-                    }}
-                  >
+                  <Card>
                     <CardContent>
                       <div>
                         <span>

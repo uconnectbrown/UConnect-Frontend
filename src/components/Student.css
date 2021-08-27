@@ -1,0 +1,20 @@
+.modal-profile-img {
+    width: 100%;
+    border-radius: 100rem;
+    margin-bottom: 0.5rem;
+}
+
+.modal-profile-courses {
+    min-height: 75px;
+    background-color: #f3f3f3;
+    margin: 1%;
+    border-radius: 0.5rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    cursor: pointer;
+}
+
+.modal-bio {
+    margin-top: 1rem;
+    font-weight: 800;
+}

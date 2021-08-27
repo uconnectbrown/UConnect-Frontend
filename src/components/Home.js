@@ -8,7 +8,7 @@ import Select from "react-select";
 import Student from "./Student";
 import Message from "./Message";
 
-import { Container, Row, Col, Button, Dropdown, Form } from "react-bootstrap"
+import { Container, Row, Col, Button, Modal, Form } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
 
@@ -116,7 +116,7 @@ function Home(props) {
     setStudentId(students[index].email.split("@")[0]);
   };
 
-  const handleOpenFStudent = (index) => {
+  const handleOpenFeatured = (index) => {
     setStudentId(featured[index].emailId);
   };
 
@@ -197,9 +197,9 @@ function Home(props) {
 
   const renderSeachResults = () => {
     return <div>
-      {students.map((student, index) => {
+      {students.map((student, i) => {
         return (
-          <Row className="search-card align-items-center">
+          <Row className="search-card align-items-center" onClick={() => handleOpenStudent(i)} key={i}>
             <Col md={2} lg={1}>
               <img className="search-profile-img" alt="Profile Picture" src={student.imageUrl}/>
             </Col>
@@ -228,7 +228,7 @@ function Home(props) {
         {
           featured.map((student, i) => { 
             return (
-              <div className="featured-card mx-lg-3 mx-sm-1" onClick={() => handleOpenFStudent(i)}>
+              <div className="featured-card mx-lg-3 mx-sm-1" onClick={() => handleOpenFeatured(i)}>
                 <img className="featured-profile-img" alt="Profile Picture" src={student.imageUrl}/>
                 <div className="card-text mb-3">{student.name}</div>
                 <Button style={{ marginTop: 'auto' }}>
@@ -244,21 +244,29 @@ function Home(props) {
 
   return (
     <Container fluid className="uconnect-home" style={{ marginTop: '1rem' }}>
-      {/* <Dialog open={studentId}>
-        <Student
-          studentId={studentId}
-          handleClose={handleCloseStudent}
-          handleRequest={props.handleRequest}
-          requests={props.requests}
-          handleOpenMessage={handleOpenMessage}
-        />
-      </Dialog>
-      <Dialog open={messageOpen && studentInfo}>
+      {/* <Dialog open={messageOpen && studentInfo}>
         <Message
           handleCloseMessage={handleCloseMessage}
           studentInfo={studentInfo}
         />
       </Dialog> */}
+
+      <Modal 
+        keyboard
+        show={studentId} 
+        onHide={handleCloseStudent}
+        dialogClassName="student-modal"
+      >
+        <Modal.Body>
+          <Student
+            studentId={studentId}
+            handleClose={handleCloseStudent}
+            handleRequest={props.handleRequest}
+            requests={props.requests}
+            handleOpenMessage={handleOpenMessage}
+          />
+        </Modal.Body>
+      </Modal>
       <h1>Connect</h1>
       {renderSearchBar()}
       {renderFilters()}

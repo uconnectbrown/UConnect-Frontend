@@ -54,6 +54,15 @@
     padding: 1rem;
     border-radius: 1rem;
     box-shadow: 5px 5px 10px lightgrey;
+    cursor: pointer;
+}
+
+.student-modal { 
+    max-width: 80% !important; 
+}
+
+.search-card {
+    cursor: pointer;
 }
 
 .featured-profile-img {
