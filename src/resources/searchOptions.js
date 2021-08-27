@@ -17,12 +17,6 @@ const classYears = [
   },
 ];
 
-const interests = [
-  { value: "Tennis", label: "Tennis" },
-  { value: "Basketball", label: "Basketball" },
-  { value: "Baseball", label: "Baseball" },
-];
-
 const majors = [
   { value: "Africana Studies", label: "Africana Studies" },
   { value: "American Studies", label: "American Studies" },
@@ -111,4 +105,4 @@ const majors = [
   { value: "Visual Art", label: "" },
 ];
 
-export { classYears, interests, majors };
+export { classYears, majors };

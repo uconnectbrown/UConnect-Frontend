@@ -34,6 +34,9 @@ import Button from "@material-ui/core/Button";
 // Styling
 import "bootstrap/dist/css/bootstrap.min.css";
 
+axios.defaults.baseURL =
+  "https://us-east4-uconnect-5eebd.cloudfunctions.net/api";
+
 // Body
 function App() {
   // Authentication
@@ -131,7 +134,7 @@ function App() {
     return (
       <h3>
         Page not found. Click
-        <Link to="/">
+        <Link to="/home">
           <Button>here</Button>
         </Link>
         to go back to UConnect
@@ -180,9 +183,6 @@ function App() {
               </Route>
               <Route exact path="/profileBuild">
                 <ProfileBuild grantAccess={grantAccess} />
-              </Route>
-              <Route path="*">
-                <NoMatch />
               </Route>
             </Switch>
           </Container>
