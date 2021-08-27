@@ -1,0 +1,86 @@
+.search-bar {
+    width: 80%;
+    height: 2.75rem;
+    border-radius: 10rem;
+    background-color: #f3f3f3;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    align-items: center;
+    display: flex;
+}
+
+.search-input {
+    background-color: #f3f3f3;
+    border-color: transparent;
+}
+
+.search-input:focus-visible {
+    outline: none;
+}
+
+.search-card {
+    background-color: #f3f3f3;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    width: 90%;
+}
+
+.search-profile-img {
+    width: 100%;
+    border-radius: 10rem;
+    max-width: 5rem;
+}
+
+.uconnect-home .card-text {
+    font-size: 0.9em;
+    width: 100%;
+}
+
+.uconnect-home .featured-container {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow: auto;
+}
+
+.uconnect-home .featured-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 19%;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 10px lightgrey;
+}
+
+.featured-profile-img {
+    width: 6rem;
+    border-radius: 10rem;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .uconnect-home {
+        margin: 0;
+        padding: 0;
+    }
+
+    .search-card {
+        text-align: center;
+    }
+
+    .search-bar, .search-card, .featured-container {
+        width: 100%;
+    }
+
+    .uconnect-home .featured-profile-img {
+        width: 3rem;
+    }
+
+    .uconnect-home .featured-card {
+        min-width: 45%;
+    }
+}

@@ -48,7 +48,7 @@ function Profile() {
   };
 
   return (
-    <Container className="px-0 py-3">
+    <Container className="px-0 py-3 uconnect-profile">
       {profile && (
         <Row className="profile-card">
           <Col sm={4} style={{ justifyContent: 'center' }}>

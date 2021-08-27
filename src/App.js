@@ -146,10 +146,10 @@ function App() {
           <NavBar requests={requests} imageUrl={imageUrl} reset={reset} />
           <Container fluid>
             <Row className="px-3 py-4">
-              <Col xs={2}>
+              <Col xs={1} md={2}>
                 <SideBar courses={courses} handleCode={handleCode} />
               </Col>
-              <Col xs={10}>
+              <Col xs={11} md={10}>
                 <Switch>
                   <Route exact path="/">
                     <Home requests={requests} handleRequest={decRequests} />

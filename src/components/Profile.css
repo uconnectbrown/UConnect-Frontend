@@ -1,18 +1,18 @@
-.profile-card h4 {
+.uconnect-profile h4 {
     font-family: Avenir Medium;
     font-size: 18px;
     align-content: center;
     text-align: center;
 }
 
-.profile-card h3 {
+.uconnect-profile h3 {
     text-align: center;
     font-size: 3px;
     font-family: Avenir Book;
 }
 
 
-.profile-card h2 {
+.uconnect-profile h2 {
     text-align: left;
     font-family: Avenir Book;
 }
@@ -31,7 +31,7 @@
     border-radius: 20%;
 }
 
-.profile-card {
+.uconnect-profile .profile-card {
     box-shadow: 10px 10px 8px 8px #dbdbdb;
     border-radius: 5rem;
     padding: 2rem;
@@ -39,14 +39,14 @@
     display: flex;
 }
 
-#normaltext{
+.uconnect-profile #normaltext{
     font-size: 0.9rem;
     margin-bottom: 5px;
     margin-top: 0px;
     padding-top: 0px;
 }
 
-.section-container0 {
+.uconnect-profile .section-container0 {
     padding-left:0rem;
     padding-right:0rem;
     height: 4%;
@@ -54,7 +54,7 @@
     
 }
 
-.section-container1 {
+.uconnect-profile .section-container1 {
     padding-left:0rem;
     padding-right:0rem;
     padding: bottom 1rem;
@@ -62,11 +62,11 @@
     align-items: center;
 }
 
-.btn-primary{
+.uconnect-profile .btn-primary {
     width: 5px;
 }
 
-.section-container2 {
+.uconnect-profile .section-container2 {
     padding-left:0rem;
     padding-right:0rem;
     padding: bottom 1rem;
@@ -74,7 +74,7 @@
     align-items: center;
 }
 
-.section-container3 {
+.uconnect-profile .section-container3 {
     padding-left:0rem;
     padding-right:0rem;
     padding: bottom 1rem;
@@ -82,7 +82,7 @@
     align-items: center;
 }
 
-.section-container4 {
+.uconnect-profile .section-container4 {
     padding-top: 2.5rem;
     padding-left:0rem;
     padding-right:0rem;
@@ -90,21 +90,22 @@
     height: 20%;
     align-items: center;
 }
-.card{
+
+.uconnect-profile .card{
     height: 60px;
     border-radius: 10px;
     background-color: rgb(174, 199, 182);
     
 }
 
-.course-title{
+.uconnect-profile .course-title{
     font-family: Avenir Medium;
     font-size: 0.9rem;
     margin-top: 7px;
 
 }
 
-.course-text{
+.uconnect-profile .course-text{
     font-family: Avenir Medium;
     font-size: 0.7rem;
     margin-top: 2px;
@@ -112,19 +113,19 @@
 
 }
 
-#interest-card{
+.uconnect-profile #interest-card{
     height: 150px;
     border-radius:5%;
     background-color:rgb(233, 228, 255);
 }
 
-.interests{
+.uconnect-profile .interests{
     font-family: Avenir Medium;
     font-size: 0.7rem;
     margin-top: 2px;
 }
 
-#adinfo-card{
+.uconnect-profile #adinfo-card{
     height: 150px;
     border-radius: 10%;
     background-color:rgb(233, 228, 255);
@@ -135,7 +136,7 @@
 
 }
 
-#fav-card{
+.uconnect-profile #fav-card{
     width: 160px;
     height:80px;
     margin-left: 5px;

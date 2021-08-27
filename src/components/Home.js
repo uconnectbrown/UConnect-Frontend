@@ -8,19 +8,11 @@ import Select from "react-select";
 import Student from "./Student";
 import Message from "./Message";
 
-// MUI Stuff
-import Grid from "@material-ui/core/Grid";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import SearchBar from "material-ui-search-bar";
-import CardContent from "@material-ui/core/CardContent";
-import Card from "@material-ui/core/Card";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import Typography from "@material-ui/core/Typography";
-import Dialog from "@material-ui/core/Dialog";
-import Button from "@material-ui/core/Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import { Container, Row, Col, Button, Dropdown, Form } from "react-bootstrap"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from "@fortawesome/free-solid-svg-icons"
+
+import "./Home.css"
 
 // Resources
 import { classYears, majors } from "../resources/searchOptions";
@@ -76,6 +68,8 @@ function Home(props) {
   };
 
   const searchName = (query) => {
+    console.log('searching')
+
     axios
       .get(`/all/${email}`)
       .then((res) => {
@@ -141,9 +135,138 @@ function Home(props) {
     setMessageOpen(false);
   };
 
+  const onSearchSubmit = (e) => {
+    e.preventDefault()
+    searchName(query)
+  }
+
+  const clearSearch = () => {
+    setStudents([]);
+    setClassYears([]);
+    setMajors([]);
+    setQuery("");
+    setSearching(false);
+  }
+
+  const renderSearchBar = () => {
+    return (
+      <div className="search-bar">
+        <form onSubmit={onSearchSubmit} style={{ width: '97%'}}> 
+          <label htmlFor="search">
+            <span className="visually-hidden">Search for students</span>
+          </label>
+          <input
+            type="text"
+            className="search-input"
+            id="search"
+            placeholder="Search for students"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </form>
+        <button onClick={clearSearch}>
+          <FontAwesomeIcon icon={faTimes} color={'grey'}/>
+        </button>
+      </div>
+  )}
+
+  const renderFilters = () => {
+    return <Row className="my-3" style={{ paddingLeft: '0.5rem'}}>
+      <Col md={9} lg={4}>
+        <Select
+          closeMenuOnSelect={classYears_.length === classYears.length - 1}
+          isMulti
+          name="classYears"
+          value={classYears_}
+          options={classYears}
+          onChange={(options) => setClassYears(options)}
+          placeholder="Filter by class year..."
+        />
+      </Col>
+      <Col md={9} lg={4}>
+        <Select
+          closeMenuOnSelect={majors_.length === majors.length - 1}
+          isMulti
+          name="concentration"
+          value={majors_}
+          options={majors}
+          onChange={(options) => setMajors(options)}
+          placeholder="Filter by concentration..."
+        />
+      </Col>
+    </Row>
+  }
+
+  const renderSeachResults = () => {
+    return <div>
+      {students.map((student, index) => {
+        return (
+          <Row className="search-card align-items-center">
+            <Col md={2} lg={1}>
+              <img className="search-profile-img" alt="Profile Picture" src={student.imageUrl}/>
+            </Col>
+            <Col md={5} lg={5}>
+              <div style={{ fontSize: '1.2em', fontStyle: 'bold' }}>{student.firstName + " " + student.lastName}</div>
+              <div className="card-text">{student.classYear}</div>
+              <div className="card-text">{student.majors.map((major) => major)}</div>
+            </Col>
+            <Col md={5} lg={6}>
+              <ul style={{ marginBottom: 0 }}>
+                <li className="card-text">thing in common</li>
+                <li className="card-text">thing in common</li>
+                <li className="card-text">thing in common</li>
+              </ul>
+            </Col>
+          </Row>
+        )
+      })}
+    </div>
+  }
+
+  const renderFeatured = () => {
+    console.log(featured[0])
+    return <div>
+      <h5 className="mt-4">Featured Profiles</h5>
+      <div class="featured-container pb-4 pt-1">
+        {
+          featured.map((student, i) => { 
+            return (
+              <div className="featured-card mx-lg-3 mx-sm-1" onClick={() => handleOpenFStudent(i)}>
+                <img className="featured-profile-img" alt="Profile Picture" src={student.imageUrl}/>
+                <div className="card-text mb-3">{student.name}</div>
+                <Button style={{ marginTop: 'auto' }}>
+                  Request
+                </Button>
+              </div>
+            )
+          })
+        }  
+      </div>
+    </div>
+        // <GridListTile item component="Card" sm>
+        //   <Card align="center">
+        //     <ButtonBase
+        //       size="large"
+        //       color="primary"
+        //       onClick={() => handleOpenFStudent(index)}
+        //       style={{ width: "100%" }}
+        //     >
+        //       <CardContent>
+        //         <img
+        //           width="45px"
+        //           alt="Profile Picture"
+        //           src={student.imageUrl}
+        //         />
+        //         <Typography variant="body2">{student.name}</Typography>
+        //       </CardContent>
+        //     </ButtonBase>
+        //   </Card>
+        // </GridListTile>
+  }
+
   return (
-    <div>
-      <Dialog open={studentId}>
+    <Container fluid className="uconnect-home" style={{ marginTop: '1rem' }}>
+      {/* <Dialog open={studentId}>
         <Student
           studentId={studentId}
           handleClose={handleCloseStudent}
@@ -157,165 +280,66 @@ function Home(props) {
           handleCloseMessage={handleCloseMessage}
           studentInfo={studentInfo}
         />
-      </Dialog>
-      <Typography variant="h3">Connect</Typography>
+      </Dialog> */}
+      <h1>Connect</h1>
+      {renderSearchBar()}
+      {renderFilters()}
+      {students && renderSeachResults()}
+      {!searching && featured && renderFeatured()}
+    </Container>
+  )
 
-      <Grid container spacing={10}>
-        {searchMode && (
-          <Grid item>
-            <SearchBar
-              value={query}
-              onChange={(newValue) => setQuery(newValue)}
-              onRequestSearch={() => {
-                searchName(query);
-              }}
-            />
-          </Grid>
-        )}
-        {!searchMode && (
-          <Grid item>
-            Class Year(s)
-            <Select
-              closeMenuOnSelect={
-                classYears_.length === classYears.length - 1 ? true : false
-              }
-              isMulti
-              name="classYears"
-              value={classYears_}
-              options={classYears}
-              onChange={(options) => setClassYears(options)}
-            />
-          </Grid>
-        )}
-        {!searchMode && (
-          <Grid item>
-            Concentration(s)
-            <Select
-              closeMenuOnSelect={
-                majors_.length === majors.length - 1 ? true : false
-              }
-              isMulti
-              name="concentration"
-              value={majors_}
-              options={majors}
-              onChange={(options) => setMajors(options)}
-            />
-          </Grid>
-        )}
-
-        {!searchMode && (
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              disabled={!canSearch(classYears_, majors_)}
-              onClick={() => {
-                setSearching(false);
-                searchField(
-                  classYears_.map((option) => option.value),
-                  majors_.map((option) => option.value)
-                );
-              }}
-            >
-              Search
-            </Button>
-          </Grid>
-        )}
-        <Grid item>
-          <Button
-            variant="contained"
-            disabled={!searching}
-            color="primary"
-            onClick={() => {
-              setStudents([]);
-              setClassYears([]);
-              setMajors([]);
-              setQuery("");
-              setSearching(false);
-            }}
-          >
-            Clear Search
-          </Button>
-        </Grid>
-        <Grid item>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={searchMode}
-                onChange={() => {
-                  setSearchMode(!searchMode);
-                  setQuery("");
-                  setClassYears([]);
-                  setMajors([]);
-                }}
-                name="checkedB"
-                color="primary"
-              />
-            }
-            label="Search By Name"
-          />
-        </Grid>
-      </Grid>
-      {students && (
-        <div>
-          {students.map((student, index) => {
-            return (
-              <Card>
-                <ButtonBase
-                  size="large"
-                  color="primary"
-                  onClick={() => handleOpenStudent(index)}
-                  style={{ width: "100%" }}
-                >
-                  <CardContent>
-                    <img
-                      width="45px"
-                      alt="Profile Picture"
-                      src={student.imageUrl}
-                    />
-                    <Typography variant="body2">
-                      {student.firstName + " " + student.lastName}
-                    </Typography>
-                    <Typography variant="body2">{student.classYear}</Typography>
-                    <Typography variant="body2">
-                      {student.majors.map((major) => major)}
-                    </Typography>
-                  </CardContent>
-                </ButtonBase>
-              </Card>
-            );
-          })}
-        </div>
-      )}
-      {!searching && featured && (
-        <GridList cols={10} spacing={10} cellHeight="auto">
-          {featured.map((student, index) => {
-            return (
-              <GridListTile item component="Card" sm>
-                <Card align="center">
-                  <ButtonBase
-                    size="large"
-                    color="primary"
-                    onClick={() => handleOpenFStudent(index)}
-                    style={{ width: "100%" }}
-                  >
-                    <CardContent>
-                      <img
-                        width="45px"
-                        alt="Profile Picture"
-                        src={student.imageUrl}
-                      />
-                      <Typography variant="body2">{student.name}</Typography>
-                    </CardContent>
-                  </ButtonBase>
-                </Card>
-              </GridListTile>
-            );
-          })}
-        </GridList>
-      )}
-    </div>
-  );
+  // return (
+  //   <div>
+  //     <Grid container spacing={10}>
+  //       {!searchMode && (
+  //         <Grid item>
+  //           <Button
+  //             variant="contained"
+  //             color="secondary"
+  //             disabled={!canSearch(classYears_, majors_)}
+  //             onClick={() => {
+  //               setSearching(false);
+  //               searchField(
+  //                 classYears_.map((option) => option.value),
+  //                 majors_.map((option) => option.value)
+  //               );
+  //             }}
+  //           >
+  //             Search
+  //           </Button>
+  //         </Grid>
+  //       )}
+  //     )}
+  //     {!searching && featured && (
+  //       <GridList cols={10} spacing={10} cellHeight="auto">
+  //         {featured.map((student, index) => {
+  //           return (
+  //             <GridListTile item component="Card" sm>
+  //               <Card align="center">
+  //                 <ButtonBase
+  //                   size="large"
+  //                   color="primary"
+  //                   onClick={() => handleOpenFStudent(index)}
+  //                   style={{ width: "100%" }}
+  //                 >
+  //                   <CardContent>
+  //                     <img
+  //                       width="45px"
+  //                       alt="Profile Picture"
+  //                       src={student.imageUrl}
+  //                     />
+  //                     <Typography variant="body2">{student.name}</Typography>
+  //                   </CardContent>
+  //                 </ButtonBase>
+  //               </Card>
+  //             </GridListTile>
+  //           );
+  //         })}
+  //       </GridList>
+  //     )}
+  //   </div>
+  // );
 }
 
 export default Home;

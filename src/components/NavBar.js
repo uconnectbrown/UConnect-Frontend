@@ -12,11 +12,11 @@ import "./NavBar.css";
 function NavBar(props) {
   {
     return (
-      <Navbar variant="light" className="top-bar">
+      <Navbar variant="light" className="topbar">
         <Container>
           <Navbar.Brand>
             <div className="d-inline-block m-2">
-              <img alt="UConnect Logo" src={Logo} style={{ width: '40px', heigh: '40px' }}/>
+              <img alt="UConnect Logo" src={Logo} className="topbar-logo"/>
             </div>
             <h3 className="d-inline-block align-middle">UConnect</h3>
           </Navbar.Brand>
