@@ -68,8 +68,6 @@ function Home(props) {
   };
 
   const searchName = (query) => {
-    console.log('searching')
-
     axios
       .get(`/all/${email}`)
       .then((res) => {
@@ -224,7 +222,6 @@ function Home(props) {
   }
 
   const renderFeatured = () => {
-    console.log(featured[0])
     return <div>
       <h5 className="mt-4">Featured Profiles</h5>
       <div class="featured-container pb-4 pt-1">
@@ -243,25 +240,6 @@ function Home(props) {
         }  
       </div>
     </div>
-        // <GridListTile item component="Card" sm>
-        //   <Card align="center">
-        //     <ButtonBase
-        //       size="large"
-        //       color="primary"
-        //       onClick={() => handleOpenFStudent(index)}
-        //       style={{ width: "100%" }}
-        //     >
-        //       <CardContent>
-        //         <img
-        //           width="45px"
-        //           alt="Profile Picture"
-        //           src={student.imageUrl}
-        //         />
-        //         <Typography variant="body2">{student.name}</Typography>
-        //       </CardContent>
-        //     </ButtonBase>
-        //   </Card>
-        // </GridListTile>
   }
 
   return (
@@ -288,58 +266,6 @@ function Home(props) {
       {!searching && featured && renderFeatured()}
     </Container>
   )
-
-  // return (
-  //   <div>
-  //     <Grid container spacing={10}>
-  //       {!searchMode && (
-  //         <Grid item>
-  //           <Button
-  //             variant="contained"
-  //             color="secondary"
-  //             disabled={!canSearch(classYears_, majors_)}
-  //             onClick={() => {
-  //               setSearching(false);
-  //               searchField(
-  //                 classYears_.map((option) => option.value),
-  //                 majors_.map((option) => option.value)
-  //               );
-  //             }}
-  //           >
-  //             Search
-  //           </Button>
-  //         </Grid>
-  //       )}
-  //     )}
-  //     {!searching && featured && (
-  //       <GridList cols={10} spacing={10} cellHeight="auto">
-  //         {featured.map((student, index) => {
-  //           return (
-  //             <GridListTile item component="Card" sm>
-  //               <Card align="center">
-  //                 <ButtonBase
-  //                   size="large"
-  //                   color="primary"
-  //                   onClick={() => handleOpenFStudent(index)}
-  //                   style={{ width: "100%" }}
-  //                 >
-  //                   <CardContent>
-  //                     <img
-  //                       width="45px"
-  //                       alt="Profile Picture"
-  //                       src={student.imageUrl}
-  //                     />
-  //                     <Typography variant="body2">{student.name}</Typography>
-  //                   </CardContent>
-  //                 </ButtonBase>
-  //               </Card>
-  //             </GridListTile>
-  //           );
-  //         })}
-  //       </GridList>
-  //     )}
-  //   </div>
-  // );
 }
 
 export default Home;
