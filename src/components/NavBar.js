@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { Navbar, Container } from "react-bootstrap";
-import { faBullseye } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBullseye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Logo from "../assets/Logo.png"
+import Logo from "../assets/Logo.png";
 
 import "./NavBar.css";
 
@@ -22,13 +22,15 @@ function NavBar(props) {
           </Navbar.Brand>
           <div>
             <button onClick={props.handleProfile} className="requests-tracker">
-              <div style={{ fontSize: 14}}>
-                Requests: {props.requests}
-              </div>
+              <div style={{ fontSize: 14 }}>Requests: {props.requests}</div>
             </button>
             <Link to="/profile">
               <button>
-                <img alt="Profile Picture" src={props.imageUrl} className="nav-profile-img"/>
+                <img
+                  alt="Profile Picture"
+                  src={props.imageUrl}
+                  className="nav-profile-img"
+                />
               </button>
             </Link>
           </div>
@@ -40,21 +42,21 @@ function NavBar(props) {
 
 export default NavBar;
 
-      // <AppBar color="secondary">
-      //   <Toolbar>
-      //     Requests: {props.requests}
-      //     <SignOut
-      //       style={{ position: "absolute", right: "10%" }}
-      //       reset={props.reset}
-      //     />
-      //     <Link to="/profile">
-      //       <Button>
-      //         <img
-      //           alt="imageUrl"
-      //           src={props.imageUrl}
-      //           style={{ width: "50px" }}
-      //         />
-      //       </Button>
-      //     </Link>
-      //   </Toolbar>
-      // </AppBar>
+// <AppBar color="secondary">
+//   <Toolbar>
+//     Requests: {props.requests}
+//     <SignOut
+//       style={{ position: "absolute", right: "10%" }}
+//       reset={props.reset}
+//     />
+//     <Link to="/profile">
+//       <Button>
+//         <img
+//           alt="imageUrl"
+//           src={props.imageUrl}
+//           style={{ width: "50px" }}
+//         />
+//       </Button>
+//     </Link>
+//   </Toolbar>
+// </AppBar>
