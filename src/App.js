@@ -88,6 +88,9 @@ function App() {
   const handleCode = (c) => {
     setCode(c);
   };
+  const updateCourses = (courses) => {
+    setCourses(courses);
+  };
 
   // Requests
   const [requests, setRequests] = useState(null);
@@ -118,6 +121,9 @@ function App() {
         setImageUrl(doc.data().imageUrl);
       })
       .catch((err) => console.log(err));
+  };
+  const updateImage = (url) => {
+    setImageUrl(url);
   };
 
   // Reset states
@@ -162,7 +168,12 @@ function App() {
                   </Route>
                   <Route exact path="/messages" component={Messages} />
                   <Route exact path="/connections" component={Connections} />
-                  <Route exact path="/profile" component={Profile} />
+                  <Route exact path="/profile">
+                    <Profile
+                      handleImage={updateImage}
+                      handleCourses={updateCourses}
+                    />
+                  </Route>
                   <Route path="/courses/:codeParam">
                     <Course code={code} handleRequest={decRequests} />
                   </Route>

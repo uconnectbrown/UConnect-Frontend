@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { auth } from "../firebase";
 
+// Components
+import EditInterests from "./EditInterests";
+import Crop from "../util/Crop";
+
 // Resources
 import {
   majors,
@@ -21,12 +25,13 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./Profile.css";
 
 // Body
-function Profile() {
+function Profile(props) {
   const [emailId, setEmailId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
   const [indexArray, setIndexArray] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [editImage, setEditImage] = useState(false);
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -35,7 +40,7 @@ function Profile() {
   }, []);
 
   useEffect(() => {
-    getProfile();
+    if (emailId) getProfile();
   }, [emailId]);
 
   const getProfile = () => {
@@ -56,6 +61,15 @@ function Profile() {
   };
 
   const editProfile = () => {
+    if (newProfile.courses !== profile.courses) {
+      props.handleCourses(newProfile.courses);
+      axios
+        .get(`/update/${emailId}`)
+        .then(() => {
+          return;
+        })
+        .catch((err) => console.log(err));
+    }
     axios
       .post(`/edit/${emailId}`, newProfile)
       .then(() => {
@@ -85,11 +99,35 @@ function Profile() {
       color: "#ffffff",
     };
     newCourses[index] = newCourse;
-    console.log(newCourses);
     setNewProfile({
       ...newProfile,
       courses: newCourses,
     });
+  };
+
+  const handleFavoriteChange = (event, name) => {
+    let newFavs = { ...newProfile.favorites };
+    newFavs[name] = event.target.value;
+    setNewProfile({
+      ...newProfile,
+      favorites: newFavs,
+    });
+  };
+
+  const handleInterests = (i1, i2, i3) => {
+    setNewProfile({
+      ...newProfile,
+      interests1: i1,
+      interests2: i2,
+      interests3: i3,
+    });
+  };
+
+  const updateImage = (url) => {
+    setEditImage(false);
+    setProfile({ ...profile, imageUrl: url });
+    setNewProfile({ ...newProfile, imageUrl: url });
+    props.handleImage(url);
   };
 
   const renderProfile = () => {
@@ -100,6 +138,7 @@ function Profile() {
           <p>
             {profile.firstName} {profile.lastName}
           </p>
+          <h4> {profile.location}</h4>
           <h4> {profile.pronouns}</h4>
           <h4>Class of {profile.classYear}</h4>
           <h4>{profile.majors.map((major) => major + ", ")}</h4>
@@ -169,7 +208,7 @@ function Profile() {
               </p>
               <div class="card" id="interest-card">
                 <p id="normaltext">
-                  {profile.interests1.map((interest) => interest + ", ")}
+                  {profile.interests1.map((i) => i.interest + ", ")}
                 </p>
               </div>
             </Col>
@@ -179,7 +218,7 @@ function Profile() {
               </p>
               <div class="card" id="interest-card">
                 <p id="normaltext">
-                  {profile.interests2.map((interest) => interest + ", ")}
+                  {profile.interests2.map((i) => i.interest + ", ")}
                 </p>
               </div>
             </Col>
@@ -189,14 +228,14 @@ function Profile() {
               </p>
               <div class="card" id="interest-card">
                 <p id="normaltext">
-                  {profile.interests3.map((interest) => interest + ", ")}
+                  {profile.interests3.map((i) => i.interest + ", ")}
                 </p>
               </div>
             </Col>
           </Row>
           <Row className="section-container3">
             <p id="subheading">Additional Info</p>
-            <Col sm={3}>
+            <Col sm={4}>
               <p id="normaltext">
                 <strong>Pick Up Sports</strong>
               </p>
@@ -206,7 +245,7 @@ function Profile() {
                 </p>
               </div>
             </Col>
-            <Col sm={3}>
+            <Col sm={4}>
               <p id="normaltext">
                 <strong>Instruments</strong>
               </p>
@@ -216,15 +255,7 @@ function Profile() {
                 </p>
               </div>
             </Col>
-            <Col sm={3}>
-              <p id="normaltext">
-                <strong>Gaming</strong>
-              </p>
-              <div class="card" id="adinfo-card">
-                <p id="normaltext">text</p>
-              </div>
-            </Col>
-            <Col sm={3}>
+            <Col sm={4}>
               <p id="normaltext">
                 <strong>Pets</strong>
               </p>
@@ -234,37 +265,37 @@ function Profile() {
             </Col>
           </Row>
           <Row className="section-container4">
-            <p id="subheading">Favourites</p>
+            <p id="subheading">Favorites</p>
             <Col sm={3}>
               <p id="normaltext">
                 <strong>Movies</strong>
               </p>
               <div class="card" id="fav-card">
-                <p id="normaltext">text</p>
+                <p id="normaltext">{profile.favorites.movie}</p>
               </div>
             </Col>
             <Col sm={3}>
               <p id="normaltext">
-                <strong>Artists/Bands</strong>
+                <strong>Book</strong>
               </p>
               <div class="card" id="fav-card">
-                <p id="normaltext">text</p>
+                <p id="normaltext">{profile.favorites.book}</p>
               </div>
             </Col>
             <Col sm={3}>
               <p id="normaltext">
-                <strong>Food</strong>
+                <strong>TV Show</strong>
               </p>
               <div class="card" id="fav-card">
-                <p id="normaltext">text</p>
+                <p id="normaltext">{profile.favorites.show}</p>
               </div>
             </Col>
             <Col sm={3}>
               <p id="normaltext">
-                <strong>Celebrity</strong>
+                <strong>Artist/Band</strong>
               </p>
               <div class="card" id="fav-card">
-                <p id="normaltext">text</p>
+                <p id="normaltext">{profile.favorites.artist}</p>
               </div>
             </Col>
           </Row>
@@ -278,6 +309,32 @@ function Profile() {
       <Row className="profile-card">
         <Col sm={4} style={{ justifyContent: "center" }}>
           <img alt="Profile" src={profile.imageUrl} className="profile-img" />
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            style={{ width: "5rem" }}
+            onClick={() => {
+              setEditImage(true);
+            }}
+          >
+            Edit Profile Picture
+          </button>
+          <dialog open={editImage}>
+            Select Picture
+            <Crop update={updateImage} />
+            <menu>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                style={{ width: "5rem" }}
+                onClick={() => {
+                  setEditImage(false);
+                }}
+              >
+                Cancel
+              </button>
+            </menu>
+          </dialog>
           <p>
             <input
               value={newProfile.firstName}
@@ -290,6 +347,17 @@ function Profile() {
               name="lastName"
             />
           </p>
+          <select
+            name="location"
+            id="location"
+            onChange={handleChange}
+            value={newProfile.location}
+          >
+            <option value="China">China</option>
+            <option value="United States">United States</option>
+            <option value="France">France</option>
+            <option value="Egypt">Egypt</option>
+          </select>
           <select
             name="pronouns"
             id="pronouns"
@@ -576,41 +644,16 @@ function Profile() {
             </Col>
           </Row>
           <Row className="section-container2">
-            <p id="subheading">Interests</p>
-            <Col sm={4}>
-              <p id="normaltext">
-                <strong>Career and Academic</strong>
-              </p>
-              <div class="card" id="interest-card">
-                <p id="normaltext">
-                  {profile.interests1.map((interest) => interest + ", ")}
-                </p>
-              </div>
-            </Col>
-            <Col sm={4}>
-              <p id="normaltext">
-                <strong>Physical Activity and Wellness</strong>
-              </p>
-              <div class="card" id="interest-card">
-                <p id="normaltext">
-                  {profile.interests2.map((interest) => interest + ", ")}
-                </p>
-              </div>
-            </Col>
-            <Col sm={4}>
-              <p id="normaltext">
-                <strong>General Hobbies</strong>
-              </p>
-              <div class="card" id="interest-card">
-                <p id="normaltext">
-                  {profile.interests3.map((interest) => interest + ", ")}
-                </p>
-              </div>
-            </Col>
+            <EditInterests
+              getInterests={handleInterests}
+              index1={newProfile.interests1.map((i) => i.index)}
+              index2={newProfile.interests2.map((i) => i.index)}
+              index3={newProfile.interests3.map((i) => i.index)}
+            />
           </Row>
           <Row className="section-container3">
             <p id="subheading">Additional Info</p>
-            <Col sm={3}>
+            <Col sm={4}>
               <p id="normaltext">
                 <strong>Pick Up Sports</strong>
               </p>
@@ -657,7 +700,7 @@ function Profile() {
                 </datalist>
               </div>
             </Col>
-            <Col sm={3}>
+            <Col sm={4}>
               <p id="normaltext">
                 <strong>Instruments</strong>
               </p>
@@ -704,15 +747,8 @@ function Profile() {
                 </datalist>
               </div>
             </Col>
-            <Col sm={3}>
-              <p id="normaltext">
-                <strong>Gaming</strong>
-              </p>
-              <div class="card" id="adinfo-card">
-                <p id="normaltext">text</p>
-              </div>
-            </Col>
-            <Col sm={3}>
+
+            <Col sm={4}>
               <p id="normaltext">
                 <strong>Pets</strong>
               </p>
@@ -761,38 +797,43 @@ function Profile() {
             </Col>
           </Row>
           <Row className="section-container4">
-            <p id="subheading">Favourites</p>
+            <p id="subheading">Favorites</p>
             <Col sm={3}>
               <p id="normaltext">
                 <strong>Movies</strong>
               </p>
-              <div class="card" id="fav-card">
-                <p id="normaltext">text</p>
-              </div>
+              <input
+                value={newProfile.favorites.movie}
+                onChange={(e) => handleFavoriteChange(e, "movie")}
+              />
             </Col>
             <Col sm={3}>
               <p id="normaltext">
-                <strong>Artists/Bands</strong>
+                <strong>Book</strong>
               </p>
-              <div class="card" id="fav-card">
-                <p id="normaltext">text</p>
-              </div>
+              <input
+                value={newProfile.favorites.book}
+                onChange={(e) => handleFavoriteChange(e, "book")}
+              />
             </Col>
             <Col sm={3}>
               <p id="normaltext">
-                <strong>Food</strong>
+                <strong>TV Show</strong>
               </p>
-              <div class="card" id="fav-card">
-                <p id="normaltext">text</p>
-              </div>
+
+              <input
+                value={newProfile.favorites.show}
+                onChange={(e) => handleFavoriteChange(e, "show")}
+              />
             </Col>
             <Col sm={3}>
               <p id="normaltext">
-                <strong>Celebrity</strong>
+                <strong>Artist/Band</strong>
               </p>
-              <div class="card" id="fav-card">
-                <p id="normaltext">text</p>
-              </div>
+              <input
+                value={newProfile.favorites.artist}
+                onChange={(e) => handleFavoriteChange(e, "artist")}
+              />
             </Col>
           </Row>
         </Col>

@@ -9,6 +9,9 @@ import Logo from "../assets/Logo.png";
 
 import "./NavBar.css";
 
+// Components
+import SignOut from "./SignOut";
+
 function NavBar(props) {
   {
     return (
@@ -16,7 +19,7 @@ function NavBar(props) {
         <Container>
           <Navbar.Brand>
             <div className="d-inline-block m-2">
-              <img alt="UConnect Logo" src={Logo} className="topbar-logo"/>
+              <img alt="UConnect Logo" src={Logo} className="topbar-logo" />
             </div>
             <h3 className="d-inline-block align-middle">UConnect</h3>
           </Navbar.Brand>
@@ -32,6 +35,10 @@ function NavBar(props) {
                   className="nav-profile-img"
                 />
               </button>
+              <SignOut
+                style={{ position: "absolute", right: "10%" }}
+                reset={props.reset}
+              />
             </Link>
           </div>
         </Container>

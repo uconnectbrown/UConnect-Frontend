@@ -1,18 +1,18 @@
 // Setup
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { auth } from "../firebase.js";
+import { db, auth } from "../firebase.js";
 import Select from "react-select";
 
 // Components
 import Student from "./Student";
 import Message from "./Message";
 
-import { Container, Row, Col, Button, Modal, Form } from "react-bootstrap"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from "@fortawesome/free-solid-svg-icons"
+import { Container, Row, Col, Button, Modal, Form } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-import "./Home.css"
+import "./Home.css";
 
 // Resources
 import { classYears, majors } from "../resources/searchOptions";
@@ -134,9 +134,9 @@ function Home(props) {
   };
 
   const onSearchSubmit = (e) => {
-    e.preventDefault()
-    searchName(query)
-  }
+    e.preventDefault();
+    searchName(query);
+  };
 
   const clearSearch = () => {
     setStudents([]);
@@ -144,12 +144,34 @@ function Home(props) {
     setMajors([]);
     setQuery("");
     setSearching(false);
-  }
+  };
+
+  const sendRequest = (receiverId) => {
+    let senderInfo = {};
+    db.doc(`/profiles/${emailId}`)
+      .get()
+      .then((doc) => {
+        senderInfo.name = doc.data().firstName + " " + doc.data().lastName;
+        senderInfo.imageUrl = doc.data().imageUrl;
+        senderInfo.classYear = doc.data().classYear;
+        return senderInfo;
+      })
+      .then((info) => {
+        axios.post(`/request/${emailId}/${receiverId}`, info);
+      })
+      .then(() => {
+        return axios.get(`/reqfeatured/${emailId}/${receiverId}`);
+      })
+      .then(() => {
+        getFeatured();
+      })
+      .catch((err) => console.log(err));
+  };
 
   const renderSearchBar = () => {
     return (
       <div className="search-bar">
-        <form onSubmit={onSearchSubmit} style={{ width: '97%'}}> 
+        <form onSubmit={onSearchSubmit} style={{ width: "97%" }}>
           <label htmlFor="search">
             <span className="visually-hidden">Search for students</span>
           </label>
@@ -163,87 +185,122 @@ function Home(props) {
           />
         </form>
         <button onClick={clearSearch}>
-          <FontAwesomeIcon icon={faTimes} color={'grey'}/>
+          <FontAwesomeIcon icon={faTimes} color={"grey"} />
         </button>
       </div>
-  )}
+    );
+  };
 
   const renderFilters = () => {
-    return <Row className="my-3" style={{ paddingLeft: '0.5rem'}}>
-      <Col md={9} lg={4}>
-        <Select
-          closeMenuOnSelect={classYears_.length === classYears.length - 1}
-          isMulti
-          name="classYears"
-          value={classYears_}
-          options={classYears}
-          onChange={(options) => setClassYears(options)}
-          placeholder="Filter by class year..."
-        />
-      </Col>
-      <Col md={9} lg={4}>
-        <Select
-          closeMenuOnSelect={majors_.length === majors.length - 1}
-          isMulti
-          name="concentration"
-          value={majors_}
-          options={majors}
-          onChange={(options) => setMajors(options)}
-          placeholder="Filter by concentration..."
-        />
-      </Col>
-    </Row>
-  }
+    return (
+      <Row className="my-3" style={{ paddingLeft: "0.5rem" }}>
+        <Col md={9} lg={4}>
+          <Select
+            closeMenuOnSelect={classYears_.length === classYears.length - 1}
+            isMulti
+            name="classYears"
+            value={classYears_}
+            options={classYears}
+            onChange={(options) => setClassYears(options)}
+            placeholder="Filter by class year..."
+          />
+        </Col>
+        <Col md={9} lg={4}>
+          <Select
+            closeMenuOnSelect={majors_.length === majors.length - 1}
+            isMulti
+            name="concentration"
+            value={majors_}
+            options={majors}
+            onChange={(options) => setMajors(options)}
+            placeholder="Filter by concentration..."
+          />
+        </Col>
+      </Row>
+    );
+  };
 
   const renderSeachResults = () => {
-    return <div>
-      {students.map((student, i) => {
-        return (
-          <Row className="search-card align-items-center" onClick={() => handleOpenStudent(i)} key={i}>
-            <Col md={2} lg={1}>
-              <img className="search-profile-img" alt="Profile Picture" src={student.imageUrl}/>
-            </Col>
-            <Col md={5} lg={5}>
-              <div style={{ fontSize: '1.2em', fontStyle: 'bold' }}>{student.firstName + " " + student.lastName}</div>
-              <div className="card-text">{student.classYear}</div>
-              <div className="card-text">{student.majors.map((major) => major)}</div>
-            </Col>
-            <Col md={5} lg={6}>
-              <ul style={{ marginBottom: 0 }}>
-                <li className="card-text">thing in common</li>
-                <li className="card-text">thing in common</li>
-                <li className="card-text">thing in common</li>
-              </ul>
-            </Col>
-          </Row>
-        )
-      })}
-    </div>
-  }
+    return (
+      <div>
+        {students.map((student, i) => {
+          return (
+            <Row
+              className="search-card align-items-center"
+              onClick={() => handleOpenStudent(i)}
+              key={i}
+            >
+              <Col md={2} lg={1}>
+                <img
+                  className="search-profile-img"
+                  alt="Profile Picture"
+                  src={student.imageUrl}
+                />
+              </Col>
+              <Col md={5} lg={5}>
+                <div style={{ fontSize: "1.2em", fontStyle: "bold" }}>
+                  {student.firstName + " " + student.lastName}
+                </div>
+                <div className="card-text">{student.classYear}</div>
+                <div className="card-text">
+                  {student.majors.map((major) => major)}
+                </div>
+              </Col>
+              <Col md={5} lg={6}>
+                <ul style={{ marginBottom: 0 }}>
+                  <li className="card-text">thing in common</li>
+                  <li className="card-text">thing in common</li>
+                  <li className="card-text">thing in common</li>
+                </ul>
+              </Col>
+            </Row>
+          );
+        })}
+      </div>
+    );
+  };
 
   const renderFeatured = () => {
-    return <div>
-      <h5 className="mt-4">Featured Profiles</h5>
-      <div class="featured-container pb-4 pt-1">
-        {
-          featured.map((student, i) => { 
+    return (
+      <div>
+        <h5 className="mt-4">Featured Profiles</h5>
+        <div class="featured-container pb-4 pt-1">
+          {featured.map((student, i) => {
             return (
-              <div className="featured-card mx-lg-3 mx-sm-1" onClick={() => handleOpenFeatured(i)}>
-                <img className="featured-profile-img" alt="Profile Picture" src={student.imageUrl}/>
+              <div
+                className="featured-card mx-lg-3 mx-sm-1"
+                onClick={() => {
+                  handleOpenFeatured(i);
+                }}
+              >
+                <img
+                  className="featured-profile-img"
+                  alt="Profile Picture"
+                  src={student.imageUrl}
+                />
                 <div className="card-text mb-3">{student.name}</div>
-                <Button style={{ marginTop: 'auto' }}>
-                  Request
-                </Button>
+                {student.status === "nil" && (
+                  <Button
+                    style={{ marginTop: "auto" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      sendRequest(student.emailId);
+                    }}
+                  >
+                    Request
+                  </Button>
+                )}
+                {student.status === "out" && <p>Sent</p>}
               </div>
-            )
-          })
-        }  
+            );
+          })}
+        </div>
       </div>
-    </div>
-  }
+    );
+  };
 
   return (
-    <Container fluid className="uconnect-home" style={{ marginTop: '1rem' }}>
+    <Container fluid className="uconnect-home" style={{ marginTop: "1rem" }}>
       {/* <Dialog open={messageOpen && studentInfo}>
         <Message
           handleCloseMessage={handleCloseMessage}
@@ -251,9 +308,9 @@ function Home(props) {
         />
       </Dialog> */}
 
-      <Modal 
+      <Modal
         keyboard
-        show={studentId} 
+        show={studentId}
         onHide={handleCloseStudent}
         dialogClassName="student-modal"
       >
@@ -273,7 +330,7 @@ function Home(props) {
       {students && renderSeachResults()}
       {!searching && featured && renderFeatured()}
     </Container>
-  )
+  );
 }
 
 export default Home;

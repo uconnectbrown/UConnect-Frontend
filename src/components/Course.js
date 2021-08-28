@@ -48,7 +48,7 @@ function Course(props) {
   const [clear, setClear] = useState(false);
 
   useEffect(() => {
-    getStudents();
+    if (codeNS) getStudents();
   }, [clear, code, codeParam]);
 
   const getStudents = () => {

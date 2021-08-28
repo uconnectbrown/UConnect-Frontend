@@ -133,13 +133,33 @@ const convertInterests = (indexArr, interests) => {
   return results;
 };
 
-function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
+const convertSelect = (indexArr, interests) => {
+  let results = [];
+  for (let i = 0; i < interests.length; i++) {
+    if (indexArr.includes(i)) {
+      results.push(true);
+    } else {
+      results.push(false);
+    }
+  }
+  return results;
+};
+
+function GetStepContent(
+  step,
+  sendInterests1,
+  sendInterests2,
+  sendInterests3,
+  index1,
+  index2,
+  index3
+) {
   let interests1 = CandAinterests;
   let interests2 = PAandWinterests;
   let interests3 = GHinterests;
-  const [select1, setSelect1] = useState(interests1.map((interest) => false));
-  const [select2, setSelect2] = useState(interests2.map((interest) => false));
-  const [select3, setSelect3] = useState(interests3.map((interest) => false));
+  const [select1, setSelect1] = useState(convertSelect(index1, interests1));
+  const [select2, setSelect2] = useState(convertSelect(index2, interests2));
+  const [select3, setSelect3] = useState(convertSelect(index3, interests3));
   const total =
     select1.filter(Boolean).length +
     select2.filter(Boolean).length +
@@ -354,7 +374,10 @@ export default function CustomizedSteppers(props) {
             activeStep,
             sendInterests1,
             sendInterests2,
-            sendInterests3
+            sendInterests3,
+            props.index1,
+            props.index2,
+            props.index3
           )}
         </Typography>
 
