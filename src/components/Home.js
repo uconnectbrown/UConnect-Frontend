@@ -168,6 +168,40 @@ function Home(props) {
       .catch((err) => console.log(err));
   };
 
+  const acceptRequest = (senderId) => {
+    let info = {};
+    let promises = [
+    db.doc(`/profiles/${senderId}`)
+      .get()
+      .then((doc) => {
+        info.senderName = doc.data().firstName + " " + doc.data().lastName;
+        info.senderIageUrl = doc.data().imageUrl;
+        info.senderClassYear = doc.data().classYear;
+        return info;
+      }),
+      db.doc(`/profiles/${emailId}`)
+      .get()
+      .then((doc) => {
+        info.receiverName = doc.data().firstName + " " + doc.data().lastName;
+        info.receiverImageUrl = doc.data().imageUrl;
+        info.receiverClassYear = doc.data().classYear;
+        return info;
+      }),
+    ];
+
+    Promise.all([promises])
+      .then((info) => {
+        axios.post(`/accept/${senderId}/${emailId}`, info);
+      })
+      .then(() => {
+        return axios.get(`/accfeatured/${senderId}/${emailId}`);
+      })
+      .then(() => {
+        getFeatured();
+      })
+      .catch((err) => console.log(err));
+  }
+
   const renderSearchBar = () => {
     return (
       <div className="search-bar">
@@ -291,6 +325,18 @@ function Home(props) {
                   </Button>
                 )}
                 {student.status === "out" && <p>Sent</p>}
+                {student.status === "in" && (
+                  <Button
+                    style={{ marginTop: "auto" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      acceptRequest(student.emailId);
+                    }}
+                  >
+                    Accept Request
+                  </Button>
+                )}
+                {student.status === "con" && <p>Connected</p>}
               </div>
             );
           })}
