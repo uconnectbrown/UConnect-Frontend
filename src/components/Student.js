@@ -110,10 +110,12 @@ function Student(props) {
           .post(`/accept/${studentId}/${emailId}`, info)
           .then(() => {
             setStatus("con");
-            props.handleFeatured();
           })
           .then(() => {
             return axios.get(`/accfeatured/${studentId}/${emailId}`);
+          })
+          .then(() => {
+            props.handleFeatured();
           })
           .catch((err) => console.log(err));
       });
