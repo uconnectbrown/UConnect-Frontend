@@ -163,44 +163,37 @@ function Home(props) {
         return axios.get(`/reqfeatured/${emailId}/${receiverId}`);
       })
       .then(() => {
+        props.handleRequest();
         getFeatured();
       })
       .catch((err) => console.log(err));
   };
 
-  const acceptRequest = (senderId) => {
-    let info = {};
-    let promises = [
-    db.doc(`/profiles/${senderId}`)
-      .get()
-      .then((doc) => {
-        info.senderName = doc.data().firstName + " " + doc.data().lastName;
-        info.senderIageUrl = doc.data().imageUrl;
-        info.senderClassYear = doc.data().classYear;
-        return info;
-      }),
-      db.doc(`/profiles/${emailId}`)
+  const acceptRequest = (student) => {
+    let info = {
+      senderName: student.name,
+      senderImageUrl: student.imageUrl,
+      senderClassYear: student.classYear,
+    };
+    db.doc(`/profiles/${emailId}`)
       .get()
       .then((doc) => {
         info.receiverName = doc.data().firstName + " " + doc.data().lastName;
         info.receiverImageUrl = doc.data().imageUrl;
         info.receiverClassYear = doc.data().classYear;
         return info;
-      }),
-    ];
-
-    Promise.all([promises])
+      })
       .then((info) => {
-        axios.post(`/accept/${senderId}/${emailId}`, info);
+        axios.post(`/accept/${student.emailId}/${emailId}`, info);
       })
       .then(() => {
-        return axios.get(`/accfeatured/${senderId}/${emailId}`);
+        return axios.get(`/accfeatured/${student.emailId}/${emailId}`);
       })
       .then(() => {
         getFeatured();
       })
       .catch((err) => console.log(err));
-  }
+  };
 
   const renderSearchBar = () => {
     return (
@@ -325,12 +318,12 @@ function Home(props) {
                   </Button>
                 )}
                 {student.status === "out" && <p>Sent</p>}
-                {student.status === "in" && (
+                {student.status === "inc" && (
                   <Button
                     style={{ marginTop: "auto" }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      acceptRequest(student.emailId);
+                      acceptRequest(student);
                     }}
                   >
                     Accept Request
@@ -367,6 +360,7 @@ function Home(props) {
             handleRequest={props.handleRequest}
             requests={props.requests}
             handleOpenMessage={handleOpenMessage}
+            handleFeatured={getFeatured}
           />
         </Modal.Body>
       </Modal>

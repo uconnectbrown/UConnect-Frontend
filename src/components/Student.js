@@ -21,7 +21,7 @@ import Sports from "@material-ui/icons/SportsBasketball";
 import DialogContent from "@material-ui/core/DialogContent";
 
 import ConnectButton from "./ConnectButton";
-import { Container, Row, Col, Card, Button } from "react-bootstrap"
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import "./Student.css";
 
 // Body
@@ -81,8 +81,12 @@ function Student(props) {
         axios.post(`/request/${emailId}/${studentId}`, info);
       })
       .then(() => {
+        return axios.get(`/reqfeatured/${emailId}/${studentId}`);
+      })
+      .then(() => {
         setStatus("out");
         props.handleRequest();
+        props.handleFeatured();
       })
       .catch((err) => console.log(err));
   };
@@ -99,7 +103,6 @@ function Student(props) {
         info.receiverName = doc.data().firstName + " " + doc.data().lastName;
         info.receiverImageUrl = doc.data().imageUrl;
         info.receiverClassYear = doc.data().classYear;
-        console.log(info);
         return info;
       })
       .then((info) => {
@@ -107,46 +110,60 @@ function Student(props) {
           .post(`/accept/${studentId}/${emailId}`, info)
           .then(() => {
             setStatus("con");
+            props.handleFeatured();
+          })
+          .then(() => {
+            return axios.get(`/accfeatured/${studentId}/${emailId}`);
           })
           .catch((err) => console.log(err));
       });
   };
 
   const renderCourses = () => {
-    return student.courses.map(c => {
+    return student.courses.map((c) => {
       if (!c.name) return null;
-      return <div 
-        className="modal-profile-courses d-flex flex-column text-center align-items-center justify-content-center"
-        // onClick={}
-      >
-        <div>{c.code}</div>
-        <div style={{ fontSize: '10px' }}>{c.name}</div>
-      </div>
-    })
-  }
+      return (
+        <div
+          className="modal-profile-courses d-flex flex-column text-center align-items-center justify-content-center"
+          // onClick={}
+        >
+          <div>{c.code}</div>
+          <div style={{ fontSize: "10px" }}>{c.name}</div>
+        </div>
+      );
+    });
+  };
 
   if (!(student && status)) return null;
 
   return (
     <Container className="modal-profile-wrap d-flex py-3">
       <Col sm={4} className="align-items-center text-center px-3">
-        <img className="modal-profile-img" alt="Profile Picture" src={student.imageUrl}/>
-        <div style={{ fontSize: '1.5em', fontStyle: 'bold' }}>
+        <img
+          className="modal-profile-img"
+          alt="Profile Picture"
+          src={student.imageUrl}
+        />
+        <div style={{ fontSize: "1.5em", fontStyle: "bold" }}>
           {student.firstName + " " + student.lastName}
         </div>
-        <div>{student.preferredPronouns && `(${student.preferredPronouns})`}</div>
+        <div>
+          {student.preferredPronouns && `(${student.preferredPronouns})`}
+        </div>
         <div>Class of {student.classYear}</div>
         <div>{student.majors.map((major) => major)}</div>
         <div className="modal-bio">{student.bio}</div>
-        <ConnectButton status={status} sendRequest={sendRequest} acceptRequest={acceptRequest}/>
+        <ConnectButton
+          status={status}
+          sendRequest={sendRequest}
+          acceptRequest={acceptRequest}
+        />
       </Col>
       <Col sm={8} className="px-3">
-        <Row>
-          {renderCourses()}
-        </Row>
+        <Row>{renderCourses()}</Row>
       </Col>
     </Container>
-  )
+  );
 
   return (
     <DialogContent>
