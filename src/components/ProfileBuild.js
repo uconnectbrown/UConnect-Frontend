@@ -87,6 +87,10 @@ function ProfileBuild(props) {
         props.grantAccess();
       })
       .then(() => {
+        let emailId = auth.currentUser.email.split("@")[0];
+        axios.get(`/newFeatured/${emailId}`)
+      })
+      .then(() => {
         history.push({
           pathname: "/home",
         });
