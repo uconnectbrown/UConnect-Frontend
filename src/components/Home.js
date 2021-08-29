@@ -15,7 +15,12 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import "./Home.css";
 
 // Resources
-import { classYears, majors } from "../resources/searchOptions";
+import {
+  searchOptions,
+  searchTypes,
+  classYears,
+  majors,
+} from "../resources/searchOptions";
 
 function Home(props) {
   const [emailId, setEmailId] = useState(null);
@@ -30,6 +35,9 @@ function Home(props) {
   const [studentInfo, setStudentInfo] = useState([]);
   const [messageOpen, setMessageOpen] = useState(false);
   const [searching, setSearching] = useState(false);
+  const [searchType, setSearchType] = useState(0);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const params = ["", "classYear", "majors"];
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -51,15 +59,12 @@ function Home(props) {
       .catch((err) => console.log(err));
   };
 
-  const searchField = (years, majors) => {
+  const searchField = (options, param) => {
+    options = options.map((option) => option.value);
     axios
-      .get(`/all/${email}`)
+      .post(`/searchField/${email}`, { options, param })
       .then((res) => {
-        setStudents(
-          res.data.filter((student) =>
-            filterField(student.classYear, student.majors, years, majors)
-          )
-        );
+        setStudents(res.data);
       })
       .then(() => {
         setSearching(true);
@@ -69,30 +74,14 @@ function Home(props) {
 
   const searchName = (query) => {
     axios
-      .get(`/all/${email}`)
+      .get(`/searchName/${email}/${query}`)
       .then((res) => {
-        setStudents(
-          res.data.filter((student) =>
-            filterName(student.firstName, student.lastName, query)
-          )
-        );
+        setStudents(res.data);
       })
       .then(() => {
         setSearching(true);
       })
       .catch((err) => console.log(err));
-  };
-
-  const filterField = (classYear, majors, years, majors_) => {
-    const compare = (a1, a2) => a1.filter((v) => a2.includes(v)).length;
-    if (years.length > 0 && majors_.length > 0) {
-      if (years.includes(classYear) && compare(majors, majors_) > 0)
-        return true;
-    } else if (years.length > 0 && majors_.length === 0) {
-      if (years.includes(classYear)) return true;
-    } else if (years.length === 0 && majors_.length > 0) {
-      if (compare(majors, majors_) > 0) return true;
-    }
   };
 
   const filterName = (fn, ln, query) => {
@@ -113,7 +102,7 @@ function Home(props) {
   };
 
   const handleOpenStudent = (index) => {
-    setStudentId(students[index].email.split("@")[0]);
+    setStudentId(students[index].emailId);
   };
 
   const handleOpenFeatured = (index) => {
@@ -195,6 +184,31 @@ function Home(props) {
       .catch((err) => console.log(err));
   };
 
+  const renderPicker = () => {
+    return (
+      <Select
+        name="searchType"
+        defaultValue={searchTypes[0]}
+        options={searchTypes}
+        onChange={(options) => {
+          setSearchType(options.value);
+        }}
+      />
+    );
+  };
+
+  const renderDataList = (i) => {
+    return (
+      <Select
+        name="searchType"
+        isMulti
+        value={selectedOptions}
+        options={searchOptions[i]}
+        onChange={(options) => setSelectedOptions(options)}
+      />
+    );
+  };
+
   const renderSearchBar = () => {
     return (
       <div className="search-bar">
@@ -213,6 +227,26 @@ function Home(props) {
         </form>
         <button onClick={clearSearch}>
           <FontAwesomeIcon icon={faTimes} color={"grey"} />
+        </button>
+      </div>
+    );
+  };
+
+  const renderSearchButtons = () => {
+    return (
+      <div>
+        <button
+          onClick={() => searchField(selectedOptions, params[searchType])}
+        >
+          Search
+        </button>
+        <button
+          onClick={() => {
+            setStudents([]);
+            setSelectedOptions([]);
+          }}
+        >
+          Clear
         </button>
       </div>
     );
@@ -247,7 +281,7 @@ function Home(props) {
     );
   };
 
-  const renderSeachResults = () => {
+  const renderSearchResults = () => {
     return (
       <div>
         {students.map((student, i) => {
@@ -266,7 +300,7 @@ function Home(props) {
               </Col>
               <Col md={5} lg={5}>
                 <div style={{ fontSize: "1.2em", fontStyle: "bold" }}>
-                  {student.firstName + " " + student.lastName}
+                  {student.name}
                 </div>
                 <div className="card-text">{student.classYear}</div>
                 <div className="card-text">
@@ -275,7 +309,7 @@ function Home(props) {
               </Col>
               <Col md={5} lg={6}>
                 <ul style={{ marginBottom: 0 }}>
-                  <li className="card-text">thing in common</li>
+                  <li className="card-text">{student.score}</li>
                   <li className="card-text">thing in common</li>
                   <li className="card-text">thing in common</li>
                 </ul>
@@ -346,7 +380,6 @@ function Home(props) {
           studentInfo={studentInfo}
         />
       </Dialog> */}
-
       <Modal
         keyboard
         show={studentId}
@@ -365,9 +398,12 @@ function Home(props) {
         </Modal.Body>
       </Modal>
       <h1>Connect</h1>
-      {renderSearchBar()}
-      {renderFilters()}
-      {students && renderSeachResults()}
+      {renderPicker()}
+      {searchType === 0 && renderSearchBar()}
+      {searchType !== 0 && renderDataList(searchType)}
+      {searchType !== 0 && renderSearchButtons()}
+      {/* {renderFilters()} */}
+      {students && renderSearchResults()}
       {!searching && featured && renderFeatured()}
     </Container>
   );

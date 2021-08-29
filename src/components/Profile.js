@@ -61,21 +61,44 @@ function Profile(props) {
   };
 
   const editProfile = () => {
-    if (newProfile.courses !== profile.courses) {
-      props.handleCourses(newProfile.courses);
+    if (emailId) {
+      if (newProfile.courses !== profile.courses) {
+        props.handleCourses(newProfile.courses);
+        handleDeleteCourses();
+      }
       axios
-        .get(`/update/${emailId}`)
+        .post(`/edit/${emailId}`, newProfile)
+        .then(() => {
+          setProfile(newProfile);
+        })
+        .then(() => {
+          return axios.get(`/update/${emailId}`);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleDeleteCourses = () => {
+    if (emailId) {
+      let promises = [];
+      for (let i = 0; i < profile.courses.length; i++) {
+        if (
+          profile.courses[i].code !== newProfile.courses[i].code &&
+          profile.courses[i].code
+        ) {
+          promises.push(
+            axios.get(
+              `/delete/${emailId}/${profile.courses[i].code.replace(/\s/g, "")}`
+            )
+          );
+        }
+      }
+      Promise.all(promises)
         .then(() => {
           return;
         })
         .catch((err) => console.log(err));
     }
-    axios
-      .post(`/edit/${emailId}`, newProfile)
-      .then(() => {
-        setProfile(newProfile);
-      })
-      .catch((err) => console.log(err));
   };
 
   const handleChange = (event) => {

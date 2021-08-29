@@ -58,46 +58,49 @@ function ProfileBuild(props) {
   }, []);
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    const newUserData = {
-      // Basic Info
-      firstName: userData.firstName.trim(),
-      lastName: userData.lastName.trim(),
-      classYear: userData.classYear,
-      majors: [userData.major1, userData.major2, userData.major3],
-      pronouns: userData.pronouns,
-      location: userData.location,
-      email,
-      // Interests
-      interests1: userData.interests1,
-      interests2: userData.interests2,
-      interests3: userData.interests3,
-    };
+    if (email) {
+      event.preventDefault();
+      const newUserData = {
+        // Basic Info
+        firstName: userData.firstName.trim(),
+        lastName: userData.lastName.trim(),
+        classYear: userData.classYear,
+        majors: [userData.major1, userData.major2, userData.major3],
+        pronouns: userData.pronouns,
+        location: userData.location,
+        email,
+        // Interests
+        interests1: userData.interests1,
+        interests2: userData.interests2,
+        interests3: userData.interests3,
+      };
 
-    // TO-DO: Check courses validator
-    if (!validProfile(newUserData)) {
-      setUserData({ ...userData, validProfile: false });
-      return;
-    }
+      // TO-DO: Check courses validator
+      if (!validProfile(newUserData)) {
+        setUserData({ ...userData, validProfile: false });
+        return;
+      }
 
-    axios
-      .post("/signup", newUserData)
-      .then(() => {
-        setUserData({ ...userData, validProfile: true });
-        props.grantAccess();
-      })
-      .then(() => {
-        let emailId = auth.currentUser.email.split("@")[0];
-        axios.get(`/newFeatured/${emailId}`)
-      })
-      .then(() => {
-        history.push({
-          pathname: "/home",
+      axios
+        .post("/signup", newUserData)
+        .then(() => {
+          setUserData({ ...userData, validProfile: true });
+          let emailId = email.split("@")[0];
+          console.log("hi");
+          return axios.get(`/newfeatured/${emailId}`);
+        })
+        .then(() => {
+          props.grantAccess();
+        })
+        .then(() => {
+          history.push({
+            pathname: "/home",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }
   };
 
   return (
