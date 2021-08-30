@@ -23,7 +23,7 @@ import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
 import Messages from "./components/Messages";
 import Home from "./components/Home";
-import Connections from "./components/Connections";
+import Connections from "./pages/ConnectionsView";
 import Profile from "./components/Profile";
 import ProfileBuild from "./components/ProfileBuild";
 import Course from "./components/Course";

@@ -5,7 +5,7 @@ import { db, auth } from "../firebase.js";
 import Select from "react-select";
 
 // Components
-import Student from "./Student";
+import StudentModal from "./StudentModal";
 import Message from "./Message";
 
 import { Container, Row, Col, Button, Modal, Form } from "react-bootstrap";
@@ -417,16 +417,13 @@ function Home(props) {
         onHide={handleCloseStudent}
         dialogClassName="student-modal"
       >
-        <Modal.Body>
-          <Student
-            studentId={studentId}
-            handleClose={handleCloseStudent}
-            handleRequest={props.handleRequest}
-            requests={props.requests}
-            handleOpenMessage={handleOpenMessage}
-            handleFeatured={getFeatured}
-          />
-        </Modal.Body>
+        <StudentModal
+          studentId={studentId}
+          handleClose={handleCloseStudent}
+          handleRequest={props.handleRequest}
+          requests={props.requests}
+          handleOpenMessage={handleOpenMessage}
+        />
       </Modal>
       <h1>Connect</h1>
       {renderPicker()}
