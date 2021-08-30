@@ -50,11 +50,12 @@ function Home(props) {
   useEffect(() => {
     if (emailId) {
       getFeatured();
-      checkValidOptions();
+      disableSearchTypes();
+      disableVarsity();
     }
   }, [emailId]);
 
-  const checkValidOptions = () => {
+  const disableSearchTypes = () => {
     let optionBools = [false, false, false, true, true, true];
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -77,6 +78,27 @@ function Home(props) {
           } else searchTypes[i].disabled = false;
         }
       });
+  };
+
+  const disableVarsity = () => {
+    let validSports = [];
+    db.collection("varsitySports")
+      .get()
+      .then((data) => {
+        data.forEach((doc) => {
+          validSports.push(doc.id);
+        });
+        console.log(validSports);
+        for (let i = 0; i < searchOptions[3].length; i++) {
+          if (
+            validSports.includes(searchOptions[3][i].value.replace(/\s/g, ""))
+          ) {
+            searchOptions[3][i].disabled = false;
+          } else searchOptions[3][i].disabled = true;
+        }
+        console.log(searchOptions[3]);
+      })
+      .catch((err) => console.log(err));
   };
 
   const getFeatured = () => {
@@ -236,6 +258,7 @@ function Home(props) {
         isMulti
         value={selectedOptions}
         options={searchOptions[i]}
+        isOptionDisabled={(option) => option.disabled}
         onChange={(options) => setSelectedOptions(options)}
       />
     );

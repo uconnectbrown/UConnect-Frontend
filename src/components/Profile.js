@@ -62,9 +62,16 @@ function Profile(props) {
 
   const editProfile = () => {
     if (emailId) {
+      let promises = [
+        axios.get(`/update/${emailId}`),
+        axios.get(`/updateV/${emailId}`),
+      ];
       if (newProfile.courses !== profile.courses) {
         props.handleCourses(newProfile.courses);
         handleDeleteCourses();
+      }
+      if (newProfile.varsitySports !== profile.varsitySports) {
+        handleDeleteVarsity();
       }
       axios
         .post(`/edit/${emailId}`, newProfile)
@@ -72,7 +79,7 @@ function Profile(props) {
           setProfile(newProfile);
         })
         .then(() => {
-          return axios.get(`/update/${emailId}`);
+          return Promise.all(promises);
         })
         .catch((err) => console.log(err));
     }
@@ -89,6 +96,32 @@ function Profile(props) {
           promises.push(
             axios.get(
               `/delete/${emailId}/${profile.courses[i].code.replace(/\s/g, "")}`
+            )
+          );
+        }
+      }
+      Promise.all(promises)
+        .then(() => {
+          return;
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleDeleteVarsity = () => {
+    if (emailId) {
+      let promises = [];
+      for (let i = 0; i < profile.varsitySports.length; i++) {
+        if (
+          profile.varsitySports[i] !== newProfile.varsitySports[i] &&
+          profile.varsitySports[i]
+        ) {
+          promises.push(
+            axios.get(
+              `/deleteV/${emailId}/${profile.varsitySports[i].replace(
+                /\s/g,
+                ""
+              )}`
             )
           );
         }
