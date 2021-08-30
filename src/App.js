@@ -24,7 +24,7 @@ import SideBar from "./components/SideBar";
 import Messages from "./components/Messages";
 import Home from "./components/Home";
 import Connections from "./pages/ConnectionsView";
-import Profile from "./components/Profile";
+import ProfileView from "./pages/ProfileView";
 import ProfileBuild from "./components/ProfileBuild";
 import CourseView from "./pages/CourseView";
 
@@ -169,7 +169,7 @@ function App() {
                   <Route exact path="/messages" component={Messages} />
                   <Route exact path="/connections" component={Connections} />
                   <Route exact path="/profile">
-                    <Profile
+                    <ProfileView
                       handleImage={updateImage}
                       handleCourses={updateCourses}
                     />

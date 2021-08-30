@@ -9,9 +9,7 @@ import StudentModal from "./StudentModal";
 import Message from "./Message";
 import SearchBar from './SearchBar';
 
-import { Container, Row, Col, Button, Modal, Form } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 
 import "./Home.css";
 
@@ -235,9 +233,9 @@ function Home(props) {
       .catch((err) => console.log(err));
   };
 
-  const renderPicker = () => {
+  const renderSearchPicker = () => {
     return (
-      <div>
+      <Row className="search-picker my-2">
         <Select
           name="searchType"
           defaultValue={searchTypes[0]}
@@ -247,26 +245,28 @@ function Home(props) {
             setSearchType(options.value);
           }}
         />
-      </div>
+      </Row>
     );
   };
 
   const renderDataList = (i) => {
     return (
-      <Select
-        name="searchType"
-        isMulti
-        value={selectedOptions}
-        options={searchOptions[i]}
-        isOptionDisabled={(option) => option.disabled}
-        onChange={(options) => setSelectedOptions(options)}
-      />
+      <Row className="multiselect-search">
+        <Select
+          name="searchType"
+          isMulti
+          value={selectedOptions}
+          options={searchOptions[i]}
+          isOptionDisabled={(option) => option.disabled}
+          onChange={(options) => setSelectedOptions(options)}
+        />
+      </Row>
     );
   };
 
   const renderSearchBar = () => {
     return <SearchBar
-      placeholder="Search for students"
+      placeholder="Search for students by name"
       onSubmit={onSearchSubmit}
       value={query}
       onChange={(e) => setQuery(e.target.value)}
@@ -275,23 +275,21 @@ function Home(props) {
   };
 
   const renderSearchButtons = () => {
-    return (
-      <div>
-        <button
-          onClick={() => searchField(selectedOptions, params[searchType])}
-        >
-          Search
-        </button>
-        <button
-          onClick={() => {
-            setStudents([]);
-            setSelectedOptions([]);
-          }}
-        >
-          Clear
-        </button>
-      </div>
-    );
+    return <>
+      <Button className="search-button" onClick={() => searchField(selectedOptions, params[searchType])}>
+        Search
+      </Button>
+      <Button
+        className="search-button"
+        variant="light"
+        onClick={() => {
+          setStudents([]);
+          setSelectedOptions([]);
+        }}
+      >
+        Clear
+      </Button>
+    </>
   };
 
   const renderFilters = () => {
@@ -325,7 +323,7 @@ function Home(props) {
 
   const renderSearchResults = () => {
     return (
-      <div>
+      <div className="pt-4 px-2">
         {students.map((student, i) => {
           return (
             <Row
@@ -437,7 +435,7 @@ function Home(props) {
         />
       </Modal>
       <h1>Connect</h1>
-      {renderPicker()}
+      {renderSearchPicker()}
       {searchType === 0 && renderSearchBar()}
       {searchType !== 0 && renderDataList(searchType)}
       {searchType !== 0 && renderSearchButtons()}

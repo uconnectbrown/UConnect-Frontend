@@ -37,12 +37,26 @@
     cursor: pointer;
 }
 
+.search-picker {
+    width: 30%;
+}
+
+.multiselect-search {
+    width: 80%;
+}
+
 .student-modal { 
-    max-width: 80% !important; 
+    max-width: 70% !important; 
 }
 
 .search-card {
     cursor: pointer;
+}
+
+.search-button {
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+    width: 8rem;
 }
 
 .featured-profile-img {
@@ -71,5 +85,9 @@
 
     .uconnect-home .featured-card {
         min-width: 45%;
+    }
+
+    .search-picker {
+        width: 100%;
     }
 }

@@ -14,7 +14,7 @@ const SearchBar = (props) => {
         </label>
         <input
           type="text"
-          className="search-input"
+          className="search-input w-100"
           id="search"
           placeholder={props.placeholder}
           value={props.value}

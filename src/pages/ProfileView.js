@@ -4,7 +4,7 @@ import axios from "axios";
 import { auth } from "../firebase";
 
 // Components
-import EditInterests from "./EditInterests";
+import EditInterests from "../components/EditInterests";
 import Crop from "../util/Crop";
 
 // Resources
@@ -22,10 +22,10 @@ import {
 } from "../resources/editFields";
 
 import { Container, Row, Col } from "react-bootstrap";
-import "./Profile.css";
+import "./ProfileView.css";
 
 // Body
-function Profile(props) {
+function ProfileView(props) {
   const [emailId, setEmailId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
@@ -197,7 +197,7 @@ function Profile(props) {
           <h4> {profile.location}</h4>
           <h4> {profile.pronouns}</h4>
           <h4>Class of {profile.classYear}</h4>
-          <h4>{profile.majors.map((major) => major + ", ")}</h4>
+          <h4>{profile.majors.map((major) => major ? major + ', ' : '')}</h4>
           <br></br>
           <p id="normaltext">
             <strong>Bio: </strong>
@@ -284,13 +284,13 @@ function Profile(props) {
               <p id="normaltext">
                 <strong>Groups</strong>
               </p>
-              {profile.groups.map((group) => group + ", ")}
+              {profile.groups.map((group) => group ? group + ', ' : '')}
             </Col>
             <Col sm={6}>
               <p id="normaltext">
                 <strong>Varsity Sports</strong>
               </p>
-              {profile.varsitySports.map((sport) => sport + ", ")}
+              {profile.varsitySports.map((sport) => sport ? sport + ', ' : '')}
             </Col>
           </Row>
           <Row className="section-container3">
@@ -300,7 +300,7 @@ function Profile(props) {
               </p>
               <div class="card" id="adinfo-card">
                 <p id="normaltext">
-                  {profile.pickUpSports.map((sport) => sport + ", ")}
+                  {profile.pickUpSports.map((sport) => sport ? sport + ", " : '')}
                 </p>
               </div>
             </Col>
@@ -310,7 +310,7 @@ function Profile(props) {
               </p>
               <div class="card" id="adinfo-card">
                 <p id="normaltext">
-                  {profile.instruments.map((instrument) => instrument + ", ")}
+                  {profile.instruments.map((instrument) => instrument ? instrument + ", " : '')}
                 </p>
               </div>
             </Col>
@@ -760,4 +760,4 @@ function Profile(props) {
   );
 }
 
-export default Profile;
+export default ProfileView;

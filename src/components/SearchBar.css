@@ -5,6 +5,7 @@
   background-color: #f3f3f3;
   padding-left: 1rem;
   padding-right: 1rem;
+  margin-left: -0.5rem;
   align-items: center;
   display: flex;
 }
