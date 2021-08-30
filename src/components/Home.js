@@ -21,13 +21,13 @@ import {
   classYears,
   majors,
 } from "../resources/searchOptions";
+import { DockRounded, TramOutlined } from "@material-ui/icons";
 
 function Home(props) {
   const [emailId, setEmailId] = useState(null);
   const [email, setEmail] = useState(null);
   const [featured, setFeatured] = useState([]);
   const [students, setStudents] = useState(null);
-  const [searchMode, setSearchMode] = useState(false);
   const [query, setQuery] = useState("");
   const [studentId, setStudentId] = useState("");
   const [classYears_, setClassYears] = useState([]);
@@ -47,8 +47,36 @@ function Home(props) {
   }, []);
 
   useEffect(() => {
-    if (emailId) getFeatured();
+    if (emailId) {
+      getFeatured();
+      checkValidOptions();
+    }
   }, [emailId]);
+
+  const checkValidOptions = () => {
+    let optionBools = [false, false, false, true, true, true];
+    db.doc(`/profiles/${emailId}`)
+      .get()
+      .then((doc) => {
+        if (doc.data().varsitySports.filter(Boolean).length > 0) {
+          optionBools[3] = false;
+        }
+        if (doc.data().pickUpSports.filter(Boolean).length > 0) {
+          optionBools[4] = false;
+        }
+        if (doc.data().instruments.filter(Boolean).length > 0) {
+          optionBools[5] = false;
+        }
+        return optionBools;
+      })
+      .then((bools) => {
+        for (let i = 0; i < bools.length; i++) {
+          if (bools[i]) {
+            searchTypes[i].disabled = true;
+          } else searchTypes[i].disabled = false;
+        }
+      });
+  };
 
   const getFeatured = () => {
     axios
@@ -186,14 +214,17 @@ function Home(props) {
 
   const renderPicker = () => {
     return (
-      <Select
-        name="searchType"
-        defaultValue={searchTypes[0]}
-        options={searchTypes}
-        onChange={(options) => {
-          setSearchType(options.value);
-        }}
-      />
+      <div>
+        <Select
+          name="searchType"
+          defaultValue={searchTypes[0]}
+          options={searchTypes}
+          isOptionDisabled={(option) => option.disabled}
+          onChange={(options) => {
+            setSearchType(options.value);
+          }}
+        />
+      </div>
     );
   };
 
