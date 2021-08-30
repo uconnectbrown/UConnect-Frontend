@@ -4,7 +4,6 @@ import MobileStepper from "@material-ui/core/MobileStepper";
 
 const useStyles = makeStyles({
   root: {
-    width: "200%",
   },
 });
 

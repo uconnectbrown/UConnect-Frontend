@@ -373,7 +373,6 @@ export default function CustomizedSteppers(props) {
         {activeStep < 2 && (
           <Button
             variant="contained"
-            color="secondary"
             onClick={handleNext}
             className={classes.button}
             disabled={

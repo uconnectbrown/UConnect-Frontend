@@ -4,15 +4,18 @@
 }
 
 .profile-build-container p {
-    font-size: 2.5rem;
     margin-left: 0;
-    font-family: Avenir ;
 }
 
 .profile-build-container {
     padding-left: 10rem;
     padding-right: 10rem;
-    padding-bottom: 2rem;
+    padding-top: 2rem;
+}
+
+.profile-build-input {
+    width: 80%;
+    margin-bottom: 2rem !important;
 }
 
 .header-icon-wrap {
@@ -26,5 +29,9 @@
         padding-left: 2rem;
         padding-right: 2rem;
         padding-bottom: 1rem;
+    }
+
+    .profile-build-input {
+        width: 100%;
     }
 }
