@@ -26,7 +26,7 @@ import Home from "./components/Home";
 import Connections from "./pages/ConnectionsView";
 import Profile from "./components/Profile";
 import ProfileBuild from "./components/ProfileBuild";
-import Course from "./components/Course";
+import CourseView from "./pages/CourseView";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";
@@ -175,7 +175,7 @@ function App() {
                     />
                   </Route>
                   <Route path="/courses/:codeParam">
-                    <Course code={code} handleRequest={decRequests} />
+                    <CourseView code={code} handleRequest={decRequests} />
                   </Route>
                   <Route path="*">
                     <NoMatch />
