@@ -8,7 +8,7 @@ import axios from "axios";
 import Select from "react-select";
 
 // Components
-import Student from "./Student";
+import StudentModal from "./StudentModal";
 import Message from "./Message";
 
 // MUI Stuff
@@ -146,7 +146,7 @@ function Course(props) {
   return (
     <div>
       <Dialog open={studentId}>
-        <Student
+        <StudentModal
           studentId={studentId}
           handleClose={handleCloseStudent}
           handleRequest={props.handleRequest}

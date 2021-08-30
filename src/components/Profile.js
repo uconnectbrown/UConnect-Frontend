@@ -61,21 +61,44 @@ function Profile(props) {
   };
 
   const editProfile = () => {
-    if (newProfile.courses !== profile.courses) {
-      props.handleCourses(newProfile.courses);
+    if (emailId) {
+      if (newProfile.courses !== profile.courses) {
+        props.handleCourses(newProfile.courses);
+        handleDeleteCourses();
+      }
       axios
-        .get(`/update/${emailId}`)
+        .post(`/edit/${emailId}`, newProfile)
+        .then(() => {
+          setProfile(newProfile);
+        })
+        .then(() => {
+          return axios.get(`/update/${emailId}`);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleDeleteCourses = () => {
+    if (emailId) {
+      let promises = [];
+      for (let i = 0; i < profile.courses.length; i++) {
+        if (
+          profile.courses[i].code !== newProfile.courses[i].code &&
+          profile.courses[i].code
+        ) {
+          promises.push(
+            axios.get(
+              `/delete/${emailId}/${profile.courses[i].code.replace(/\s/g, "")}`
+            )
+          );
+        }
+      }
+      Promise.all(promises)
         .then(() => {
           return;
         })
         .catch((err) => console.log(err));
     }
-    axios
-      .post(`/edit/${emailId}`, newProfile)
-      .then(() => {
-        setProfile(newProfile);
-      })
-      .catch((err) => console.log(err));
   };
 
   const handleChange = (event) => {
@@ -146,18 +169,6 @@ function Profile(props) {
           <p id="normaltext">
             <strong>Bio: </strong>
             {profile.bio}
-          </p>
-          <p id="normaltext">
-            <strong>Groups: </strong>
-            {profile.groups.map((group) => group + ", ")}
-          </p>
-          <p id="normaltext">
-            <strong>Varsity Sports: </strong>
-            {profile.varsitySports.map((sport) => sport + ", ")}
-          </p>
-          <p id="normaltext">
-            <strong>Greek Life: </strong>
-            {profile.greekLife}
           </p>
         </Col>
         <Col sm={8}>
@@ -233,9 +244,24 @@ function Profile(props) {
               </div>
             </Col>
           </Row>
+          <Row className="section-container4">
+            <p id="subheading">Extracurriculars</p>
+
+            <Col sm={6}>
+              <p id="normaltext">
+                <strong>Groups</strong>
+              </p>
+              {profile.groups.map((group) => group + ", ")}
+            </Col>
+            <Col sm={6}>
+              <p id="normaltext">
+                <strong>Varsity Sports</strong>
+              </p>
+              {profile.varsitySports.map((sport) => sport + ", ")}
+            </Col>
+          </Row>
           <Row className="section-container3">
-            <p id="subheading">Additional Info</p>
-            <Col sm={4}>
+            <Col sm={6}>
               <p id="normaltext">
                 <strong>Pick Up Sports</strong>
               </p>
@@ -245,7 +271,7 @@ function Profile(props) {
                 </p>
               </div>
             </Col>
-            <Col sm={4}>
+            <Col sm={6}>
               <p id="normaltext">
                 <strong>Instruments</strong>
               </p>
@@ -253,49 +279,6 @@ function Profile(props) {
                 <p id="normaltext">
                   {profile.instruments.map((instrument) => instrument + ", ")}
                 </p>
-              </div>
-            </Col>
-            <Col sm={4}>
-              <p id="normaltext">
-                <strong>Pets</strong>
-              </p>
-              <div class="card" id="adinfo-card">
-                <p id="normaltext">{profile.pets.map((pet) => pet + ", ")}</p>
-              </div>
-            </Col>
-          </Row>
-          <Row className="section-container4">
-            <p id="subheading">Favorites</p>
-            <Col sm={3}>
-              <p id="normaltext">
-                <strong>Movies</strong>
-              </p>
-              <div class="card" id="fav-card">
-                <p id="normaltext">{profile.favorites.movie}</p>
-              </div>
-            </Col>
-            <Col sm={3}>
-              <p id="normaltext">
-                <strong>Book</strong>
-              </p>
-              <div class="card" id="fav-card">
-                <p id="normaltext">{profile.favorites.book}</p>
-              </div>
-            </Col>
-            <Col sm={3}>
-              <p id="normaltext">
-                <strong>TV Show</strong>
-              </p>
-              <div class="card" id="fav-card">
-                <p id="normaltext">{profile.favorites.show}</p>
-              </div>
-            </Col>
-            <Col sm={3}>
-              <p id="normaltext">
-                <strong>Artist/Band</strong>
-              </p>
-              <div class="card" id="fav-card">
-                <p id="normaltext">{profile.favorites.artist}</p>
               </div>
             </Col>
           </Row>
@@ -436,88 +419,6 @@ function Profile(props) {
             Bio:
             <input value={newProfile.bio} onChange={handleChange} name="bio" />
           </p>
-          <p id="normaltext">
-            <label>
-              Group 1:
-              <input
-                name="groups"
-                onChange={(e) => {
-                  handleArrChange(e, 0);
-                }}
-                value={newProfile.groups[0]}
-              />
-            </label>
-            <label>
-              Group 2:
-              <input
-                name="groups"
-                onChange={(e) => {
-                  handleArrChange(e, 1);
-                }}
-                value={newProfile.groups[1]}
-              />
-            </label>
-            <label>
-              Group 2:
-              <input
-                name="groups"
-                onChange={(e) => {
-                  handleArrChange(e, 2);
-                }}
-                value={newProfile.groups[2]}
-              />
-            </label>
-          </p>
-          <p id="normaltext">
-            <label>
-              Varisty Sport 1:
-              <input
-                list="varsitySports"
-                name="varsitySports"
-                onChange={(e) => {
-                  handleArrChange(e, 0);
-                }}
-                value={newProfile.varsitySports[0]}
-              />
-            </label>
-            <datalist id="varsitySports">
-              {varsitySports.map((sport, i) => {
-                return <option key={i} value={sport} />;
-              })}
-            </datalist>
-            <label>
-              Varisty Sport 2:
-              <input
-                list="varsitySports"
-                name="varsitySports"
-                onChange={(e) => {
-                  handleArrChange(e, 1);
-                }}
-                value={newProfile.varsitySports[1]}
-              />
-            </label>
-            <datalist id="varsitySports">
-              {varsitySports.map((sport, i) => {
-                return <option key={i} value={sport} />;
-              })}
-            </datalist>
-          </p>
-          <p id="normaltext">
-            <label>
-              Greek Life:
-              <input
-                list="greekLife"
-                name="greekLife"
-                onChange={handleChange}
-                value={newProfile.greekLife}
-              />
-            </label>
-            <datalist id="greekLife">
-              {greekLife.map((greek, i) => {
-                return <option key={i} value={greek} />;
-              })}
-            </datalist>
-          </p>
         </Col>
         <Col sm={8}>
           <Row
@@ -651,9 +552,75 @@ function Profile(props) {
               index3={newProfile.interests3.map((i) => i.index)}
             />
           </Row>
+          <Row className="section-container4">
+            <p id="subheading">Extracurriculars</p>
+            <Col sm={6}>
+              <p id="normaltext">
+                <strong>Groups</strong>
+              </p>
+              <p id="normaltext">
+                <input
+                  name="groups"
+                  onChange={(e) => {
+                    handleArrChange(e, 0);
+                  }}
+                  value={newProfile.groups[0]}
+                />
+                <input
+                  name="groups"
+                  onChange={(e) => {
+                    handleArrChange(e, 1);
+                  }}
+                  value={newProfile.groups[1]}
+                />
+
+                <input
+                  name="groups"
+                  onChange={(e) => {
+                    handleArrChange(e, 2);
+                  }}
+                  value={newProfile.groups[2]}
+                />
+              </p>
+            </Col>
+            <Col sm={6}>
+              <p id="normaltext">
+                <strong>Varsity Sports</strong>
+              </p>
+              <p id="normaltext">
+                <input
+                  list="varsitySports"
+                  name="varsitySports"
+                  onChange={(e) => {
+                    handleArrChange(e, 0);
+                  }}
+                  value={newProfile.varsitySports[0]}
+                />
+
+                <datalist id="varsitySports">
+                  {varsitySports.map((sport, i) => {
+                    return <option key={i} value={sport} />;
+                  })}
+                </datalist>
+
+                <input
+                  list="varsitySports"
+                  name="varsitySports"
+                  onChange={(e) => {
+                    handleArrChange(e, 1);
+                  }}
+                  value={newProfile.varsitySports[1]}
+                />
+                <datalist id="varsitySports">
+                  {varsitySports.map((sport, i) => {
+                    return <option key={i} value={sport} />;
+                  })}
+                </datalist>
+              </p>
+            </Col>
+          </Row>
           <Row className="section-container3">
-            <p id="subheading">Additional Info</p>
-            <Col sm={4}>
+            <Col sm={6}>
               <p id="normaltext">
                 <strong>Pick Up Sports</strong>
               </p>
@@ -700,7 +667,7 @@ function Profile(props) {
                 </datalist>
               </div>
             </Col>
-            <Col sm={4}>
+            <Col sm={6}>
               <p id="normaltext">
                 <strong>Instruments</strong>
               </p>
@@ -746,94 +713,6 @@ function Profile(props) {
                   })}
                 </datalist>
               </div>
-            </Col>
-
-            <Col sm={4}>
-              <p id="normaltext">
-                <strong>Pets</strong>
-              </p>
-              <div class="card" id="adinfo-card">
-                <input
-                  list="pets"
-                  name="pets"
-                  onChange={(e) => {
-                    handleArrChange(e, 0);
-                  }}
-                  value={newProfile.pets[0]}
-                />
-                <datalist id="pets">
-                  {pets.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-
-                <input
-                  list="pets"
-                  name="pets"
-                  onChange={(e) => {
-                    handleArrChange(e, 1);
-                  }}
-                  value={newProfile.pets[1]}
-                />
-                <datalist id="pets">
-                  {majors.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-                <input
-                  list="pets"
-                  name="pets"
-                  onChange={(e) => {
-                    handleArrChange(e, 2);
-                  }}
-                  value={newProfile.pets[2]}
-                />
-                <datalist id="pets">
-                  {pets.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-              </div>
-            </Col>
-          </Row>
-          <Row className="section-container4">
-            <p id="subheading">Favorites</p>
-            <Col sm={3}>
-              <p id="normaltext">
-                <strong>Movies</strong>
-              </p>
-              <input
-                value={newProfile.favorites.movie}
-                onChange={(e) => handleFavoriteChange(e, "movie")}
-              />
-            </Col>
-            <Col sm={3}>
-              <p id="normaltext">
-                <strong>Book</strong>
-              </p>
-              <input
-                value={newProfile.favorites.book}
-                onChange={(e) => handleFavoriteChange(e, "book")}
-              />
-            </Col>
-            <Col sm={3}>
-              <p id="normaltext">
-                <strong>TV Show</strong>
-              </p>
-
-              <input
-                value={newProfile.favorites.show}
-                onChange={(e) => handleFavoriteChange(e, "show")}
-              />
-            </Col>
-            <Col sm={3}>
-              <p id="normaltext">
-                <strong>Artist/Band</strong>
-              </p>
-              <input
-                value={newProfile.favorites.artist}
-                onChange={(e) => handleFavoriteChange(e, "artist")}
-              />
             </Col>
           </Row>
         </Col>

@@ -4,8 +4,8 @@ import axios from "axios";
 import { auth } from "../firebase";
 
 // Components
-import Student from "./Student";
-import Message from "./Message";
+import StudentModal from "../components/StudentModal";
+import Message from "../components/Message";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -21,6 +21,11 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
+
+import { Container, Row, Col, Modal } from "react-bootstrap";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from "@fortawesome/free-solid-svg-icons"
 
 function Connections() {
   const [pending, setPending] = useState([]);
@@ -107,10 +112,68 @@ function Connections() {
       .catch((err) => console.log(err));
   };
 
+  const clearSearch = () => {
+    getConnections();
+  }
+
+  const renderSearchBar = () => {
+    return (
+      <div className="search-bar">
+        <form onSubmit={searchName} style={{ width: '97%'}}> 
+          <label htmlFor="search">
+            <span className="visually-hidden">Search for students</span>
+          </label>
+          <input
+            type="text"
+            className="search-input"
+            id="search"
+            placeholder="Search for students"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </form>
+        <button onClick={clearSearch}>
+          <FontAwesomeIcon icon={faTimes} color={'grey'}/>
+        </button>
+      </div>
+  )}
+
+  const renderConnections = () => {
+    <Row>
+      {connections.map(con => (
+        <div>
+          hello
+        </div>
+      ))}
+    </Row>
+  }
+
+  return (
+    <Container className="uconnect-connections" style={{ marginTop: '1rem' }}>
+      <Modal 
+        keyboard
+        show={studentId} 
+        onHide={handleCloseStudent}
+        dialogClassName="student-modal"
+      >
+        <StudentModal
+          studentId={studentId}
+          handleClose={handleCloseStudent}
+          // handleRequest={props.handleRequest}
+          // requests={props.requests}
+          handleOpenMessage={handleOpenMessage}
+        />
+      </Modal>
+      <h1>All Connections</h1>
+      {renderSearchBar()}
+      {connections && renderConnections()}
+    </Container>
+  )
+
   return (
     <div>
       <Dialog open={studentId}>
-        <Student
+        <StudentModal
           studentId={studentId}
           handleClose={handleCloseStudent}
           handleOpenMessage={handleOpenMessage}
