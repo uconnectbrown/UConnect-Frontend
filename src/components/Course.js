@@ -10,11 +10,11 @@ import Select from "react-select";
 // Components
 import StudentModal from "./StudentModal";
 import Message from "./Message";
+import SearchBar from "./SearchBar";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import SearchBar from "material-ui-search-bar";
 import InputLabel from "@material-ui/core/InputLabel";
 import CardContent from "@material-ui/core/CardContent";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -27,6 +27,9 @@ import Dialog from "@material-ui/core/Dialog";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
+
+import { Row, Col, Modal } from 'react-bootstrap'
+import './Course.css'
 
 // Resources
 import { classYears, majors } from "../resources/searchOptions";
@@ -143,148 +146,102 @@ function Course(props) {
       .catch((err) => console.log(err));
   };
 
+  const clearSearch = () => {
+    setStudents([]);
+    setClassYears([]);
+    setMajors([]);
+    setSearching(false);
+    setQuery("");
+    setClear(!clear);
+  };
+
+  const renderFilters = () => {
+    return (
+      <Row className="my-3" style={{ paddingLeft: "0.5rem" }}>
+        <Col md={9} lg={4}>
+          <Select
+            closeMenuOnSelect={classYears_.length === classYears.length - 1}
+            isMulti
+            name="classYears"
+            value={classYears_}
+            options={classYears}
+            onChange={(options) => setClassYears(options)}
+            placeholder="Filter by class year..."
+          />
+        </Col>
+        <Col md={9} lg={4}>
+          <Select
+            closeMenuOnSelect={majors_.length === majors.length - 1}
+            isMulti
+            name="concentration"
+            value={majors_}
+            options={majors}
+            onChange={(options) => setMajors(options)}
+            placeholder="Filter by concentration..."
+          />
+        </Col>
+      </Row>
+    );
+  };
+
+  const renderStudents = () => {
+    return students.map((student, i) => {
+      return (
+        <Col sm={2} className="course-profile-card" onClick={() => handleOpenStudent(i)}>
+          <img
+            className="course-profile-img"
+            alt="Profile Picture"
+            src={student.imageUrl}
+          />
+          <div style={{ fontSize: "1rem", fontStyle: "bold" }}>
+            {student.firstName} {student.lastName}
+          </div>
+          <div className="card-text">{student.classYear}</div>
+          <div className="card-text">
+            {student.majors.map((major) => major)}
+          </div>
+        </Col>
+      )
+    })
+  }
+
   return (
     <div>
-      <Dialog open={studentId}>
+      <Modal
+        keyboard
+        show={studentId}
+        onHide={handleCloseStudent}
+        dialogClassName="student-modal"
+      >
         <StudentModal
           studentId={studentId}
           handleClose={handleCloseStudent}
           handleRequest={props.handleRequest}
+          requests={props.requests}
           handleOpenMessage={handleOpenMessage}
         />
-      </Dialog>
-      <Dialog open={messageOpen && studentInfo}>
+      </Modal>
+      {/* <Dialog open={messageOpen && studentInfo}>
         <Message
           handleCloseMessage={handleCloseMessage}
           studentInfo={studentInfo}
         />
-      </Dialog>
+      </Dialog> */}
       {code}
-      {searchMode && (
-        <SearchBar
-          value={query}
-          onChange={(newValue) => setQuery(newValue)}
-          onRequestSearch={() => {
-            searchName(query);
-            setSearching(true);
-          }}
-        />
-      )}
-      <Grid container spacing={10}>
-        {!searchMode && (
-          <Grid item>
-            Class Year(s)
-            <Select
-              closeMenuOnSelect={
-                classYears_.length === classYears.length - 1 ? true : false
-              }
-              isMulti
-              name="classYears"
-              options={classYears}
-              value={classYears_}
-              onChange={(options) => setClassYears(options)}
-            />
-          </Grid>
-        )}
-        {!searchMode && (
-          <Grid item>
-            Concentration(s)
-            <Select
-              closeMenuOnSelect={
-                majors_.length === majors.length - 1 ? true : false
-              }
-              isMulti
-              name="concentration"
-              options={majors}
-              value={majors_}
-              onChange={(options) => setMajors(options)}
-            />
-          </Grid>
-        )}
-        {!searchMode && (
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              disabled={!canSearch(query, classYears_, majors_)}
-              onClick={() => {
-                setSearching(false);
-                searchField(
-                  classYears_.map((option) => option.value),
-                  majors_.map((option) => option.value)
-                );
-              }}
-            >
-              Search
-            </Button>
-          </Grid>
-        )}
-        <Grid item>
-          <Button
-            variant="contained"
-            disabled={!searching}
-            color="primary"
-            onClick={() => {
-              setStudents([]);
-              setClassYears([]);
-              setMajors([]);
-              setSearching(false);
-              setQuery("");
-              setClear(!clear);
-            }}
-          >
-            Clear Search
-          </Button>
-        </Grid>
-        <Grid item>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={searchMode}
-                onChange={() => setSearchMode(!searchMode)}
-                name="checkedB"
-                color="primary"
-              />
-            }
-            label="Search By Name"
-          />
-        </Grid>
-      </Grid>
-      {students && (
-        <GridList cols={5} spacing={10} cellHeight="auto">
-          {students.map((student, index) => {
-            return (
-              <GridListTile item component="Card" sm>
-                <Card align="center">
-                  <ButtonBase
-                    size="large"
-                    color="primary"
-                    onClick={() => handleOpenStudent(index)}
-                    style={{ width: "100%" }}
-                  >
-                    <CardContent>
-                      <img
-                        width="50px"
-                        alt="Profile Picture"
-                        src={student.imageUrl}
-                      />
-                      <Typography variant="body2">
-                        {student.firstName + " " + student.lastName}
-                      </Typography>
-                      <Typography variant="body2">
-                        {student.classYear}
-                      </Typography>
-                      <Typography variant="body2">
-                        {student.majors.map((major) => major)}
-                      </Typography>
-                    </CardContent>
-                  </ButtonBase>
-                </Card>
-              </GridListTile>
-            );
-          })}
-        </GridList>
-      )}
+      <SearchBar
+        placeholder="placeholder"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onSubmit={() => {
+          searchName(query);
+          setSearching(true);
+        }}
+        clearSearch={clearSearch}
+      />
+      {renderFilters()}
+      <Row>
+        {students && renderStudents()}
+      </Row>
     </div>
   );
 }

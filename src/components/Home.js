@@ -7,6 +7,7 @@ import Select from "react-select";
 // Components
 import StudentModal from "./StudentModal";
 import Message from "./Message";
+import SearchBar from './SearchBar';
 
 import { Container, Row, Col, Button, Modal, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -241,26 +242,13 @@ function Home(props) {
   };
 
   const renderSearchBar = () => {
-    return (
-      <div className="search-bar">
-        <form onSubmit={onSearchSubmit} style={{ width: "97%" }}>
-          <label htmlFor="search">
-            <span className="visually-hidden">Search for students</span>
-          </label>
-          <input
-            type="text"
-            className="search-input"
-            id="search"
-            placeholder="Search for students"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </form>
-        <button onClick={clearSearch}>
-          <FontAwesomeIcon icon={faTimes} color={"grey"} />
-        </button>
-      </div>
-    );
+    return <SearchBar
+      placeholder="Search for students"
+      onSubmit={onSearchSubmit}
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      clearSearch={clearSearch}
+    />
   };
 
   const renderSearchButtons = () => {

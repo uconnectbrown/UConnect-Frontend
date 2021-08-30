@@ -154,16 +154,9 @@ class courseView extends Component {
     this.setState(
       (state) => {
         const selected = state.selected.map((item, j) => {
-          if (j === i) {
-            return !item;
-          } else {
-            return item;
-          }
+          return (j === i) ? !item : item;
         });
-
-        return {
-          selected,
-        };
+        return { selected };
       },
       () => {
         this.handleParticipants();
@@ -220,6 +213,35 @@ class courseView extends Component {
   };
 
   compare = (a1, a2) => a1.filter((v) => a2.includes(v)).length;
+
+  renderFilters = () => {
+    return (
+      <Row className="my-3" style={{ paddingLeft: "0.5rem" }}>
+        <Col md={9} lg={4}>
+          <Select
+            closeMenuOnSelect={classYears_.length === classYears.length - 1}
+            isMulti
+            name="classYears"
+            value={classYears_}
+            options={classYears}
+            onChange={(options) => setClassYears(options)}
+            placeholder="Filter by class year..."
+          />
+        </Col>
+        <Col md={9} lg={4}>
+          <Select
+            closeMenuOnSelect={majors_.length === majors.length - 1}
+            isMulti
+            name="concentration"
+            value={majors_}
+            options={majors}
+            onChange={(options) => setMajors(options)}
+            placeholder="Filter by concentration..."
+          />
+        </Col>
+      </Row>
+    );
+  };
 
   render() {
     const code = this.props.location.state.code;
