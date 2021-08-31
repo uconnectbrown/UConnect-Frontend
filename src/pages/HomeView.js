@@ -169,7 +169,8 @@ function HomeView(props) {
 
   const onSearchSubmit = (e) => {
     e.preventDefault();
-    searchName(query);
+    if (query.length > 0) searchName(query);
+    else getFeatured();
   };
 
   const clearSearch = () => {
@@ -287,6 +288,8 @@ function HomeView(props) {
           onClick={() => {
             setStudents([]);
             setSelectedOptions([]);
+            setSearching(false);
+            getFeatured();
           }}
         >
           Clear

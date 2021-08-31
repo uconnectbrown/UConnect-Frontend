@@ -131,7 +131,8 @@ function Course(props) {
 
   const onSearchSubmit = (e) => {
     e.preventDefault();
-    searchName(query);
+    if (query.length > 0) searchName(query);
+    else getStudents();
   };
 
   const clearSearch = () => {
@@ -168,6 +169,8 @@ function Course(props) {
           onClick={() => {
             setStudents([]);
             setSelectedOptions([]);
+            setSearching(false);
+            getStudents();
           }}
         >
           Clear
