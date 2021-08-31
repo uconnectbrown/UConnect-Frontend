@@ -176,6 +176,7 @@ function HomeView(props) {
     setStudents([]);
     setQuery("");
     setSearching(false);
+    getFeatured();
   };
 
   const sendRequest = (receiverId) => {

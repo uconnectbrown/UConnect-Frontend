@@ -138,6 +138,7 @@ function Course(props) {
     setStudents([]);
     setSearching(false);
     setQuery("");
+    getStudents();
   };
 
   const renderSearchBar = () => {
