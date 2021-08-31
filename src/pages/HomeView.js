@@ -170,7 +170,12 @@ function HomeView(props) {
   const onSearchSubmit = (e) => {
     e.preventDefault();
     if (query.length > 0) searchName(query);
-    else getFeatured();
+    else {
+      setStudents([]);
+      setQuery("");
+      setSearching(false);
+      getFeatured();
+    };
   };
 
   const clearSearch = () => {

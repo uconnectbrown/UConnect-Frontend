@@ -132,7 +132,12 @@ function Course(props) {
   const onSearchSubmit = (e) => {
     e.preventDefault();
     if (query.length > 0) searchName(query);
-    else getStudents();
+    else {
+      setStudents([]);
+      setSearching(false);
+      setQuery("");
+      getStudents();
+    };
   };
 
   const clearSearch = () => {
