@@ -85,7 +85,6 @@ function Course(props) {
 
   const searchField = (options, param) => {
     options = options.map((option) => option.value);
-    console.log(options);
     if (codeNS && email) {
       axios
         .post(`/searchCField/${codeNS}/${email}`, { options, param })
@@ -96,19 +95,6 @@ function Course(props) {
           setSearching(true);
         })
         .catch((err) => console.log(err));
-    }
-  };
-
-  const filterField = (classYear, majors, years, majors_) => {
-    const compare = (a1, a2) => a1.filter((v) => a2.includes(v)).length;
-    console.log(years, majors_);
-    if (years.length > 0 && majors_.length > 0) {
-      if (years.includes(classYear) && compare(majors, majors_) > 0)
-        return true;
-    } else if (years.length > 0 && majors_.length === 0) {
-      if (years.includes(classYear)) return true;
-    } else if (years.length === 0 && majors_.length > 0) {
-      if (compare(majors, majors_) > 0) return true;
     }
   };
 
@@ -195,7 +181,7 @@ function Course(props) {
         <Select
           name="searchType"
           defaultValue={searchTypes[0]}
-          options={searchTypes}
+          options={searchTypes.slice(0, 3)}
           isOptionDisabled={(option) => option.disabled}
           onChange={(options) => {
             setSearchType(options.value);

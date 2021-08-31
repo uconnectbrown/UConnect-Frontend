@@ -10,19 +10,20 @@ import Crop from "../util/Crop";
 // Resources
 import {
   majors,
+  pronouns,
+  countries,
+  states,
   greekLife,
   instruments,
   pickUpSports,
-  pets,
   varsitySports,
-  CandAinterests,
-  PAandWinterests,
-  GHinterests,
   courseList,
 } from "../resources/editFields";
 
 import { Container, Row, Col } from "react-bootstrap";
 import "./ProfileView.css";
+
+const { validProfile } = require("../util/validators");
 
 // Body
 function ProfileView(props) {
@@ -62,10 +63,6 @@ function ProfileView(props) {
 
   const editProfile = () => {
     if (emailId) {
-      let promises = [
-        axios.get(`/update/${emailId}`),
-        axios.get(`/updateV/${emailId}`),
-      ];
       if (newProfile.courses !== profile.courses) {
         props.handleCourses(newProfile.courses);
         handleDeleteCourses();
@@ -79,10 +76,19 @@ function ProfileView(props) {
           setProfile(newProfile);
         })
         .then(() => {
-          return Promise.all(promises);
+          updateInfo();
         })
         .catch((err) => console.log(err));
     }
+  };
+
+  const updateInfo = () => {
+    axios
+      .get(`/update/${emailId}`)
+      .then(() => {
+        return axios.get(`/updateV/${emailId}`);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleDeleteCourses = () => {
@@ -191,13 +197,13 @@ function ProfileView(props) {
       <Row className="profile-card">
         <Col sm={4} style={{ justifyContent: "center" }}>
           <img alt="Profile" src={profile.imageUrl} className="profile-img" />
-          <p>
+          <h4>
             {profile.firstName} {profile.lastName}
-          </p>
-          <h4> {profile.location}</h4>
-          <h4> {profile.pronouns}</h4>
-          <h4>Class of {profile.classYear}</h4>
-          <h4>{profile.majors.map((major) => (major ? major + ", " : ""))}</h4>
+          </h4>
+          <h5> {profile.location}</h5>
+          <h5> {profile.pronouns}</h5>
+          <h5>Class of {profile.classYear}</h5>
+          <h5>{profile.majors.map((major) => (major ? major + ", " : ""))}</h5>
           <br></br>
           <p id="normaltext">
             <strong>Bio: </strong>
@@ -358,40 +364,64 @@ function ProfileView(props) {
             </menu>
           </dialog>
           <p>
+            First name:
             <input
               value={newProfile.firstName}
               onChange={handleChange}
               name="firstName"
+              placeholder={!newProfile.firstName && "Can't be empty"}
             />
+          </p>
+          <p>
+            Last name:
             <input
               value={newProfile.lastName}
               onChange={handleChange}
               name="lastName"
+              placeholder={!newProfile.lastName && "Can't be empty"}
             />
           </p>
-          <select
-            name="location"
-            id="location"
-            onChange={handleChange}
-            value={newProfile.location}
-          >
-            <option value="China">China</option>
-            <option value="United States">United States</option>
-            <option value="France">France</option>
-            <option value="Egypt">Egypt</option>
-          </select>
-          <select
-            name="pronouns"
-            id="pronouns"
-            onChange={handleChange}
-            value={newProfile.pronouns}
-          >
-            <option value="he/him">he/him</option>
-            <option value="she/her">she/her</option>
-            <option value="they/them">they/them</option>
-            <option value="ze/hir">ze/hir</option>
-          </select>
-          <h4>
+          <p>
+            <label>
+              Country of Origin:
+              <input
+                list="countries"
+                name="location"
+                onChange={handleChange}
+                value={newProfile.location}
+              />
+            </label>
+
+            <datalist id="countries">
+              {countries.map((country, i) => {
+                return <option key={i} value={country} />;
+              })}
+            </datalist>
+            {newProfile.location === "United States of America" && (
+              <p>
+                <label>
+                  State:
+                  <input list="states" />
+                </label>
+                <datalist id="states">
+                  {states.map((state, i) => {
+                    return <option key={i} value={state} />;
+                  })}
+                </datalist>
+              </p>
+            )}
+          </p>
+          <p>
+            Pronouns:
+            <input
+              list="pronouns"
+              name="pronouns"
+              onChange={handleChange}
+              value={newProfile.pronouns}
+            />
+            {pronouns}
+          </p>
+          <p>
             Class of
             <select
               name="classYear"
@@ -404,7 +434,8 @@ function ProfileView(props) {
               <option value="2024">2024</option>
               <option value="2025">2025</option>
             </select>
-          </h4>
+          </p>
+
           <label>
             Major:
             <input
@@ -413,6 +444,10 @@ function ProfileView(props) {
               onChange={(e) => {
                 handleArrChange(e, 0);
               }}
+              placeholder={
+                newProfile.majors.filter(Boolean).length === 0 &&
+                "Need at least one"
+              }
               value={newProfile.majors[0]}
             />
           </label>
@@ -473,6 +508,7 @@ function ProfileView(props) {
                   setEdit(false);
                   editProfile();
                 }}
+                disabled={!validProfile(newProfile)}
               >
                 Save
               </button>
@@ -584,6 +620,10 @@ function ProfileView(props) {
             </Col>
           </Row>
           <Row className="section-container2">
+            {(newProfile.interests1.length !== 3 ||
+              newProfile.interests2.length !== 3 ||
+              newProfile.interests3.length !== 3) &&
+              "Please select 3 interests in each category"}
             <EditInterests
               getInterests={handleInterests}
               index1={newProfile.interests1.map((i) => i.index)}
