@@ -7,25 +7,11 @@ import { auth } from "../firebase";
 import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 
-// MUI Stuff
-import Grid from "@material-ui/core/Grid";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import SearchBar from "material-ui-search-bar";
-import InputLabel from "@material-ui/core/InputLabel";
-import CardContent from "@material-ui/core/CardContent";
-import MenuItem from "@material-ui/core/MenuItem";
-import Card from "@material-ui/core/Card";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Typography from "@material-ui/core/Typography";
-import Dialog from "@material-ui/core/Dialog";
-
-import { Container, Row, Col, Modal } from "react-bootstrap";
+import { Container, Row, Modal } from "react-bootstrap";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from "@fortawesome/free-solid-svg-icons"
+import StudentCard from "../components/StudentCard";
 
 function Connections() {
   const [pending, setPending] = useState([]);
@@ -63,11 +49,11 @@ function Connections() {
       .catch((err) => console.log(err));
   };
 
-  const handleOpenPStudent = (index) => {
+  const handleOpenPending = (index) => {
     setStudentId(pending[index].emailId);
   };
 
-  const handleOpenCStudent = (index) => {
+  const handleOpenConnected = (index) => {
     setStudentId(connections[index].emailId);
   };
 
@@ -116,6 +102,8 @@ function Connections() {
     getConnections();
   }
 
+  console.log(pending)
+
   const renderSearchBar = () => {
     return (
       <div className="search-bar">
@@ -138,16 +126,6 @@ function Connections() {
       </div>
   )}
 
-  const renderConnections = () => {
-    <Row>
-      {connections.map(con => (
-        <div>
-          hello
-        </div>
-      ))}
-    </Row>
-  }
-
   return (
     <Container className="uconnect-connections" style={{ marginTop: '1rem' }}>
       <Modal 
@@ -164,95 +142,42 @@ function Connections() {
           handleOpenMessage={handleOpenMessage}
         />
       </Modal>
+      <Row>
+        {pending.length > 0 && 
+          <>
+            <h3>Pending Connections</h3>
+            {pending.map((p, i) => 
+              <StudentCard 
+                name={p.name} 
+                imageUrl={p.imageUrl}
+                onClick={() => handleOpenPending(i)}
+              />
+            )}
+          </>
+        }
+      </Row>
+
       <h1>All Connections</h1>
       {renderSearchBar()}
-      {connections && renderConnections()}
+      <Row className="mt-3">
+        {connections && connections.map((c, i) => 
+          <StudentCard 
+            name={c.name} 
+            classYear={c.classYear}
+            imageUrl={c.imageUrl}
+            onClick={() => handleOpenConnected(i)}
+          />
+        )}
+      </Row>
     </Container>
   )
 
-  return (
-    <div>
-      <Dialog open={studentId}>
-        <StudentModal
-          studentId={studentId}
-          handleClose={handleCloseStudent}
-          handleOpenMessage={handleOpenMessage}
-        />
-      </Dialog>
-      <Dialog open={messageOpen && studentInfo}>
-        <Message
-          handleCloseMessage={handleCloseMessage}
-          studentInfo={studentInfo}
-        />
-      </Dialog>
-      Pending Connections
-      <GridList cols={5} spacing={10} cellHeight="auto">
-        {pending.map((student, index) => {
-          return (
-            <GridListTile item component="Card" sm>
-              <Card align="center">
-                <ButtonBase
-                  size="large"
-                  color="primary"
-                  onClick={() => handleOpenPStudent(index)}
-                  style={{ width: "100%" }}
-                >
-                  <CardContent>
-                    <img
-                      width="50px"
-                      alt="Profile Picture"
-                      src={student.imageUrl}
-                    />
-                    <Typography variant="body2">{student.name}</Typography>
-                  </CardContent>
-                </ButtonBase>
-              </Card>
-            </GridListTile>
-          );
-        })}
-      </GridList>
-      <Typography>All Connections</Typography>
-      <SearchBar
-          value={query}
-          onChange={(newValue) => setQuery(newValue)}
-          onRequestSearch={() => {
-            searchName(query);
-          }}
-        />
-      {connections && (
-        <div>
-          <GridList cols={5} spacing={10} cellHeight="auto">
-            {connections.map((connection, index) => {
-              return (
-                <GridListTile item component="Card" sm>
-                  <Card align="center">
-                    <ButtonBase
-                      size="large"
-                      color="primary"
-                      onClick={() => handleOpenCStudent(index)}
-                      style={{ width: "100%" }}
-                    >
-                      <CardContent>
-                        <img
-                          width="50px"
-                          alt="Profile Picture"
-                          src={connection.imageUrl}
-                        />
-                        <Typography variant="body2">
-                          {connection.name}
-                        </Typography>
-                        <Typography variant="body2">{connection.classYear}</Typography>
-                      </CardContent>
-                    </ButtonBase>
-                  </Card>
-                </GridListTile>
-              );
-            })}
-          </GridList>
-        </div>
-      )}
-    </div>
-  );
+      // <Dialog open={messageOpen && studentInfo}>
+      //   <Message
+      //     handleCloseMessage={handleCloseMessage}
+      //     studentInfo={studentInfo}
+      //   />
+      // </Dialog>
 }
 
 export default Connections;

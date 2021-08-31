@@ -46,7 +46,11 @@ function SideBar(props) {
               let link = "/courses/" + course.code.replace(/\s/g, "");
               return (
                 <Link to={link} style={{ textDecoration: "none", width: '100%', maxWidth: '100%' }}>
-                  <Button variant="outline-light" className='nav-button m-0'>
+                  <Button 
+                    variant="outline-light" 
+                    className='nav-button m-0'
+                    onClick={() => props.handleCode(course.code)}
+                  >
                     {course.code}
                   </Button>
                 </Link>

@@ -11,6 +11,7 @@ import Select from "react-select";
 import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
+import StudentCard from "../components/StudentCard";
 
 import Dialog from "@material-ui/core/Dialog";
 import { Row, Col, Modal } from 'react-bootstrap';
@@ -169,27 +170,6 @@ function Course(props) {
     );
   };
 
-  const renderStudents = () => {
-    return students.map((student, i) => {
-      return (
-        <Col sm={2} className="course-profile-card" onClick={() => handleOpenStudent(i)}>
-          <img
-            className="course-profile-img"
-            alt="Profile Picture"
-            src={student.imageUrl}
-          />
-          <div style={{ fontSize: "1rem", fontStyle: "bold" }}>
-            {student.firstName} {student.lastName}
-          </div>
-          <div className="card-text">{student.classYear}</div>
-          <div className="card-text">
-            {student.majors.map((major) => major)}
-          </div>
-        </Col>
-      )
-    })
-  }
-
   return (
     <div>
       <Modal
@@ -212,7 +192,7 @@ function Course(props) {
           studentInfo={studentInfo}
         />
       </Dialog> */}
-      {code}
+      <h1 style={{ marginTop: '1rem'}}>{code}</h1>
       <SearchBar
         placeholder={`Search for students in ${code}`}
         value={query}
@@ -225,7 +205,15 @@ function Course(props) {
       />
       {renderFilters()}
       <Row>
-        {students && renderStudents()}
+        {students && students.map((student, i) => {
+          return <StudentCard 
+            name={`${student.firstName} ${student.lastName}`} 
+            classYear={student.classYear}
+            majors={student.majors}
+            imageUrl={student.imageUrl}
+            onClick={() => handleOpenStudent(i)}
+          />
+        })}
       </Row>
     </div>
   );
