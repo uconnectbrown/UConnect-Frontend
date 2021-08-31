@@ -197,7 +197,7 @@ function ProfileView(props) {
           <h4> {profile.location}</h4>
           <h4> {profile.pronouns}</h4>
           <h4>Class of {profile.classYear}</h4>
-          <h4>{profile.majors.map((major) => major ? major + ', ' : '')}</h4>
+          <h4>{profile.majors.map((major) => (major ? major + ", " : ""))}</h4>
           <br></br>
           <p id="normaltext">
             <strong>Bio: </strong>
@@ -284,13 +284,15 @@ function ProfileView(props) {
               <p id="normaltext">
                 <strong>Groups</strong>
               </p>
-              {profile.groups.map((group) => group ? group + ', ' : '')}
+              {profile.groups.map((group) => (group ? group + ", " : ""))}
             </Col>
             <Col sm={6}>
               <p id="normaltext">
                 <strong>Varsity Sports</strong>
               </p>
-              {profile.varsitySports.map((sport) => sport ? sport + ', ' : '')}
+              {profile.varsitySports.map((sport) =>
+                sport ? sport + ", " : ""
+              )}
             </Col>
           </Row>
           <Row className="section-container3">
@@ -300,7 +302,9 @@ function ProfileView(props) {
               </p>
               <div class="card" id="adinfo-card">
                 <p id="normaltext">
-                  {profile.pickUpSports.map((sport) => sport ? sport + ", " : '')}
+                  {profile.pickUpSports.map((sport) =>
+                    sport ? sport + ", " : ""
+                  )}
                 </p>
               </div>
             </Col>
@@ -310,7 +314,9 @@ function ProfileView(props) {
               </p>
               <div class="card" id="adinfo-card">
                 <p id="normaltext">
-                  {profile.instruments.map((instrument) => instrument ? instrument + ", " : '')}
+                  {profile.instruments.map((instrument) =>
+                    instrument ? instrument + ", " : ""
+                  )}
                 </p>
               </div>
             </Col>

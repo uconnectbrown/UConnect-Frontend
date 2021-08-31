@@ -13,9 +13,6 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 
-// Components
-import ProgressBar from "./ProgressBar.js";
-
 // Styles
 import "./Interests.css";
 
@@ -24,7 +21,7 @@ import {
   CandAinterests,
   PAandWinterests,
   GHinterests,
-} from "../resources/interests";
+} from "../resources/profileFields";
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
@@ -140,10 +137,10 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
   const [select1, setSelect1] = useState(interests1.map((interest) => false));
   const [select2, setSelect2] = useState(interests2.map((interest) => false));
   const [select3, setSelect3] = useState(interests3.map((interest) => false));
-  const total =
-    select1.filter(Boolean).length +
-    select2.filter(Boolean).length +
-    select3.filter(Boolean).length;
+  const total1 = select1.filter(Boolean).length;
+  const total2 = select2.filter(Boolean).length;
+  const total3 = select3.filter(Boolean).length;
+
   useEffect(() => {
     sendInterests1(convertInterests(select1, interests1));
   }, [select1]);
@@ -184,7 +181,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
                     setSelect1(newSelected);
                   }}
                   variant={select1[index] ? "contained" : "outlined"}
-                  disabled={total > 9 && !select1[index]}
+                  disabled={total1 > 2 && !select1[index]}
                 >
                   {interest}
                 </Button>
@@ -207,7 +204,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
                     setSelect2(newSelected);
                   }}
                   variant={select2[index] ? "contained" : "outlined"}
-                  disabled={total > 9 && !select2[index]}
+                  disabled={total2 > 2 && !select2[index]}
                 >
                   {interest}
                 </Button>
@@ -230,7 +227,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
                     setSelect3(newSelected);
                   }}
                   variant={select3[index] ? "contained" : "outlined"}
-                  disabled={total > 9 && !select3[index]}
+                  disabled={total3 > 2 && !select3[index]}
                 >
                   {interest}
                 </Button>
@@ -250,42 +247,17 @@ export default function CustomizedSteppers(props) {
   const [interests1, setInterests1] = React.useState([]);
   const [interests2, setInterests2] = React.useState([]);
   const [interests3, setInterests3] = React.useState([]);
-  const total = interests1.length + interests2.length + interests3.length;
-  const [notDone, setNotDone] = React.useState(false);
 
   useEffect(() => {
     props.getInterests(interests1, interests2, interests3);
   }, [interests1, interests2, interests3]);
 
   const handleNext = () => {
-    if (activeStep === 0) {
-      if (interests1.length > 0) {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setNotDone(false);
-      } else {
-        setNotDone(true);
-      }
-    }
-    if (activeStep === 1) {
-      if (interests2.length > 0) {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setNotDone(false);
-      } else {
-        setNotDone(true);
-      }
-    }
-    if (activeStep === 2) {
-      if (interests3.length > 0) {
-        setNotDone(false);
-      } else {
-        setNotDone(true);
-      }
-    }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    setNotDone(false);
   };
 
   const sendInterests1 = (i1) => {
@@ -300,6 +272,18 @@ export default function CustomizedSteppers(props) {
     setInterests3(i3);
   };
 
+  const isNextDisabled = (i) => {
+    if (i === 0) {
+      if (interests1.length !== 3) return true;
+    }
+    if (i === 1) {
+      if (interests2.length !== 3) return true;
+    }
+    if (i === 2) {
+      if (interests3.length !== 3) return true;
+    }
+  };
+
   return (
     <div className={classes.root}>
       <Stepper
@@ -309,41 +293,29 @@ export default function CustomizedSteppers(props) {
       >
         <Step key="CandA">
           <StepLabel StepIconComponent={ColorlibStepIcon}>
-            {interests1.length === 0 ? (
-              <Typography>Please select at least one</Typography>
-            ) : (
-              <div>
-                {interests1.map((i) => {
-                  return <div>• {i.interest}</div>;
-                })}
-              </div>
-            )}
+            <div>
+              {interests1.map((i) => {
+                return <div>• {i.interest}</div>;
+              })}
+            </div>
           </StepLabel>
         </Step>
         <Step key="PAandW">
           <StepLabel StepIconComponent={ColorlibStepIcon}>
-            {interests2.length === 0 ? (
-              <Typography>Please select at least one</Typography>
-            ) : (
-              <div>
-                {interests2.map((i) => {
-                  return <div>• {i.interest}</div>;
-                })}
-              </div>
-            )}
+            <div>
+              {interests2.map((i) => {
+                return <div>• {i.interest}</div>;
+              })}
+            </div>
           </StepLabel>
         </Step>
         <Step key="GH">
           <StepLabel StepIconComponent={ColorlibStepIcon}>
-            {interests3.length === 0 ? (
-              <Typography>Please select at least one</Typography>
-            ) : (
-              <div>
-                {interests3.map((i) => {
-                  return <div>• {i.interest}</div>;
-                })}
-              </div>
-            )}
+            <div>
+              {interests3.map((i) => {
+                return <div>• {i.interest}</div>;
+              })}
+            </div>
           </StepLabel>
         </Step>
       </Stepper>
@@ -358,11 +330,6 @@ export default function CustomizedSteppers(props) {
           )}
         </Typography>
 
-        <div style={{ marginBottom: "1.5rem" }}>
-          <ProgressBar step={total} />
-          {total}/10
-        </div>
-
         <Button
           disabled={activeStep === 0}
           onClick={handleBack}
@@ -375,19 +342,10 @@ export default function CustomizedSteppers(props) {
             variant="contained"
             onClick={handleNext}
             className={classes.button}
-            disabled={
-              activeStep === 2 &&
-              interests1.length + interests2.length + interests3.length < 10
-            }
+            disabled={isNextDisabled(activeStep)}
           >
             Next
           </Button>
-        )}
-
-        {notDone && (
-          <Typography variant="body1">
-            Please select at least 1 category in this section
-          </Typography>
         )}
       </div>
     </div>

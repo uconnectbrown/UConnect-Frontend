@@ -18,7 +18,6 @@ const emptyProfile = {
   validProfile: true,
   secondMajor: false,
   thirdMajor: false,
-  fifthCourse: false,
 };
 
 export default emptyProfile;

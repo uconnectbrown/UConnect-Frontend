@@ -17,16 +17,18 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Container, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// Pages
+import Messages from "./pages/MessagesView";
+import Home from "./pages/HomeView";
+import Connections from "./pages/ConnectionsView";
+import ProfileView from "./pages/ProfileView";
+import ProfileBuild from "./pages/ProfileBuild";
+import CourseView from "./pages/CourseView";
+
 // Components
 import Welcome from "./components/Welcome";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
-import Messages from "./components/Messages";
-import Home from "./components/Home";
-import Connections from "./pages/ConnectionsView";
-import ProfileView from "./pages/ProfileView";
-import ProfileBuild from "./components/ProfileBuild";
-import CourseView from "./pages/CourseView";
 
 // MUI Stuff
 import Button from "@material-ui/core/Button";

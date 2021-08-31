@@ -5,38 +5,38 @@ import { db, auth } from "../firebase.js";
 import Select from "react-select";
 
 // Components
-import StudentModal from "./StudentModal";
-import Message from "./Message";
-import SearchBar from './SearchBar';
-
+import StudentModal from "../components/StudentModal";
+import Message from "../components/Message";
+import SearchBar from "../components/SearchBar";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 
-import "./Home.css";
+// Styling
+import "./HomeView.css";
 
 // Resources
-import {
-  searchOptions,
-  searchTypes,
-  classYears,
-  majors,
-} from "../resources/searchOptions";
+import { searchOptions, searchTypes } from "../resources/searchOptions";
 import { DockRounded, TramOutlined } from "@material-ui/icons";
 
-function Home(props) {
+function HomeView(props) {
   const [emailId, setEmailId] = useState(null);
   const [email, setEmail] = useState(null);
   const [featured, setFeatured] = useState([]);
   const [students, setStudents] = useState(null);
   const [query, setQuery] = useState("");
   const [studentId, setStudentId] = useState("");
-  const [classYears_, setClassYears] = useState([]);
-  const [majors_, setMajors] = useState([]);
   const [studentInfo, setStudentInfo] = useState([]);
   const [messageOpen, setMessageOpen] = useState(false);
   const [searching, setSearching] = useState(false);
   const [searchType, setSearchType] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const params = ["", "classYear", "majors"];
+  const params = [
+    "",
+    "classYear",
+    "majors",
+    "varsitySports",
+    "pickUpSports",
+    "instruments",
+  ];
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -86,7 +86,6 @@ function Home(props) {
         data.forEach((doc) => {
           validSports.push(doc.id);
         });
-        console.log(validSports);
         for (let i = 0; i < searchOptions[3].length; i++) {
           if (
             validSports.includes(searchOptions[3][i].value.replace(/\s/g, ""))
@@ -94,7 +93,6 @@ function Home(props) {
             searchOptions[3][i].disabled = false;
           } else searchOptions[3][i].disabled = true;
         }
-        console.log(searchOptions[3]);
       })
       .catch((err) => console.log(err));
   };
@@ -110,6 +108,8 @@ function Home(props) {
 
   const searchField = (options, param) => {
     options = options.map((option) => option.value);
+    console.log(options);
+    console.log(param);
     axios
       .post(`/searchField/${email}`, { options, param })
       .then((res) => {
@@ -146,10 +146,6 @@ function Home(props) {
     }
   };
 
-  const canSearch = (classYears_, majors_) => {
-    if (classYears_.length > 0 || majors_.length > 0) return true;
-  };
-
   const handleOpenStudent = (index) => {
     setStudentId(students[index].emailId);
   };
@@ -178,8 +174,6 @@ function Home(props) {
 
   const clearSearch = () => {
     setStudents([]);
-    setClassYears([]);
-    setMajors([]);
     setQuery("");
     setSearching(false);
   };
@@ -243,6 +237,7 @@ function Home(props) {
           isOptionDisabled={(option) => option.disabled}
           onChange={(options) => {
             setSearchType(options.value);
+            setSelectedOptions([]);
           }}
         />
       </Row>
@@ -265,59 +260,37 @@ function Home(props) {
   };
 
   const renderSearchBar = () => {
-    return <SearchBar
-      placeholder="Search for students by name"
-      onSubmit={onSearchSubmit}
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      clearSearch={clearSearch}
-    />
+    return (
+      <SearchBar
+        placeholder="Search for students by name"
+        onSubmit={onSearchSubmit}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        clearSearch={clearSearch}
+      />
+    );
   };
 
   const renderSearchButtons = () => {
-    return <>
-      <Button className="search-button" onClick={() => searchField(selectedOptions, params[searchType])}>
-        Search
-      </Button>
-      <Button
-        className="search-button"
-        variant="light"
-        onClick={() => {
-          setStudents([]);
-          setSelectedOptions([]);
-        }}
-      >
-        Clear
-      </Button>
-    </>
-  };
-
-  const renderFilters = () => {
     return (
-      <Row className="my-3" style={{ paddingLeft: "0.5rem" }}>
-        <Col md={9} lg={4}>
-          <Select
-            closeMenuOnSelect={classYears_.length === classYears.length - 1}
-            isMulti
-            name="classYears"
-            value={classYears_}
-            options={classYears}
-            onChange={(options) => setClassYears(options)}
-            placeholder="Filter by class year..."
-          />
-        </Col>
-        <Col md={9} lg={4}>
-          <Select
-            closeMenuOnSelect={majors_.length === majors.length - 1}
-            isMulti
-            name="concentration"
-            value={majors_}
-            options={majors}
-            onChange={(options) => setMajors(options)}
-            placeholder="Filter by concentration..."
-          />
-        </Col>
-      </Row>
+      <>
+        <Button
+          className="search-button"
+          onClick={() => searchField(selectedOptions, params[searchType])}
+        >
+          Search
+        </Button>
+        <Button
+          className="search-button"
+          variant="light"
+          onClick={() => {
+            setStudents([]);
+            setSelectedOptions([]);
+          }}
+        >
+          Clear
+        </Button>
+      </>
     );
   };
 
@@ -446,4 +419,4 @@ function Home(props) {
   );
 }
 
-export default Home;
+export default HomeView;

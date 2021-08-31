@@ -12,19 +12,22 @@ import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
 import StudentCard from "../components/StudentCard";
-
 import Dialog from "@material-ui/core/Dialog";
-import { Row, Col, Modal } from 'react-bootstrap';
-import './CourseView.css';
+import { Row, Col, Modal, Button } from "react-bootstrap";
+
+// Styling
+import "./CourseView.css";
 
 // Resources
-import { classYears, majors } from "../resources/searchOptions";
+import { searchOptions, searchTypes } from "../resources/searchOptions";
 
 function Course(props) {
   const { codeParam } = useParams();
   const code = props.code;
   const codeNS = codeParam;
-  const email = auth.currentUser.email;
+  const [email, setEmail] = useState(null);
+  const [emailId, setEmailId] = useState(null);
+
   const [students, setStudents] = useState(null);
   const [studentId, setStudentId] = useState("");
   const [messageOpen, setMessageOpen] = useState(false);
@@ -32,13 +35,27 @@ function Course(props) {
   const [searchMode, setSearchMode] = useState(false);
   const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
-  const [classYears_, setClassYears] = useState([]);
-  const [majors_, setMajors] = useState([]);
-  const [clear, setClear] = useState(false);
+  const [searchType, setSearchType] = useState(0);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const params = [
+    "",
+    "classYear",
+    "majors",
+    "varsitySports",
+    "pickUpSports",
+    "instruments",
+  ];
 
   useEffect(() => {
-    if (codeNS) getStudents();
-  }, [clear, code, codeParam]);
+    if (auth.currentUser) {
+      setEmailId(auth.currentUser.email.split("@")[0]);
+      setEmail(auth.currentUser.email);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (email && codeNS) getStudents();
+  }, [email, codeNS]);
 
   const getStudents = () => {
     axios
@@ -66,28 +83,20 @@ function Course(props) {
     setStudentId("");
   };
 
-  const canSearch = (query, classYears_, majors_) => {
-    if (searchMode) {
-      if (query !== "") return true;
-    } else {
-      if (classYears_.length > 0 || majors_.length > 0) return true;
+  const searchField = (options, param) => {
+    options = options.map((option) => option.value);
+    console.log(options);
+    if (codeNS && email) {
+      axios
+        .post(`/searchCField/${codeNS}/${email}`, { options, param })
+        .then((res) => {
+          setStudents(res.data);
+        })
+        .then(() => {
+          setSearching(true);
+        })
+        .catch((err) => console.log(err));
     }
-  };
-
-  const searchField = (years, majors_) => {
-    axios
-      .get(`/students/${email}/${codeNS}`)
-      .then((res) => {
-        setStudents(
-          res.data.filter((student) =>
-            filterField(student.classYear, student.majors, years, majors_)
-          )
-        );
-      })
-      .then(() => {
-        setSearching(true);
-      })
-      .catch((err) => console.log(err));
   };
 
   const filterField = (classYear, majors, years, majors_) => {
@@ -117,55 +126,97 @@ function Course(props) {
   };
 
   const searchName = (query) => {
-    axios
-      .get(`/students/${email}/${codeNS}`)
-      .then((res) => {
-        setStudents(
-          res.data.filter((student) =>
-            filterName(student.firstName, student.lastName, query)
-          )
-        );
-      })
-      .then(() => {
-        setSearching(true);
-      })
-      .catch((err) => console.log(err));
+    if (codeNS && email) {
+      axios
+        .get(`/searchCV/${codeNS}/${email}/${query}`)
+        .then((res) => {
+          setStudents(
+            res.data.filter((student) =>
+              filterName(student.firstName, student.lastName, query)
+            )
+          );
+        })
+        .then(() => {
+          setSearching(true);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const onSearchSubmit = (e) => {
+    e.preventDefault();
+    searchName(query);
   };
 
   const clearSearch = () => {
     setStudents([]);
-    setClassYears([]);
-    setMajors([]);
     setSearching(false);
     setQuery("");
-    setClear(!clear);
   };
 
-  const renderFilters = () => {
+  const renderSearchBar = () => {
     return (
-      <Row className="my-3" style={{ paddingLeft: "0.5rem" }}>
-        <Col md={9} lg={4}>
-          <Select
-            closeMenuOnSelect={classYears_.length === classYears.length - 1}
-            isMulti
-            name="classYears"
-            value={classYears_}
-            options={classYears}
-            onChange={(options) => setClassYears(options)}
-            placeholder="Filter by class year..."
-          />
-        </Col>
-        <Col md={9} lg={4}>
-          <Select
-            closeMenuOnSelect={majors_.length === majors.length - 1}
-            isMulti
-            name="concentration"
-            value={majors_}
-            options={majors}
-            onChange={(options) => setMajors(options)}
-            placeholder="Filter by concentration..."
-          />
-        </Col>
+      <SearchBar
+        placeholder="Search for students by name"
+        onSubmit={onSearchSubmit}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        clearSearch={clearSearch}
+      />
+    );
+  };
+
+  const renderSearchButtons = () => {
+    return (
+      <>
+        <Button
+          className="search-button"
+          onClick={() => searchField(selectedOptions, params[searchType])}
+        >
+          Search
+        </Button>
+        <Button
+          className="search-button"
+          variant="light"
+          onClick={() => {
+            setStudents([]);
+            setSelectedOptions([]);
+          }}
+        >
+          Clear
+        </Button>
+      </>
+    );
+  };
+
+  const renderSearchPicker = () => {
+    return (
+      <Row className="search-picker my-2">
+        <Select
+          name="searchType"
+          defaultValue={searchTypes[0]}
+          options={searchTypes}
+          isOptionDisabled={(option) => option.disabled}
+          onChange={(options) => {
+            setSearchType(options.value);
+            setSelectedOptions([]);
+          }}
+        />
+      </Row>
+    );
+  };
+
+  const renderDataList = (i) => {
+    return (
+      <Row className="multiselect-search">
+        <Select
+          name="searchType"
+          isMulti
+          value={selectedOptions}
+          options={searchOptions[i]}
+          isOptionDisabled={(option) => option.disabled}
+          onChange={(options) => setSelectedOptions(options)}
+        />
       </Row>
     );
   };
@@ -192,28 +243,24 @@ function Course(props) {
           studentInfo={studentInfo}
         />
       </Dialog> */}
-      <h1 style={{ marginTop: '1rem'}}>{code}</h1>
-      <SearchBar
-        placeholder={`Search for students in ${code}`}
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onSubmit={() => {
-          searchName(query);
-          setSearching(true);
-        }}
-        clearSearch={clearSearch}
-      />
-      {renderFilters()}
+      <h1 style={{ marginTop: "1rem" }}>{code}</h1>
+      {renderSearchPicker()}
+      {searchType === 0 && renderSearchBar()}
+      {searchType !== 0 && renderDataList(searchType)}
+      {searchType !== 0 && renderSearchButtons()}
       <Row>
-        {students && students.map((student, i) => {
-          return <StudentCard 
-            name={`${student.firstName} ${student.lastName}`} 
-            classYear={student.classYear}
-            majors={student.majors}
-            imageUrl={student.imageUrl}
-            onClick={() => handleOpenStudent(i)}
-          />
-        })}
+        {students &&
+          students.map((student, i) => {
+            return (
+              <StudentCard
+                name={`${student.firstName} ${student.lastName}`}
+                classYear={student.classYear}
+                majors={student.majors}
+                imageUrl={student.imageUrl}
+                onClick={() => handleOpenStudent(i)}
+              />
+            );
+          })}
       </Row>
     </div>
   );

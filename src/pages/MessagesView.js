@@ -6,8 +6,8 @@ import { auth } from "../firebase";
 import md5 from "md5";
 
 // Components
-import Chat from "./Chat";
-import NavBar from "./NavBar";
+import Chat from "../components/Chat";
+import NavBar from "../components/NavBar";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -18,7 +18,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 
 // Body
-function Messages() {
+function MessagesView() {
   const emailId = auth.currentUser.email.split("@")[0];
   const [messages, setMessages] = useState([]);
   const [studentId, setStudentId] = useState("");
@@ -127,4 +127,4 @@ function Messages() {
   );
 }
 
-export default Messages;
+export default MessagesView;

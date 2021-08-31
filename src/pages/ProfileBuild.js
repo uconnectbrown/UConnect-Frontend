@@ -6,6 +6,9 @@ import axios from "axios";
 import { auth } from "../firebase";
 import { useHistory } from "react-router-dom";
 
+// Components
+import Interests from "../components/Interests.js";
+
 // MUI Stuff
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -14,13 +17,13 @@ import AddIcon from "@material-ui/icons/AddCircle";
 import Tooltip from "@material-ui/core/Tooltip";
 import UncheckedButton from "@material-ui/icons/RadioButtonUnchecked";
 import CheckedCircle from "@material-ui/icons/CheckCircleOutline";
-
-import Interests from "./Interests.js";
-
 import { Row, Col, Container, Button } from "react-bootstrap";
 
 // Import Data
-import majorList from "../resources/majors";
+import {
+  majors as majorList,
+  pronouns as pronounList,
+} from "../resources/profileFields";
 import emptyProfile from "../resources/emptyProfile";
 
 // Styling
@@ -39,7 +42,6 @@ function ProfileBuild(props) {
   const [userData, setUserData] = useState(emptyProfile);
   const [email, setEmail] = useState(null);
   const classYears = ["2022", "2023", "2024", "2025"];
-  const pronouns = ["he/him", "she/her", "they/them", "ze/hir", "other"];
   const { classes } = props;
 
   const handleInterests = (i1, i2, i3) => {
@@ -84,7 +86,6 @@ function ProfileBuild(props) {
         .then(() => {
           setUserData({ ...userData, validProfile: true });
           let emailId = email.split("@")[0];
-          console.log("hi");
           return axios.get(`/newfeatured/${emailId}`);
         })
         .then(() => {
@@ -104,9 +105,7 @@ function ProfileBuild(props) {
   return (
     <form noValidate onSubmit={handleSubmit}>
       <Container fluid className="profile-build-container">
-        <h1 className={classes.pageTitle}>
-          Build Profile
-        </h1>
+        <h1 className={classes.pageTitle}>Build Profile</h1>
         <div className="header-icon-wrap">
           <h3>Basic Info</h3>
           {userData.firstName === "" ||
@@ -148,24 +147,21 @@ function ProfileBuild(props) {
           </Col>
           <Col xs={12} md={6}>
             <TextField
-              select
+              variant="outlined"
+              autoComplete="off"
+              size={"small"}
               label="Preferred Pronouns"
               className="profile-build-input"
               onChange={(event) =>
                 setUserData({ ...userData, pronouns: event.target.value })
               }
-              value={userData.pronouns}
-              variant="outlined"
-              size={"small"}
-              helperText="Please select your preferred pronouns"            >
-              {pronouns.map((p) => {
-                return (
-                  <MenuItem key={p} value={p}>
-                    {p}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
+              InputProps={{
+                endAdornment: pronounList,
+                inputProps: {
+                  list: "pronouns",
+                },
+              }}
+            />
           </Col>
           <Col xs={12} md={6}>
             <TextField
@@ -176,7 +172,9 @@ function ProfileBuild(props) {
               }
               value={userData.location}
               variant="outlined"
-              size={"small"}            />
+              size={"small"}
+              helperText="Where are you from?"
+            />
           </Col>
           <Col xs={12} md={6}>
             <TextField
@@ -190,7 +188,8 @@ function ProfileBuild(props) {
               variant="outlined"
               required
               helperText="Please select your graduating class"
-              size={"small"}            >
+              size={"small"}
+            >
               {classYears.map((year) => {
                 return (
                   <MenuItem key={year} value={year}>
@@ -222,10 +221,7 @@ function ProfileBuild(props) {
                   major or put "Undecided".'
               />
               {!userData.secondMajor && (
-                <Tooltip
-                  title="Add Second Concentration"
-                  placement="top"
-                >
+                <Tooltip title="Add Second Concentration" placement="top">
                   <IconButton
                     onClick={() =>
                       setUserData({ ...userData, secondMajor: true })
@@ -258,10 +254,7 @@ function ProfileBuild(props) {
                   }}
                 />
                 {!userData.thirdMajor && (
-                  <Tooltip
-                    title="Add Third Concentration"
-                    placement="top"
-                  >
+                  <Tooltip title="Add Third Concentration" placement="top">
                     <IconButton
                       onClick={() =>
                         setUserData({ ...userData, thirdMajor: true })
@@ -304,7 +297,7 @@ function ProfileBuild(props) {
           {(userData.interests1.length +
             userData.interests2.length +
             userData.interests3.length !==
-            10) |
+            9) |
             (!userData.interests1.length === 0) ||
           userData.interests2.length === 0 ||
           userData.interests3.length === 0 ? (
@@ -313,21 +306,39 @@ function ProfileBuild(props) {
             <CheckedCircle color="secondary" fontSize="small" />
           )}
         </div>
-        <p>Please select 10 categories in which you are interested.</p>
+        <p>Please select 3 interests from each category.</p>
         <Interests getInterests={handleInterests} />
       </Row>
 
       <div className="d-flex flex-column align-items-center text-center py-5">
-        <h3 style={{ width: '50%' }}>
+        <h3 style={{ width: "50%" }}>
           Thank you for taking the time to build your profile and welcome to
           UConnect!
         </h3>
-        <Button type="submit" variant="success" size="lg" onClick={handleSubmit} className="mt-3 mb-5">
+        <Button
+          type="submit"
+          variant="success"
+          size="lg"
+          onClick={handleSubmit}
+          className="mt-3 mb-5"
+          disabled={
+            !validProfile({
+              firstName: userData.firstName.trim(),
+              lastName: userData.lastName.trim(),
+              classYear: userData.classYear,
+              majors: [userData.major1, userData.major2, userData.major3],
+              pronouns: userData.pronouns,
+              location: userData.location,
+              email,
+              interests1: userData.interests1,
+              interests2: userData.interests2,
+              interests3: userData.interests3,
+            })
+          }
+        >
           Create Profile
         </Button>
-        {!userData.validProfile && (
-          <p>Please fill out all required fields</p>
-        )}
+        <p>Please fill out all required fields</p>
       </div>
     </form>
   );
