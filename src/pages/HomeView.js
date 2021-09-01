@@ -355,8 +355,24 @@ function HomeView(props) {
               <Col md={5} lg={6}>
                 <ul style={{ marginBottom: 0 }}>
                   <li className="card-text">{student.score}</li>
-                  <li className="card-text">thing in common</li>
-                  <li className="card-text">thing in common</li>
+                  {student.courseOverlap > 0 && (
+                    <li className="card-text">{student.courseOverlap} courses in common</li>
+                  )}
+                  {student.interestsOverlap > 0 && (
+                    <li className="card-text">{student.interestOverlap} interests in common</li>
+                  )}
+                  {student.shareVarsity && (
+                    <li className="card-text">Plays a varsity sport</li>
+                  )}
+                  {student.shareGreek && (
+                    <li className="card-text">Involved in greek life</li>
+                  )}
+                  {student.sharePickUp && (
+                    <li className="card-text">Plays pickup sports</li>
+                  )}
+                  {student.shareInstruments && (
+                    <li className="card-text">Plays an instrument</li>
+                  )}
                 </ul>
               </Col>
             </Row>
