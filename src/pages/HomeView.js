@@ -453,25 +453,31 @@ function HomeView(props) {
         {onboardPage === 1 && (
           <div>
             <h3>Requests</h3>
-            <h4>Page 2</h4>
+            <h4>When you created your profile, you recieved 10 requests which can be sent to any Brown student you come across on the website. When your connection request is accepted, you will get the request back and be able to send it to someone else, and, if for some reason your request has not been accepted after 2 days, you will be able to unrequest in order to get the request back.</h4>
           </div>
         )}
         {onboardPage === 2 && (
           <div>
-            <h3>Search and Filter</h3>
-            <h4>Page 3</h4>
+            <h3>Connections</h3>
+            <h4>When you accept someone's request or someone accept's your request, the two of you will have formed a connection. Once connected, you will now have access to additional pieces of information such as who your mutual connections are and what courses you have in common. Being connected also gives you the ability to message the other user.</h4>
           </div>
         )}
         {onboardPage === 3 && (
           <div>
-            <h3>Featured Profiles</h3>
-            <h4>Page 4</h4>
+            <h3>Search and Filter</h3>
+            <h4>The best way to find other students is by using the search bar on the home page. You will be able to search for students by criteria such as their name, concentration, or extracurriculars (e.g. varsity sports, pick-up sports, instruments, etc.). You can also access all of the students in your classes by clicking on the courses tab on the left side panel.</h4>
           </div>
         )}
         {onboardPage === 4 && (
           <div>
-            <h3>Your Profile</h3>
+            <h3>Featured Profiles</h3>
             <h4>Page 5</h4>
+          </div>
+        )}
+        {onboardPage === 5 && (
+          <div>
+            <h3>Your Profile</h3>
+            <h4>Page 6</h4>
           </div>
         )}
         {onboardPage === 5 && (
