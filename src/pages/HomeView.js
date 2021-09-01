@@ -72,6 +72,8 @@ function HomeView(props) {
   const handleCloseOnBoard = () => {
     setFirstTime(false)
     // backend function to turn firsttime to false in the profile
+    // axios.get(`/onboard/${emailId}`)
+    //   .catch(err => console.log(err));
   }
 
   const disableSearchTypes = () => {
