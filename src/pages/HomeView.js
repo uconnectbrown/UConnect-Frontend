@@ -29,6 +29,8 @@ function HomeView(props) {
   const [searching, setSearching] = useState(false);
   const [searchType, setSearchType] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [firstTime, setFirstTime] = useState(null);
+  const [onboardPage, setOnboardPage] = useState(0);
   const params = [
     "",
     "classYear",
@@ -47,11 +49,30 @@ function HomeView(props) {
 
   useEffect(() => {
     if (emailId) {
+      checkFirstTime();
       getFeatured();
       disableSearchTypes();
       disableVarsity();
     }
   }, [emailId]);
+
+  const checkFirstTime = () => {
+    db.doc(`profiles/${emailId}`)
+      .get()
+      .then(doc => {return setFirstTime(doc.data().firstTime)})
+  }
+
+  const handleNextPage = () => {
+    setOnboardPage(onboardPage + 1)
+  }
+  const handlePreviousPage = () => {
+    setOnboardPage(onboardPage - 1)
+  }
+
+  const handleCloseOnBoard = () => {
+    setFirstTime(false)
+    // backend function to turn firsttime to false in the profile
+  }
 
   const disableSearchTypes = () => {
     let optionBools = [false, false, false, true, true, true];
@@ -402,6 +423,60 @@ function HomeView(props) {
           studentInfo={studentInfo}
         />
       </Dialog> */}
+      <Modal
+        show={firstTime}
+      >
+        {onboardPage === 0 && (
+          <div>
+            <h3>Welcome to UConnect!</h3>
+            <h4>This is a platform designed to help you discover and form meaningful connections with other Brown students. Before getting started, please click through these brief slides which explain the core functionality of the site.</h4>
+          </div>
+        )}
+        {onboardPage === 1 && (
+          <div>
+            <h3>Requests</h3>
+            <h4>Page 2</h4>
+          </div>
+        )}
+        {onboardPage === 2 && (
+          <div>
+            <h3>Search and Filter</h3>
+            <h4>Page 3</h4>
+          </div>
+        )}
+        {onboardPage === 3 && (
+          <div>
+            <h3>Featured Profiles</h3>
+            <h4>Page 4</h4>
+          </div>
+        )}
+        {onboardPage === 4 && (
+          <div>
+            <h3>Your Profile</h3>
+            <h4>Page 5</h4>
+          </div>
+        )}
+        {onboardPage === 5 && (
+          <div>
+            <h3>Finished</h3>
+            <h4>Congrats on completing the onboarding process; now enjoy connecting!</h4>
+          </div>
+        )}
+
+        <h4 align="center">{onboardPage + 1}/6</h4>
+
+        <span align="right">
+        {onboardPage > 0 && (
+          <button onClick={handlePreviousPage}>Back</button>
+        )}
+        {onboardPage < 5 && (
+          <button onClick={handleNextPage}>Next</button>
+        )}
+        {onboardPage === 5 && (
+          <button onClick={handleCloseOnBoard}>Done</button>
+        )}
+        </span>
+      </Modal>
       <Modal
         keyboard
         show={studentId}
