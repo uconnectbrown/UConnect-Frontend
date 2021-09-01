@@ -397,20 +397,27 @@ function ProfileView(props) {
                 return <option key={i} value={country} />;
               })}
             </datalist>
-            {newProfile.location === "United States of America" && (
-              <p>
-                <label>
-                  State:
-                  <input list="states" />
-                </label>
-                <datalist id="states">
-                  {states.map((state, i) => {
-                    return <option key={i} value={state} />;
-                  })}
-                </datalist>
-              </p>
-            )}
           </p>
+          {newProfile.location === "United States of America" && (
+            <p>
+              <label>
+                State:
+                <input list="states" />
+              </label>
+              <datalist id="states">
+                {states.map((state, i) => {
+                  return <option key={i} value={state} />;
+                })}
+              </datalist>
+            </p>
+          )}
+          {newProfile.state && (
+            <p>
+              City:
+              <input name="city" />
+            </p>
+          )}
+
           <p>
             Pronouns:
             <input

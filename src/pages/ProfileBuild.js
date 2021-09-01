@@ -21,6 +21,8 @@ import { Row, Col, Container, Button } from "react-bootstrap";
 
 // Import Data
 import {
+  countries as countryList,
+  states as stateList,
   majors as majorList,
   pronouns as pronounList,
 } from "../resources/profileFields";
@@ -67,7 +69,7 @@ function ProfileBuild(props) {
         classYear: userData.classYear,
         majors: [userData.major1, userData.major2, userData.major3],
         pronouns: userData.pronouns,
-        location: userData.location,
+        location: [userData.country, userData.state, userData.city],
         email,
         // Interests
         interests1: userData.interests1,
@@ -134,8 +136,8 @@ function ProfileBuild(props) {
           </Col>
           <Col xs={12} md={6}>
             <TextField
-              label="Last Name"
               className="profile-build-input"
+              label="Last Name"
               onChange={(event) =>
                 setUserData({ ...userData, lastName: event.target.value })
               }
@@ -143,6 +145,7 @@ function ProfileBuild(props) {
               variant="outlined"
               size={"small"}
               required
+              // style={{ width: "80%" }}
             />
           </Col>
           <Col xs={12} md={6}>
@@ -165,15 +168,37 @@ function ProfileBuild(props) {
           </Col>
           <Col xs={12} md={6}>
             <TextField
-              label="Location"
+              variant="outlined"
+              autoComplete="off"
+              size={"small"}
+              label="Country"
               className="profile-build-input"
               onChange={(event) =>
-                setUserData({ ...userData, location: event.target.value })
+                setUserData({ ...userData, country: event.target.value })
               }
-              value={userData.location}
+              InputProps={{
+                endAdornment: countryList,
+                inputProps: {
+                  list: "countries",
+                },
+              }}
+              helperText='Where are you from?".'
+            />
+            <TextField
               variant="outlined"
+              autoComplete="off"
               size={"small"}
-              helperText="Where are you from?"
+              label="State"
+              className="profile-build-input"
+              onChange={(event) =>
+                setUserData({ ...userData, state: event.target.value })
+              }
+              InputProps={{
+                endAdornment: stateList,
+                inputProps: {
+                  list: "states",
+                },
+              }}
             />
           </Col>
           <Col xs={12} md={6}>
@@ -328,7 +353,7 @@ function ProfileBuild(props) {
               classYear: userData.classYear,
               majors: [userData.major1, userData.major2, userData.major3],
               pronouns: userData.pronouns,
-              location: userData.location,
+              location: [userData.country, userData.state, userData.city],
               email,
               interests1: userData.interests1,
               interests2: userData.interests2,
