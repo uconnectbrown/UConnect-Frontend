@@ -17,6 +17,8 @@ import StudentCard from "../components/StudentCard";
 function Connections() {
   const [pending, setPending] = useState([]);
   const [connections, setConnections] = useState(null);
+  const [connections_, setConnections_] = useState(null);
+
   const [studentId, setStudentId] = useState("");
   const [messageOpen, setMessageOpen] = useState(false);
   const [emailId, setEmailId] = useState(null);
@@ -37,6 +39,36 @@ function Connections() {
     if (emailId) getConnections();
   }, [emailId]);
 
+  const filterName = (fn, ln, query) => {
+    fn = fn.toLowerCase().trim();
+    ln = ln.toLowerCase().trim();
+    query = query.toLowerCase().trim();
+    if (fn.split(query)[0] === "") return true;
+    if (ln === query) return true;
+    if (query.split(" ").length === 2) {
+      let query1 = query.split(" ")[0];
+      let query2 = query.split(" ")[1];
+      if (fn.split(query1)[0] === "" && ln.split(query2)[0] === "") return true;
+    }
+  };
+
+  useEffect(() => {
+    if (query.length === 0) {
+      setConnections_(connections);
+    }
+    if (connections && query.length > 0) {
+      setConnections_(
+        connections.filter((connection) =>
+          filterName(
+            connection.name.split(" ")[0],
+            connection.name.split(" ")[1],
+            query
+          )
+        )
+      );
+    }
+  }, [query]);
+
   const getPending = () => {
     axios
       .get(`/pending/${emailId}`)
@@ -46,17 +78,12 @@ function Connections() {
       .catch((err) => console.log(err));
   };
 
-  const onSearchSubmit = (e) => {
-    e.preventDefault();
-    if (query.length > 0) searchName(query);
-    else getConnections();
-  };
-
   const getConnections = () => {
     axios
       .get(`/connections/${emailId}`)
       .then((res) => {
         setConnections(res.data.connections);
+        setConnections_(res.data.connections);
       })
       .catch((err) => console.log(err));
   };
@@ -84,30 +111,6 @@ function Connections() {
     setMessageOpen(false);
   };
 
-  const filterName = (name, query) => {
-    let fn = name.split(" ")[0].toLowerCase().trim();
-    let ln = name.split(" ")[1].toLowerCase().trim();
-    query = query.toLowerCase().trim();
-    if (fn.split(query)[0] === "") return true;
-    if (ln === query) return true;
-    if (query.split(" ").length === 2) {
-      let query1 = query.split(" ")[0];
-      let query2 = query.split(" ")[1];
-      if (fn.split(query1)[0] === "" && ln.split(query2)[0] === "") return true;
-    }
-  };
-
-  const searchName = (query) => {
-    if (emailId) {
-      axios
-        .get(`/searchC/${emailId}/${query}`)
-        .then((res) => {
-          setConnections(res.data);
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
   const clearSearch = () => {
     setQuery("");
     getConnections();
@@ -117,7 +120,6 @@ function Connections() {
     return (
       <SearchBar
         placeholder="Search for connections by name"
-        onSubmit={onSearchSubmit}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         clearSearch={clearSearch}
@@ -159,8 +161,8 @@ function Connections() {
       <h1>All Connections</h1>
       {renderSearchBar()}
       <Row className="mt-3">
-        {connections &&
-          connections.map((c, i) => (
+        {connections_ &&
+          connections_.map((c, i) => (
             <StudentCard
               name={c.name}
               classYear={c.classYear}

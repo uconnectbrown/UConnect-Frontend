@@ -12,7 +12,7 @@ import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 
 // Styling
 import "./HomeView.css";
-import Tooltip from "@material-ui/core/Tooltip"
+import Tooltip from "@material-ui/core/Tooltip";
 
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
@@ -152,7 +152,9 @@ function HomeView(props) {
         setStudents(res.data);
       })
       .then(() => {
-        setSearching(true);
+        if (query) {
+          setSearching(true);
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -307,7 +309,9 @@ function HomeView(props) {
       <>
         <Button
           className="search-button"
-          onClick={() => {searchField(selectedOptions, params[searchType])}}
+          onClick={() => {
+            searchField(selectedOptions, params[searchType]);
+          }}
           disabled={selectedOptions.length === 0}
         >
           Search
@@ -393,9 +397,10 @@ function HomeView(props) {
     return (
       <div>
         <h5 className="mt-4">Featured Profiles</h5>
-        <Tooltip 
-          title="Featured profiles are generated each week and recommended to you based on the information you have provided in your profile." 
-          placement="right">
+        <Tooltip
+          title="Featured profiles are generated each week and recommended to you based on the information you have provided in your profile."
+          placement="right"
+        >
           <h4>?</h4>
         </Tooltip>
         <div class="featured-container pb-4 pt-1">
@@ -453,13 +458,9 @@ function HomeView(props) {
           studentInfo={studentInfo}
         />
       </Dialog> */}
-<<<<<<< HEAD
-      <Modal show={firstTime}>
-=======
       {/* <Modal
         show={firstTime}
       >
->>>>>>> 25619965a06cf9b9e71ffbf719422afd5aa2cc30
         {onboardPage === 0 && (
           <div>
             <h3>Welcome to UConnect!</h3>
@@ -500,18 +501,7 @@ function HomeView(props) {
         {onboardPage === 3 && (
           <div>
             <h3>Search and Filter</h3>
-<<<<<<< HEAD
-            <h4>
-              The best way to find other students is by using the search bar on
-              the home page. You will be able to search for students by criteria
-              such as their name, concentration, or extracurriculars (e.g.
-              varsity sports, pick-up sports, instruments, etc.). You can also
-              access all of the students in your classes by clicking on the
-              courses tab on the left side panel.
-            </h4>
-=======
             <h4>One of the best ways to find other students is by using the search bar on the home page. You are able to search for students by criteria such as their name, concentration, or extracurriculars (e.g. varsity sports, pick-up sports, instruments, etc.).</h4>
->>>>>>> 25619965a06cf9b9e71ffbf719422afd5aa2cc30
           </div>
         )}
         {onboardPage === 4 && (
@@ -545,15 +535,6 @@ function HomeView(props) {
         <h4 align="center">{onboardPage + 1}/8</h4>
 
         <span align="right">
-<<<<<<< HEAD
-          {onboardPage > 0 && (
-            <button onClick={handlePreviousPage}>Back</button>
-          )}
-          {onboardPage < 5 && <button onClick={handleNextPage}>Next</button>}
-          {onboardPage === 5 && (
-            <button onClick={handleCloseOnBoard}>Done</button>
-          )}
-=======
         {onboardPage > 0 && (
           <button onClick={handlePreviousPage}>Back</button>
         )}
@@ -563,7 +544,6 @@ function HomeView(props) {
         {onboardPage === 7 && (
           <button onClick={handleCloseOnBoard}>Done</button>
         )}
->>>>>>> 25619965a06cf9b9e71ffbf719422afd5aa2cc30
         </span>
       </Modal> */}
       <Modal
