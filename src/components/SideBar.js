@@ -41,6 +41,16 @@ function SideBar(props) {
           Courses
         {showDropdown && 
           <ButtonGroup vertical style={{ width: '100%'}}> 
+            {courses.map(course => {if (course.code) {return course.code}}).filter(Boolean).length === 0 && (
+              <Link to="/profile" style={{ textDecoration: "none", width: '100%', maxWidth: '100%' }}>
+                <Button 
+                    variant="outline-light" 
+                    className='nav-button m-0'
+                  >
+                    Add courses to your profile.
+                  </Button>
+              </Link>
+            )}
             {courses.map((course, i) => {
               if (!course.code) return null
               let link = "/courses/" + course.code.replace(/\s/g, "");
