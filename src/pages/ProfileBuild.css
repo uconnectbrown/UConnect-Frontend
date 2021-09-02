@@ -1,37 +1,47 @@
 .profile-build-container h2 {
-    margin: 0;
-    margin-right: 7px;
+  margin: 0;
+  margin-right: 7px;
 }
 
 .profile-build-container p {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .profile-build-container {
-    padding-left: 10rem;
-    padding-right: 10rem;
-    padding-top: 2rem;
+  padding-left: 10rem;
+  padding-right: 10rem;
+  padding-top: 2rem;
 }
 
 .profile-build-input {
-    width: 80%;
-    margin-bottom: 2rem !important;
+  width: 80%;
+  margin-bottom: 2rem !important;
+}
+
+.profile-build-half-input {
+  width: 40%;
+  margin-bottom: 2rem !important;
+}
+
+.profile-build-third-input {
+  width: 26.7%;
+  margin-bottom: 2rem !important;
 }
 
 .header-icon-wrap {
-    display: flex;
-    align-items: center;
-    margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
 }
 
 @media (max-width: 960px) {
-    .profile-build-container {
-        padding-left: 2rem;
-        padding-right: 2rem;
-        padding-bottom: 1rem;
-    }
+  .profile-build-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 1rem;
+  }
 
-    .profile-build-input {
-        width: 100%;
-    }
+  .profile-build-input {
+    width: 100%;
+  }
 }

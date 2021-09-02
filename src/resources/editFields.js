@@ -121,28 +121,14 @@ const instruments = [
 ];
 
 const pickUpSports = [
-  "Baseball",
   "Basketball",
-  "Crew",
-  "Cross Country",
-  "Equestrian",
-  "Fencing",
-  "Field Hockey",
   "Football",
-  "Ice Hockey",
-  "Lacrosse",
-  "Rugby",
-  "Sailing",
   "Soccer",
-  "Softball",
-  "Swimming and Diving",
-  "Tennis",
-  "Track and Field",
-  "Volleyball",
-  "Water Polo",
-  "Wrestling",
   "Spikeball",
+  "Table Tennis",
+  "Tennis",
   "Ultimate Frisbee",
+  "Volleyball",
 ];
 
 const varsitySports = [

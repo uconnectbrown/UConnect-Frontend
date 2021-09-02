@@ -59,22 +59,24 @@ function HomeView(props) {
   const checkFirstTime = () => {
     db.doc(`profiles/${emailId}`)
       .get()
-      .then(doc => {return setFirstTime(doc.data().firstTime)})
-  }
+      .then((doc) => {
+        return setFirstTime(doc.data().firstTime);
+      });
+  };
 
   const handleNextPage = () => {
-    setOnboardPage(onboardPage + 1)
-  }
+    setOnboardPage(onboardPage + 1);
+  };
   const handlePreviousPage = () => {
-    setOnboardPage(onboardPage - 1)
-  }
+    setOnboardPage(onboardPage - 1);
+  };
 
   const handleCloseOnBoard = () => {
-    setFirstTime(false)
+    setFirstTime(false);
     // backend function to turn firsttime to false in the profile
     // axios.get(`/onboard/${emailId}`)
     //   .catch(err => console.log(err));
-  }
+  };
 
   const disableSearchTypes = () => {
     let optionBools = [false, false, false, true, true, true];
@@ -131,8 +133,7 @@ function HomeView(props) {
 
   const searchField = (options, param) => {
     options = options.map((option) => option.value);
-    console.log(options);
-    console.log(param);
+
     axios
       .post(`/searchField/${email}`, { options, param })
       .then((res) => {
@@ -198,7 +199,7 @@ function HomeView(props) {
       setQuery("");
       setSearching(false);
       getFeatured();
-    };
+    }
   };
 
   const clearSearch = () => {
@@ -356,10 +357,14 @@ function HomeView(props) {
                 <ul style={{ marginBottom: 0 }}>
                   <li className="card-text">{student.score}</li>
                   {student.courseOverlap > 0 && (
-                    <li className="card-text">{student.courseOverlap} courses in common</li>
+                    <li className="card-text">
+                      {student.courseOverlap} courses in common
+                    </li>
                   )}
                   {student.interestsOverlap > 0 && (
-                    <li className="card-text">{student.interestOverlap} interests in common</li>
+                    <li className="card-text">
+                      {student.interestOverlap} interests in common
+                    </li>
                   )}
                   {student.shareVarsity && (
                     <li className="card-text">Plays a varsity sport</li>
@@ -441,31 +446,55 @@ function HomeView(props) {
           studentInfo={studentInfo}
         />
       </Dialog> */}
-      <Modal
-        show={firstTime}
-      >
+      <Modal show={firstTime}>
         {onboardPage === 0 && (
           <div>
             <h3>Welcome to UConnect!</h3>
-            <h4>This is a platform designed to help you discover and form meaningful connections with other Brown students. Before getting started, please click through these brief slides which explain the core functionality of the site.</h4>
+            <h4>
+              This is a platform designed to help you discover and form
+              meaningful connections with other Brown students. Before getting
+              started, please click through these brief slides which explain the
+              core functionality of the site.
+            </h4>
           </div>
         )}
         {onboardPage === 1 && (
           <div>
             <h3>Requests</h3>
-            <h4>When you created your profile, you recieved 10 requests which can be sent to any Brown student you come across on the website. When your connection request is accepted, you will get the request back and be able to send it to someone else, and, if for some reason your request has not been accepted after 2 days, you will be able to unrequest in order to get the request back.</h4>
+            <h4>
+              When you created your profile, you recieved 10 requests which can
+              be sent to any Brown student you come across on the website. When
+              your connection request is accepted, you will get the request back
+              and be able to send it to someone else, and, if for some reason
+              your request has not been accepted after 2 days, you will be able
+              to unrequest in order to get the request back.
+            </h4>
           </div>
         )}
         {onboardPage === 2 && (
           <div>
             <h3>Connections</h3>
-            <h4>When you accept someone's request or someone accept's your request, the two of you will have formed a connection. Once connected, you will now have access to additional pieces of information such as who your mutual connections are and what courses you have in common. Being connected also gives you the ability to message the other user.</h4>
+            <h4>
+              When you accept someone's request or someone accept's your
+              request, the two of you will have formed a connection. Once
+              connected, you will now have access to additional pieces of
+              information such as who your mutual connections are and what
+              courses you have in common. Being connected also gives you the
+              ability to message the other user.
+            </h4>
           </div>
         )}
         {onboardPage === 3 && (
           <div>
             <h3>Search and Filter</h3>
-            <h4>The best way to find other students is by using the search bar on the home page. You will be able to search for students by criteria such as their name, concentration, or extracurriculars (e.g. varsity sports, pick-up sports, instruments, etc.). You can also access all of the students in your classes by clicking on the courses tab on the left side panel.</h4>
+            <h4>
+              The best way to find other students is by using the search bar on
+              the home page. You will be able to search for students by criteria
+              such as their name, concentration, or extracurriculars (e.g.
+              varsity sports, pick-up sports, instruments, etc.). You can also
+              access all of the students in your classes by clicking on the
+              courses tab on the left side panel.
+            </h4>
           </div>
         )}
         {onboardPage === 4 && (
@@ -483,22 +512,23 @@ function HomeView(props) {
         {onboardPage === 5 && (
           <div>
             <h3>Finished</h3>
-            <h4>Congrats on completing the onboarding process; now enjoy connecting!</h4>
+            <h4>
+              Congrats on completing the onboarding process; now enjoy
+              connecting!
+            </h4>
           </div>
         )}
 
         <h4 align="center">{onboardPage + 1}/6</h4>
 
         <span align="right">
-        {onboardPage > 0 && (
-          <button onClick={handlePreviousPage}>Back</button>
-        )}
-        {onboardPage < 5 && (
-          <button onClick={handleNextPage}>Next</button>
-        )}
-        {onboardPage === 5 && (
-          <button onClick={handleCloseOnBoard}>Done</button>
-        )}
+          {onboardPage > 0 && (
+            <button onClick={handlePreviousPage}>Back</button>
+          )}
+          {onboardPage < 5 && <button onClick={handleNextPage}>Next</button>}
+          {onboardPage === 5 && (
+            <button onClick={handleCloseOnBoard}>Done</button>
+          )}
         </span>
       </Modal>
       <Modal

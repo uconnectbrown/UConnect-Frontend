@@ -167,12 +167,15 @@ function ProfileView(props) {
     });
   };
 
-  const handleFavoriteChange = (event, name) => {
-    let newFavs = { ...newProfile.favorites };
-    newFavs[name] = event.target.value;
+  const handleLocationChange = (event, name) => {
+    let newLocation = { ...newProfile.location };
+    newLocation[name] = event.target.value;
+    if (newProfile.location.country !== "United States of America") {
+      newLocation["state"] = "";
+    }
     setNewProfile({
       ...newProfile,
-      favorites: newFavs,
+      location: newLocation,
     });
   };
 
@@ -200,7 +203,20 @@ function ProfileView(props) {
           <h4>
             {profile.firstName} {profile.lastName}
           </h4>
-          <h5> {profile.location}</h5>
+          {profile.location && (
+            <p>
+              {profile.location.country === "United States of America" && (
+                <h5>
+                  {profile.location.city}, {profile.location.state}
+                </h5>
+              )}
+              {profile.location.country !== "United States of America" && (
+                <h5>
+                  {profile.location.city}, {profile.location.country}
+                </h5>
+              )}
+            </p>
+          )}
           <h5> {profile.pronouns}</h5>
           <h5>Class of {profile.classYear}</h5>
           <h5>{profile.majors.map((major) => (major ? major + ", " : ""))}</h5>
@@ -381,14 +397,14 @@ function ProfileView(props) {
               placeholder={!newProfile.lastName && "Can't be empty"}
             />
           </p>
+
           <p>
             <label>
               Country of Origin:
               <input
                 list="countries"
-                name="location"
-                onChange={handleChange}
-                value={newProfile.location}
+                onChange={(e) => handleLocationChange(e, "country")}
+                value={newProfile.location.country}
               />
             </label>
 
@@ -398,11 +414,17 @@ function ProfileView(props) {
               })}
             </datalist>
           </p>
-          {newProfile.location === "United States of America" && (
+
+          {newProfile.location.country === "United States of America" && (
             <p>
               <label>
                 State:
-                <input list="states" />
+                <input
+                  list="states"
+                  name="state"
+                  onChange={(e) => handleLocationChange(e, "state")}
+                  value={newProfile.location.state}
+                />
               </label>
               <datalist id="states">
                 {states.map((state, i) => {
@@ -411,13 +433,14 @@ function ProfileView(props) {
               </datalist>
             </p>
           )}
-          {newProfile.state && (
-            <p>
-              City:
-              <input name="city" />
-            </p>
-          )}
-
+          <p>
+            City:
+            <input
+              value={newProfile.location.city}
+              onChange={(e) => handleLocationChange(e, "city")}
+              name="city"
+            />
+          </p>
           <p>
             Pronouns:
             <input

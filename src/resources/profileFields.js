@@ -378,7 +378,7 @@ const countries = (
 );
 
 const states = (
-  <datalist>
+  <datalist id="states">
     <option value="Alabama" />
     <option value="Alaska" />
     <option value="American Samoa" />

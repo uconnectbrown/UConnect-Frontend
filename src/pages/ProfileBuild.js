@@ -40,6 +40,9 @@ const { validProfile } = require("../util/validators");
 // Body
 function ProfileBuild(props) {
   let history = useHistory();
+  const countryArr = countryList.props.children.map(
+    (country) => country.props.value
+  );
 
   const [userData, setUserData] = useState(emptyProfile);
   const [email, setEmail] = useState(null);
@@ -69,7 +72,11 @@ function ProfileBuild(props) {
         classYear: userData.classYear,
         majors: [userData.major1, userData.major2, userData.major3],
         pronouns: userData.pronouns,
-        location: [userData.country, userData.state, userData.city],
+        location: {
+          country: userData.country,
+          state: userData.state,
+          city: userData.city,
+        },
         email,
         // Interests
         interests1: userData.interests1,
@@ -102,6 +109,123 @@ function ProfileBuild(props) {
           console.log(err);
         });
     }
+  };
+
+  const renderEmptyLocation = () => {
+    return (
+      <span>
+        <TextField
+          variant="outlined"
+          autoComplete="off"
+          size={"small"}
+          label="Country of Origin"
+          className="profile-build-half-input"
+          onChange={(event) =>
+            setUserData({ ...userData, country: event.target.value })
+          }
+          InputProps={{
+            endAdornment: countryList,
+            inputProps: {
+              list: "countries",
+            },
+          }}
+        />
+        <TextField
+          variant="outlined"
+          disabled={true}
+          value={"State/City"}
+          className="profile-build-half-input"
+          size={"small"}
+          helperText="Please pick a country first"
+        />
+      </span>
+    );
+  };
+
+  const renderUSA = () => {
+    return (
+      <span>
+        <TextField
+          variant="outlined"
+          autoComplete="off"
+          size={"small"}
+          label="Country"
+          className="profile-build-third-input"
+          value={"USA"}
+          onChange={(event) =>
+            setUserData({ ...userData, country: event.target.value })
+          }
+          InputProps={{
+            endAdornment: countryList,
+            inputProps: {
+              list: "countries",
+            },
+          }}
+          helperText="Where are you from?"
+        />
+        <TextField
+          variant="outlined"
+          autoComplete="off"
+          size={"small"}
+          label="State"
+          className="profile-build-third-input"
+          onChange={(event) =>
+            setUserData({ ...userData, stateList: event.target.value })
+          }
+          InputProps={{
+            endAdornment: stateList,
+            inputProps: {
+              list: "states",
+            },
+          }}
+        />
+        <TextField
+          className="profile-build-third-input"
+          label="City"
+          onChange={(event) =>
+            setUserData({ ...userData, city: event.target.value })
+          }
+          value={userData.city}
+          variant="outlined"
+          size={"small"}
+        />
+      </span>
+    );
+  };
+
+  const renderNotUSA = () => {
+    return (
+      <span>
+        <TextField
+          variant="outlined"
+          autoComplete="off"
+          size={"small"}
+          label="Country"
+          className="profile-build-half-input"
+          value={userData.country}
+          onChange={(event) =>
+            setUserData({ ...userData, country: event.target.value })
+          }
+          InputProps={{
+            endAdornment: countryList,
+            inputProps: {
+              list: "countries",
+            },
+          }}
+          helperText="Where are you from?"
+        />
+        <TextField
+          className="profile-build-half-input"
+          label="City"
+          onChange={(event) =>
+            setUserData({ ...userData, city: event.target.value })
+          }
+          value={userData.city}
+          variant="outlined"
+          size={"small"}
+        />
+      </span>
+    );
   };
 
   return (
@@ -167,39 +291,11 @@ function ProfileBuild(props) {
             />
           </Col>
           <Col xs={12} md={6}>
-            <TextField
-              variant="outlined"
-              autoComplete="off"
-              size={"small"}
-              label="Country"
-              className="profile-build-input"
-              onChange={(event) =>
-                setUserData({ ...userData, country: event.target.value })
-              }
-              InputProps={{
-                endAdornment: countryList,
-                inputProps: {
-                  list: "countries",
-                },
-              }}
-              helperText='Where are you from?".'
-            />
-            <TextField
-              variant="outlined"
-              autoComplete="off"
-              size={"small"}
-              label="State"
-              className="profile-build-input"
-              onChange={(event) =>
-                setUserData({ ...userData, state: event.target.value })
-              }
-              InputProps={{
-                endAdornment: stateList,
-                inputProps: {
-                  list: "states",
-                },
-              }}
-            />
+            {!countryArr.includes(userData.country) && renderEmptyLocation()}
+            {userData.country === "United States of America" && renderUSA()}
+            {countryArr.includes(userData.country) &&
+              userData.country !== "United States of America" &&
+              renderNotUSA()}
           </Col>
           <Col xs={12} md={6}>
             <TextField
@@ -352,8 +448,6 @@ function ProfileBuild(props) {
               lastName: userData.lastName.trim(),
               classYear: userData.classYear,
               majors: [userData.major1, userData.major2, userData.major3],
-              pronouns: userData.pronouns,
-              location: [userData.country, userData.state, userData.city],
               email,
               interests1: userData.interests1,
               interests2: userData.interests2,
@@ -363,7 +457,6 @@ function ProfileBuild(props) {
         >
           Create Profile
         </Button>
-        <p>Please fill out all required fields</p>
       </div>
     </form>
   );
