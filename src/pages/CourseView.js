@@ -29,6 +29,7 @@ function Course(props) {
   const [emailId, setEmailId] = useState(null);
 
   const [students, setStudents] = useState(null);
+  const [students_, setStudents_] = useState(null);
   const [studentId, setStudentId] = useState("");
   const [messageOpen, setMessageOpen] = useState(false);
   const [studentInfo, setStudentInfo] = useState([]);
@@ -65,6 +66,38 @@ function Course(props) {
       })
       .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    if (query.length === 0) {
+      setStudents_(students);
+    }
+    if (students && query.length > 0) {
+      setStudents_(
+        students.filter((students) =>
+          filterName(
+            students.firstName,
+            students.lastName,
+            query
+          )
+        )
+      );
+    }
+  }, [query]);
+
+  useEffect(() => {
+    if (selectedOptions.length === 0) {
+      setStudents_(students)
+    }
+    if (students && selectedOptions.length > 0) {
+      setStudents_(
+        students.filter((student) => {
+          if (student[params[searchType]].length > 1) {
+            return selectedOptions.map((option) => {return option.value}).filter((v) => student[params[searchType]].includes(v)).length > 0;
+          } else return selectedOptions.map((option) => {return option.value}).includes(student[params[searchType]]);
+        })
+      )
+    }
+  }, [selectedOptions]);
 
   const handleOpenStudent = (index) => {
     setStudentId(students[index].email.split("@")[0]);
@@ -141,17 +174,15 @@ function Course(props) {
   };
 
   const clearSearch = () => {
-    setStudents([]);
+    setStudents_(students);
     setSearching(false);
     setQuery("");
-    getStudents();
   };
 
   const renderSearchBar = () => {
     return (
       <SearchBar
         placeholder="Search for students by name"
-        onSubmit={onSearchSubmit}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         clearSearch={clearSearch}
@@ -162,21 +193,20 @@ function Course(props) {
   const renderSearchButtons = () => {
     return (
       <>
-        <Button
+        {/* <Button
           className="search-button"
           onClick={() => searchField(selectedOptions, params[searchType])}
           disabled={selectedOptions.length === 0}
         >
           Search
-        </Button>
+        </Button> */}
         <Button
           className="search-button"
           variant="light"
           onClick={() => {
-            setStudents([]);
+            setStudents_(students);
             setSelectedOptions([]);
             setSearching(false);
-            getStudents();
           }}
         >
           Clear
@@ -245,8 +275,8 @@ function Course(props) {
       {searchType !== 0 && renderDataList(searchType)}
       {searchType !== 0 && renderSearchButtons()}
       <Row>
-        {students &&
-          students.map((student, i) => {
+        {students_ &&
+          students_.map((student, i) => {
             return (
               <StudentCard
                 name={`${student.firstName} ${student.lastName}`}
