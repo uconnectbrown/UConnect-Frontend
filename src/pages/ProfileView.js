@@ -288,7 +288,7 @@ function ProfileView(props) {
 
             <Col sm={6}>
               <p id="normaltext">
-                <strong>Groups</strong>
+                <strong>Clubs/Student Groups</strong>
               </p>
               {profile.groups.map((group) => (group ? group + ", " : ""))}
             </Col>
@@ -642,7 +642,7 @@ function ProfileView(props) {
             <p id="subheading">Extracurriculars</p>
             <Col sm={6}>
               <p id="normaltext">
-                <strong>Groups</strong>
+                <strong>Clubs/Student Groups</strong>
               </p>
               <p id="normaltext">
                 <input

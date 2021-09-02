@@ -165,6 +165,7 @@ function Course(props) {
         <Button
           className="search-button"
           onClick={() => searchField(selectedOptions, params[searchType])}
+          disabled={selectedOptions.length === 0}
         >
           Search
         </Button>
