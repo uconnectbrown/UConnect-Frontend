@@ -59,7 +59,8 @@ function SideBar(props) {
                   <Button 
                     variant="outline-light" 
                     className='nav-button m-0'
-                    onClick={() => props.handleCode(course.code)}
+                    onClick={() => {props.handleCode(course.code);
+                    props.handleName(course.name)}}
                   >
                     {course.code}
                   </Button>

@@ -23,6 +23,7 @@ import { searchOptions, searchTypes } from "../resources/searchOptions";
 
 function Course(props) {
   const { codeParam } = useParams();
+  const name = props.name;
   const code = props.code;
   const codeNS = codeParam;
   const [email, setEmail] = useState(null);
@@ -63,6 +64,7 @@ function Course(props) {
       .get(`/students/${email}/${codeNS}`)
       .then((res) => {
         setStudents(res.data);
+        setStudents_(res.data);
       })
       .catch((err) => console.log(err));
   };
@@ -269,7 +271,7 @@ function Course(props) {
           studentInfo={studentInfo}
         />
       </Dialog> */}
-      <h1 style={{ marginTop: "1rem" }}>{code}</h1>
+      <h1 style={{ marginTop: "1rem" }}>{code}: {name}</h1>
       {renderSearchPicker()}
       {searchType === 0 && renderSearchBar()}
       {searchType !== 0 && renderDataList(searchType)}

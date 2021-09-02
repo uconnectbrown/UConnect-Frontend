@@ -75,8 +75,8 @@ function HomeView(props) {
   const handleCloseOnBoard = () => {
     setFirstTime(false);
     // backend function to turn firsttime to false in the profile
-    // axios.get(`/onboard/${emailId}`)
-    //   .catch(err => console.log(err));
+    axios.get(`/onboard/${emailId}`)
+      .catch(err => console.log(err));
   };
 
   const disableSearchTypes = () => {
@@ -405,6 +405,7 @@ function HomeView(props) {
         </Tooltip>
         <div class="featured-container pb-4 pt-1">
           {featured.map((student, i) => {
+            {console.log(student)}
             return (
               <div
                 className="featured-card mx-lg-3 mx-sm-1"
@@ -458,7 +459,7 @@ function HomeView(props) {
           studentInfo={studentInfo}
         />
       </Dialog> */}
-      {/* <Modal
+      <Modal
         show={firstTime}
       >
         {onboardPage === 0 && (
@@ -545,7 +546,7 @@ function HomeView(props) {
           <button onClick={handleCloseOnBoard}>Done</button>
         )}
         </span>
-      </Modal> */}
+      </Modal>
       <Modal
         keyboard
         show={studentId}

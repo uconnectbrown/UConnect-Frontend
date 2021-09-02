@@ -76,6 +76,7 @@ function App() {
   // Courses
   const [courses, setCourses] = useState([]);
   const [code, setCode] = useState("");
+  const [name, setName] = useState("");
   useEffect(() => {
     if (deny === false) getCourses();
   }, [deny]);
@@ -90,6 +91,9 @@ function App() {
   const handleCode = (c) => {
     setCode(c);
   };
+  const handleName = (n) => {
+    setName(n);
+  }
   const updateCourses = (courses) => {
     setCourses(courses);
   };
@@ -158,7 +162,7 @@ function App() {
           <Container fluid>
             <Row className="px-3 py-4">
               <Col xs={1} md={2}>
-                <SideBar courses={courses} handleCode={handleCode} />
+                <SideBar courses={courses} handleCode={handleCode} handleName={handleName} />
               </Col>
               <Col xs={11} md={10}>
                 <Switch>
@@ -177,7 +181,7 @@ function App() {
                     />
                   </Route>
                   <Route path="/courses/:codeParam">
-                    <CourseView code={code} handleRequest={decRequests} />
+                    <CourseView code={code} name={name} handleRequest={decRequests} />
                   </Route>
                   <Route path="*">
                     <NoMatch />
