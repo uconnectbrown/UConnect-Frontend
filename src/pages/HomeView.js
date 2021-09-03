@@ -191,7 +191,7 @@ function HomeView(props) {
     getFeatured();
   };
 
-  const sendRequest = (receiverId) => {
+  const sendRequest = (recId, recImageUrl) => {
     let senderInfo = {};
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -199,16 +199,18 @@ function HomeView(props) {
         senderInfo.name = doc.data().firstName + " " + doc.data().lastName;
         senderInfo.imageUrl = doc.data().imageUrl;
         senderInfo.classYear = doc.data().classYear;
+        senderInfo.receiverImageUrl = recImageUrl;
         return senderInfo;
       })
       .then((info) => {
-        axios.post(`/request/${emailId}/${receiverId}`, info);
+        axios.post(`/request/${emailId}/${recId}`, info);
       })
       .then(() => {
-        return axios.get(`/reqfeatured/${emailId}/${receiverId}`);
+        return axios.get(`/reqfeatured/${emailId}/${recId}`);
       })
       .then(() => {
-        props.handleRequest();
+        props.decRequests();
+        props.updateOutgoing();
         getFeatured();
       })
       .catch((err) => console.log(err));
@@ -403,7 +405,7 @@ function HomeView(props) {
                     style={{ marginTop: "auto" }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      sendRequest(student.emailId);
+                      sendRequest(student.emailId, student.imageUrl);
                     }}
                   >
                     Request
@@ -564,9 +566,12 @@ function HomeView(props) {
         <StudentModal
           studentId={studentId}
           handleClose={handleCloseStudent}
-          handleRequest={props.handleRequest}
+          decRequests={props.decRequests}
+          incRequests={props.incRequests}
           requests={props.requests}
           handleOpenMessage={handleOpenMessage}
+          updateOutgoing={props.updateOutgoing}
+          handleFeatured={getFeatured}
         />
       </Modal>
       <h1>Connect</h1>

@@ -93,13 +93,12 @@ function Connections() {
   };
 
   const handleOpenConnected = (index) => {
-    setStudentId(connections[index].emailId);
+    setStudentId(connections_[index].emailId);
   };
 
   const handleCloseStudent = () => {
     setStudentId("");
     getPending();
-    getConnections();
   };
 
   const handleOpenMessage = (id, image, name) => {

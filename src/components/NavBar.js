@@ -33,8 +33,17 @@ function NavBar(props) {
                 onMouseLeave={() => setShowDropdown(false)}
                 style={{ fontSize: 14 }}
               >
-                Requests: {props.requests}
-                {showDropdown && <Requests />}
+                {!showDropdown && "Requests"}
+                {showDropdown && (
+                  <Requests
+                    requests={props.requests}
+                    decRequests={props.decRequests}
+                    incRequests={props.incRequests}
+                    outgoing={props.outgoing}
+                    style={{ width: "100%" }}
+                    updateOutgoing={props.updateOutgoing}
+                  />
+                )}
               </div>
             </button>
             <Link to="/profile">

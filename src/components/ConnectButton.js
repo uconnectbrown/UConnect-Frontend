@@ -14,7 +14,7 @@ function ConnectButton(props) {
       case "out":
         component = (
           <div>
-            <u>Request Sent</u>
+            <Button onClick={props.undoRequest}>Requested</Button>
           </div>
         );
         break;

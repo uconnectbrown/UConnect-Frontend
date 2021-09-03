@@ -268,9 +268,11 @@ function Course(props) {
         <StudentModal
           studentId={studentId}
           handleClose={handleCloseStudent}
-          handleRequest={props.handleRequest}
+          decRequests={props.decRequests}
+          incRequests={props.incRequests}
           requests={props.requests}
           handleOpenMessage={handleOpenMessage}
+          updateOutgoing={props.updateOutgoing}
         />
       </Modal>
       {/* <Dialog open={messageOpen && studentInfo}>
