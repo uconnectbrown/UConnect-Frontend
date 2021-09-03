@@ -75,12 +75,8 @@ function Course(props) {
     }
     if (students && query.length > 0) {
       setStudents_(
-        students.filter((students) =>
-          filterName(
-            students.firstName,
-            students.lastName,
-            query
-          )
+        students.filter((student) =>
+          filterName(student.firstName, student.lastName, query)
         )
       );
     }
@@ -88,21 +84,33 @@ function Course(props) {
 
   useEffect(() => {
     if (selectedOptions.length === 0) {
-      setStudents_(students)
+      setStudents_(students);
     }
     if (students && selectedOptions.length > 0) {
       setStudents_(
         students.filter((student) => {
           if (student[params[searchType]].length > 1) {
-            return selectedOptions.map((option) => {return option.value}).filter((v) => student[params[searchType]].includes(v)).length > 0;
-          } else return selectedOptions.map((option) => {return option.value}).includes(student[params[searchType]]);
+            return (
+              selectedOptions
+                .map((option) => {
+                  return option.value;
+                })
+                .filter((v) => student[params[searchType]].includes(v)).length >
+              0
+            );
+          } else
+            return selectedOptions
+              .map((option) => {
+                return option.value;
+              })
+              .includes(student[params[searchType]]);
         })
-      )
+      );
     }
   }, [selectedOptions]);
 
   const handleOpenStudent = (index) => {
-    setStudentId(students[index].email.split("@")[0]);
+    setStudentId(students_[index].email.split("@")[0]);
   };
 
   const handleOpenMessage = (id, image, name) => {
@@ -172,7 +180,7 @@ function Course(props) {
       setSearching(false);
       setQuery("");
       getStudents();
-    };
+    }
   };
 
   const clearSearch = () => {
@@ -271,7 +279,9 @@ function Course(props) {
           studentInfo={studentInfo}
         />
       </Dialog> */}
-      <h1 style={{ marginTop: "1rem" }}>{code}: {name}</h1>
+      <h1 style={{ marginTop: "1rem" }}>
+        {code}: {name}
+      </h1>
       {renderSearchPicker()}
       {searchType === 0 && renderSearchBar()}
       {searchType !== 0 && renderDataList(searchType)}

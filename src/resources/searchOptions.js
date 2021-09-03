@@ -209,28 +209,14 @@ const varsitySports = [
 ];
 
 const pickUpSports = [
-  { value: "Baseball", label: "Baseball" },
-  { value: "Basketball", label: "Basketball" },
-  { value: "Crew", label: "Crew" },
-  { value: "Cross Country", label: "Cross Country" },
-  { value: "Equestrian", label: "Equestrian" },
-  { value: "Fencing", label: "Fencing" },
-  { value: "Field Hockey", label: "Field Hockey" },
-  { value: "Football", label: "Football" },
-  { value: "Ice Hockey", label: "Ice Hockey" },
-  { value: "Lacrosse", label: "Lacrosse" },
-  { value: "Rugby", label: "Rugby" },
-  { value: "Sailing", label: "Sailing" },
-  { value: "Soccer", label: "Soccer" },
-  { value: "Softball", label: "Softball" },
-  { value: "Swimming and Diving", label: "Swimming and Diving" },
-  { value: "Tennis", label: "Tennis" },
-  { value: "Track and Field", label: "Track and Field" },
-  { value: "Volleyball", label: "Volleyball" },
-  { value: "Water Polo", label: "Water Polo" },
-  { value: "Wrestling", label: "Wrestling" },
-  { value: "Spikeball", label: "Spikeball" },
-  { value: "Ultimate Frisbee", label: "Ultimate Frisbee" },
+  // { value: "Basketball", label: "Basketball" },
+  // { value: "Football", label: "Football" },
+  // { value: "Soccer", label: "Soccer" },
+  // { value: "Table Tennis", label: "Table Tennis" },
+  // { value: "Tennis", label: "Tennis" },
+  // { value: "Volleyball", label: "Volleyball" },
+  // { value: "Spikeball", label: "Spikeball" },
+  // { value: "Ultimate Frisbee", label: "Ultimate Frisbee" },
 ];
 
 const instruments = [
