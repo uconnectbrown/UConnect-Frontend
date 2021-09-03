@@ -5,7 +5,7 @@ import { db, auth } from "../firebase";
 
 import ConnectButton from "./ConnectButton";
 import { Container, Row, Col, Card, Modal } from "react-bootstrap"
-import "./Student.css";
+import "./StudentModal.css";
 
 // Body
 function StudentModal(props) {
@@ -117,6 +117,56 @@ function StudentModal(props) {
     })
   }
 
+  const renderInterests = () => {
+    const categories = [
+      "Career and Academic", 
+      "Physical Activity and Wellness", 
+      "General Hobbies"
+    ]
+    const interests = [student.interests1, student.interests2, student.interests3]
+
+    return categories.map((cat, i) => {
+      const list = interests[i]
+      return <Col sm={4} className="">
+        <div className="interest-box">
+          <p style={{ fontSize: '14px', textAlign: 'center' }}>{cat}</p>
+          {list &&
+            <ul>
+              {list.map(l => <li>{l}</li>)}
+            </ul>
+          }
+        </div>
+      </Col>
+    })
+  }
+
+  const renderEcs = () => {
+    const categories = ["Groups", "Varsity Sports", "Pick-up Sports", "Instruments"];
+    const groups = [student.group1, student.group2, student.group3];
+    const varsitySports = [student.varsitySport1, student.varsitySport2];
+    const pickupSports = [student.pickupSport1, student.pickupSport2, student.pickupSport3];
+    const instruments = [student.instrument1, student.instrument2, student.instrument3];
+
+    const allEcs = [groups, varsitySports, pickupSports, instruments]
+
+    return categories.map((cat, i) => {
+      const list = allEcs[i];
+
+      return <Col sm={6} className="mb-3">
+        <div className="interest-box">
+          <p style={{ fontSize: '14px', textAlign: 'center' }}>{cat}</p>
+          {list.length > 0 &&
+            <ul>
+              {list.map(l => {
+                return l ? <li>{l}</li> : null;
+              })}
+            </ul>
+          }
+        </div>
+      </Col>
+    })
+  }
+
   if (!(student && status)) return null;
 
   return (
@@ -136,6 +186,14 @@ function StudentModal(props) {
         <Col sm={8} className="px-3">
           <Row>
             {renderCourses()}
+          </Row>
+          <h5>Interests</h5>
+          <Row>
+            {renderInterests()}
+          </Row>
+          <h5>Extracurriculars</h5>
+          <Row>
+            {renderEcs()}
           </Row>
         </Col>
       </Container>
@@ -172,14 +230,6 @@ function StudentModal(props) {
     //             </Grid>
     //             <Grid item sm>
     //               <Card
-    //                 raised
-    //                 style={{
-    //                   borderStyle: "solid",
-    //                   borderWidth: "2px",
-    //                   borderColor: "red",
-    //                   height: "100%",
-    //                   marginBottom: "-5px",
-    //                 }}
     //               >
     //                 <CardContent>
     //                   <div>
