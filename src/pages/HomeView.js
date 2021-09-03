@@ -45,7 +45,6 @@ function HomeView(props) {
     if (auth.currentUser) {
       setEmailId(auth.currentUser.email.split("@")[0]);
       setEmail(auth.currentUser.email);
-      disablePickUp();
     }
   }, []);
 
@@ -54,7 +53,6 @@ function HomeView(props) {
       checkFirstTime();
       getFeatured();
       disableSearchTypes();
-      disableVarsity();
     }
   }, [emailId]);
 
@@ -63,7 +61,8 @@ function HomeView(props) {
       .get()
       .then((doc) => {
         return setFirstTime(doc.data().firstTime);
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleNextPage = () => {
@@ -102,31 +101,6 @@ function HomeView(props) {
           } else searchTypes[i].disabled = false;
         }
       });
-  };
-
-  const disablePickUp = () => {
-    db.collection("courses")
-      .get()
-      .then((data) => console.log(data));
-  };
-
-  const disableVarsity = () => {
-    let validSports = [];
-    db.collection("varsitySports")
-      .get()
-      .then((data) => {
-        data.forEach((doc) => {
-          validSports.push(doc.id);
-        });
-        for (let i = 0; i < searchOptions[3].length; i++) {
-          if (
-            validSports.includes(searchOptions[3][i].value.replace(/\s/g, ""))
-          ) {
-            searchOptions[3][i].disabled = false;
-          } else searchOptions[3][i].disabled = true;
-        }
-      })
-      .catch((err) => console.log(err));
   };
 
   const getFeatured = () => {
@@ -456,15 +430,9 @@ function HomeView(props) {
     );
   };
 
-  return (
-    <Container fluid className="uconnect-home" style={{ marginTop: "1rem" }}>
-      {/* <Dialog open={messageOpen && studentInfo}>
-        <Message
-          handleCloseMessage={handleCloseMessage}
-          studentInfo={studentInfo}
-        />
-      </Dialog> */}
-      <Modal show={firstTime}>
+  const renderOnboard = () => {
+    return (
+      <Modal show={false}>
         {onboardPage === 0 && (
           <div>
             <h3>Welcome to UConnect!</h3>
@@ -575,6 +543,18 @@ function HomeView(props) {
           )}
         </span>
       </Modal>
+    );
+  };
+
+  return (
+    <Container fluid className="uconnect-home" style={{ marginTop: "1rem" }}>
+      {/* <Dialog open={messageOpen && studentInfo}>
+        <Message
+          handleCloseMessage={handleCloseMessage}
+          studentInfo={studentInfo}
+        />
+      </Dialog> */}
+      {renderOnboard()}
       <Modal
         keyboard
         show={studentId}

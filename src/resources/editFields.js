@@ -108,15 +108,16 @@ const greekLife = [
 ];
 
 const instruments = [
-  "Violin",
+  "Bass",
   "Cello",
-  "Flute",
   "Clarinet",
-  "Saxophone",
-  "Trumpet",
+  "Drums",
+  "Flute",
   "Guitar",
   "Piano",
-  "Harp",
+  "Saxophone",
+  "Trumpet",
+  "Violin",
   "Vocals",
 ];
 

@@ -73,6 +73,9 @@ function ProfileView(props) {
       if (newProfile.pickUpSports !== profile.pickUpSports) {
         handleDeletePickUp();
       }
+      if (newProfile.instruments !== profile.instruments) {
+        handleDeleteInstrument();
+      }
       axios
         .post(`/edit/${emailId}`, newProfile)
         .then(() => {
@@ -90,6 +93,9 @@ function ProfileView(props) {
       .get(`/update/${emailId}`)
       .then(() => {
         axios.get(`/updateV/${emailId}`);
+      })
+      .then(() => {
+        axios.get(`/updateI/${emailId}`);
       })
       .then(() => {
         return axios.get(`/updateP/${emailId}`);
@@ -160,6 +166,29 @@ function ProfileView(props) {
                 /\s/g,
                 ""
               )}`
+            )
+          );
+        }
+      }
+      Promise.all(promises)
+        .then(() => {
+          return;
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleDeleteInstrument = () => {
+    if (emailId) {
+      let promises = [];
+      for (let i = 0; i < profile.instruments.length; i++) {
+        if (
+          profile.instruments[i] !== newProfile.instruments[i] &&
+          profile.instruments[i]
+        ) {
+          promises.push(
+            axios.get(
+              `/deleteI/${emailId}/${profile.instruments[i].replace(/\s/g, "")}`
             )
           );
         }
