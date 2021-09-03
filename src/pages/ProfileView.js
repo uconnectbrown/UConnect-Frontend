@@ -70,6 +70,12 @@ function ProfileView(props) {
       if (newProfile.varsitySports !== profile.varsitySports) {
         handleDeleteVarsity();
       }
+      if (newProfile.pickUpSports !== profile.pickUpSports) {
+        handleDeletePickUp();
+      }
+      if (newProfile.instruments !== profile.instruments) {
+        handleDeleteInstrument();
+      }
       axios
         .post(`/edit/${emailId}`, newProfile)
         .then(() => {
@@ -86,7 +92,13 @@ function ProfileView(props) {
     axios
       .get(`/update/${emailId}`)
       .then(() => {
-        return axios.get(`/updateV/${emailId}`);
+        axios.get(`/updateV/${emailId}`);
+      })
+      .then(() => {
+        axios.get(`/updateI/${emailId}`);
+      })
+      .then(() => {
+        return axios.get(`/updateP/${emailId}`);
       })
       .catch((err) => console.log(err));
   };
@@ -128,6 +140,55 @@ function ProfileView(props) {
                 /\s/g,
                 ""
               )}`
+            )
+          );
+        }
+      }
+      Promise.all(promises)
+        .then(() => {
+          return;
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleDeletePickUp = () => {
+    if (emailId) {
+      let promises = [];
+      for (let i = 0; i < profile.pickUpSports.length; i++) {
+        if (
+          profile.pickUpSports[i] !== newProfile.pickUpSports[i] &&
+          profile.pickUpSports[i]
+        ) {
+          promises.push(
+            axios.get(
+              `/deleteP/${emailId}/${profile.pickUpSports[i].replace(
+                /\s/g,
+                ""
+              )}`
+            )
+          );
+        }
+      }
+      Promise.all(promises)
+        .then(() => {
+          return;
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleDeleteInstrument = () => {
+    if (emailId) {
+      let promises = [];
+      for (let i = 0; i < profile.instruments.length; i++) {
+        if (
+          profile.instruments[i] !== newProfile.instruments[i] &&
+          profile.instruments[i]
+        ) {
+          promises.push(
+            axios.get(
+              `/deleteI/${emailId}/${profile.instruments[i].replace(/\s/g, "")}`
             )
           );
         }

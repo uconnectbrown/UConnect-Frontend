@@ -53,7 +53,6 @@ function HomeView(props) {
       checkFirstTime();
       getFeatured();
       disableSearchTypes();
-      disableVarsity();
     }
   }, [emailId]);
 
@@ -62,7 +61,8 @@ function HomeView(props) {
       .get()
       .then((doc) => {
         return setFirstTime(doc.data().firstTime);
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleNextPage = () => {
@@ -75,8 +75,7 @@ function HomeView(props) {
   const handleCloseOnBoard = () => {
     setFirstTime(false);
     // backend function to turn firsttime to false in the profile
-    axios.get(`/onboard/${emailId}`)
-      .catch(err => console.log(err));
+    axios.get(`/onboard/${emailId}`).catch((err) => console.log(err));
   };
 
   const disableSearchTypes = () => {
@@ -102,25 +101,6 @@ function HomeView(props) {
           } else searchTypes[i].disabled = false;
         }
       });
-  };
-
-  const disableVarsity = () => {
-    let validSports = [];
-    db.collection("varsitySports")
-      .get()
-      .then((data) => {
-        data.forEach((doc) => {
-          validSports.push(doc.id);
-        });
-        for (let i = 0; i < searchOptions[3].length; i++) {
-          if (
-            validSports.includes(searchOptions[3][i].value.replace(/\s/g, ""))
-          ) {
-            searchOptions[3][i].disabled = false;
-          } else searchOptions[3][i].disabled = true;
-        }
-      })
-      .catch((err) => console.log(err));
   };
 
   const getFeatured = () => {
@@ -211,7 +191,7 @@ function HomeView(props) {
     getFeatured();
   };
 
-  const sendRequest = (receiverId) => {
+  const sendRequest = (recId, recImageUrl) => {
     let senderInfo = {};
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -219,16 +199,18 @@ function HomeView(props) {
         senderInfo.name = doc.data().firstName + " " + doc.data().lastName;
         senderInfo.imageUrl = doc.data().imageUrl;
         senderInfo.classYear = doc.data().classYear;
+        senderInfo.receiverImageUrl = recImageUrl;
         return senderInfo;
       })
       .then((info) => {
-        axios.post(`/request/${emailId}/${receiverId}`, info);
+        axios.post(`/request/${emailId}/${recId}`, info);
       })
       .then(() => {
-        return axios.get(`/reqfeatured/${emailId}/${receiverId}`);
+        return axios.get(`/reqfeatured/${emailId}/${recId}`);
       })
       .then(() => {
-        props.handleRequest();
+        props.decRequests();
+        props.updateOutgoing();
         getFeatured();
       })
       .catch((err) => console.log(err));
@@ -405,7 +387,6 @@ function HomeView(props) {
         </Tooltip>
         <div class="featured-container pb-4 pt-1">
           {featured.map((student, i) => {
-            {console.log(student)}
             return (
               <div
                 className="featured-card mx-lg-3 mx-sm-1"
@@ -424,7 +405,7 @@ function HomeView(props) {
                     style={{ marginTop: "auto" }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      sendRequest(student.emailId);
+                      sendRequest(student.emailId, student.imageUrl);
                     }}
                   >
                     Request
@@ -451,17 +432,9 @@ function HomeView(props) {
     );
   };
 
-  return (
-    <Container fluid className="uconnect-home" style={{ marginTop: "1rem" }}>
-      {/* <Dialog open={messageOpen && studentInfo}>
-        <Message
-          handleCloseMessage={handleCloseMessage}
-          studentInfo={studentInfo}
-        />
-      </Dialog> */}
-      <Modal
-        show={firstTime}
-      >
+  const renderOnboard = () => {
+    return (
+      <Modal show={false}>
         {onboardPage === 0 && (
           <div>
             <h3>Welcome to UConnect!</h3>
@@ -502,25 +475,52 @@ function HomeView(props) {
         {onboardPage === 3 && (
           <div>
             <h3>Search and Filter</h3>
-            <h4>One of the best ways to find other students is by using the search bar on the home page. You are able to search for students by criteria such as their name, concentration, or extracurriculars (e.g. varsity sports, pick-up sports, instruments, etc.).</h4>
+            <h4>
+              One of the best ways to find other students is by using the search
+              bar on the home page. You are able to search for students by
+              criteria such as their name, concentration, or extracurriculars
+              (e.g. varsity sports, pick-up sports, instruments, etc.).
+            </h4>
           </div>
         )}
         {onboardPage === 4 && (
           <div>
             <h3>Featured Profiles</h3>
-            <h4>Every Thursday at 9pm, you will recieve a new set of featured profiles which are prominently displayed on the home page. These featured profiles are some of the individuals that UConnect believes are highly compatible with you and are recommended based on the information you have provided in your profile. This makes it so that, the more information you provide, the better your featured profiles will be.</h4>
+            <h4>
+              Every Thursday at 9pm, you will recieve a new set of featured
+              profiles which are prominently displayed on the home page. These
+              featured profiles are some of the individuals that UConnect
+              believes are highly compatible with you and are recommended based
+              on the information you have provided in your profile. This makes
+              it so that, the more information you provide, the better your
+              featured profiles will be.
+            </h4>
           </div>
         )}
         {onboardPage === 5 && (
           <div>
             <h3>Your Profile</h3>
-            <h4>Your own profile can be accessed by clicking the profile image in the top right of your screen. This page allows you to see what your profile will look like to others and also lets you edit your profile and add pieces of information such as what courses you are taking and what extracurriculars you are involved in. Adding more additional information will also give you access to more powerful search tools to find other students who are relevant to you.</h4>
+            <h4>
+              Your own profile can be accessed by clicking the profile image in
+              the top right of your screen. This page allows you to see what
+              your profile will look like to others and also lets you edit your
+              profile and add pieces of information such as what courses you are
+              taking and what extracurriculars you are involved in. Adding more
+              additional information will also give you access to more powerful
+              search tools to find other students who are relevant to you.
+            </h4>
           </div>
         )}
         {onboardPage === 6 && (
           <div>
             <h3>Courses</h3>
-            <h4>You can access the other students in your courses by adding courses to your profile and then clicking on the course tab on the left side panel. The search bar at the top of the course page allows you to easily search and filter your classmates based on their name, class year, and concentration.</h4>
+            <h4>
+              You can access the other students in your courses by adding
+              courses to your profile and then clicking on the course tab on the
+              left side panel. The search bar at the top of the course page
+              allows you to easily search and filter your classmates based on
+              their name, class year, and concentration.
+            </h4>
           </div>
         )}
         {onboardPage === 7 && (
@@ -536,17 +536,27 @@ function HomeView(props) {
         <h4 align="center">{onboardPage + 1}/8</h4>
 
         <span align="right">
-        {onboardPage > 0 && (
-          <button onClick={handlePreviousPage}>Back</button>
-        )}
-        {onboardPage < 7 && (
-          <button onClick={handleNextPage}>Next</button>
-        )}
-        {onboardPage === 7 && (
-          <button onClick={handleCloseOnBoard}>Done</button>
-        )}
+          {onboardPage > 0 && (
+            <button onClick={handlePreviousPage}>Back</button>
+          )}
+          {onboardPage < 7 && <button onClick={handleNextPage}>Next</button>}
+          {onboardPage === 7 && (
+            <button onClick={handleCloseOnBoard}>Done</button>
+          )}
         </span>
       </Modal>
+    );
+  };
+
+  return (
+    <Container fluid className="uconnect-home" style={{ marginTop: "1rem" }}>
+      {/* <Dialog open={messageOpen && studentInfo}>
+        <Message
+          handleCloseMessage={handleCloseMessage}
+          studentInfo={studentInfo}
+        />
+      </Dialog> */}
+      {renderOnboard()}
       <Modal
         keyboard
         show={studentId}
@@ -556,9 +566,12 @@ function HomeView(props) {
         <StudentModal
           studentId={studentId}
           handleClose={handleCloseStudent}
-          handleRequest={props.handleRequest}
+          decRequests={props.decRequests}
+          incRequests={props.incRequests}
           requests={props.requests}
           handleOpenMessage={handleOpenMessage}
+          updateOutgoing={props.updateOutgoing}
+          handleFeatured={getFeatured}
         />
       </Modal>
       <h1>Connect</h1>

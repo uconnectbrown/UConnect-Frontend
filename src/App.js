@@ -93,7 +93,7 @@ function App() {
   };
   const handleName = (n) => {
     setName(n);
-  }
+  };
   const updateCourses = (courses) => {
     setCourses(courses);
   };
@@ -114,6 +114,9 @@ function App() {
   const decRequests = () => {
     setRequests(requests - 1);
   };
+  const incRequests = () => {
+    setRequests(requests + 1);
+  };
 
   // Image URL
   const [imageUrl, setImageUrl] = useState("");
@@ -130,6 +133,26 @@ function App() {
   };
   const updateImage = (url) => {
     setImageUrl(url);
+  };
+
+  // Outgoing
+  const [outgoing, setOutgoing] = useState(null);
+  useEffect(() => {
+    if (deny === false) getOutgoing();
+  }, [deny]);
+  const getOutgoing = () => {
+    let students = [];
+    db.collection("profiles")
+      .doc(emailId)
+      .collection("sent")
+      .get()
+      .then((data) => {
+        data.forEach((doc) => {
+          students.push(doc.data());
+        });
+        setOutgoing(students);
+      })
+      .catch((err) => console.log(err));
   };
 
   // Reset states
@@ -158,19 +181,40 @@ function App() {
     <div className="App">
       {user && deny === false ? (
         <HashRouter>
-          <NavBar requests={requests} imageUrl={imageUrl} reset={reset} />
+          <NavBar
+            requests={requests}
+            imageUrl={imageUrl}
+            reset={reset}
+            outgoing={outgoing}
+            incRequests={incRequests}
+            updateOutgoing={getOutgoing}
+          />
           <Container fluid>
             <Row className="px-3 py-4">
               <Col xs={1} md={2}>
-                <SideBar courses={courses} handleCode={handleCode} handleName={handleName} />
+                <SideBar
+                  courses={courses}
+                  handleCode={handleCode}
+                  handleName={handleName}
+                />
               </Col>
               <Col xs={11} md={10}>
                 <Switch>
                   <Route exact path="/">
-                    <Home requests={requests} handleRequest={decRequests} />
+                    <Home
+                      requests={requests}
+                      decRequests={decRequests}
+                      incRequests={incRequests}
+                      updateOutgoing={getOutgoing}
+                    />
                   </Route>
                   <Route exact path="/home">
-                    <Home requests={requests} handleRequest={decRequests} />
+                    <Home
+                      requests={requests}
+                      decRequests={decRequests}
+                      incRequests={incRequests}
+                      updateOutgoing={getOutgoing}
+                    />
                   </Route>
                   <Route exact path="/messages" component={Messages} />
                   <Route exact path="/connections" component={Connections} />
@@ -181,7 +225,13 @@ function App() {
                     />
                   </Route>
                   <Route path="/courses/:codeParam">
-                    <CourseView code={code} name={name} handleRequest={decRequests} />
+                    <CourseView
+                      code={code}
+                      name={name}
+                      decRequests={decRequests}
+                      incRequests={incRequests}
+                      updateOutgoing={getOutgoing}
+                    />
                   </Route>
                   <Route path="*">
                     <NoMatch />
