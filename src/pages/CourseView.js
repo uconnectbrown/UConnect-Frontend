@@ -12,8 +12,7 @@ import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
 import StudentCard from "../components/StudentCard";
-import Dialog from "@material-ui/core/Dialog";
-import { Row, Col, Modal, Button } from "react-bootstrap";
+import { Row, Modal, Button } from "react-bootstrap";
 
 // Styling
 import "./CourseView.css";
@@ -265,15 +264,16 @@ function Course(props) {
         onHide={handleCloseStudent}
         dialogClassName="student-modal"
       >
-        <StudentModal
-          studentId={studentId}
-          handleClose={handleCloseStudent}
-          decRequests={props.decRequests}
-          incRequests={props.incRequests}
-          requests={props.requests}
-          handleOpenMessage={handleOpenMessage}
-          updateOutgoing={props.updateOutgoing}
-        />
+        <Modal.Body>
+          <StudentModal
+            studentId={studentId}
+            decRequests={props.decRequests}
+            incRequests={props.incRequests}
+            requests={props.requests}
+            handleOpenMessage={handleOpenMessage}
+            updateOutgoing={props.updateOutgoing}
+          />
+        </Modal.Body>
       </Modal>
       {/* <Dialog open={messageOpen && studentInfo}>
         <Message

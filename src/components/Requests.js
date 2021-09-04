@@ -62,13 +62,15 @@ function Requests(props) {
         onHide={handleCloseStudent}
         dialogClassName="student-modal"
       >
-        <StudentModal
-          studentId={studentId}
-          handleClose={handleCloseStudent}
-          incRequests={props.incRequests}
-          requests={props.requests}
-          updateOutgoing={props.updateOutgoing}
-        />
+        <Modal.Body>
+          <StudentModal
+            studentId={studentId}
+            handleClose={handleCloseStudent}
+            incRequests={props.incRequests}
+            requests={props.requests}
+            updateOutgoing={props.updateOutgoing}
+          />
+        </Modal.Body>
       </Modal>
     </div>
   );

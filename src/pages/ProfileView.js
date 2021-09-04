@@ -34,6 +34,8 @@ function ProfileView(props) {
   const [edit, setEdit] = useState(false);
   const [editImage, setEditImage] = useState(false);
 
+  const student = profile;
+
   useEffect(() => {
     if (auth.currentUser) {
       setEmailId(auth.currentUser.email.split("@")[0]);
@@ -255,160 +257,7 @@ function ProfileView(props) {
     setNewProfile({ ...newProfile, imageUrl: url });
     props.handleImage(url);
   };
-
-  const renderProfile = () => {
-    return (
-      <Row className="profile-card">
-        <Col sm={4} style={{ justifyContent: "center" }}>
-          <img alt="Profile" src={profile.imageUrl} className="profile-img" />
-          <h4>
-            {profile.firstName} {profile.lastName}
-          </h4>
-          {profile.location && (
-            <p>
-              {profile.location.country === "United States of America" && (
-                <h5>
-                  {profile.location.city}, {profile.location.state}
-                </h5>
-              )}
-              {profile.location.country !== "United States of America" && (
-                <h5>
-                  {profile.location.city}, {profile.location.country}
-                </h5>
-              )}
-            </p>
-          )}
-          <h5> {profile.pronouns}</h5>
-          <h5>Class of {profile.classYear}</h5>
-          <h5>{profile.majors.map((major) => (major ? major + ", " : ""))}</h5>
-          <br></br>
-          <p id="normaltext">
-            <strong>Bio: </strong>
-            {profile.bio}
-          </p>
-        </Col>
-        <Col sm={8}>
-          <Row
-            className="section-container0"
-            style={{ justifyContent: "flex-end", margin: "1rem" }}
-          >
-            <button
-              type="button"
-              class="btn btn-outline-primary btn-sm"
-              style={{ width: "5rem" }}
-              onClick={() => setEdit(true)}
-            >
-              Edit
-            </button>
-          </Row>
-          <Row className="section-container1">
-            <Col sm={3}>
-              <div class="card">
-                <div class="course-title">{profile.courses[0].code}</div>
-                <div class="course-text">{profile.courses[0].name}</div>
-              </div>
-            </Col>
-            <Col sm={3}>
-              <div class="card">
-                <div class="course-title">{profile.courses[1].code}</div>
-                <div class="course-text">{profile.courses[1].name}</div>
-              </div>
-            </Col>
-            <Col sm={3}>
-              <div class="card">
-                <div class="course-title">{profile.courses[2].code}</div>
-                <div class="course-text">{profile.courses[2].name}</div>
-              </div>
-            </Col>
-            <Col sm={3}>
-              <div class="card">
-                <div class="course-title">{profile.courses[3].code}</div>
-                <div class="course-text">{profile.courses[3].name}</div>
-              </div>
-            </Col>
-          </Row>
-          <Row className="section-container2">
-            <p id="subheading">Interests</p>
-            <Col sm={4}>
-              <p id="normaltext">
-                <strong>Career and Academic</strong>
-              </p>
-              <div class="card" id="interest-card">
-                <p id="normaltext">
-                  {profile.interests1.map((i) => i.interest + ", ")}
-                </p>
-              </div>
-            </Col>
-            <Col sm={4}>
-              <p id="normaltext">
-                <strong>Physical Activity and Wellness</strong>
-              </p>
-              <div class="card" id="interest-card">
-                <p id="normaltext">
-                  {profile.interests2.map((i) => i.interest + ", ")}
-                </p>
-              </div>
-            </Col>
-            <Col sm={4}>
-              <p id="normaltext">
-                <strong>General Hobbies</strong>
-              </p>
-              <div class="card" id="interest-card">
-                <p id="normaltext">
-                  {profile.interests3.map((i) => i.interest + ", ")}
-                </p>
-              </div>
-            </Col>
-          </Row>
-          <Row className="section-container4">
-            <p id="subheading">Extracurriculars</p>
-
-            <Col sm={6}>
-              <p id="normaltext">
-                <strong>Clubs/Student Groups</strong>
-              </p>
-              {profile.groups.map((group) => (group ? group + ", " : ""))}
-            </Col>
-            <Col sm={6}>
-              <p id="normaltext">
-                <strong>Varsity Sports</strong>
-              </p>
-              {profile.varsitySports.map((sport) =>
-                sport ? sport + ", " : ""
-              )}
-            </Col>
-          </Row>
-          <Row className="section-container3">
-            <Col sm={6}>
-              <p id="normaltext">
-                <strong>Pick Up Sports</strong>
-              </p>
-              <div class="card" id="adinfo-card">
-                <p id="normaltext">
-                  {profile.pickUpSports.map((sport) =>
-                    sport ? sport + ", " : ""
-                  )}
-                </p>
-              </div>
-            </Col>
-            <Col sm={6}>
-              <p id="normaltext">
-                <strong>Instruments</strong>
-              </p>
-              <div class="card" id="adinfo-card">
-                <p id="normaltext">
-                  {profile.instruments.map((instrument) =>
-                    instrument ? instrument + ", " : ""
-                  )}
-                </p>
-              </div>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    );
-  };
-
+  
   const renderEdit = () => {
     return (
       <Row className="profile-card">
@@ -890,11 +739,129 @@ function ProfileView(props) {
     );
   };
 
-  return (
-    <Container className="px-0 py-3">
-      {profile && <p>{!edit ? renderProfile() : renderEdit()}</p>}
-    </Container>
-  );
+  const renderLeftInfo = () => {
+    return <>
+      <img
+        className="profile-view-img"
+        alt="Profile Picture"
+        src={student.imageUrl}
+      />
+      <div style={{ fontSize: "1.5em", fontStyle: "bold" }}>
+        {student.firstName + " " + student.lastName}
+      </div>
+      <div>
+        {student.preferredPronouns && `(${student.preferredPronouns})`}
+      </div>
+      <div>Class of {student.classYear}</div>
+      <div>{student.majors.map((major) => major)}</div>
+      <div className="profile-view-bio">{student.bio}</div>
+    </>
+  }
+
+  const renderCourses = () => {
+    return student.courses.map((c) => {
+      if (!c.name) return null;
+      return (
+        <div
+          className="profile-view-courses d-flex flex-column text-center align-items-center justify-content-center"
+          // onClick={}
+        >
+          <div>{c.code}</div>
+          <div style={{ fontSize: "10px" }}>{c.name}</div>
+        </div>
+      );
+    });
+  };
+
+  const renderInterests = () => {
+    const categories = [
+      "Career and Academic", 
+      "Physical Activity and Wellness", 
+      "General Hobbies"
+    ]
+    const interests = [student.interests1, student.interests2, student.interests3]
+
+    return categories.map((cat, i) => {
+      const list = interests[i]
+      return <Col sm={4} className="">
+        <div className="interest-box">
+          <p style={{ fontSize: '14px', textAlign: 'center' }}>{cat}</p>
+          {list &&
+            <ul>
+              {list.map(l => <li>{l.interest}</li>)}
+            </ul>
+          }
+        </div>
+      </Col>
+    })
+  }
+
+  const renderEcs = () => {
+    const categories = ["Groups", "Varsity Sports", "Pick-up Sports", "Instruments"];
+    const groups = [student.group1, student.group2, student.group3];
+    const varsitySports = [student.varsitySport1, student.varsitySport2];
+    const pickupSports = [student.pickupSport1, student.pickupSport2, student.pickupSport3];
+    const instruments = [student.instrument1, student.instrument2, student.instrument3];
+
+    const allEcs = [groups, varsitySports, pickupSports, instruments]
+
+    return categories.map((cat, i) => {
+      const list = allEcs[i];
+
+      return <Col sm={6} className="mb-3">
+        <div className="interest-box">
+          <p style={{ fontSize: '14px', textAlign: 'center' }}>{cat}</p>
+          {list.length > 0 &&
+            <ul>
+              {list.map(l => {
+                return l ? <li>{l}</li> : null;
+              })}
+            </ul>
+          }
+        </div>
+      </Col>
+    })
+  }
+
+  const renderProfile = () => {
+    return (
+      <Container className="profile-view-wrap d-flex flex-column pb-3">
+        <Row style={{ justifyContent: "flex-end", margin: "1rem", marginBottom: 0 }}>
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            style={{ width: "5rem" }}
+            onClick={() => setEdit(true)}
+          >
+            Edit
+          </button>
+        </Row>
+        <Row>
+          <Col sm={4} className="align-items-center text-center px-3">
+            {renderLeftInfo()}
+          </Col>
+          <Col sm={8} className="px-3">
+            <h5>Interests</h5>
+            <Row>
+              {renderInterests()}
+            </Row>
+            <h5>Extracurriculars</h5>
+            <Row>
+              {renderEcs()}
+            </Row>
+            <h5>Courses</h5>
+            <Row>
+              {renderCourses()}
+            </Row>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
+
+  if (!profile) return null;
+
+  return edit ? renderEdit() : renderProfile();
 }
 
 export default ProfileView;

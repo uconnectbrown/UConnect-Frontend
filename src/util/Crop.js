@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import Cropper from "react-easy-crop";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
-import { db, auth } from "../firebase";
+import { auth } from "../firebase";
 
 /**
  * This function was adapted from the one in the ReadMe of https://github.com/DominicTobias/react-image-crop
@@ -11,8 +11,6 @@ import { db, auth } from "../firebase";
  * @param {Object} pixelCrop - pixelCrop Object provided by react-easy-crop
  * @param {number} rotation - optional rotation parameter
  */
-
-var atob = require("atob");
 
 function Crop(props) {
   const createImage = (url) =>

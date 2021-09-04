@@ -563,16 +563,17 @@ function HomeView(props) {
         onHide={handleCloseStudent}
         dialogClassName="student-modal"
       >
-        <StudentModal
-          studentId={studentId}
-          handleClose={handleCloseStudent}
-          decRequests={props.decRequests}
-          incRequests={props.incRequests}
-          requests={props.requests}
-          handleOpenMessage={handleOpenMessage}
-          updateOutgoing={props.updateOutgoing}
-          handleFeatured={getFeatured}
-        />
+        <Modal.Body>
+          <StudentModal
+            studentId={studentId}
+            decRequests={props.decRequests}
+            incRequests={props.incRequests}
+            requests={props.requests}
+            handleOpenMessage={handleOpenMessage}
+            updateOutgoing={props.updateOutgoing}
+            handleFeatured={getFeatured}
+          />
+        </Modal.Body>
       </Modal>
       <h1>Connect</h1>
       {renderSearchPicker()}

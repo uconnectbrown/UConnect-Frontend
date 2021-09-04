@@ -134,13 +134,14 @@ function Connections() {
         onHide={handleCloseStudent}
         dialogClassName="student-modal"
       >
-        <StudentModal
-          studentId={studentId}
-          handleClose={handleCloseStudent}
-          // handleRequest={props.handleRequest}
-          // requests={props.requests}
-          handleOpenMessage={handleOpenMessage}
-        />
+        <Modal.Body>
+          <StudentModal
+            studentId={studentId}
+            // handleRequest={props.handleRequest}
+            // requests={props.requests}
+            handleOpenMessage={handleOpenMessage}
+          />
+        </Modal.Body>
       </Modal>
       <Row>
         {pending.length > 0 && (
