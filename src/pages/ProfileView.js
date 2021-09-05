@@ -35,6 +35,7 @@ function ProfileView(props) {
   const [newProfile, setNewProfile] = useState(null);
   const [indexArray, setIndexArray] = useState([]);
   const [editing, setEditing] = useState(false);
+  const [editingInterests, setEditingInterests] = useState(false);
   const [editImage, setEditImage] = useState(false);
 
   const student = profile;
@@ -707,22 +708,34 @@ function ProfileView(props) {
       student.interests3,
     ];
 
-    if (!editing) {
-      return categories.map((cat, i) => {
-      const list = interests[i]
-      return <Col sm={4} className="">
-        <div className="interest-box">
-          <p style={{ fontSize: '14px', textAlign: 'center' }}>{cat}</p>
-          {list &&
-            <ul>
-              {list.map(l => <li>{l.interest}</li>)}
-            </ul>
-          }
-        </div>
-      </Col>
-    })}
+    const editInterestsButton = <div className="mt-3">
+      <Button onClick={() => setEditingInterests(!editingInterests)}>
+        {!editingInterests ? "Edit Interests" : "Close Interests"}
+      </Button>
+    </div>
 
-    return (
+    if (!editing || (editing && !editingInterests)) {
+      return <>
+        {
+          categories.map((cat, i) => {
+            const list = interests[i]
+            return <Col sm={4} className="">
+              <div className="interest-box">
+                <p style={{ fontSize: '14px', textAlign: 'center' }}>{cat}</p>
+                {list &&
+                  <ul>
+                    {list.map(l => <li>{l.interest}</li>)}
+                  </ul>
+                }
+              </div>
+            </Col>
+          })
+        }
+        {editing && editInterestsButton}
+      </>
+    }
+
+    return (<>
       <Row>
         {(newProfile.interests1.length !== 3 ||
           newProfile.interests2.length !== 3 ||
@@ -733,9 +746,10 @@ function ProfileView(props) {
           index1={newProfile.interests1.map((i) => i.index)}
           index2={newProfile.interests2.map((i) => i.index)}
           index3={newProfile.interests3.map((i) => i.index)}
-        />
+          />
       </Row>
-    )
+      {editInterestsButton}
+    </>)
   }
 
   const renderEcs = () => {
@@ -811,7 +825,10 @@ function ProfileView(props) {
               type="button"
               class="btn btn-outline-primary btn-sm"
               style={{ width: "8rem" }}
-              onClick={() => setEditing(false)}
+              onClick={() => {
+                setEditing(false)
+                setEditingInterests(true)
+              }}
             >
               Save Changes
             </button>
