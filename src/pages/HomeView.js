@@ -130,7 +130,6 @@ function HomeView(props) {
       .get(`/searchName/${email}/${query}`)
       .then((res) => {
         setStudents(res.data);
-        console.log(res.data);
       })
       .then(() => {
         if (query) {

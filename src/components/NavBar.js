@@ -10,7 +10,6 @@ import Logo from "../assets/Logo.png";
 import "./NavBar.css";
 
 // Components
-import SignOut from "./SignOut";
 import Requests from "./Requests";
 
 function NavBar(props) {
@@ -58,10 +57,6 @@ function NavBar(props) {
                   className="nav-profile-img"
                 />
               </button>
-              <SignOut
-                style={{ position: "absolute", right: "10%" }}
-                reset={props.reset}
-              />
             </Link>
           </div>
         </Container>

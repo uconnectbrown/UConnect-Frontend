@@ -106,7 +106,7 @@ const CandAinterests = [
   "International Relations",
   "Journalism and Media",
   "Government, Law, and Public Policy",
-  "Linguistics",
+  "Cognitive and Linguistic Studies",
   "Math and Statistics",
   "Natural and Physical Sciences",
   "Performing Arts",
@@ -125,7 +125,6 @@ const GHinterests = [
   "Music",
   "Photography",
   "Plane, Trains, and Automobiles",
-  "Playing Music ",
   "Reading and Writing",
   "Shopping and Fashion",
   "Theatre and Performing Arts",
@@ -139,14 +138,15 @@ const PAandWinterests = [
   "Basketball",
   "Boxing, MMA, and Wrestling",
   "Cycling",
+  "Dance",
   "Football",
   "Golf",
-  "Hiking, Backpacking, and Camping",
+  "Hiking and Camping",
   "Hunting and Fishing",
   "Meditation and Yoga",
   "Motor Sports",
   "Food and Nutrition",
-  "Physical Exercise and Working Out",
+  "Exercising and Working Out",
   "Sleep and Recovery",
   "Soccer",
   "Swimming and Diving",
@@ -155,7 +155,6 @@ const PAandWinterests = [
   "Water Sports",
   "Winter Sports",
 ];
-
 const pronouns = (
   <datalist id="pronouns">
     <option value="he/him" />
