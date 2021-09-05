@@ -1,0 +1,25 @@
+.welcome-page {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  background-color: #f3f3f3;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-container {
+  padding-left: 5rem;
+  padding-right: 5rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: white;
+  border-radius: 1rem;
+  text-align: center;
+  margin-top: -5rem;
+
+  box-shadow: -10px 10px 20px #c7c7c7;
+}
+
+.welcome-header {
+  font-weight: 800;
+}
