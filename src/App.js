@@ -24,9 +24,9 @@ import Connections from "./pages/ConnectionsView";
 import ProfileView from "./pages/ProfileView";
 import ProfileBuild from "./pages/ProfileBuild";
 import CourseView from "./pages/CourseView";
+import Welcome from "./pages/WelcomeView";
 
 // Components
-import Welcome from "./components/Welcome";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
 
