@@ -9,6 +9,7 @@ import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
+import Logo from "../assets/Logo.PNG";
 
 // Styling
 import "./HomeView.css";
@@ -107,6 +108,7 @@ function HomeView(props) {
     axios
       .get(`/featured/${emailId}`)
       .then((res) => {
+        console.log(res.data.featured);
         setFeatured(res.data.featured);
       })
       .catch((err) => console.log(err));
@@ -402,116 +404,114 @@ function HomeView(props) {
 
   const renderOnboard = () => {
     return (
-      <Modal show={false}>
-        {onboardPage === 0 && (
-          <div>
-            <h3>Welcome to UConnect!</h3>
-            <h4>
-              This is a platform designed to help you discover and form
-              meaningful connections with other Brown students. Before getting
-              started, please click through these brief slides which explain the
-              core functionality of the site.
-            </h4>
-          </div>
-        )}
-        {onboardPage === 1 && (
-          <div>
-            <h3>Requests</h3>
-            <h4>
-              When you created your profile, you recieved 10 requests which can
-              be sent to any Brown student you come across on the website. When
-              your connection request is accepted, you will get the request back
-              and be able to send it to someone else, and, if for some reason
-              your request has not been accepted after 2 days, you will be able
-              to unrequest in order to get the request back.
-            </h4>
-          </div>
-        )}
-        {onboardPage === 2 && (
-          <div>
-            <h3>Connections</h3>
-            <h4>
-              When you accept someone's request or someone accept's your
-              request, the two of you will have formed a connection. Once
-              connected, you will now have access to additional pieces of
-              information such as who your mutual connections are and what
-              courses you have in common. Being connected also gives you the
-              ability to message the other user.
-            </h4>
-          </div>
-        )}
-        {onboardPage === 3 && (
-          <div>
-            <h3>Search and Filter</h3>
-            <h4>
-              One of the best ways to find other students is by using the search
-              bar on the home page. You are able to search for students by
-              criteria such as their name, concentration, or extracurriculars
-              (e.g. varsity sports, pick-up sports, instruments, etc.).
-            </h4>
-          </div>
-        )}
-        {onboardPage === 4 && (
-          <div>
-            <h3>Featured Profiles</h3>
-            <h4>
-              Every Thursday at 9pm, you will recieve a new set of featured
-              profiles which are prominently displayed on the home page. These
-              featured profiles are some of the individuals that UConnect
-              believes are highly compatible with you and are recommended based
-              on the information you have provided in your profile. This makes
-              it so that, the more information you provide, the better your
-              featured profiles will be.
-            </h4>
-          </div>
-        )}
-        {onboardPage === 5 && (
-          <div>
-            <h3>Your Profile</h3>
-            <h4>
-              Your own profile can be accessed by clicking the profile image in
-              the top right of your screen. This page allows you to see what
-              your profile will look like to others and also lets you edit your
-              profile and add pieces of information such as what courses you are
-              taking and what extracurriculars you are involved in. Adding more
-              additional information will also give you access to more powerful
-              search tools to find other students who are relevant to you.
-            </h4>
-          </div>
-        )}
-        {onboardPage === 6 && (
-          <div>
-            <h3>Courses</h3>
-            <h4>
-              You can access the other students in your courses by adding
-              courses to your profile and then clicking on the course tab on the
-              left side panel. The search bar at the top of the course page
-              allows you to easily search and filter your classmates based on
-              their name, class year, and concentration.
-            </h4>
-          </div>
-        )}
-        {onboardPage === 7 && (
-          <div>
-            <h3>Finished</h3>
-            <h4>
-              Congrats on completing the onboarding process; now enjoy
-              connecting!
-            </h4>
-          </div>
-        )}
-
-        <h4 align="center">{onboardPage + 1}/8</h4>
-
-        <span align="right">
-          {onboardPage > 0 && (
-            <button onClick={handlePreviousPage}>Back</button>
+      <Modal show={false} dialogClassName="student-modal">
+        <Modal.Body>
+          {onboardPage === 0 && (
+            <div align="center">
+              <img
+                alt="UConnect Logo"
+                style={{
+                  width: "auto",
+                  height: "auto",
+                  maxHeight: "200px",
+                  marginBottom: "20px",
+                }}
+                src={Logo}
+                className="topbar-logo"
+              />
+              <h3>Welcome to UConnect!</h3>
+              <p>
+                A platform designed to help you form meaningful connections with
+                other Brown students. The following slides will walk you through
+                the site's core functionality.
+              </p>
+            </div>
           )}
-          {onboardPage < 7 && <button onClick={handleNextPage}>Next</button>}
+          {onboardPage === 1 && (
+            <div>
+              <h3>Requests</h3>
+              <p>
+                Every user starts with 10 requests which can be sent to any
+                other UConnect user. Requests are restored when they are
+                accepted by another user.
+              </p>
+              <h3>Connections</h3>
+              <p>
+                Once a request is accepted and two users are connected, they now
+                have the ability to message each other. They will also gain
+                access to mutual courses.
+              </p>
+            </div>
+          )}
+          {onboardPage === 2 && <div></div>}
+          {onboardPage === 3 && (
+            <div>
+              <h3>Search and Filter</h3>
+              <p>
+                One of the best ways to find others is by using the search bar
+                on the home page. You are able to search for people by criteria
+                such as their name, concentration, or extracurriculars.
+              </p>
+            </div>
+          )}
+          {onboardPage === 4 && (
+            <div>
+              <h3>Featured Profiles</h3>
+              <p>
+                Every Thursday at 9PM EST, each user will receive a set of
+                featured profiles. These profiles are determined based on the
+                information you have provided in your profile. The more
+                information you provide, the better your featured profiles will
+                be.
+              </p>
+            </div>
+          )}
+          {onboardPage === 5 && (
+            <div>
+              <h3>Your Profile</h3>
+              <h4>
+                Your own profile can be accessed by clicking the profile image
+                in the top right of your screen. This page allows you to see
+                what your profile will look like to others and also lets you
+                edit your profile and add pieces of information such as what
+                courses you are taking and what extracurriculars you are
+                involved in. Adding more additional information will also give
+                you access to more powerful search tools to find other students
+                who are relevant to you.
+              </h4>
+            </div>
+          )}
+          {onboardPage === 6 && (
+            <div>
+              <h3>Courses</h3>
+              <h4>
+                You can access the other students in your courses by adding
+                courses to your profile and then clicking on the course tab on
+                the left side panel. The search bar at the top of the course
+                page allows you to easily search and filter your classmates
+                based on their name, class year, and concentration.
+              </h4>
+            </div>
+          )}
           {onboardPage === 7 && (
-            <button onClick={handleCloseOnBoard}>Done</button>
+            <div>
+              <h3>Finished</h3>
+              <h4>
+                Congrats on completing the onboarding process; now enjoy
+                connecting!
+              </h4>
+            </div>
           )}
-        </span>
+          <div align="right">
+            {onboardPage > 0 && (
+              <button onClick={handlePreviousPage}>Back</button>
+            )}
+            {onboardPage < 7 && <button onClick={handleNextPage}>Next</button>}
+            {onboardPage === 7 && (
+              <button onClick={handleCloseOnBoard}>Done</button>
+            )}
+          </div>
+        </Modal.Body>
       </Modal>
     );
   };

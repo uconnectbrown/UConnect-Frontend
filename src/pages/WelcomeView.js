@@ -7,8 +7,6 @@ import { useHistory } from "react-router-dom";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import "./WelcomeView.css";
 
-
-
 // Body
 function Welcome(props) {
   let history = useHistory();
@@ -40,23 +38,32 @@ function Welcome(props) {
       .catch((err) => console.log(err));
   }
 
-  return <div className="welcome-page">
-    <div className="welcome-container">
-      <h1 className="welcome-header">UConnect</h1>
-      <Button 
-        onClick={signInWithGoogle} 
-        className="w-100 mt-2 mb-3"
-        size="lg"
-      >
-        Sign In
-      </Button>
-      <div>
-        <div>First time using UConnect? &nbsp;&nbsp;
-          <a href="/" onClick={signInWithGoogle}>Sign Up</a>
+  return (
+    <div className="welcome-page">
+      <div className="welcome-container">
+        <h1 className="welcome-header">UConnect</h1>
+
+        <Button
+          onClick={signInWithGoogle}
+          className="w-100 mt-2 mb-3"
+          size="lg"
+        >
+          Sign In
+        </Button>
+        <div>
+          <div>
+            First time using UConnect? &nbsp;&nbsp;
+            <a
+              style={{ color: "blue", textDecoration: "underline" }}
+              onClick={signInWithGoogle}
+            >
+              Sign Up
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  );
 }
 
 export default Welcome;

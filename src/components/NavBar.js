@@ -5,7 +5,7 @@ import { Navbar, Container } from "react-bootstrap";
 import { faBullseye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Logo from "../assets/Logo.png";
+import Logo from "../assets/Logo.PNG";
 
 import "./NavBar.css";
 
@@ -37,7 +37,7 @@ function NavBar(props) {
                 onMouseLeave={() => setShowDropdown(false)}
                 style={{ fontSize: 14 }}
               >
-                {!showDropdown && <p>Requests</p>}
+                {!showDropdown && "Requests"}
                 {showDropdown && (
                   <Requests
                     requests={props.requests}
