@@ -4,16 +4,18 @@ import axios from "axios";
 import { db, auth } from "../firebase";
 
 import ConnectButton from "./ConnectButton";
-import { Container, Row, Col, Card, Modal } from "react-bootstrap"
+import { Container, Row, Col, Card, Modal } from "react-bootstrap";
 import "./StudentModal.css";
 
 // Body
 function StudentModal(props) {
   const emailId = auth.currentUser.email.split("@")[0];
   const studentId = props.studentId;
+  const [outgoing, setOutgoing] = useState(props.outgoing);
   const [student, setStudent] = useState(null);
   const [indexArray, setIndexArray] = useState([]);
   const [status, setStatus] = useState(null);
+  const [validUndo, setValidUndo] = useState(null);
 
   useEffect(() => {
     getStudent();
@@ -22,6 +24,10 @@ function StudentModal(props) {
   useEffect(() => {
     checkStatus();
   }, []);
+
+  useEffect(() => {
+    if (outgoing) checkUndo();
+  }, [props.outgoing]);
 
   const getStudent = () => {
     axios
@@ -49,7 +55,22 @@ function StudentModal(props) {
       .catch((err) => console.log(err));
   };
 
+  const checkUndo = () => {
+    if (outgoing.length > 0) {
+      for (let i = 0; i < outgoing.length; i++) {
+        if (outgoing[i].emailId === studentId) {
+          let currentTime = new Date();
+          let sentTime = new Date(outgoing[i].sent);
+          if ((currentTime - sentTime) / 60000 > 0.1) {
+            setValidUndo(true);
+          }
+        }
+      }
+    }
+  };
+
   const sendRequest = () => {
+    let arr = [...outgoing];
     if (emailId && student) {
       let senderInfo = {};
       db.doc(`/profiles/${emailId}`)
@@ -62,20 +83,26 @@ function StudentModal(props) {
           return senderInfo;
         })
         .then((info) => {
-          axios.post(`/request/${emailId}/${studentId}`, info);
+          return axios.post(`/request/${emailId}/${studentId}`, info);
         })
         .then(() => {
-          return axios.get(`/reqfeatured/${emailId}/${studentId}`);
-        })
-        .then(() => {
-          setStatus("out");
-          props.handleFeatured();
           props.decRequests();
-          props.updateOutgoing();
+          arr.push({
+            sent: new Date().toISOString(),
+            emailId: studentId,
+            imageUrl: student.imageUrl,
+          });
+          props.updateOutgoing(arr);
+          return setStatus("out");
+        })
+        .then(() => {
+          return checkUndo();
         })
         .catch((err) => console.log(err));
     }
   };
+
+  const getOutgoing = () => {};
 
   const acceptRequest = () => {
     let info = {
@@ -97,24 +124,25 @@ function StudentModal(props) {
           .then(() => {
             setStatus("con");
           })
-          .then(() => {
-            return axios.get(`/accfeatured/${studentId}/${emailId}`);
-          })
           .catch((err) => console.log(err));
       });
   };
 
   const undoRequest = () => {
+    let arr = [...outgoing];
     axios
       .get(`/undoRequest/${emailId}/${studentId}`)
       .then(() => {
         setStatus("nil");
         props.incRequests();
-        props.updateOutgoing();
-        return axios.get(`/unfeatured/${emailId}/${studentId}`);
+        for (let i = 0; i < outgoing.length; i++) {
+          if (outgoing[i].emailId === studentId) {
+            arr.splice(i, 1);
+          }
+        }
       })
       .then(() => {
-        props.handleFeatured();
+        props.updateOutgoing(arr);
       })
       .catch((err) => console.log(err));
   };
@@ -136,53 +164,76 @@ function StudentModal(props) {
 
   const renderInterests = () => {
     const categories = [
-      "Career and Academic", 
-      "Physical Activity and Wellness", 
-      "General Hobbies"
-    ]
-    const interests = [student.interests1, student.interests2, student.interests3]
+      "Career and Academic",
+      "Physical Activity and Wellness",
+      "General Hobbies",
+    ];
+    const interests = [
+      student.interests1,
+      student.interests2,
+      student.interests3,
+    ];
 
     return categories.map((cat, i) => {
-      const list = interests[i]
-      return <Col sm={4} className="">
-        <div className="interest-box">
-          <p style={{ fontSize: '14px', textAlign: 'center' }}>{cat}</p>
-          {list &&
-            <ul>
-              {list.map(l => <li>{l}</li>)}
-            </ul>
-          }
-        </div>
-      </Col>
-    })
-  }
+      const list = interests[i];
+      return (
+        <Col sm={4} className="">
+          <div className="interest-box">
+            <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
+            {list && (
+              <ul>
+                {list.map((l) => (
+                  <li>{l.interest}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </Col>
+      );
+    });
+  };
 
   const renderEcs = () => {
-    const categories = ["Groups", "Varsity Sports", "Pick-up Sports", "Instruments"];
-    const groups = [student.group1, student.group2, student.group3];
-    const varsitySports = [student.varsitySport1, student.varsitySport2];
-    const pickupSports = [student.pickupSport1, student.pickupSport2, student.pickupSport3];
-    const instruments = [student.instrument1, student.instrument2, student.instrument3];
+    const categories = [
+      "Groups",
+      "Varsity Sports",
+      "Pick-up Sports",
+      "Instruments",
+    ];
+    const groups = [student.groups[0], student.groups[1], student.groups[2]];
+    const varsitySports = [student.varsitySports[0], student.varsitySports[1]];
+    const pickupSports = [
+      student.pickUpSports[0],
+      student.pickUpSports[1],
+      student.pickUpSports[2],
+    ];
+    const instruments = [
+      student.instruments[0],
+      student.instruments[1],
+      student.instruments[2],
+    ];
 
-    const allEcs = [groups, varsitySports, pickupSports, instruments]
+    const allEcs = [groups, varsitySports, pickupSports, instruments];
 
     return categories.map((cat, i) => {
       const list = allEcs[i];
 
-      return <Col sm={6} className="mb-3">
-        <div className="interest-box">
-          <p style={{ fontSize: '14px', textAlign: 'center' }}>{cat}</p>
-          {list.length > 0 &&
-            <ul>
-              {list.map(l => {
-                return l ? <li>{l}</li> : null;
-              })}
-            </ul>
-          }
-        </div>
-      </Col>
-    })
-  }
+      return (
+        <Col sm={6} className="mb-3">
+          <div className="interest-box">
+            <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
+            {list.length > 0 && (
+              <ul>
+                {list.map((l) => {
+                  return l ? <li>{l}</li> : null;
+                })}
+              </ul>
+            )}
+          </div>
+        </Col>
+      );
+    });
+  };
 
   if (!(student && status)) return null;
 
@@ -197,31 +248,51 @@ function StudentModal(props) {
         <div style={{ fontSize: "1.5em", fontStyle: "bold" }}>
           {student.firstName + " " + student.lastName}
         </div>
+        <div>{student.pronouns && `(${student.pronouns})`}</div>
         <div>
-          {student.preferredPronouns && `(${student.preferredPronouns})`}
+          {student.location &&
+            student.location.state !== "" &&
+            student.location.city !== "" &&
+            `${student.location.city}, ${student.location.state}`}
+        </div>
+        <div>
+          {student.location &&
+            student.location.state !== "" &&
+            student.location.city === "" &&
+            `${student.location.state}, ${student.location.country}`}
+        </div>
+        <div>
+          {student.location &&
+            student.location.country !== "United States of America" &&
+            student.location.city !== "" &&
+            `${student.location.city}, ${student.location.country}`}
+        </div>
+        <div>
+          {student.location &&
+            student.location.country !== "United States of America" &&
+            student.location.city === "" &&
+            `${student.location.country}`}
         </div>
         <div>Class of {student.classYear}</div>
         <div>{student.majors.map((major) => major)}</div>
         <div className="modal-bio">{student.bio}</div>
         <ConnectButton
+          closeOnUndo={props.closeOnUndo}
+          handleClose={props.handleClose}
+          requests={props.requests}
           status={status}
           sendRequest={sendRequest}
           acceptRequest={acceptRequest}
           undoRequest={undoRequest}
+          validUndo={validUndo}
         />
       </Col>
       <Col sm={8} className="px-3">
-        <Row>
-          {renderCourses()}
-        </Row>
+        <Row>{renderCourses()}</Row>
         <h5>Interests</h5>
-        <Row>
-          {renderInterests()}
-        </Row>
+        <Row>{renderInterests()}</Row>
         <h5>Extracurriculars</h5>
-        <Row>
-          {renderEcs()}
-        </Row>
+        <Row>{renderEcs()}</Row>
       </Col>
     </Container>
   );

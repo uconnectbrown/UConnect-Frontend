@@ -1,7 +1,7 @@
-import React from 'react';
-import { Col } from 'react-bootstrap';
+import React from "react";
+import { Col } from "react-bootstrap";
 
-import './StudentCard.css';
+import "./StudentCard.css";
 
 const StudentCard = (props) => {
   return (
@@ -11,19 +11,16 @@ const StudentCard = (props) => {
         alt="Profile Picture"
         src={props.imageUrl}
       />
-      <div style={{ fontSize: "1rem", fontStyle: "bold" }}>
-        {props.name}
-      </div>
-      {props.classYear && 
-        <div className="card-text">{props.classYear}</div>
-      }
-      {props.majors && 
-        <div className="card-text">
-          {props.majors.map((major) => major)}
+      {props.name && props.classYear && (
+        <div style={{ fontSize: "1rem", fontStyle: "bold" }}>
+          {props.name} '{props.classYear.split("0")[1]}
         </div>
-      }
+      )}
+      {props.majors && (
+        <div className="card-text">{props.majors.map((major) => major)}</div>
+      )}
     </Col>
-  )
-}
+  );
+};
 
 export default StudentCard;
