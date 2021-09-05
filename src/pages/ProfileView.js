@@ -20,8 +20,9 @@ import {
   courseList,
 } from "../resources/editFields";
 
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, FloatingLabel } from "react-bootstrap";
 import "./ProfileView.css";
+import { FormControlLabel } from "@material-ui/core";
 
 const { validProfile } = require("../util/validators");
 
@@ -31,7 +32,7 @@ function ProfileView(props) {
   const [profile, setProfile] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
   const [indexArray, setIndexArray] = useState([]);
-  const [edit, setEdit] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [editImage, setEditImage] = useState(false);
 
   const student = profile;
@@ -289,24 +290,6 @@ function ProfileView(props) {
               </button>
             </menu>
           </dialog>
-          <p>
-            First name:
-            <input
-              value={newProfile.firstName}
-              onChange={handleChange}
-              name="firstName"
-              placeholder={!newProfile.firstName && "Can't be empty"}
-            />
-          </p>
-          <p>
-            Last name:
-            <input
-              value={newProfile.lastName}
-              onChange={handleChange}
-              name="lastName"
-              placeholder={!newProfile.lastName && "Can't be empty"}
-            />
-          </p>
 
           <p>
             <label>
@@ -361,78 +344,6 @@ function ProfileView(props) {
             />
             {pronouns}
           </p>
-          <p>
-            Class of
-            <select
-              name="classYear"
-              id="classYear"
-              onChange={handleChange}
-              value={newProfile.classYear}
-            >
-              <option value="2022">2022</option>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-            </select>
-          </p>
-
-          <label>
-            Major:
-            <input
-              list="majors"
-              name="majors"
-              onChange={(e) => {
-                handleArrChange(e, 0);
-              }}
-              placeholder={
-                newProfile.majors.filter(Boolean).length === 0 &&
-                "Need at least one"
-              }
-              value={newProfile.majors[0]}
-            />
-          </label>
-          <datalist id="majors">
-            {majors.map((major, i) => {
-              return <option key={i} value={major} />;
-            })}
-          </datalist>
-          <label>
-            Major 2 (optional):
-            <input
-              list="majors"
-              name="majors"
-              onChange={(e) => {
-                handleArrChange(e, 1);
-              }}
-              value={newProfile.majors[1]}
-            />
-          </label>
-          <datalist id="majors">
-            {majors.map((major, i) => {
-              return <option key={i} value={major} />;
-            })}
-          </datalist>
-          <label>
-            Major 3 (optional):
-            <input
-              list="majors"
-              name="majors"
-              onChange={(e) => {
-                handleArrChange(e, 2);
-              }}
-              value={newProfile.majors[2]}
-            />
-          </label>
-          <datalist id="majors">
-            {majors.map((major, i) => {
-              return <option key={i} value={major} />;
-            })}
-          </datalist>
-          <br></br>
-          <p id="normaltext">
-            Bio:
-            <input value={newProfile.bio} onChange={handleChange} name="bio" />
-          </p>
         </Col>
         <Col sm={8}>
           <Row
@@ -445,7 +356,7 @@ function ProfileView(props) {
                 class="btn btn-outline-primary btn-sm"
                 style={{ width: "5rem" }}
                 onClick={() => {
-                  setEdit(false);
+                  setEditing(false);
                   editProfile();
                 }}
                 disabled={!validProfile(newProfile)}
@@ -457,119 +368,13 @@ function ProfileView(props) {
                 class="btn btn-outline-primary btn-sm"
                 style={{ width: "5rem" }}
                 onClick={() => {
-                  setEdit(false);
+                  setEditing(false);
                   setNewProfile(profile);
                 }}
               >
                 Cancel
               </button>
             </React.Fragment>
-          </Row>
-          <Row className="section-container1">
-            <Col sm={3}>
-              <div class="card">
-                <label>
-                  Course 1
-                  <input
-                    list="courseCodes"
-                    name="courses"
-                    onChange={(e) => {
-                      handleCourseChange(e, 0);
-                    }}
-                    value={newProfile.courses[0].code}
-                  />
-                </label>
-
-                <datalist id="courseCodes">
-                  {courseList.map((course, i) => {
-                    return (
-                      <option key={i} value={course[0] + ": " + course[1]} />
-                    );
-                  })}
-                </datalist>
-              </div>
-            </Col>
-            <Col sm={3}>
-              <div class="card">
-                <label>
-                  Course 2
-                  <input
-                    list="courseCodes"
-                    name="courses"
-                    onChange={(e) => {
-                      handleCourseChange(e, 1);
-                    }}
-                    value={newProfile.courses[1].code}
-                  />
-                </label>
-
-                <datalist id="courseCodes">
-                  {courseList.map((course, i) => {
-                    return (
-                      <option key={i} value={course[0] + ": " + course[1]} />
-                    );
-                  })}
-                </datalist>
-              </div>
-            </Col>
-            <Col sm={3}>
-              <div class="card">
-                <label>
-                  Course 3
-                  <input
-                    list="courseCodes"
-                    name="courses"
-                    onChange={(e) => {
-                      handleCourseChange(e, 2);
-                    }}
-                    value={newProfile.courses[2].code}
-                  />
-                </label>
-
-                <datalist id="courseCodes">
-                  {courseList.map((course, i) => {
-                    return (
-                      <option key={i} value={course[0] + ": " + course[1]} />
-                    );
-                  })}
-                </datalist>
-              </div>
-            </Col>
-            <Col sm={3}>
-              <div class="card">
-                <label>
-                  Course 4
-                  <input
-                    list="courseCodes"
-                    name="courses"
-                    onChange={(e) => {
-                      handleCourseChange(e, 3);
-                    }}
-                    value={newProfile.courses[3].code}
-                  />
-                </label>
-
-                <datalist id="courseCodes">
-                  {courseList.map((course, i) => {
-                    return (
-                      <option key={i} value={course[0] + ": " + course[1]} />
-                    );
-                  })}
-                </datalist>
-              </div>
-            </Col>
-          </Row>
-          <Row className="section-container2">
-            {(newProfile.interests1.length !== 3 ||
-              newProfile.interests2.length !== 3 ||
-              newProfile.interests3.length !== 3) &&
-              "Please select 3 interests in each category"}
-            <EditInterests
-              getInterests={handleInterests}
-              index1={newProfile.interests1.map((i) => i.index)}
-              index2={newProfile.interests2.map((i) => i.index)}
-              index3={newProfile.interests3.map((i) => i.index)}
-            />
           </Row>
           <Row className="section-container4">
             <p id="subheading">Extracurriculars</p>
@@ -592,7 +397,6 @@ function ProfileView(props) {
                   }}
                   value={newProfile.groups[1]}
                 />
-
                 <input
                   name="groups"
                   onChange={(e) => {
@@ -740,35 +544,151 @@ function ProfileView(props) {
   };
 
   const renderLeftInfo = () => {
+    const classYears = ["2022", "2023", "2024", "2025"];
+
     return <>
-      <img
-        className="profile-view-img"
-        alt="Profile Picture"
-        src={student.imageUrl}
-      />
-      <div style={{ fontSize: "1.5em", fontStyle: "bold" }}>
-        {student.firstName + " " + student.lastName}
-      </div>
       <div>
-        {student.preferredPronouns && `(${student.preferredPronouns})`}
+        <img
+          className="profile-view-img"
+          alt="Profile Picture"
+          src={student.imageUrl}
+        />
+        {editing && 
+          <Button className="mb-3">
+            Edit Image
+          </Button>
+        }
       </div>
-      <div>Class of {student.classYear}</div>
-      <div>{student.majors.map((major) => major)}</div>
-      <div className="profile-view-bio">{student.bio}</div>
+      {!editing ? 
+        <div>
+          <div style={{ fontSize: "1.5em", fontStyle: "bold" }}>
+            {student.firstName + " " + student.lastName}
+          </div>
+          <div>
+            {student.preferredPronouns && `(${student.preferredPronouns})`}
+          </div>
+          <div>Class of {student.classYear}</div>
+          <div>{student.majors.map((major) => major)}</div>
+          <div className="profile-view-bio">{student.bio}</div>
+        </div>
+        :
+        <div style={{ textAlign: 'left'}}>
+          <Form>
+            <FloatingLabel label="First Name *" className="mb-3" controlId="first-name">
+              <Form.Control 
+                type="text" 
+                value={newProfile?.firstName}
+              />
+            </FloatingLabel>
+            <FloatingLabel label="Last Name *" className="mb-3" controlId="last-name">
+              <Form.Control 
+                type="text" 
+                value={newProfile?.lastName}
+              />
+            </FloatingLabel>
+            <FloatingLabel label="Class Year" className="mb-3">
+              <Form.Select 
+                aria-label="Select class year" 
+                className="mb-3"
+                value={newProfile?.classYear}
+              >
+                {classYears.map((year) => {
+                  return <option value={year}>{year}</option>
+                })}
+              </Form.Select>
+            </FloatingLabel>
+            <FloatingLabel label="Preferred Pronouns" className="mb-3" controlId="pronouns">
+              <Form.Control 
+                type="text" 
+                value={newProfile?.preferredPronouns}
+              />
+            </FloatingLabel>
+            <FloatingLabel label="Concentration 1 *">
+              <Form.Control
+                list="majors"
+                name="majors"
+                className="w-100 mb-3"
+                onChange={(e) => {handleArrChange(e, 0);}}
+                placeholder={
+                  newProfile?.majors.filter(Boolean).length === 0 &&
+                  "Need at least one"
+                }
+                value={newProfile.majors[0]}
+              />
+            </FloatingLabel>
+            <datalist id="majors" className="w-100">
+              {majors.map((major, i) => {
+                return <option key={i} value={major} />;
+              })}
+            </datalist>
+            <FloatingLabel label="Concentration 2">
+              <Form.Control
+                list="majors"
+                name="majors"
+                className="w-100 mb-3"
+                onChange={(e) => {handleArrChange(e, 1);}}
+                value={newProfile.majors[1]}
+              />
+            </FloatingLabel>
+            <datalist id="majors" className="w-100">
+              {majors.map((major, i) => {
+                return <option key={i} value={major} />;
+              })}
+            </datalist>
+            <FloatingLabel label="Concentration 3">
+              <Form.Control
+                list="majors"
+                name="majors"
+                className="w-100 mb-3"
+                onChange={(e) => {handleArrChange(e, 2);}}
+                value={newProfile.majors[2]}
+              />
+            </FloatingLabel>
+            <FloatingLabel label="Bio" className="mb-3" controlId="bio">
+              <Form.Control 
+                as="textarea" 
+                rows={5} 
+                value={newProfile?.bio}
+              />
+            </FloatingLabel>
+          </Form>
+        </div>
+      }
     </>
   }
 
   const renderCourses = () => {
-    return student.courses.map((c) => {
+    return student.courses.map((c, i) => {
       if (!c.name) return null;
       return (
-        <div
-          className="profile-view-courses d-flex flex-column text-center align-items-center justify-content-center"
-          // onClick={}
-        >
-          <div>{c.code}</div>
-          <div style={{ fontSize: "10px" }}>{c.name}</div>
-        </div>
+        <>
+          {!editing ? 
+            <Col sm={3} className="mb-3">
+              <div className="profile-view-courses">   
+                <div>{c.code}</div>
+                <div style={{ fontSize: "10px" }}>{c.name}</div>
+              </div>
+            </Col>
+            :
+            <Col sm={6} className="mb-3">
+              <FloatingLabel label={`Course ${i + 1}`}>
+                <Form.Control
+                  list="courseCodes"
+                  name="courses"
+                  onChange={(e) => {
+                    handleCourseChange(e, i);
+                  }}
+                  value={newProfile?.courses[i].code}
+                />
+                <datalist id="courseCodes">
+                  {courseList.map((course, i) => 
+                    <option key={i} value={course[0] + ": " + course[1]} />
+                  )}
+                </datalist>
+              </FloatingLabel>
+            </Col>
+          }
+        </>
       );
     });
   };
@@ -781,7 +701,8 @@ function ProfileView(props) {
     ]
     const interests = [student.interests1, student.interests2, student.interests3]
 
-    return categories.map((cat, i) => {
+    if (!editing) {
+      return categories.map((cat, i) => {
       const list = interests[i]
       return <Col sm={4} className="">
         <div className="interest-box">
@@ -793,7 +714,22 @@ function ProfileView(props) {
           }
         </div>
       </Col>
-    })
+    })}
+
+    return (
+      <Row>
+        {(newProfile.interests1.length !== 3 ||
+          newProfile.interests2.length !== 3 ||
+          newProfile.interests3.length !== 3) &&
+          "Please select 3 interests in each category"}
+        <EditInterests
+          getInterests={handleInterests}
+          index1={newProfile.interests1.map((i) => i.index)}
+          index2={newProfile.interests2.map((i) => i.index)}
+          index3={newProfile.interests3.map((i) => i.index)}
+        />
+      </Row>
+    )
   }
 
   const renderEcs = () => {
@@ -808,33 +744,59 @@ function ProfileView(props) {
     return categories.map((cat, i) => {
       const list = allEcs[i];
 
-      return <Col sm={6} className="mb-3">
-        <div className="interest-box">
-          <p style={{ fontSize: '14px', textAlign: 'center' }}>{cat}</p>
-          {list.length > 0 &&
-            <ul>
-              {list.map(l => {
-                return l ? <li>{l}</li> : null;
-              })}
-            </ul>
-          }
-        </div>
+      if (!editing) {
+        return <Col sm={6} className="mb-3">
+          <div className="interest-box">
+            <p style={{ fontSize: '14px', textAlign: 'center' }}>{cat}</p>
+            {list.length > 0 &&
+              <ul>
+                {list.map(l => {
+                  return l ? <li>{l}</li> : null;
+                })}
+              </ul>
+            }
+          </div>
+        </Col>
+      }
+
+      return <Col sm={6}>
+        {
+          list.map((l, j) =>     
+            <FloatingLabel label={`${cat} ${j + 1}`} className="mb-3">
+              <Form.Control
+                type="text"
+                value={l}
+              />
+            </FloatingLabel>
+          )
+        }
       </Col>
     })
   }
 
   const renderProfile = () => {
     return (
-      <Container className="profile-view-wrap d-flex flex-column pb-3">
+      <Container className={`profile-view-wrap d-flex flex-column pb-3 ${editing ? 'editing' : ''}`}>
         <Row style={{ justifyContent: "flex-end", margin: "1rem", marginBottom: 0 }}>
-          <button
-            type="button"
-            class="btn btn-outline-primary btn-sm"
-            style={{ width: "5rem" }}
-            onClick={() => setEdit(true)}
-          >
-            Edit
-          </button>
+          {!editing ? 
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              style={{ width: "5rem" }}
+              onClick={() => setEditing(true)}
+            >
+              Edit
+            </button>
+            :
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              style={{ width: "8rem" }}
+              onClick={() => setEditing(false)}
+            >
+              Save Changes
+            </button>
+          }
         </Row>
         <Row>
           <Col sm={4} className="align-items-center text-center px-3">
@@ -860,8 +822,9 @@ function ProfileView(props) {
   }
 
   if (!profile) return null;
+  return renderProfile();
 
-  return edit ? renderEdit() : renderProfile();
+  // return editing ? renderEdit() : renderProfile();
 }
 
 export default ProfileView;
