@@ -7,8 +7,8 @@ import { auth } from "../firebase";
 import EditInterests from "../components/EditInterests";
 import Crop from "../util/Crop";
 import SignOut from "../components/SignOut";
-
-import Tooltip from "@material-ui/core/Tooltip";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
 
 // Resources
 import {
@@ -285,8 +285,8 @@ function ProfileView(props) {
           >
             Edit Profile Picture
           </button>
-          <dialog open={editImage}>
-            Select Picture
+          <Dialog open={editImage}>
+            <DialogTitle>Select Picture</DialogTitle>{" "}
             <Crop update={updateImage} />
             <menu>
               <button
@@ -300,8 +300,7 @@ function ProfileView(props) {
                 Cancel
               </button>
             </menu>
-          </dialog>
-
+          </Dialog>
           <p>
             <label>
               Country of Origin:
@@ -565,7 +564,27 @@ function ProfileView(props) {
             alt="Profile Picture"
             src={student.imageUrl}
           />
-          {editing && <Button className="mb-3">Edit Image</Button>}
+          {editing && (
+            <Button className="mb-3" onClick={() => setEditImage(true)}>
+              Edit Image
+            </Button>
+          )}
+          <Dialog open={editImage}>
+            <DialogTitle>Select Picture</DialogTitle>{" "}
+            <Crop update={updateImage} />
+            <menu>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                style={{ width: "5rem" }}
+                onClick={() => {
+                  setEditImage(false);
+                }}
+              >
+                Cancel
+              </button>
+            </menu>
+          </Dialog>
         </div>
         {!editing ? (
           <div>
