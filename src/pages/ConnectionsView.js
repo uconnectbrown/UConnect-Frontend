@@ -159,7 +159,10 @@ function Connections() {
       </Row>
 
       <h1>All Connections</h1>
-      {renderSearchBar()}
+      {connections_ && connections_.length === 0 && (
+        <h3>You do not have any connections yet.</h3>
+      )}
+      {connections_ && connections_.length > 0 && renderSearchBar()}
       <Row className="mt-3">
         {connections_ &&
           connections_.map((c, i) => (

@@ -272,6 +272,7 @@ function Course(props) {
             requests={props.requests}
             handleOpenMessage={handleOpenMessage}
             updateOutgoing={props.updateOutgoing}
+            outgoing={props.outgoing}
           />
         </Modal.Body>
       </Modal>

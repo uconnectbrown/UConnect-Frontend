@@ -14,7 +14,20 @@ function ConnectButton(props) {
       case "out":
         component = (
           <div>
-            <Button onClick={props.undoRequest}>Requested</Button>
+            <Button
+              disabled={!props.validUndo}
+              onClick={() => {
+                if (props.closeOnUndo) {
+                  props.undoRequest();
+                  props.handleClose();
+                }
+                if (!props.closeOnUndo) {
+                  props.undoRequest();
+                }
+              }}
+            >
+              Requested
+            </Button>
           </div>
         );
         break;
@@ -22,7 +35,11 @@ function ConnectButton(props) {
         component = <div>Connected!</div>;
         break;
       default:
-        component = <Button onClick={props.sendRequest}>Request</Button>;
+        component = (
+          <Button disabled={props.requests <= 0} onClick={props.sendRequest}>
+            Request
+          </Button>
+        );
     }
 
     return component;

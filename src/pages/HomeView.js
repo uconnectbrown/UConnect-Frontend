@@ -130,6 +130,7 @@ function HomeView(props) {
       .get(`/searchName/${email}/${query}`)
       .then((res) => {
         setStudents(res.data);
+        console.log(res.data);
       })
       .then(() => {
         if (query) {
@@ -189,57 +190,6 @@ function HomeView(props) {
     setQuery("");
     setSearching(false);
     getFeatured();
-  };
-
-  const sendRequest = (recId, recImageUrl) => {
-    let senderInfo = {};
-    db.doc(`/profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        senderInfo.name = doc.data().firstName + " " + doc.data().lastName;
-        senderInfo.imageUrl = doc.data().imageUrl;
-        senderInfo.classYear = doc.data().classYear;
-        senderInfo.receiverImageUrl = recImageUrl;
-        return senderInfo;
-      })
-      .then((info) => {
-        axios.post(`/request/${emailId}/${recId}`, info);
-      })
-      .then(() => {
-        return axios.get(`/reqfeatured/${emailId}/${recId}`);
-      })
-      .then(() => {
-        props.decRequests();
-        props.updateOutgoing();
-        getFeatured();
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const acceptRequest = (student) => {
-    let info = {
-      senderName: student.name,
-      senderImageUrl: student.imageUrl,
-      senderClassYear: student.classYear,
-    };
-    db.doc(`/profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        info.receiverName = doc.data().firstName + " " + doc.data().lastName;
-        info.receiverImageUrl = doc.data().imageUrl;
-        info.receiverClassYear = doc.data().classYear;
-        return info;
-      })
-      .then((info) => {
-        axios.post(`/accept/${student.emailId}/${emailId}`, info);
-      })
-      .then(() => {
-        return axios.get(`/accfeatured/${student.emailId}/${emailId}`);
-      })
-      .then(() => {
-        getFeatured();
-      })
-      .catch((err) => console.log(err));
   };
 
   const renderSearchPicker = () => {
@@ -343,13 +293,22 @@ function HomeView(props) {
               </Col>
               <Col md={5} lg={6}>
                 <ul style={{ marginBottom: 0 }}>
-                  <li className="card-text">{student.score}</li>
-                  {student.courseOverlap > 0 && (
+                  {student.courseOverlap === 1 && (
+                    <li className="card-text">
+                      {student.courseOverlap} course in common
+                    </li>
+                  )}
+                  {student.courseOverlap > 1 && (
                     <li className="card-text">
                       {student.courseOverlap} courses in common
                     </li>
                   )}
-                  {student.interestsOverlap > 0 && (
+                  {student.interestOverlap === 1 && (
+                    <li className="card-text">
+                      {student.interestOverlap} interest in common
+                    </li>
+                  )}
+                  {student.interestOverlap > 1 && (
                     <li className="card-text">
                       {student.interestOverlap} interests in common
                     </li>
@@ -400,30 +359,40 @@ function HomeView(props) {
                   src={student.imageUrl}
                 />
                 <div className="card-text mb-3">{student.name}</div>
-                {student.status === "nil" && (
-                  <Button
-                    style={{ marginTop: "auto" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      sendRequest(student.emailId, student.imageUrl);
-                    }}
-                  >
-                    Request
-                  </Button>
-                )}
-                {student.status === "out" && <p>Sent</p>}
-                {student.status === "inc" && (
-                  <Button
-                    style={{ marginTop: "auto" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      acceptRequest(student);
-                    }}
-                  >
-                    Accept Request
-                  </Button>
-                )}
-                {student.status === "con" && <p>Connected</p>}
+                <ul style={{ marginBottom: 0 }}>
+                  {student.courseOverlap === 1 && (
+                    <li className="card-text">
+                      {student.courseOverlap} course in common
+                    </li>
+                  )}
+                  {student.courseOverlap > 1 && (
+                    <li className="card-text">
+                      {student.courseOverlap} courses in common
+                    </li>
+                  )}
+                  {student.interestOverlap === 1 && (
+                    <li className="card-text">
+                      {student.interestOverlap} interest in common
+                    </li>
+                  )}
+                  {student.interestOverlap > 1 && (
+                    <li className="card-text">
+                      {student.interestOverlap} interests in common
+                    </li>
+                  )}
+                  {student.shareVarsity && (
+                    <li className="card-text">Plays a varsity sport</li>
+                  )}
+                  {student.shareGreek && (
+                    <li className="card-text">Involved in greek life</li>
+                  )}
+                  {student.sharePickUp && (
+                    <li className="card-text">Plays pickup sports</li>
+                  )}
+                  {student.shareInstruments && (
+                    <li className="card-text">Plays an instrument</li>
+                  )}
+                </ul>
               </div>
             );
           })}
@@ -571,7 +540,7 @@ function HomeView(props) {
             requests={props.requests}
             handleOpenMessage={handleOpenMessage}
             updateOutgoing={props.updateOutgoing}
-            handleFeatured={getFeatured}
+            outgoing={props.outgoing}
           />
         </Modal.Body>
       </Modal>

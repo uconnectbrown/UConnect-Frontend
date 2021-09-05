@@ -6,13 +6,19 @@ import { Row, Col, Modal } from "react-bootstrap";
 // Components
 import StudentModal from "../components/StudentModal";
 
+import Tooltip from "@material-ui/core/Tooltip";
+
 // Styling
 import "./Requests.css";
 
 function Requests(props) {
   const [studentId, setStudentId] = useState("");
   const logoArr = [];
-  const outgoing = props.outgoing;
+  const [outgoing, setOutgoing] = useState(props.outgoing);
+  useEffect(() => {
+    setOutgoing(props.outgoing);
+  }, [props.outgoing]);
+
   for (let i = 0; i < props.requests; i++) {
     logoArr.push(true);
   }
@@ -27,33 +33,45 @@ function Requests(props) {
   return (
     <div>
       <Row>
-        Available:
-        {logoArr.map((i) => {
-          return (
-            <Col sm={1} style={{ justifyContent: "center" }}>
-              <img
-                alt="Outgoing"
-                src={OutgoingLogo}
-                className="outgoing-logo"
-              />
-            </Col>
-          );
-        })}
-      </Row>
-      <Row>
-        Outgoing:
-        {outgoing && (
-          <div>
-            {outgoing.map((student, i) => (
-              <button onClick={() => handleOpenStudent(i)}>
-                <img
-                  alt={student.emailId}
-                  src={student.imageUrl}
-                  className="outgoing-avatar"
-                />
-              </button>
-            ))}
-          </div>
+        <Col>
+          Available
+          <Row>
+            {logoArr.map((i) => {
+              return (
+                <Tooltip title="Requests available">
+                  <Col sm={1} style={{ justifyContent: "center" }}>
+                    <img
+                      alt="Outgoing"
+                      src={OutgoingLogo}
+                      className="outgoing-logo"
+                    />
+                  </Col>
+                </Tooltip>
+              );
+            })}
+          </Row>
+        </Col>
+        {props.outgoing && (
+          <Col>
+            Outgoing
+            <Row>
+              {props.outgoing.map((student, i) => {
+                return (
+                  <Tooltip title="Outgoing requests">
+                    <Col sm={1} style={{ justifyContent: "center" }}>
+                      <button onClick={() => handleOpenStudent(i)}>
+                        <img
+                          alt={student.emailId}
+                          src={student.imageUrl}
+                          className="outgoing-avatar"
+                        />
+                      </button>
+                    </Col>
+                  </Tooltip>
+                );
+              })}
+            </Row>
+          </Col>
         )}
       </Row>
       <Modal
@@ -64,11 +82,13 @@ function Requests(props) {
       >
         <Modal.Body>
           <StudentModal
+            closeOnUndo={true}
             studentId={studentId}
             handleClose={handleCloseStudent}
             incRequests={props.incRequests}
             requests={props.requests}
             updateOutgoing={props.updateOutgoing}
+            outgoing={props.outgoing}
           />
         </Modal.Body>
       </Modal>

@@ -15,6 +15,11 @@ import Requests from "./Requests";
 
 function NavBar(props) {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [outgoing, setOutgoing] = useState(props.outgoing);
+
+  useEffect(() => {
+    setOutgoing(props.outgoing);
+  }, [props.outgoing]);
 
   {
     return (
@@ -33,15 +38,14 @@ function NavBar(props) {
                 onMouseLeave={() => setShowDropdown(false)}
                 style={{ fontSize: 14 }}
               >
-                {!showDropdown && "Requests"}
+                {!showDropdown && <p>Requests</p>}
                 {showDropdown && (
                   <Requests
                     requests={props.requests}
-                    decRequests={props.decRequests}
                     incRequests={props.incRequests}
                     outgoing={props.outgoing}
-                    style={{ width: "100%" }}
                     updateOutgoing={props.updateOutgoing}
+                    style={{ width: "100%" }}
                   />
                 )}
               </div>

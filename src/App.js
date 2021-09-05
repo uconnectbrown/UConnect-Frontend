@@ -35,6 +35,7 @@ import Button from "@material-ui/core/Button";
 
 // Styling
 import "bootstrap/dist/css/bootstrap.min.css";
+import { arrayPattern } from "@babel/types";
 
 axios.defaults.baseURL =
   "https://us-east4-uconnect-5eebd.cloudfunctions.net/api";
@@ -154,6 +155,9 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
+  const updateOutgoing = (students) => {
+    setOutgoing(students);
+  };
 
   // Reset states
   const reset = () => {
@@ -185,9 +189,9 @@ function App() {
             requests={requests}
             imageUrl={imageUrl}
             reset={reset}
-            outgoing={outgoing}
             incRequests={incRequests}
-            updateOutgoing={getOutgoing}
+            updateOutgoing={updateOutgoing}
+            outgoing={outgoing}
           />
           <Container fluid>
             <Row className="px-3 py-4">
@@ -205,7 +209,8 @@ function App() {
                       requests={requests}
                       decRequests={decRequests}
                       incRequests={incRequests}
-                      updateOutgoing={getOutgoing}
+                      updateOutgoing={updateOutgoing}
+                      outgoing={outgoing}
                     />
                   </Route>
                   <Route exact path="/home">
@@ -213,7 +218,8 @@ function App() {
                       requests={requests}
                       decRequests={decRequests}
                       incRequests={incRequests}
-                      updateOutgoing={getOutgoing}
+                      updateOutgoing={updateOutgoing}
+                      outgoing={outgoing}
                     />
                   </Route>
                   <Route exact path="/messages" component={Messages} />
@@ -230,7 +236,8 @@ function App() {
                       name={name}
                       decRequests={decRequests}
                       incRequests={incRequests}
-                      updateOutgoing={getOutgoing}
+                      updateOutgoing={updateOutgoing}
+                      outgoing={outgoing}
                     />
                   </Route>
                   <Route path="*">

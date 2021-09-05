@@ -7,6 +7,8 @@ import { auth } from "../firebase";
 import EditInterests from "../components/EditInterests";
 import Crop from "../util/Crop";
 
+import Tooltip from "@material-ui/core/Tooltip";
+
 // Resources
 import {
   majors,
@@ -258,7 +260,7 @@ function ProfileView(props) {
     setNewProfile({ ...newProfile, imageUrl: url });
     props.handleImage(url);
   };
-  
+
   const renderEdit = () => {
     return (
       <Row className="profile-card">
@@ -695,11 +697,15 @@ function ProfileView(props) {
 
   const renderInterests = () => {
     const categories = [
-      "Career and Academic", 
-      "Physical Activity and Wellness", 
-      "General Hobbies"
-    ]
-    const interests = [student.interests1, student.interests2, student.interests3]
+      "Career and Academic",
+      "Physical Activity and Wellness",
+      "General Hobbies",
+    ];
+    const interests = [
+      student.interests1,
+      student.interests2,
+      student.interests3,
+    ];
 
     if (!editing) {
       return categories.map((cat, i) => {
@@ -733,13 +739,26 @@ function ProfileView(props) {
   }
 
   const renderEcs = () => {
-    const categories = ["Groups", "Varsity Sports", "Pick-up Sports", "Instruments"];
-    const groups = [student.group1, student.group2, student.group3];
-    const varsitySports = [student.varsitySport1, student.varsitySport2];
-    const pickupSports = [student.pickupSport1, student.pickupSport2, student.pickupSport3];
-    const instruments = [student.instrument1, student.instrument2, student.instrument3];
+    const categories = [
+      "Groups",
+      "Varsity Sports",
+      "Pick-up Sports",
+      "Instruments",
+    ];
+    const groups = [profile.groups[0], profile.groups[1], profile.groups[2]];
+    const varsitySports = [profile.varsitySports[0], profile.varsitySports[1]];
+    const pickupSports = [
+      profile.pickUpSports[0],
+      profile.pickUpSports[1],
+      profile.pickUpSports[2],
+    ];
+    const instruments = [
+      profile.instruments[0],
+      profile.instruments[1],
+      profile.instruments[2],
+    ];
 
-    const allEcs = [groups, varsitySports, pickupSports, instruments]
+    const allEcs = [groups, varsitySports, pickupSports, instruments];
 
     return categories.map((cat, i) => {
       const list = allEcs[i];
@@ -804,22 +823,16 @@ function ProfileView(props) {
           </Col>
           <Col sm={8} className="px-3">
             <h5>Interests</h5>
-            <Row>
-              {renderInterests()}
-            </Row>
+            <Row>{renderInterests()}</Row>
             <h5>Extracurriculars</h5>
-            <Row>
-              {renderEcs()}
-            </Row>
+            <Row>{renderEcs()}</Row>
             <h5>Courses</h5>
-            <Row>
-              {renderCourses()}
-            </Row>
+            <Row>{renderCourses()}</Row>
           </Col>
         </Row>
       </Container>
     );
-  }
+  };
 
   if (!profile) return null;
   return renderProfile();
