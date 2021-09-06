@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 // Components
 import StudentModal from "../components/StudentModal";
-import Message from "../components/Message";
+import Message from "../pages/MessageView";
 import SearchBar from "../components/SearchBar";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import Logo from "../assets/Logo.png";

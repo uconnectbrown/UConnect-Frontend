@@ -1,0 +1,21 @@
+.message-page {
+  background-color: #f3f3f3;
+  border-radius: 1rem;
+  margin-right: 5rem;
+  height: 100vh;
+  padding-right: 0;
+  box-shadow: -1px 1px 20px rgb(224, 224, 224);
+}
+
+.message-card {
+  min-height: 5rem;
+  border-bottom: 1px solid lightgrey;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: unset;
+}
+
+.message-card:hover {
+  background-color: rgb(224, 224, 224);
+}
