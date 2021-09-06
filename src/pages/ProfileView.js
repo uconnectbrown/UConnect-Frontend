@@ -1,7 +1,7 @@
 // Setup
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { auth } from "../firebase";
+import { db, auth } from "../firebase";
 
 // Components
 import EditInterests from "../components/EditInterests";
@@ -9,6 +9,8 @@ import Crop from "../util/Crop";
 import SignOut from "../components/SignOut";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
+
+import Tooltip from "@material-ui/core/Tooltip";
 
 // Resources
 import {
@@ -45,6 +47,7 @@ function ProfileView(props) {
   const [editing, setEditing] = useState(false);
   const [editingInterests, setEditingInterests] = useState(false);
   const [editImage, setEditImage] = useState(false);
+  const [firstTime, setFirstTime] = useState(null);
 
   const student = profile;
 
@@ -55,8 +58,28 @@ function ProfileView(props) {
   }, []);
 
   useEffect(() => {
-    if (emailId) getProfile();
+    if (emailId) {
+      checkFirstTime();
+      getProfile();
+    }
   }, [emailId]);
+
+  const checkFirstTime = () => {
+    db.doc(`profiles/${emailId}`)
+      .get()
+      .then((doc) => {
+        return setFirstTime(doc.data().firstTime);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleCloseOnBoard = () => {
+    setFirstTime(false);
+    // backend function to turn firsttime to false in the profile
+    {emailId && (
+      axios.get(`/onboard/${emailId}`).catch((err) => console.log(err))
+    )}
+  };
 
   const getProfile = () => {
     axios
@@ -564,6 +587,12 @@ function ProfileView(props) {
             alt="Profile Picture"
             src={student.imageUrl}
           />
+          {student.imageUrl ===
+                          "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
+                          <p style={{ width: "100%", fontSize: 14, marginTop: 0 }}>
+                            Please add an image to complete <br /> your profile.
+                          </p>
+                        )}
           {editing && (
             <Button className="mb-3" onClick={() => setEditImage(true)}>
               Edit Image
@@ -878,7 +907,13 @@ function ProfileView(props) {
               onClick={() => {
                 setEditing(false);
                 setEditingInterests(true);
+                // {firstTime && (
+                //   handleCloseOnBoard
+                //   axios.get(`/newFeatured/${emailId}`).catch(err => console.log(err))
+                // )}
               }}
+              disabled={student.imageUrl === 
+                "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"}
             >
               Save Changes
             </button>
