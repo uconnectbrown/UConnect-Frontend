@@ -10,7 +10,7 @@ import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
-import Logo from "../assets/Logo.PNG";
+import Logo from "../assets/Logo.png";
 
 // Styling
 import "./HomeView.css";
