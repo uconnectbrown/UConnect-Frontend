@@ -61,9 +61,9 @@ function Welcome(props) {
         <div>
           <div>
             First time using UConnect? &nbsp;&nbsp;
-            <a href="/" onClick={signInWithGoogle}>
+            <span className="sign-in-link" onClick={signInWithGoogle}>
               Sign Up
-            </a>
+            </span>
           </div>
         </div>
       </div>

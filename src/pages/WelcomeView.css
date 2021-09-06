@@ -23,3 +23,9 @@
 .welcome-header {
   font-weight: 600;
 }
+
+.sign-in-link {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
