@@ -441,6 +441,7 @@ function ProfileBuild(props) {
           UConnect!
         </h3>
         <Tooltip
+          className="mt-5"
           title={
             !validProfile({
               firstName: userData.firstName.trim(),
@@ -462,7 +463,7 @@ function ProfileBuild(props) {
               style={{ position: "relative" }}
               size="lg"
               onClick={handleSubmit}
-              className="mt-3 mb-5"
+              className="mb-5"
               disabled={
                 loading ||
                 !validProfile({
@@ -476,19 +477,10 @@ function ProfileBuild(props) {
                   interests3: userData.interests3,
                 })
               }
+              loading={loading}
             >
               Create Profile
             </Button>
-            {loading && (
-              <CircularProgress
-                size={30}
-                style={{
-                  marginLeft: "5px",
-                  marginTop: "25px",
-                  position: "absolute",
-                }}
-              />
-            )}
           </span>
         </Tooltip>
       </div>

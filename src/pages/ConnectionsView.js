@@ -147,7 +147,7 @@ function Connections() {
       <Row>
         {pending.length > 0 && (
           <>
-            <h3>Pending Connections</h3>
+            <h3>Pending Connections ({pending.length})</h3>
             {pending.map((p, i) => (
               <StudentCard
                 name={p.name}
