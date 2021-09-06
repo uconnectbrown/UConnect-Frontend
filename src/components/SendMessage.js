@@ -6,7 +6,6 @@ import { Input, Button } from "@material-ui/core";
 
 // Body
 function SendMessage({
-  scroll,
   studentImageUrl,
   studentName,
   studentId,
@@ -14,8 +13,7 @@ function SendMessage({
   ownImageUrl,
   roomId,
   ownId,
-  newMessage,
-  addNewMessage,
+  refreshMessages,
 }) {
   const [msg, setMsg] = useState("");
 
@@ -40,7 +38,8 @@ function SendMessage({
           recipientImage: studentImageUrl,
           roomId,
           recipientId: studentId,
-          mostRecent: new Date().toISOString(),
+          lastMessage: msg,
+          lastSent: new Date().toISOString(),
         }),
 
       db
@@ -53,16 +52,13 @@ function SendMessage({
           recipientImage: ownImageUrl,
           roomId,
           recipientId: ownId,
-          mostRecent: new Date().toISOString(),
+          lastMessage: msg,
+          lastSent: new Date().toISOString(),
         }),
     ]);
 
     setMsg("");
-    scroll.current.scrollIntoView({ behavior: "smooth" });
-
-    if (newMessage) {
-      addNewMessage();
-    }
+    refreshMessages();
   }
 
   return (

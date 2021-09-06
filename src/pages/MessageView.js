@@ -89,7 +89,7 @@ function MessageView(props) {
     setRoomId(messages[index].roomId);
   };
 
-  const addNewMessage = () => {
+  const refreshMessages = () => {
     getMessages();
     setNewMessage(false);
   };
@@ -148,6 +148,7 @@ function MessageView(props) {
                 src={message.recipientImage}
               />
               <div>{message.recipientName}</div>
+              <div>{message.lastMessage}</div>
             </Row>
           );
         })}
@@ -173,8 +174,7 @@ function MessageView(props) {
                 ownImageUrl={ownImageUrl}
                 ownName={ownName}
                 roomId={roomId}
-                newMessage={newMessage}
-                addNewMessage={addNewMessage}
+                refreshMessages={refreshMessages}
               />
             )}
           </Col>
