@@ -6,7 +6,7 @@ import { auth } from "../firebase";
 // Components
 import StudentModal from "../components/StudentModal";
 import SearchBar from "../components/SearchBar";
-import Message from "../pages/MessageView";
+import Message from "../components/Message";
 
 import { Container, Row, Modal } from "react-bootstrap";
 
