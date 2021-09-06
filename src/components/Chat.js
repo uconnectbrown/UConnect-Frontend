@@ -11,6 +11,7 @@ function Chat(props) {
   const ownId = props.ownId;
   const ownImageUrl = props.ownImageUrl;
   const ownName = props.ownName;
+  const newMessage = props.newMessage;
   let roomId = props.roomId;
 
   useEffect(() => {
@@ -57,6 +58,8 @@ function Chat(props) {
         ownName={ownName}
         ownImageUrl={ownImageUrl}
         roomId={props.roomId}
+        newMessage={newMessage}
+        addNewMessage={props.addNewMessage}
       />
 
       <div ref={scroll}></div>

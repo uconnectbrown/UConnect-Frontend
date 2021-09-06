@@ -33,10 +33,15 @@ function ConnectButton(props) {
         break;
       case "con":
         component = (
-          <Button variant="outline-primary">
+          <Button
+            onClick={() => {
+              props.sendMessage();
+            }}
+            variant="outline-primary"
+          >
             Send a Message
           </Button>
-        )
+        );
         break;
       default:
         component = (

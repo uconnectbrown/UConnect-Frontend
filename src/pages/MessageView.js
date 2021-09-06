@@ -1,20 +1,11 @@
 // Set-up
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { auth } from "../firebase";
 import md5 from "md5";
 
 // Components
 import Chat from "../components/Chat";
-import SearchBar from "../components/SearchBar";
-
-// MUI Stuff
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Typography from "@material-ui/core/Typography";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -23,7 +14,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./MessageView.css";
 
 // Body
-function MessageView() {
+function MessageView(props) {
   const emailId = auth.currentUser.email.split("@")[0];
   const [messages, setMessages] = useState([]);
   const [studentId, setStudentId] = useState("");
@@ -33,12 +24,39 @@ function MessageView() {
   const [ownImageUrl, setOwnImageUrl] = useState("");
   const [ownName, setOwnName] = useState("");
   const [roomId, setRoomId] = useState("");
+  const [newMessage, setNewMessage] = useState(false);
   const [selectedM, setSelectedM] = useState(0);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    getMessages();
+    if (props.history.location.state) {
+      startMessage();
+    } else {
+      getMessages();
+    }
   }, []);
+
+  const startMessage = () => {
+    let info = props.history.location.state.messageInfo;
+    setStudentName(info.studentName);
+    setStudentImageUrl(info.studentImage);
+    setStudentId(info.studentId);
+    setOwnName(info.ownName);
+    setOwnImageUrl(info.ownImage);
+    setOwnId(info.ownId);
+    setRoomId(info.roomId);
+    axios
+      .get(`/messages/${info.ownId}`)
+      .then((res) => {
+        if (res.data.length > 0) {
+          setMessages(res.data);
+        }
+        if (!res.data.map((message) => message.roomId).includes(info.roomId)) {
+          setNewMessage(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   const getMessages = () => {
     let promises = [
@@ -56,23 +74,24 @@ function MessageView() {
           setOwnName(res[1].data.firstName + " " + res[1].data.lastName);
           setOwnImageUrl(res[1].data.imageUrl);
           setOwnId(res[1].data.emailId);
-          return [res[0].data[0].recipientId, res[1].data.emailId];
+          setRoomId(res[0].data[0].roomId);
         } else return;
-      })
-      .then((alphaId) => {
-        if (alphaId) {
-          setRoomId(md5(alphaId.sort().join(" ")));
-        }
       })
       .catch((err) => console.error(err));
   };
 
   const setMessage = (index) => {
+    setNewMessage(false);
     setSelectedM(index);
     setStudentId(messages[index].recipientId);
     setStudentImageUrl(messages[index].recipientImage);
     setStudentName(messages[index].recipientName);
-    setRoomId(md5([ownId, messages[index].recipientId].sort().join(" ")));
+    setRoomId(messages[index].roomId);
+  };
+
+  const addNewMessage = () => {
+    getMessages();
+    setNewMessage(false);
   };
 
   const renderLeftPanel = () => {
@@ -82,6 +101,7 @@ function MessageView() {
           className="message-profile"
           alt="Profile Picture"
           src={ownImageUrl}
+          height={50}
         />
         <div
           className="d-flex align-items-center justify-content-center py-4"
@@ -94,14 +114,12 @@ function MessageView() {
             className="d-inline-block"
           />
         </div>
-        {renderMessageCards()}
+        {messages && renderMessageCards()}
       </div>
     );
   };
 
   const renderMessageCards = () => {
-    const messages = [1, 2, 3, 4, 5];
-
     if (!messages || messages.length == 0) {
       return (
         <p className="mt-3" style={{ fontSize: "14px" }}>
@@ -109,22 +127,32 @@ function MessageView() {
         </p>
       );
     }
-
-    return messages.map((message, i) => {
-      return (
-        <Row
-          className="message-card"
-          // onClick={() => setMessage(i)}
-        >
-          <img
-            className="message-profile"
-            alt="Profile Picture"
-            src={studentImageUrl}
-          />
-          <div>First Last</div>
-        </Row>
-      );
-    });
+    return (
+      <div>
+        {newMessage && (
+          <Row className="message-card">
+            <img
+              className="message-profile"
+              alt="Profile Picture"
+              src={studentImageUrl}
+            />
+            <div>{studentName}</div>
+          </Row>
+        )}
+        {messages.map((message, i) => {
+          return (
+            <Row className="message-card" onClick={() => setMessage(i)}>
+              <img
+                className="message-profile"
+                alt="Profile Picture"
+                src={message.recipientImage}
+              />
+              <div>{message.recipientName}</div>
+            </Row>
+          );
+        })}
+      </div>
+    );
   };
 
   return (
@@ -135,6 +163,7 @@ function MessageView() {
             {renderLeftPanel()}
           </Col>
           <Col sm={9} className="p-2" style={{ backgroundColor: "white" }}>
+            {studentName}
             {roomId && (
               <Chat
                 studentName={studentName}
@@ -144,68 +173,13 @@ function MessageView() {
                 ownImageUrl={ownImageUrl}
                 ownName={ownName}
                 roomId={roomId}
+                newMessage={newMessage}
+                addNewMessage={addNewMessage}
               />
             )}
           </Col>
         </Row>
       </Container>
-    </div>
-  );
-
-  return (
-    <div>
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
-          {messages && (
-            <div>
-              {messages.map((message, index) => {
-                return (
-                  <Card
-                    align="center"
-                    style={{
-                      backgroundColor: index === selectedM ? "gray" : "white",
-                      height: "90px",
-                    }}
-                  >
-                    <ButtonBase
-                      size="large"
-                      color="primary"
-                      style={{ width: "100%" }}
-                      onClick={() => {
-                        setMessage(index);
-                      }}
-                    >
-                      <CardContent>
-                        <img
-                          height="50px"
-                          alt="Profile Picture"
-                          src={message.recipientImage}
-                        />
-                        <Typography variant="body2">
-                          {message.recipientName}
-                        </Typography>
-                      </CardContent>
-                    </ButtonBase>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
-        </Grid>
-        <Grid item xs={8}>
-          {roomId && (
-            <Chat
-              studentName={studentName}
-              studentImageUrl={studentImageUrl}
-              studentId={studentId}
-              ownId={ownId}
-              ownImageUrl={ownImageUrl}
-              ownName={ownName}
-              roomId={roomId}
-            />
-          )}
-        </Grid>
-      </Grid>
     </div>
   );
 }

@@ -238,14 +238,6 @@ function ProfileBuild(props) {
         <h1 className={classes.pageTitle}>Build Profile</h1>
         <div className="header-icon-wrap">
           <h3>Basic Info</h3>
-          {userData.firstName === "" ||
-          userData.lastName === "" ||
-          userData.class === "" ||
-          userData.major1 === "" ? (
-            <UncheckedButton color="primary" fontSize="small" />
-          ) : (
-            <CheckedCircle color="secondary" fontSize="small" />
-          )}
         </div>
         <Row className="info-input-container">
           <Col xs={12} md={6}>
@@ -419,17 +411,6 @@ function ProfileBuild(props) {
       <Row className="profile-build-container">
         <div className="header-icon-wrap">
           <h2>Interests</h2>
-          {(userData.interests1.length +
-            userData.interests2.length +
-            userData.interests3.length !==
-            9) |
-            (!userData.interests1.length === 0) ||
-          userData.interests2.length === 0 ||
-          userData.interests3.length === 0 ? (
-            <UncheckedButton color="primary" fontSize="small" />
-          ) : (
-            <CheckedCircle color="secondary" fontSize="small" />
-          )}
         </div>
         <h6>Please select 3 interests from each category.</h6>
         <Interests getInterests={handleInterests} />
@@ -477,7 +458,6 @@ function ProfileBuild(props) {
                   interests3: userData.interests3,
                 })
               }
-              loading={loading}
             >
               Create Profile
             </Button>

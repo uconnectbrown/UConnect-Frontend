@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { db, auth } from "../firebase";
+import md5 from "md5";
+import { useHistory } from "react-router";
 
 import ConnectButton from "./ConnectButton";
 import { Container, Row, Col, Button } from "react-bootstrap";
@@ -9,6 +11,7 @@ import "./StudentModal.css";
 
 // Body
 function StudentModal(props) {
+  const history = useHistory();
   const emailId = auth.currentUser.email.split("@")[0];
   const studentId = props.studentId;
   const [outgoing, setOutgoing] = useState(props.outgoing);
@@ -102,7 +105,30 @@ function StudentModal(props) {
     }
   };
 
-  const getOutgoing = () => {};
+  const sendMessage = () => {
+    let info = {
+      studentId,
+      studentImage: student.imageUrl,
+      studentName: student.firstName + " " + student.lastName,
+    };
+    axios
+      .get(`/senderInfo/${auth.currentUser.email}`)
+      .then((res) => {
+        info.ownId = res.data.emailId;
+        info.ownImage = res.data.imageUrl;
+        info.ownName = res.data.firstName + " " + res.data.lastName;
+        info.roomId = md5([res.data.emailId, studentId].sort().join(" "));
+      })
+      .then(() => {
+        history.push({
+          pathname: "/messages",
+          state: {
+            messageInfo: info,
+          },
+        });
+      })
+      .catch((err) => console.error(err));
+  };
 
   const acceptRequest = () => {
     let info = {
@@ -288,6 +314,7 @@ function StudentModal(props) {
           acceptRequest={acceptRequest}
           undoRequest={undoRequest}
           validUndo={validUndo}
+          sendMessage={sendMessage}
         />
       </Col>
       <Col sm={8} className="px-3">

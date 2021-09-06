@@ -14,6 +14,8 @@ function SendMessage({
   ownImageUrl,
   roomId,
   ownId,
+  newMessage,
+  addNewMessage,
 }) {
   const [msg, setMsg] = useState("");
 
@@ -57,6 +59,10 @@ function SendMessage({
 
     setMsg("");
     scroll.current.scrollIntoView({ behavior: "smooth" });
+
+    if (newMessage) {
+      addNewMessage();
+    }
   }
 
   return (
