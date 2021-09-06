@@ -9,7 +9,6 @@ import "./WelcomeView.css";
 
 import Logo from "../assets/Logo.png";
 
-
 // Body
 function Welcome(props) {
   let history = useHistory();

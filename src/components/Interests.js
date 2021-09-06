@@ -47,6 +47,32 @@ const ColorlibConnector = withStyles({
   },
 })(StepConnector);
 
+const BootstrapButton = withStyles({
+  root: {
+    boxShadow: "none",
+    textTransform: "none",
+    fontSize: 16,
+    padding: "6px 12px",
+    lineHeight: 1.5,
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:hover": {
+      borderColor: "#000000",
+      boxShadow: "none",
+    },
+  },
+})(Button);
+
 const useColorlibStepIconStyles = makeStyles({
   root: {
     backgroundColor: "#ccc",
@@ -174,7 +200,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
           <Grid container spacing={2} className="options-container">
             {interests1.map((interest, index) => (
               <Grid item key={index}>
-                <Button
+                <BootstrapButton
                   onClick={() => {
                     let newSelected = [...select1];
                     newSelected[index] = !select1[index];
@@ -184,7 +210,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
                   disabled={total1 > 2 && !select1[index]}
                 >
                   {interest}
-                </Button>
+                </BootstrapButton>
               </Grid>
             ))}
           </Grid>
@@ -197,7 +223,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
           <Grid container spacing={2} className="options-container">
             {interests2.map((interest, index) => (
               <Grid item>
-                <Button
+                <BootstrapButton
                   onClick={() => {
                     let newSelected = [...select2];
                     newSelected[index] = !select2[index];
@@ -207,7 +233,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
                   disabled={total2 > 2 && !select2[index]}
                 >
                   {interest}
-                </Button>
+                </BootstrapButton>
               </Grid>
             ))}
           </Grid>
@@ -220,7 +246,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
           <Grid container spacing={2} className="options-container">
             {interests3.map((interest, index) => (
               <Grid item>
-                <Button
+                <BootstrapButton
                   onClick={() => {
                     let newSelected = [...select3];
                     newSelected[index] = !select3[index];
@@ -230,7 +256,7 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
                   disabled={total3 > 2 && !select3[index]}
                 >
                   {interest}
-                </Button>
+                </BootstrapButton>
               </Grid>
             ))}
           </Grid>
@@ -330,22 +356,22 @@ export default function CustomizedSteppers(props) {
           )}
         </Typography>
 
-        <Button
+        <BootstrapButton
           disabled={activeStep === 0}
           onClick={handleBack}
           className={classes.button}
         >
           Back
-        </Button>
+        </BootstrapButton>
         {activeStep < 2 && (
-          <Button
+          <BootstrapButton
             variant="contained"
             onClick={handleNext}
             className={classes.button}
             disabled={isNextDisabled(activeStep)}
           >
             Next
-          </Button>
+          </BootstrapButton>
         )}
       </div>
     </div>

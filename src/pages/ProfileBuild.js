@@ -17,6 +17,7 @@ import AddIcon from "@material-ui/icons/AddCircle";
 import Tooltip from "@material-ui/core/Tooltip";
 import UncheckedButton from "@material-ui/icons/RadioButtonUnchecked";
 import CheckedCircle from "@material-ui/icons/CheckCircleOutline";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { Row, Col, Container, Button } from "react-bootstrap";
 
 // Import Data
@@ -48,6 +49,7 @@ function ProfileBuild(props) {
   const [email, setEmail] = useState(null);
   const classYears = ["2022", "2023", "2024", "2025"];
   const { classes } = props;
+  const [loading, setLoading] = useState(false);
 
   const handleInterests = (i1, i2, i3) => {
     setUserData({
@@ -65,6 +67,7 @@ function ProfileBuild(props) {
   const handleSubmit = (event) => {
     if (email) {
       event.preventDefault();
+      setLoading(true);
       const newUserData = {
         // Basic Info
         firstName: userData.firstName.trim(),
@@ -87,6 +90,7 @@ function ProfileBuild(props) {
       // TO-DO: Check courses validator
       if (!validProfile(newUserData)) {
         setUserData({ ...userData, validProfile: false });
+        setLoading(false);
         return;
       }
 
@@ -95,10 +99,10 @@ function ProfileBuild(props) {
         .then(() => {
           setUserData({ ...userData, validProfile: true });
           let emailId = email.split("@")[0];
-          return axios.get(`/newfeatured/${emailId}`);
         })
         .then(() => {
           props.grantAccess();
+          setLoading(false);
         })
         .then(() => {
           history.push({
@@ -170,7 +174,7 @@ function ProfileBuild(props) {
           label="State"
           className="profile-build-third-input"
           onChange={(event) =>
-            setUserData({ ...userData, stateList: event.target.value })
+            setUserData({ ...userData, state: event.target.value })
           }
           InputProps={{
             endAdornment: stateList,
@@ -427,7 +431,7 @@ function ProfileBuild(props) {
             <CheckedCircle color="secondary" fontSize="small" />
           )}
         </div>
-        <p>Please select 3 interests from each category.</p>
+        <h6>Please select 3 interests from each category.</h6>
         <Interests getInterests={handleInterests} />
       </Row>
 
@@ -436,13 +440,8 @@ function ProfileBuild(props) {
           Thank you for taking the time to build your profile and welcome to
           UConnect!
         </h3>
-        <Button
-          type="submit"
-          variant="success"
-          size="lg"
-          onClick={handleSubmit}
-          className="mt-3 mb-5"
-          disabled={
+        <Tooltip
+          title={
             !validProfile({
               firstName: userData.firstName.trim(),
               lastName: userData.lastName.trim(),
@@ -453,10 +452,45 @@ function ProfileBuild(props) {
               interests2: userData.interests2,
               interests3: userData.interests3,
             })
+              ? "Please fill out all required fields"
+              : ""
           }
         >
-          Create Profile
-        </Button>
+          <span>
+            <Button
+              type="submit"
+              style={{ position: "relative" }}
+              size="lg"
+              onClick={handleSubmit}
+              className="mt-3 mb-5"
+              disabled={
+                loading ||
+                !validProfile({
+                  firstName: userData.firstName.trim(),
+                  lastName: userData.lastName.trim(),
+                  classYear: userData.classYear,
+                  majors: [userData.major1, userData.major2, userData.major3],
+                  email,
+                  interests1: userData.interests1,
+                  interests2: userData.interests2,
+                  interests3: userData.interests3,
+                })
+              }
+            >
+              Create Profile
+            </Button>
+            {loading && (
+              <CircularProgress
+                size={30}
+                style={{
+                  marginLeft: "5px",
+                  marginTop: "25px",
+                  position: "absolute",
+                }}
+              />
+            )}
+          </span>
+        </Tooltip>
       </div>
     </form>
   );

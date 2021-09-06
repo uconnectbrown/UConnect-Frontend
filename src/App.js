@@ -188,7 +188,6 @@ function App() {
           <NavBar
             requests={requests}
             imageUrl={imageUrl}
-            reset={reset}
             incRequests={incRequests}
             updateOutgoing={updateOutgoing}
             outgoing={outgoing}
@@ -228,6 +227,7 @@ function App() {
                     <ProfileView
                       handleImage={updateImage}
                       handleCourses={updateCourses}
+                      reset={reset}
                     />
                   </Route>
                   <Route path="/courses/:codeParam">

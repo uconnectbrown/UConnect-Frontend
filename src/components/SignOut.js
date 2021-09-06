@@ -13,6 +13,7 @@ function SignOut(props) {
   return (
     <div style={props.style}>
       <Button
+        className="mb-3"
         size="large"
         color="inherit"
         onClick={() => {
