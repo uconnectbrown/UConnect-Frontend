@@ -289,7 +289,6 @@ function StudentModal(props) {
           undoRequest={undoRequest}
           validUndo={validUndo}
         />
-        <Button variant="outline-primary mt-3">Send {student.firstName} a Message</Button>
       </Col>
       <Col sm={8} className="px-3">
         <Row>{renderCourses()}</Row>

@@ -32,7 +32,11 @@ function ConnectButton(props) {
         );
         break;
       case "con":
-        component = <div>Connected!</div>;
+        component = (
+          <Button variant="outline-primary">
+            Send a Message
+          </Button>
+        )
         break;
       default:
         component = (
