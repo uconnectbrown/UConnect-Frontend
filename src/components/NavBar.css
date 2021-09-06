@@ -1,52 +1,52 @@
 button {
-    border-width: 0;
-    background-color: transparent;
+  border-width: 0;
+  background-color: transparent;
 }
 
 .topbar-logo {
-    width: 40px;
+  width: 40px;
 }
 
 .topbar {
-    background-color: #f0f0f0 !important;
+  background-color: #f0f0f0 !important;
 }
 
 .nav-profile-img {
-    width: 40px;
-    border-radius: 50%;
-    margin: 0.5rem;
+  width: 40px;
+  border-radius: 50%;
+  margin: 0.5rem;
 }
 
 .nav-header {
-    font-weight: 700;
-    color: #473F9B;
+  font-weight: 500;
+  color: #473f9b;
 }
 
 .topbar .requests-tracker {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    background-color: white;
-    border-radius: 20px;
-    margin-right: 2rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: white;
+  border-radius: 20px;
+  margin-right: 2rem;
 }
 
 @media (max-width: 576px) {
-    .topbar-logo {
-        width: 40px;
-    }
+  .topbar-logo {
+    width: 40px;
+  }
 
-    .nav-profile-img {
-        width: 30px;
-    }
+  .nav-profile-img {
+    width: 30px;
+  }
 
-    .topbar .requests-tracker {
-        margin: 0;
-        padding-top: 0.25rem;
-        padding-bottom: 0.25rem;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        font-size: 8px;
-    }
+  .topbar .requests-tracker {
+    margin: 0;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 8px;
+  }
 }

@@ -16,10 +16,9 @@ import {
   pronouns,
   countries,
   states,
-  greekLife,
-  instruments,
-  pickUpSports,
-  varsitySports,
+  instrumentsList,
+  pickUpSportsList,
+  varsitySportsList,
   courseList,
 } from "../resources/editFields";
 
@@ -293,289 +292,6 @@ function ProfileView(props) {
     props.handleImage(url);
   };
 
-  const renderEdit = () => {
-    return (
-      <Row className="profile-card">
-        <Col sm={4} style={{ justifyContent: "center" }}>
-          <img alt="Profile" src={profile.imageUrl} className="profile-img" />
-          <button
-            type="button"
-            class="btn btn-outline-primary btn-sm"
-            style={{ width: "5rem" }}
-            onClick={() => {
-              setEditImage(true);
-            }}
-          >
-            Edit Profile Picture
-          </button>
-          <Dialog open={editImage}>
-            <DialogTitle>Select Picture</DialogTitle>{" "}
-            <Crop update={updateImage} />
-            <menu>
-              <button
-                type="button"
-                class="btn btn-outline-primary btn-sm"
-                style={{ width: "5rem" }}
-                onClick={() => {
-                  setEditImage(false);
-                }}
-              >
-                Cancel
-              </button>
-            </menu>
-          </Dialog>
-          <p>
-            <label>
-              Country of Origin:
-              <input
-                list="countries"
-                onChange={(e) => handleLocationChange(e, "country")}
-                value={newProfile.location.country}
-              />
-            </label>
-
-            <datalist id="countries">
-              {countries.map((country, i) => {
-                return <option key={i} value={country} />;
-              })}
-            </datalist>
-          </p>
-
-          {newProfile.location.country === "United States of America" && (
-            <p>
-              <label>
-                State:
-                <input
-                  list="states"
-                  name="state"
-                  onChange={(e) => handleLocationChange(e, "state")}
-                  value={newProfile.location.state}
-                />
-              </label>
-              <datalist id="states">
-                {states.map((state, i) => {
-                  return <option key={i} value={state} />;
-                })}
-              </datalist>
-            </p>
-          )}
-          <p>
-            City:
-            <input
-              value={newProfile.location.city}
-              onChange={(e) => handleLocationChange(e, "city")}
-              name="city"
-            />
-          </p>
-          <p>
-            Pronouns:
-            <input
-              list="pronouns"
-              name="pronouns"
-              onChange={handleChange}
-              value={newProfile.pronouns}
-            />
-            {pronouns}
-          </p>
-        </Col>
-        <Col sm={8}>
-          <Row
-            className="section-container0"
-            style={{ justifyContent: "flex-end", margin: "1rem" }}
-          >
-            <React.Fragment>
-              <button
-                type="button"
-                class="btn btn-outline-primary btn-sm"
-                style={{ width: "5rem" }}
-                onClick={() => {
-                  setEditing(false);
-                  editProfile();
-                }}
-                disabled={!validProfile(newProfile)}
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-primary btn-sm"
-                style={{ width: "5rem" }}
-                onClick={() => {
-                  setEditing(false);
-                  setNewProfile(profile);
-                }}
-              >
-                Cancel
-              </button>
-            </React.Fragment>
-          </Row>
-          <Row className="section-container4">
-            <p id="subheading">Extracurriculars</p>
-            <Col sm={6}>
-              <p id="normaltext">
-                <strong>Clubs/Student Groups</strong>
-              </p>
-              <p id="normaltext">
-                <input
-                  name="groups"
-                  onChange={(e) => {
-                    handleArrChange(e, 0);
-                  }}
-                  value={newProfile.groups[0]}
-                />
-                <input
-                  name="groups"
-                  onChange={(e) => {
-                    handleArrChange(e, 1);
-                  }}
-                  value={newProfile.groups[1]}
-                />
-                <input
-                  name="groups"
-                  onChange={(e) => {
-                    handleArrChange(e, 2);
-                  }}
-                  value={newProfile.groups[2]}
-                />
-              </p>
-            </Col>
-            <Col sm={6}>
-              <p id="normaltext">
-                <strong>Varsity Sports</strong>
-              </p>
-              <p id="normaltext">
-                <input
-                  list="varsitySports"
-                  name="varsitySports"
-                  onChange={(e) => {
-                    handleArrChange(e, 0);
-                  }}
-                  value={newProfile.varsitySports[0]}
-                />
-
-                <datalist id="varsitySports">
-                  {varsitySports.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-
-                <input
-                  list="varsitySports"
-                  name="varsitySports"
-                  onChange={(e) => {
-                    handleArrChange(e, 1);
-                  }}
-                  value={newProfile.varsitySports[1]}
-                />
-                <datalist id="varsitySports">
-                  {varsitySports.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-              </p>
-            </Col>
-          </Row>
-          <Row className="section-container3">
-            <Col sm={6}>
-              <p id="normaltext">
-                <strong>Pick Up Sports</strong>
-              </p>
-              <div class="card" id="adinfo-card">
-                <input
-                  list="pickUpSports"
-                  name="pickUpSports"
-                  onChange={(e) => {
-                    handleArrChange(e, 0);
-                  }}
-                  value={newProfile.pickUpSports[0]}
-                />
-                <datalist id="pickUpSports">
-                  {pickUpSports.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-
-                <input
-                  list="pickUpSports"
-                  name="pickUpSports"
-                  onChange={(e) => {
-                    handleArrChange(e, 1);
-                  }}
-                  value={newProfile.pickUpSports[1]}
-                />
-                <datalist id="pickUpSports">
-                  {majors.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-                <input
-                  list="pickUpSports"
-                  name="pickUpSports"
-                  onChange={(e) => {
-                    handleArrChange(e, 2);
-                  }}
-                  value={newProfile.pickUpSports[2]}
-                />
-                <datalist id="pickUpSports">
-                  {pickUpSports.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-              </div>
-            </Col>
-            <Col sm={6}>
-              <p id="normaltext">
-                <strong>Instruments</strong>
-              </p>
-              <div class="card" id="adinfo-card">
-                <input
-                  list="instruments"
-                  name="instruments"
-                  onChange={(e) => {
-                    handleArrChange(e, 0);
-                  }}
-                  value={newProfile.instruments[0]}
-                />
-                <datalist id="instruments">
-                  {instruments.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-
-                <input
-                  list="instruments"
-                  name="instruments"
-                  onChange={(e) => {
-                    handleArrChange(e, 1);
-                  }}
-                  value={newProfile.instruments[1]}
-                />
-                <datalist id="instruments">
-                  {majors.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-                <input
-                  list="instruments"
-                  name="instruments"
-                  onChange={(e) => {
-                    handleArrChange(e, 2);
-                  }}
-                  value={newProfile.instruments[2]}
-                />
-                <datalist id="instruments">
-                  {instruments.map((sport, i) => {
-                    return <option key={i} value={sport} />;
-                  })}
-                </datalist>
-              </div>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    );
-  };
-
   const renderLeftInfo = () => {
     const classYears = ["2022", "2023", "2024", "2025"];
 
@@ -621,6 +337,25 @@ function ProfileView(props) {
               {student.firstName + " " + student.lastName}
             </div>
             <div>{student.pronouns && `(${student.pronouns})`}</div>
+            <div className="card-text">
+              {student.location &&
+                student.location.state !== "" &&
+                student.location.city !== "" &&
+                `${student.location.city}, ${student.location.state}`}
+              {student.location &&
+                student.location.state !== "" &&
+                student.location.city === "" &&
+                `${student.location.state}, ${student.location.country}`}
+
+              {student.location &&
+                student.location.country !== "United States of America" &&
+                student.location.city !== "" &&
+                `${student.location.city}, ${student.location.country}`}
+              {student.location &&
+                student.location.country !== "United States of America" &&
+                student.location.city === "" &&
+                `${student.location.country}`}
+            </div>
             <div>Class of {student.classYear}</div>
             <div>
               {student.majors
@@ -636,9 +371,9 @@ function ProfileView(props) {
         ) : (
           <div style={{ textAlign: "left" }}>
             <form class="form-floating">
+              <h5>Basic Info </h5>
               <FloatingLabel
                 label={newProfile.firstName ? "First Name *" : "Can't be empty"}
-                className="mb-3"
                 controlId="first-name"
               >
                 <input
@@ -656,7 +391,6 @@ function ProfileView(props) {
               </FloatingLabel>
               <FloatingLabel
                 label={newProfile.lastName ? "Last Name *" : "Can't be empty"}
-                className="mb-3"
                 controlId="last-name"
               >
                 <input
@@ -672,10 +406,57 @@ function ProfileView(props) {
                   value={newProfile?.lastName}
                 />
               </FloatingLabel>
-              <FloatingLabel label="Class Year" className="mb-3">
+              <FloatingLabel label="Preferred Pronouns">
+                <Form.Control
+                  list="pronouns"
+                  name="pronouns"
+                  onChange={handleChange}
+                  value={newProfile?.pronouns}
+                />
+              </FloatingLabel>
+
+              <FloatingLabel label="Country of Origin">
+                <Form.Control
+                  list="countries"
+                  onChange={(e) => handleLocationChange(e, "country")}
+                  value={newProfile.location.country}
+                />
+              </FloatingLabel>
+              <datalist id="countries">
+                {countries.map((country, i) => {
+                  return <option key={i} value={country} />;
+                })}
+              </datalist>
+              {newProfile.location.country === "United States of America" && (
+                <FloatingLabel label="State">
+                  <Form.Control
+                    list="states"
+                    name="state"
+                    onChange={(e) => handleLocationChange(e, "state")}
+                    value={newProfile.location.state}
+                  />
+                  <datalist id="states">
+                    {states.map((state, i) => {
+                      return <option key={i} value={state} />;
+                    })}
+                  </datalist>
+                </FloatingLabel>
+              )}
+              <FloatingLabel label="City">
+                <Form.Control
+                  value={newProfile.location.city}
+                  onChange={(e) => handleLocationChange(e, "city")}
+                  name="city"
+                />
+              </FloatingLabel>
+              <datalist id="pronouns" className="w-100">
+                {pronouns.map((pronoun, i) => {
+                  return <option key={i} value={pronoun} />;
+                })}
+              </datalist>
+              <FloatingLabel label="Class Year">
                 <Form.Select
                   aria-label="Select class year"
-                  className="mb-3"
                   value={newProfile?.classYear}
                   onChange={handleChange}
                   name="classYear"
@@ -685,20 +466,6 @@ function ProfileView(props) {
                   })}
                 </Form.Select>
               </FloatingLabel>
-              <FloatingLabel label="Preferred Pronouns">
-                <Form.Control
-                  list="pronouns"
-                  className="w-100 mb-3"
-                  name="pronouns"
-                  onChange={handleChange}
-                  value={newProfile?.pronouns}
-                />
-              </FloatingLabel>
-              <datalist id="pronouns" className="w-100">
-                {pronouns.map((pronoun, i) => {
-                  return <option key={i} value={pronoun} />;
-                })}
-              </datalist>
               <FloatingLabel
                 label={
                   newProfile.majors.filter(Boolean).length > 0
@@ -720,39 +487,17 @@ function ProfileView(props) {
                   value={newProfile.majors[0]}
                 />
               </FloatingLabel>
-              <datalist id="majors" className="w-100">
-                {majors
-                  .filter((major) => !newProfile.majors.includes(major))
-                  .map((major, i) => {
-                    return <option key={i} value={major} />;
-                  })}
-              </datalist>
-
               <FloatingLabel label="Concentration 2">
                 <Form.Control
                   list="majors"
                   name="majors"
-                  className="w-100 mb-3"
                   onChange={(e) => {
                     handleArrChange(e, 1);
                   }}
                   value={newProfile.majors[1]}
                 />
               </FloatingLabel>
-
-              <FloatingLabel label="Concentration 3">
-                <Form.Control
-                  list="majors"
-                  name="majors"
-                  className="w-100 mb-3"
-                  onChange={(e) => {
-                    handleArrChange(e, 2);
-                  }}
-                  value={newProfile.majors[2]}
-                />
-              </FloatingLabel>
-
-              <FloatingLabel label="Bio" className="mb-3" controlId="bio">
+              <FloatingLabel label="Bio" controlId="bio">
                 <Form.Control
                   as="textarea"
                   rows={5}
@@ -762,6 +507,14 @@ function ProfileView(props) {
                   value={newProfile?.bio}
                 />
               </FloatingLabel>
+
+              <datalist id="majors" className="w-100">
+                {majors
+                  .filter((major) => !newProfile.majors.includes(major))
+                  .map((major, i) => {
+                    return <option key={i} value={major} />;
+                  })}
+              </datalist>
             </form>
           </div>
         )}
@@ -771,63 +524,86 @@ function ProfileView(props) {
 
   const renderCourses = () => {
     if (!editing) {
-      return student.courses.map((c, i) => {
-        if (!c.name) return null;
-        return <Col sm={3} className="mb-3">
-          <div className="profile-view-courses">
-            <div>{c.code}</div>
-            <div style={{ fontSize: "10px" }}>{c.name}</div>
-          </div>
-        </Col>
-      })
+      if (
+        student.courses.map((course) => course.code).filter(Boolean).length ===
+        0
+      ) {
+        return (
+          <Col sm={3} className="mb-3">
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              style={{ width: "5rem" }}
+              onClick={() => setEditing(true)}
+            >
+              Add
+            </button>
+          </Col>
+        );
+      } else
+        return student.courses.map((c, i) => {
+          if (!c.name) return null;
+          return (
+            <Col sm={3} className="mb-3">
+              <div className="profile-view-courses">
+                <div>{c.code}</div>
+                <div style={{ fontSize: "10px" }}>{c.name}</div>
+              </div>
+            </Col>
+          );
+        });
     }
 
     const range = [...Array(5).keys()];
 
     return range.map((i) => {
-      let value = '';
+      let value = "";
       if (i < student.courses.length) {
         value = newProfile?.courses[i].code;
       }
 
-      return <Col sm={6} className="mb-3">
-        <FloatingLabel label={`Course ${i + 1}`}>
-          <Form.Control
-            list="courseCodes"
-            name="courses"
-            onChange={(e) => {
-              handleCourseChange(e, i);
-            }}
-            value={value}
-          />
-          <datalist id="courseCodes">
-            {courseList.map((course, i) => (
-              <option key={i} value={course[0] + ": " + course[1]} />
-            ))}
-          </datalist>
-        </FloatingLabel>
-      </Col>
-    })
+      return (
+        <Col sm={6}>
+          <FloatingLabel label={`Course ${i + 1}`}>
+            <Form.Control
+              list="courseCodes"
+              name="courses"
+              onChange={(e) => {
+                handleCourseChange(e, i);
+              }}
+              value={value}
+            />
+            <datalist id="courseCodes">
+              {courseList.map((course, i) => (
+                <option key={i} value={course[0] + ": " + course[1]} />
+              ))}
+            </datalist>
+          </FloatingLabel>
+        </Col>
+      );
+    });
 
     return student.courses.map((c, i) => {
-      return <Col sm={6} className="mb-3">
-        <FloatingLabel label={`Course ${i + 1}`}>
-          <Form.Control
-            list="courseCodes"
-            name="courses"
-            onChange={(e) => {
-              handleCourseChange(e, i);
-            }}
-            value={newProfile?.courses[i].code}
-          />
-          <datalist id="courseCodes">
-            {courseList.map((course, i) => (
-              <option key={i} value={course[0] + ": " + course[1]} />
-            ))}
-          </datalist>
-        </FloatingLabel>
-      </Col>
-    })
+      return (
+        <Col sm={6} className="mb-3">
+          <FloatingLabel label={`Course ${i + 1}`}>
+            <Form.Control
+              list="courseCodes"
+              name="courses"
+              onChange={(e) => {
+                handleCourseChange(e, i);
+              }}
+              value={newProfile?.courses[i].code}
+            />
+            <datalist id="courseCodes">
+              {courseList.map((course, i) => (
+                <option key={i} value={course[0] + ": " + course[1]} />
+              ))}
+            </datalist>
+          </FloatingLabel>
+        </Col>
+      );
+    });
   };
 
   const renderInterests = () => {
@@ -945,15 +721,57 @@ function ProfileView(props) {
       return (
         <Col sm={6}>
           {list.map((l, j) => (
-            <FloatingLabel label={`${cat} ${j + 1}`} className="mb-3">
-              <Form.Control
-                value={newProfile[`${allEcsStr[i]}`][j]}
-                type="text"
-                onChange={(e) => {
-                  handleArrChange(e, j);
-                }}
-                name={allEcsStr[i]}
-              />
+            <FloatingLabel label={`${cat} ${j + 1}`}>
+              {cat === "Varsity Sports" && (
+                <Form.Select
+                  aria-label="Select varsity sport"
+                  className={j === 1 ? "mb-3" : ""}
+                  value={newProfile?.varsitySports[j]}
+                  onChange={(e) => handleArrChange(e, j)}
+                  name="varsitySports"
+                >
+                  {varsitySportsList.map((sport) => {
+                    return <option value={sport}>{sport}</option>;
+                  })}
+                </Form.Select>
+              )}
+              {cat === "Pick-up Sports" && (
+                <Form.Select
+                  aria-label="Select pick-up sport"
+                  className={j === 2 ? "mb-3" : ""}
+                  value={newProfile?.pickUpSports[j]}
+                  onChange={(e) => handleArrChange(e, j)}
+                  name="pickUpSports"
+                >
+                  {pickUpSportsList.map((sport) => {
+                    return <option value={sport}>{sport}</option>;
+                  })}
+                </Form.Select>
+              )}
+              {cat === "Instruments" && (
+                <Form.Select
+                  aria-label="Select instrument"
+                  className={j === 2 ? "mb-3" : ""}
+                  value={newProfile?.instruments[j]}
+                  onChange={(e) => handleArrChange(e, j)}
+                  name="instruments"
+                >
+                  {instrumentsList.map((instrument) => {
+                    return <option value={instrument}>{instrument}</option>;
+                  })}
+                </Form.Select>
+              )}
+              {cat === "Groups" && (
+                <Form.Control
+                  className={j === 2 ? "mb-3" : ""}
+                  value={newProfile[`${allEcsStr[i]}`][j]}
+                  type="text"
+                  onChange={(e) => {
+                    handleArrChange(e, j);
+                  }}
+                  name={allEcsStr[i]}
+                />
+              )}
             </FloatingLabel>
           ))}
         </Col>

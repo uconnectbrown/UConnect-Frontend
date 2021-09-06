@@ -282,6 +282,7 @@ function HomeView(props) {
                 <div style={{ fontSize: "1.2em", fontStyle: "bold" }}>
                   {student.name}
                 </div>
+
                 <div className="card-text">Class of {student.classYear}</div>
                 <div className="card-text">
                   {student.majors.map((major) => major)}

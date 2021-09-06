@@ -1,6 +1,7 @@
 import React from "react";
 import { auth } from "../firebase.js";
-import { Button } from "@material-ui/core";
+
+import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 function SignOut(props) {
@@ -12,7 +13,7 @@ function SignOut(props) {
   }
   return (
     <div style={props.style}>
-      <Button
+      <button
         className="mb-3"
         size="large"
         color="inherit"
@@ -22,7 +23,7 @@ function SignOut(props) {
         }}
       >
         Sign Out
-      </Button>
+      </button>
     </div>
   );
 }

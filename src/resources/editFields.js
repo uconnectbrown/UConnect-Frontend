@@ -100,7 +100,8 @@ const greekLife = [
   "Zeta Delta Xi",
 ];
 
-const instruments = [
+const instrumentsList = [
+  "",
   "Bass",
   "Cello",
   "Clarinet",
@@ -114,7 +115,8 @@ const instruments = [
   "Vocals",
 ];
 
-const pickUpSports = [
+const pickUpSportsList = [
+  "",
   "Basketball",
   "Football",
   "Soccer",
@@ -125,7 +127,8 @@ const pickUpSports = [
   "Volleyball",
 ];
 
-const varsitySports = [
+const varsitySportsList = [
+  "",
   "Baseball",
   "Basketball",
   "Crew",
@@ -2429,9 +2432,9 @@ export {
   majors,
   pronouns,
   greekLife,
-  instruments,
-  pickUpSports,
-  varsitySports,
+  instrumentsList,
+  pickUpSportsList,
+  varsitySportsList,
   CandAinterests,
   PAandWinterests,
   GHinterests,
