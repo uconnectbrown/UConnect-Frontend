@@ -28,7 +28,7 @@ function NavBar(props) {
             <div className="d-inline-block m-2">
               <img alt="UConnect Logo" src={Logo} className="topbar-logo" />
             </div>
-            <h3 className="d-inline-block align-middle">UConnect</h3>
+            <h2 className="d-inline-block align-middle nav-header">UConnect</h2>
           </Navbar.Brand>
           <div>
             <button onClick={props.handleProfile} className="requests-tracker">

@@ -7,18 +7,23 @@ import md5 from "md5";
 
 // Components
 import Chat from "../components/Chat";
-import NavBar from "../components/NavBar";
+import SearchBar from "../components/SearchBar";
 
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+
+import { Container, Row, Col } from "react-bootstrap";
+import "./MessageView.css";
+
 // Body
-function MessagesView() {
+function MessageView() {
   const emailId = auth.currentUser.email.split("@")[0];
   const [messages, setMessages] = useState([]);
   const [studentId, setStudentId] = useState("");
@@ -29,6 +34,7 @@ function MessagesView() {
   const [ownName, setOwnName] = useState("");
   const [roomId, setRoomId] = useState("");
   const [selectedM, setSelectedM] = useState(0);
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     getMessages();
@@ -68,6 +74,70 @@ function MessagesView() {
     setStudentName(messages[index].recipientName);
     setRoomId(md5([ownId, messages[index].recipientId].sort().join(" ")));
   };
+
+  const renderLeftPanel = () => {
+    return <div>
+      {/* <img
+        className="message-profile"
+        alt="Profile Picture"
+        src={ownImageUrl}
+      /> */}
+      <div className="d-flex align-items-center justify-content-center py-4" style={{ borderBottom: '1px solid lightgrey'}}>
+        <h5 className="m-0">Messages</h5>
+        <FontAwesomeIcon icon={faEdit} style={{ height: "100%", marginLeft: '3rem' }} className="d-inline-block"/>
+      </div>
+      {renderMessageCards()}
+    </div>
+  }
+
+  const renderMessageCards = () => {
+    const messages = [1, 2, 3, 4, 5]
+
+    if (!messages || messages.length == 0) {
+      return <p className="mt-3" style={{ fontSize: '14px' }}>
+        No messages yet.
+      </p>
+    }
+
+    return messages.map((message, i) => {
+      return (
+        <Row 
+          className="message-card" 
+          // onClick={() => setMessage(i)}
+        >
+          <img
+            className="message-profile"
+            alt="Profile Picture"
+            src={studentImageUrl}
+          />
+          <div>First Last</div>
+        </Row>
+      )
+    })
+  }
+
+  return <div className="w-100 h-100" style={{ paddingRight: '5rem' }}>
+    <Container fluid className="message-page">
+      <Row className="h-100">
+        <Col sm={3} className="p-2">
+          {renderLeftPanel()}
+        </Col>
+        <Col sm={9} className="p-2" style={{ backgroundColor: 'white'}}>
+          {roomId && (
+            <Chat
+              studentName={studentName}
+              studentImageUrl={studentImageUrl}
+              studentId={studentId}
+              ownId={ownId}
+              ownImageUrl={ownImageUrl}
+              ownName={ownName}
+              roomId={roomId}
+            />
+          )}
+        </Col>
+      </Row>
+    </Container>
+  </div>
 
   return (
     <div>
@@ -127,4 +197,4 @@ function MessagesView() {
   );
 }
 
-export default MessagesView;
+export default MessageView;

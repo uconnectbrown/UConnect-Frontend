@@ -18,7 +18,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // Pages
-import Messages from "./pages/MessagesView";
+import MessageView from "./pages/MessageView";
 import Home from "./pages/HomeView";
 import Connections from "./pages/ConnectionsView";
 import ProfileView from "./pages/ProfileView";
@@ -221,7 +221,7 @@ function App() {
                       outgoing={outgoing}
                     />
                   </Route>
-                  <Route exact path="/messages" component={Messages} />
+                  <Route exact path="/messages" component={MessageView} />
                   <Route exact path="/connections" component={Connections} />
                   <Route exact path="/profile">
                     <ProfileView
