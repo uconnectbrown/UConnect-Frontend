@@ -353,39 +353,6 @@ function HomeView(props) {
                   {student.name} '{student.classYear.split("0")[1]}
                 </div>
                 <div className="card-text mb-3">{student.compatibility}%</div>
-                {/* maybe omit the rest of this... */}
-                <ul style={{ marginBottom: 0 }}>
-                  {student.compatability}
-                  {student.courseOverlap === 1 && (
-                    <li className="card-text">
-                      {student.courseOverlap} course in common
-                    </li>
-                  )}
-                  {student.courseOverlap > 1 && (
-                    <li className="card-text">
-                      {student.courseOverlap} courses in common
-                    </li>
-                  )}
-                  {student.interestOverlap === 1 && (
-                    <li className="card-text">
-                      {student.interestOverlap} interest in common
-                    </li>
-                  )}
-                  {student.interestOverlap > 1 && (
-                    <li className="card-text">
-                      {student.interestOverlap} interests in common
-                    </li>
-                  )}
-                  {student.shareVarsity && (
-                    <li className="card-text">Plays a varsity sport</li>
-                  )}
-                  {student.sharePickUp && (
-                    <li className="card-text">Plays pickup sports</li>
-                  )}
-                  {student.shareInstruments && (
-                    <li className="card-text">Plays an instrument</li>
-                  )}
-                </ul>
               </div>
             );
           })}
@@ -396,7 +363,7 @@ function HomeView(props) {
 
   const renderOnboard = () => {
     return (
-      <Modal show={false} dialogClassName="student-modal">
+      <Modal show={firstTime} dialogClassName="student-modal">
         <Modal.Body>
           {onboardPage === 0 && (
             <div align="center">
@@ -458,9 +425,7 @@ function HomeView(props) {
                 of information such as what courses you are taking and what
                 extracurriculars you are involved in. Adding more additional
                 information will also give you access to more powerful search
-                tools to find other students who are relevant to you, so, before
-                searching for and connecting with others, please customize your
-                profile.
+                tools to find other students who are relevant to you.
               </p>
             </div>
           )}

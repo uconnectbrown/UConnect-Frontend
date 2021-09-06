@@ -9,6 +9,7 @@ import Crop from "../util/Crop";
 import SignOut from "../components/SignOut";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
+import Tooltip from "@material-ui/core/Tooltip";
 
 // Resources
 import {
@@ -588,8 +589,14 @@ function ProfileView(props) {
             src={student.imageUrl}
           />
           {student.imageUrl ===
-            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
+            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && !editing && (
             <p style={{ width: "100%", fontSize: 14, marginTop: 0 }}>
+              Please add an image to complete <br /> your profile.
+            </p>
+          )}
+          {student.imageUrl ===
+            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && editing && (
+            <p style={{ width: "100%", fontSize: 14, marginTop: 0, fontWeight: 500, color: "red" }}>
               Please add an image to complete <br /> your profile.
             </p>
           )}
@@ -976,7 +983,11 @@ function ProfileView(props) {
           }}
         >
           {!editing ? (
-            <button
+            <React.Fragment>
+              {firstTime && (
+                <h4>Before searching for and connecting with others, please customize your profile.</h4>
+              )}
+              <button
               type="button"
               class="btn btn-outline-primary btn-sm"
               style={{ width: "5rem" }}
@@ -984,6 +995,7 @@ function ProfileView(props) {
             >
               Edit
             </button>
+            </React.Fragment>
           ) : (
             <React.Fragment>
               <button
@@ -1000,6 +1012,8 @@ function ProfileView(props) {
               </button>
               <button
                 type="button"
+                title={student.imageUrl ===
+                  "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" ? "Add an image before saving" : ""}
                 class="btn btn-outline-primary btn-sm"
                 style={{ width: "8rem" }}
                 onClick={() => {
@@ -1007,9 +1021,10 @@ function ProfileView(props) {
                   setEditingInterests(false);
                   editProfile();
 
+                  // maybe move this inside of editProfile
                   // {firstTime && (
-                  //   handleCloseOnBoard
-                  //   axios.get(`/newFeatured/${emailId}`).catch(err => console.log(err))
+                  //   handleCloseOnBoard();
+                  //   axios.get(`/newFeatured/${emailId}`).catch(err => console.log(err));
                   // )}
                 }}
                 disabled={!validProfile(newProfile)}
