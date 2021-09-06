@@ -34,7 +34,7 @@ function MessageView() {
   const [ownName, setOwnName] = useState("");
   const [roomId, setRoomId] = useState("");
   const [selectedM, setSelectedM] = useState(0);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     getMessages();
@@ -76,33 +76,44 @@ function MessageView() {
   };
 
   const renderLeftPanel = () => {
-    return <div>
-      {/* <img
-        className="message-profile"
-        alt="Profile Picture"
-        src={ownImageUrl}
-      /> */}
-      <div className="d-flex align-items-center justify-content-center py-4" style={{ borderBottom: '1px solid lightgrey'}}>
-        <h5 className="m-0">Messages</h5>
-        <FontAwesomeIcon icon={faEdit} style={{ height: "100%", marginLeft: '3rem' }} className="d-inline-block"/>
+    return (
+      <div>
+        <img
+          className="message-profile"
+          alt="Profile Picture"
+          src={ownImageUrl}
+        />
+        <div
+          className="d-flex align-items-center justify-content-center py-4"
+          style={{ borderBottom: "1px solid lightgrey" }}
+        >
+          <h5 className="m-0">Messages</h5>
+          <FontAwesomeIcon
+            icon={faEdit}
+            style={{ height: "100%", marginLeft: "3rem" }}
+            className="d-inline-block"
+          />
+        </div>
+        {renderMessageCards()}
       </div>
-      {renderMessageCards()}
-    </div>
-  }
+    );
+  };
 
   const renderMessageCards = () => {
-    const messages = [1, 2, 3, 4, 5]
+    const messages = [1, 2, 3, 4, 5];
 
     if (!messages || messages.length == 0) {
-      return <p className="mt-3" style={{ fontSize: '14px' }}>
-        No messages yet.
-      </p>
+      return (
+        <p className="mt-3" style={{ fontSize: "14px" }}>
+          No messages yet.
+        </p>
+      );
     }
 
     return messages.map((message, i) => {
       return (
-        <Row 
-          className="message-card" 
+        <Row
+          className="message-card"
           // onClick={() => setMessage(i)}
         >
           <img
@@ -112,32 +123,34 @@ function MessageView() {
           />
           <div>First Last</div>
         </Row>
-      )
-    })
-  }
+      );
+    });
+  };
 
-  return <div className="w-100 h-100" style={{ paddingRight: '5rem' }}>
-    <Container fluid className="message-page">
-      <Row className="h-100">
-        <Col sm={3} className="p-2">
-          {renderLeftPanel()}
-        </Col>
-        <Col sm={9} className="p-2" style={{ backgroundColor: 'white'}}>
-          {roomId && (
-            <Chat
-              studentName={studentName}
-              studentImageUrl={studentImageUrl}
-              studentId={studentId}
-              ownId={ownId}
-              ownImageUrl={ownImageUrl}
-              ownName={ownName}
-              roomId={roomId}
-            />
-          )}
-        </Col>
-      </Row>
-    </Container>
-  </div>
+  return (
+    <div className="w-100 h-100" style={{ paddingRight: "5rem" }}>
+      <Container fluid className="message-page">
+        <Row className="h-100">
+          <Col sm={3} className="p-2">
+            {renderLeftPanel()}
+          </Col>
+          <Col sm={9} className="p-2" style={{ backgroundColor: "white" }}>
+            {roomId && (
+              <Chat
+                studentName={studentName}
+                studentImageUrl={studentImageUrl}
+                studentId={studentId}
+                ownId={ownId}
+                ownImageUrl={ownImageUrl}
+                ownName={ownName}
+                roomId={roomId}
+              />
+            )}
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  );
 
   return (
     <div>
