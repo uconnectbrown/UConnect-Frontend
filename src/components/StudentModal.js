@@ -4,7 +4,7 @@ import axios from "axios";
 import { db, auth } from "../firebase";
 
 import ConnectButton from "./ConnectButton";
-import { Container, Row, Col, Card, Modal } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import "./StudentModal.css";
 
 // Body
@@ -286,6 +286,7 @@ function StudentModal(props) {
           undoRequest={undoRequest}
           validUndo={validUndo}
         />
+        <Button variant="outline-primary mt-3">Send {student.firstName} a Message</Button>
       </Col>
       <Col sm={8} className="px-3">
         <Row>{renderCourses()}</Row>
