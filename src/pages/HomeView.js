@@ -361,6 +361,7 @@ function HomeView(props) {
                 />
                 <div className="card-text mb-3">{student.name}</div>
                 <ul style={{ marginBottom: 0 }}>
+                  {student.compatability}
                   {student.courseOverlap === 1 && (
                     <li className="card-text">
                       {student.courseOverlap} course in common

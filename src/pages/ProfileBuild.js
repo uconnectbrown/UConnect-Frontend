@@ -174,7 +174,7 @@ function ProfileBuild(props) {
           label="State"
           className="profile-build-third-input"
           onChange={(event) =>
-            setUserData({ ...userData, stateList: event.target.value })
+            setUserData({ ...userData, state: event.target.value })
           }
           InputProps={{
             endAdornment: stateList,
