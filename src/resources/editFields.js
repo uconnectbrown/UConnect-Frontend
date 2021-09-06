@@ -83,14 +83,7 @@ const majors = [
   "Visual Art",
 ];
 
-const pronouns = (
-  <datalist id="pronouns">
-    <option value="he/him" />
-    <option value="she/her" />
-    <option value="they/their" />
-    <option value="ze/hir" />
-  </datalist>
-);
+const pronouns = ["he/him", "she/her", "they/their", "ze/hir"];
 const greekLife = [
   "Alpha Chi Omega",
   "Alpha Delta Phi Society",

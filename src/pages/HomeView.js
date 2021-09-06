@@ -10,7 +10,7 @@ import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
-import Logo from "../assets/Logo.png";
+import Logo from "../assets/Logo.PNG";
 
 // Styling
 import "./HomeView.css";
@@ -349,7 +349,9 @@ function HomeView(props) {
                   alt="Profile Picture"
                   src={student.imageUrl}
                 />
-                <div className="card-text mb-3">{student.name} '{student.classYear.split("0")[1]}</div>
+                <div className="card-text mb-3">
+                  {student.name} '{student.classYear.split("0")[1]}
+                </div>
                 <div className="card-text mb-3">{student.compatibility}%</div>
                 {/* maybe omit the rest of this... */}
                 <ul style={{ marginBottom: 0 }}>
@@ -422,19 +424,19 @@ function HomeView(props) {
               <h3>Featured Profiles</h3>
               <p>
                 Every Thursday at 9PM EST, each user will receive a new set of
-                featured profiles. These recommended profiles are determined based on the
-                information you have provided in your profile. The more
-                information you provide, the better your featured profiles will
-                be.
+                featured profiles. These recommended profiles are determined
+                based on the information you have provided in your profile. The
+                more information you provide, the better your featured profiles
+                will be.
               </p>
               <h3>Requests and Connections</h3>
               <p>
-                Every user has a set of 10 connection requests which can be sent to any
-                other UConnect user. Sending a request reduces the number of remaining requests one has, 
-                but requests are returned to the sender when they have been accepted.
-                Once two users are connected, they now
-                have the ability to message each other and have
-                access additional information such as their common courses.
+                Every user has a set of 10 connection requests which can be sent
+                to any other UConnect user. Sending a request reduces the number
+                of remaining requests one has, but requests are returned to the
+                sender when they have been accepted. Once two users are
+                connected, they now have the ability to message each other and
+                have access additional information such as their common courses.
               </p>
               <h3>Search and Filter</h3>
               <p>
@@ -452,14 +454,13 @@ function HomeView(props) {
               </p>
               <h3>Your Profile</h3>
               <p>
-                Your profile page allows you to edit your profile and add 
-                pieces of information such as what courses you are taking 
-                and what extracurriculars you are involved in. 
-                
-                Adding more additional information will also give
-                you access to more powerful search tools to find other students
-                who are relevant to you, so, before searching for and connecting 
-                with others, please customize your profile.
+                Your profile page allows you to edit your profile and add pieces
+                of information such as what courses you are taking and what
+                extracurriculars you are involved in. Adding more additional
+                information will also give you access to more powerful search
+                tools to find other students who are relevant to you, so, before
+                searching for and connecting with others, please customize your
+                profile.
               </p>
             </div>
           )}
@@ -470,7 +471,7 @@ function HomeView(props) {
             {onboardPage < 1 && <button onClick={handleNextPage}>Next</button>}
             {onboardPage === 1 && (
               <Link to="/profile">
-              <button>Done</button>
+                <button>Done</button>
               </Link>
             )}
           </div>

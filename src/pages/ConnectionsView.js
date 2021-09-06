@@ -139,6 +139,7 @@ function Connections() {
             studentId={studentId}
             // handleRequest={props.handleRequest}
             // requests={props.requests}
+            updateConnections={getConnections}
             handleOpenMessage={handleOpenMessage}
           />
         </Modal.Body>
@@ -150,6 +151,7 @@ function Connections() {
             {pending.map((p, i) => (
               <StudentCard
                 name={p.name}
+                classYear={p.classYear}
                 imageUrl={p.imageUrl}
                 onClick={() => handleOpenPending(i)}
               />

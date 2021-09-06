@@ -124,6 +124,9 @@ function StudentModal(props) {
           .then(() => {
             setStatus("con");
           })
+          .then(() => {
+            props.updateConnections();
+          })
           .catch((err) => console.log(err));
       });
   };
