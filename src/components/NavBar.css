@@ -17,6 +17,11 @@ button {
     margin: 0.5rem;
 }
 
+.nav-header {
+    font-weight: 700;
+    color: #473F9B;
+}
+
 .topbar .requests-tracker {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;

@@ -723,39 +723,64 @@ function ProfileView(props) {
   };
 
   const renderCourses = () => {
+    if (!editing) {
+      return student.courses.map((c, i) => {
+        if (!c.name) return null;
+        return <Col sm={3} className="mb-3">
+          <div className="profile-view-courses">
+            <div>{c.code}</div>
+            <div style={{ fontSize: "10px" }}>{c.name}</div>
+          </div>
+        </Col>
+      })
+    }
+
+    const range = [...Array(5).keys()];
+
+    return range.map((i) => {
+      let value = '';
+      if (i < student.courses.length) {
+        value = newProfile?.courses[i].code;
+      }
+
+      return <Col sm={6} className="mb-3">
+        <FloatingLabel label={`Course ${i + 1}`}>
+          <Form.Control
+            list="courseCodes"
+            name="courses"
+            onChange={(e) => {
+              handleCourseChange(e, i);
+            }}
+            value={value}
+          />
+          <datalist id="courseCodes">
+            {courseList.map((course, i) => (
+              <option key={i} value={course[0] + ": " + course[1]} />
+            ))}
+          </datalist>
+        </FloatingLabel>
+      </Col>
+    })
+
     return student.courses.map((c, i) => {
-      if (!c.name) return null;
-      return (
-        <>
-          {!editing ? (
-            <Col sm={3} className="mb-3">
-              <div className="profile-view-courses">
-                <div>{c.code}</div>
-                <div style={{ fontSize: "10px" }}>{c.name}</div>
-              </div>
-            </Col>
-          ) : (
-            <Col sm={6} className="mb-3">
-              <FloatingLabel label={`Course ${i + 1}`}>
-                <Form.Control
-                  list="courseCodes"
-                  name="courses"
-                  onChange={(e) => {
-                    handleCourseChange(e, i);
-                  }}
-                  value={newProfile?.courses[i].code}
-                />
-                <datalist id="courseCodes">
-                  {courseList.map((course, i) => (
-                    <option key={i} value={course[0] + ": " + course[1]} />
-                  ))}
-                </datalist>
-              </FloatingLabel>
-            </Col>
-          )}
-        </>
-      );
-    });
+      return <Col sm={6} className="mb-3">
+        <FloatingLabel label={`Course ${i + 1}`}>
+          <Form.Control
+            list="courseCodes"
+            name="courses"
+            onChange={(e) => {
+              handleCourseChange(e, i);
+            }}
+            value={newProfile?.courses[i].code}
+          />
+          <datalist id="courseCodes">
+            {courseList.map((course, i) => (
+              <option key={i} value={course[0] + ": " + course[1]} />
+            ))}
+          </datalist>
+        </FloatingLabel>
+      </Col>
+    })
   };
 
   const renderInterests = () => {
