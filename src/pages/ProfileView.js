@@ -10,8 +10,6 @@ import SignOut from "../components/SignOut";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 
-import Tooltip from "@material-ui/core/Tooltip";
-
 // Resources
 import {
   majors,
@@ -35,6 +33,7 @@ import {
 } from "react-bootstrap";
 import "./ProfileView.css";
 import { FormControlLabel } from "@material-ui/core";
+import { faBullseye } from "@fortawesome/free-solid-svg-icons";
 
 const { validProfile } = require("../util/validators");
 
@@ -76,9 +75,10 @@ function ProfileView(props) {
   const handleCloseOnBoard = () => {
     setFirstTime(false);
     // backend function to turn firsttime to false in the profile
-    {emailId && (
-      axios.get(`/onboard/${emailId}`).catch((err) => console.log(err))
-    )}
+    {
+      emailId &&
+        axios.get(`/onboard/${emailId}`).catch((err) => console.log(err));
+    }
   };
 
   const getProfile = () => {
@@ -588,11 +588,11 @@ function ProfileView(props) {
             src={student.imageUrl}
           />
           {student.imageUrl ===
-                          "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
-                          <p style={{ width: "100%", fontSize: 14, marginTop: 0 }}>
-                            Please add an image to complete <br /> your profile.
-                          </p>
-                        )}
+            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
+            <p style={{ width: "100%", fontSize: 14, marginTop: 0 }}>
+              Please add an image to complete <br /> your profile.
+            </p>
+          )}
           {editing && (
             <Button className="mb-3" onClick={() => setEditImage(true)}>
               Edit Image
@@ -620,71 +620,114 @@ function ProfileView(props) {
             <div style={{ fontSize: "1.5em", fontStyle: "bold" }}>
               {student.firstName + " " + student.lastName}
             </div>
-            <div>
-              {student.preferredPronouns && `(${student.preferredPronouns})`}
-            </div>
+            <div>{student.pronouns && `(${student.pronouns})`}</div>
             <div>Class of {student.classYear}</div>
-            <div>{student.majors.map((major) => major)}</div>
+            <div>
+              {student.majors
+                .filter(Boolean)
+                .map((major, i) =>
+                  i !== student.majors.filter(Boolean).length - 1
+                    ? major + ", "
+                    : major
+                )}
+            </div>
             <div className="profile-view-bio">{student.bio}</div>
           </div>
         ) : (
           <div style={{ textAlign: "left" }}>
-            <Form>
+            <form class="form-floating">
               <FloatingLabel
-                label="First Name *"
+                label={newProfile.firstName ? "First Name *" : "Can't be empty"}
                 className="mb-3"
                 controlId="first-name"
               >
-                <Form.Control type="text" value={newProfile?.firstName} />
+                <input
+                  type="text"
+                  class={
+                    !newProfile?.firstName
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
+                  onChange={handleChange}
+                  id="firstName"
+                  name="firstName"
+                  value={newProfile?.firstName}
+                />
               </FloatingLabel>
               <FloatingLabel
-                label="Last Name *"
+                label={newProfile.lastName ? "Last Name *" : "Can't be empty"}
                 className="mb-3"
                 controlId="last-name"
               >
-                <Form.Control type="text" value={newProfile?.lastName} />
+                <input
+                  type="text"
+                  class={
+                    !newProfile?.lastName
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
+                  onChange={handleChange}
+                  id="lastName"
+                  name="lastName"
+                  value={newProfile?.lastName}
+                />
               </FloatingLabel>
               <FloatingLabel label="Class Year" className="mb-3">
                 <Form.Select
                   aria-label="Select class year"
                   className="mb-3"
                   value={newProfile?.classYear}
+                  onChange={handleChange}
+                  name="classYear"
                 >
                   {classYears.map((year) => {
                     return <option value={year}>{year}</option>;
                   })}
                 </Form.Select>
               </FloatingLabel>
-              <FloatingLabel
-                label="Preferred Pronouns"
-                className="mb-3"
-                controlId="pronouns"
-              >
+              <FloatingLabel label="Preferred Pronouns">
                 <Form.Control
-                  type="text"
-                  value={newProfile?.preferredPronouns}
+                  list="pronouns"
+                  className="w-100 mb-3"
+                  name="pronouns"
+                  onChange={handleChange}
+                  value={newProfile?.pronouns}
                 />
               </FloatingLabel>
-              <FloatingLabel label="Concentration 1 *">
+              <datalist id="pronouns" className="w-100">
+                {pronouns.map((pronoun, i) => {
+                  return <option key={i} value={pronoun} />;
+                })}
+              </datalist>
+              <FloatingLabel
+                label={
+                  newProfile.majors.filter(Boolean).length > 0
+                    ? "Concentration 1 *"
+                    : "Need at least 1"
+                }
+              >
                 <Form.Control
                   list="majors"
                   name="majors"
-                  className="w-100 mb-3"
+                  class={
+                    newProfile?.majors.filter(Boolean).length < 1
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
                   onChange={(e) => {
                     handleArrChange(e, 0);
                   }}
-                  placeholder={
-                    newProfile?.majors.filter(Boolean).length === 0 &&
-                    "Need at least one"
-                  }
                   value={newProfile.majors[0]}
                 />
               </FloatingLabel>
               <datalist id="majors" className="w-100">
-                {majors.map((major, i) => {
-                  return <option key={i} value={major} />;
-                })}
+                {majors
+                  .filter((major) => !newProfile.majors.includes(major))
+                  .map((major, i) => {
+                    return <option key={i} value={major} />;
+                  })}
               </datalist>
+
               <FloatingLabel label="Concentration 2">
                 <Form.Control
                   list="majors"
@@ -696,11 +739,7 @@ function ProfileView(props) {
                   value={newProfile.majors[1]}
                 />
               </FloatingLabel>
-              <datalist id="majors" className="w-100">
-                {majors.map((major, i) => {
-                  return <option key={i} value={major} />;
-                })}
-              </datalist>
+
               <FloatingLabel label="Concentration 3">
                 <Form.Control
                   list="majors"
@@ -712,10 +751,18 @@ function ProfileView(props) {
                   value={newProfile.majors[2]}
                 />
               </FloatingLabel>
+
               <FloatingLabel label="Bio" className="mb-3" controlId="bio">
-                <Form.Control as="textarea" rows={5} value={newProfile?.bio} />
+                <Form.Control
+                  as="textarea"
+                  rows={5}
+                  maxLength="140"
+                  onChange={handleChange}
+                  name="bio"
+                  value={newProfile?.bio}
+                />
               </FloatingLabel>
-            </Form>
+            </form>
           </div>
         )}
       </>
@@ -831,7 +878,7 @@ function ProfileView(props) {
     ];
     const groups = [profile.groups[0], profile.groups[1], profile.groups[2]];
     const varsitySports = [profile.varsitySports[0], profile.varsitySports[1]];
-    const pickupSports = [
+    const pickUpSports = [
       profile.pickUpSports[0],
       profile.pickUpSports[1],
       profile.pickUpSports[2],
@@ -842,7 +889,13 @@ function ProfileView(props) {
       profile.instruments[2],
     ];
 
-    const allEcs = [groups, varsitySports, pickupSports, instruments];
+    const allEcs = [groups, varsitySports, pickUpSports, instruments];
+    const allEcsStr = [
+      "groups",
+      "varsitySports",
+      "pickUpSports",
+      "instruments",
+    ];
 
     return categories.map((cat, i) => {
       const list = allEcs[i];
@@ -868,7 +921,14 @@ function ProfileView(props) {
         <Col sm={6}>
           {list.map((l, j) => (
             <FloatingLabel label={`${cat} ${j + 1}`} className="mb-3">
-              <Form.Control type="text" value={l} />
+              <Form.Control
+                value={newProfile[`${allEcsStr[i]}`][j]}
+                type="text"
+                onChange={(e) => {
+                  handleArrChange(e, j);
+                }}
+                name={allEcsStr[i]}
+              />
             </FloatingLabel>
           ))}
         </Col>
@@ -900,23 +960,38 @@ function ProfileView(props) {
               Edit
             </button>
           ) : (
-            <button
-              type="button"
-              class="btn btn-outline-primary btn-sm"
-              style={{ width: "8rem" }}
-              onClick={() => {
-                setEditing(false);
-                setEditingInterests(true);
-                // {firstTime && (
-                //   handleCloseOnBoard
-                //   axios.get(`/newFeatured/${emailId}`).catch(err => console.log(err))
-                // )}
-              }}
-              disabled={student.imageUrl === 
-                "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"}
-            >
-              Save Changes
-            </button>
+            <React.Fragment>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                style={{ width: "8rem" }}
+                onClick={() => {
+                  setEditing(false);
+                  setEditingInterests(false);
+                  setNewProfile(profile);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                style={{ width: "8rem" }}
+                onClick={() => {
+                  setEditing(false);
+                  setEditingInterests(false);
+                  editProfile();
+
+                  // {firstTime && (
+                  //   handleCloseOnBoard
+                  //   axios.get(`/newFeatured/${emailId}`).catch(err => console.log(err))
+                  // )}
+                }}
+                disabled={!validProfile(newProfile)}
+              >
+                Save Changes
+              </button>
+            </React.Fragment>
           )}
         </Row>
         <Row>
