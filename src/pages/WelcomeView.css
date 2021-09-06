@@ -22,10 +22,11 @@
 
 .welcome-header {
   font-weight: 600;
+  color: #473F9B;
 }
 
 .sign-in-link {
   text-decoration: underline;
-  color: blue;
+  color: #0d6efd;
   cursor: pointer;
 }
