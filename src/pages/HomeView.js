@@ -306,7 +306,7 @@ function HomeView(props) {
                   src={student.imageUrl}
                 />
               </Col>
-              <Col md={5} lg={5}>
+              <Col md={4} lg={4}>
                 <div style={{ fontSize: "1.2em", fontStyle: "bold" }}>
                   {student.name}
                 </div>
@@ -316,7 +316,7 @@ function HomeView(props) {
                   {student.majors.map((major) => major)}
                 </div>
               </Col>
-              <Col md={5} lg={6}>
+              <Col md={3} lg={3}>
                 <ul style={{ marginBottom: 0 }}>
                   {student.courseOverlap === 1 && (
                     <li className="card-text">
@@ -340,7 +340,7 @@ function HomeView(props) {
                   )}
                 </ul>
               </Col>
-              <Col md={5} lg={6}>
+              <Col md={3} lg={3}>
                 <ul style={{ marginBottom: 0 }}>
                   {student.shareVarsity && (
                     <li className="card-text">Plays a varsity sport</li>
