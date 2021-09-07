@@ -221,7 +221,7 @@ function HomeView(props) {
         </Col>
         <Col>
           <Tooltip
-            title="Extracurriculars are grayed out if you are not involved in them"
+            title="Extracurriculars not included in your profile are grayed out"
             placement="right"
           >
             <span>
@@ -363,24 +363,17 @@ function HomeView(props) {
   const renderFeatured = () => {
     return (
       <div>
-        <Row className="featured-title my-2">
-          <Col>
-            <h5 className="mt-4">Featured Profiles</h5>
-          </Col>
-          <Col style={{ marginTop: 24, marginLeft: -10 }}>
-            <Tooltip
-              placement="right"
-              title="These recommended profiles are generated weekly and are determined based on the information you have provided in your profile."
-            >
-              <span>
-                <FontAwesomeIcon
-                  icon={faInfoCircle}
-                  style={{ marginLeft: -25 }}
-                />
-              </span>
-            </Tooltip>
-          </Col>
-        </Row>
+        <p className="mt-4">
+          <h5 style={{ display: "inline" }}>Featured Profiles</h5>
+          <Tooltip
+            placement="right"
+            title="These profiles are generated weekly and are recommended based on the information you have provided in your profile."
+          >
+            <span>
+              <FontAwesomeIcon style={{ marginLeft: 15 }} icon={faInfoCircle} />
+            </span>
+          </Tooltip>
+        </p>
         <div class="featured-container pb-4 pt-1">
           {featured.map((student, i) => {
             return (
@@ -399,10 +392,14 @@ function HomeView(props) {
                   {student.name} '{student.classYear.split("0")[1]}
                 </div>
                 <div style={{ width: 80, height: 80 }}>
-                  <CircularProgressbar
-                    value={student.compatability}
-                    text={`${student.compatability}%`}
-                  />
+                  <Tooltip placement="top" title="Compatibility Score">
+                    <span>
+                      <CircularProgressbar
+                        value={student.compatability}
+                        text={`${student.compatability}%`}
+                      />
+                    </span>
+                  </Tooltip>
                 </div>
               </div>
             );
@@ -529,7 +526,7 @@ function HomeView(props) {
         <Tooltip
           style={{ marginLeft: 5 }}
           placement="right"
-          title="Here you are able you to search and filter though all Brown students on UConnect"
+          title="Search and filter through all Brown students on UConnect"
         >
           <span>
             <FontAwesomeIcon

@@ -8,6 +8,7 @@ import { useHistory } from "react-router";
 import ConnectButton from "./ConnectButton";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "./StudentModal.css";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
@@ -216,7 +217,11 @@ function StudentModal(props) {
             className="modal-profile-courses d-flex flex-column text-center align-items-center justify-content-center"
             // onClick={}
           >
-            <FontAwesomeIcon style={{ width: 15 }} icon={faLock} />
+            <Tooltip title="Connect to unlock">
+              <span>
+                <FontAwesomeIcon style={{ width: 15 }} icon={faLock} />
+              </span>
+            </Tooltip>
           </div>
         );
       });
@@ -355,6 +360,7 @@ function StudentModal(props) {
         <h5>Extracurriculars</h5>
         <Row>{renderEcs()}</Row>
         <h5>Common Courses</h5>
+        {student.courses.length === 0 && (<p>You have no common courses.</p>)}
         <Row>{renderCourses()}</Row>
       </Col>
     </Container>

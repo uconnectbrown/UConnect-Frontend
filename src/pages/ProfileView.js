@@ -747,7 +747,7 @@ function ProfileView(props) {
                     {cat}
                   </p>
                   <Tooltip
-                    title="clubs/student groups/greek life"
+                    title="clubs, student groups, Greek life, etc."
                     placement="right"
                   >
                     {/* <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}> */}
