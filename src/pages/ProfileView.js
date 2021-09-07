@@ -727,25 +727,52 @@ function ProfileView(props) {
                 <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
               )}
               {cat === "Groups" && (
-                <div align="center">
-                <p style={{ fontSize: "14px", textAlign: "center", display: "inline", marginRight: 6 }}>{cat}</p>
-                <Tooltip title="clubs/student groups/greek life" placement="right">
-                {/* <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}> */}
-                <span>
-                <FontAwesomeIcon style={{width: 15}} icon={faInfoCircle}/>
-                </span>
-                  {/* </p> */}
-                </Tooltip>
-                </div>
+                <p align="center">
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      textAlign: "center",
+                      display: "inline",
+                      marginRight: 6,
+                    }}
+                  >
+                    {cat}
+                  </p>
+                  <Tooltip
+                    title="clubs/student groups/greek life"
+                    placement="right"
+                  >
+                    {/* <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}> */}
+                    <span>
+                      <FontAwesomeIcon
+                        style={{ width: 15 }}
+                        icon={faInfoCircle}
+                      />
+                    </span>
+                    {/* </p> */}
+                  </Tooltip>
+                </p>
               )}
 
-              {list.length > 0 && (
+              {list.filter(Boolean).length > 0 && (
                 <ul>
                   {list.map((l) => {
                     return l ? <li>{l}</li> : null;
                   })}
                 </ul>
               )}
+              <div align="center">
+                {list.filter(Boolean).length === 0 && (
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary btn-sm"
+                    style={{ width: "5rem" }}
+                    onClick={() => setEditing(true)}
+                  >
+                    Add
+                  </button>
+                )}
+              </div>
             </div>
           </Col>
         );

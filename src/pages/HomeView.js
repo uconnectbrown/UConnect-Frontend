@@ -26,8 +26,11 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInfoCircle, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faInfoCircle,
+  faQuestionCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
@@ -217,11 +220,14 @@ function HomeView(props) {
           />
         </Col>
         <Col>
-        <Tooltip title="Extracurriculars are grayed out if you are not involved in them" placement="right">
-          <span>
-            <FontAwesomeIcon icon={faInfoCircle} style={{marginTop: 10}}/>
-          </span>
-        </Tooltip>
+          <Tooltip
+            title="Extracurriculars are grayed out if you are not involved in them"
+            placement="right"
+          >
+            <span>
+              <FontAwesomeIcon icon={faInfoCircle} style={{ marginTop: 10 }} />
+            </span>
+          </Tooltip>
         </Col>
       </Row>
     );
@@ -359,15 +365,18 @@ function HomeView(props) {
       <div>
         <Row className="featured-title my-2">
           <Col>
-        <h5 className="mt-4">Featured Profiles</h5>
-        </Col>
-        <Col style={{marginTop: 24, marginLeft: -10}}>
-        <Tooltip placement="right" title="These recommended profiles are generated weekly and are determined based on the information you have provided in your profile.">
-          <span>
-          <FontAwesomeIcon icon={faInfoCircle}/>
-          </span>
-        </Tooltip>
-        </Col>
+            <h5 className="mt-4">Featured Profiles</h5>
+          </Col>
+          <Col style={{ marginTop: 24, marginLeft: -10 }}>
+            <Tooltip
+              placement="right"
+              title="These recommended profiles are generated weekly and are determined based on the information you have provided in your profile."
+            >
+              <span>
+                <FontAwesomeIcon icon={faInfoCircle} />
+              </span>
+            </Tooltip>
+          </Col>
         </Row>
         <div class="featured-container pb-4 pt-1">
           {featured.map((student, i) => {
@@ -402,7 +411,7 @@ function HomeView(props) {
 
   const renderOnboard = () => {
     return (
-      <Modal show={false} dialogClassName="student-modal">
+      <Modal show={firstTime} dialogClassName="student-modal">
         <Modal.Body>
           {onboardPage === 0 && (
             <div align="center">
@@ -511,7 +520,21 @@ function HomeView(props) {
           />
         </Modal.Body>
       </Modal>
-      <h1>Connect <Tooltip style={{marginLeft: 5}} placement="right" title="Here you are able you to search and filter though all Brown students on UConnect"><span><FontAwesomeIcon style={{fontSize: 16, marginBottom: 5}} icon={faInfoCircle}/></span></Tooltip></h1>
+      <h1>
+        Connect{" "}
+        <Tooltip
+          style={{ marginLeft: 5 }}
+          placement="right"
+          title="Here you are able you to search and filter though all Brown students on UConnect"
+        >
+          <span>
+            <FontAwesomeIcon
+              style={{ fontSize: 16, marginBottom: 5 }}
+              icon={faInfoCircle}
+            />
+          </span>
+        </Tooltip>
+      </h1>
       {renderSearchPicker()}
       {searchType === 0 && renderSearchBar()}
       {searchType !== 0 && renderDataList(searchType)}
