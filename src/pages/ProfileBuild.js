@@ -73,7 +73,7 @@ function ProfileBuild(props) {
         firstName: userData.firstName.trim(),
         lastName: userData.lastName.trim(),
         classYear: userData.classYear,
-        majors: [userData.major1, userData.major2, userData.major3],
+        majors: [userData.major1, userData.major2],
         pronouns: userData.pronouns,
         location: {
           country: userData.country,
@@ -370,39 +370,7 @@ function ProfileBuild(props) {
                     },
                   }}
                 />
-                {!userData.thirdMajor && (
-                  <Tooltip title="Add Third Concentration" placement="top">
-                    <IconButton
-                      onClick={() =>
-                        setUserData({ ...userData, thirdMajor: true })
-                      }
-                    >
-                      <AddIcon color="secondary" />
-                    </IconButton>
-                  </Tooltip>
-                )}
               </div>
-            )}
-          </Col>
-          <Col xs={12} md={6}>
-            {userData.thirdMajor && (
-              <TextField
-                variant="outlined"
-                name="major3"
-                autoComplete="off"
-                size={"small"}
-                label="Third Concentration"
-                className="profile-build-input"
-                onChange={(event) =>
-                  setUserData({ ...userData, major3: event.target.value })
-                }
-                InputProps={{
-                  endAdornment: majorList,
-                  inputProps: {
-                    list: "majors",
-                  },
-                }}
-              />
             )}
           </Col>
         </Row>
@@ -451,7 +419,7 @@ function ProfileBuild(props) {
                   firstName: userData.firstName.trim(),
                   lastName: userData.lastName.trim(),
                   classYear: userData.classYear,
-                  majors: [userData.major1, userData.major2, userData.major3],
+                  majors: [userData.major1, userData.major2],
                   email,
                   interests1: userData.interests1,
                   interests2: userData.interests2,

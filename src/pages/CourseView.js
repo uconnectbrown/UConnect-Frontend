@@ -19,11 +19,12 @@ import "./CourseView.css";
 
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
+import { tSExportAssignment } from "@babel/types";
 
 function Course(props) {
   const { codeParam } = useParams();
-  const name = props.name;
-  const code = props.code;
+  const [name, setName] = useState(props.name);
+  const [code, setCode] = useState(props.code);
   const codeNS = codeParam;
   const [email, setEmail] = useState(null);
   const [emailId, setEmailId] = useState(null);
@@ -55,7 +56,15 @@ function Course(props) {
   }, []);
 
   useEffect(() => {
-    if (email && codeNS) getStudents();
+    setCode(props.code);
+    setName(props.name);
+  }, [props.code, props.name]);
+
+  useEffect(() => {
+    if (email && codeNS) {
+      getStudents();
+      props.getCourseInfo(codeNS);
+    }
   }, [email, codeNS]);
 
   const getStudents = () => {

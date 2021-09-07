@@ -14,8 +14,18 @@
   align-items: center;
   cursor: pointer;
   margin-right: unset;
+  border-radius: 0.2rem;
+  transition: 0.4s;
 }
 
 .message-card:hover {
   background-color: rgb(224, 224, 224);
+}
+
+.message-profile {
+  border-radius: 100rem;
+}
+
+.message-profile.recipient {
+  width: 4rem;
 }

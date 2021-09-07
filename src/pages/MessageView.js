@@ -97,22 +97,16 @@ function MessageView(props) {
   const renderLeftPanel = () => {
     return (
       <div>
-        <img
-          className="message-profile"
-          alt="Profile Picture"
-          src={ownImageUrl}
-          height={50}
-        />
         <div
           className="d-flex align-items-center justify-content-center py-4"
           style={{ borderBottom: "1px solid lightgrey" }}
         >
-          <h5 className="m-0">Messages</h5>
-          <FontAwesomeIcon
+          <h5 className="my-0 mx-3">Messages</h5>
+          {/* <FontAwesomeIcon
             icon={faEdit}
-            style={{ height: "100%", marginLeft: "3rem" }}
+            style={{ height: "100%" }}
             className="d-inline-block"
-          />
+          /> */}
         </div>
         {messages && renderMessageCards()}
       </div>
@@ -120,6 +114,8 @@ function MessageView(props) {
   };
 
   const renderMessageCards = () => {
+    const testMessages = [...messages, ...messages, ...messages, ...messages,]
+
     if (!messages || messages.length == 0) {
       return (
         <p className="mt-3" style={{ fontSize: "14px" }}>
@@ -127,6 +123,7 @@ function MessageView(props) {
         </p>
       );
     }
+
     return (
       <div>
         {newMessage && (
@@ -139,16 +136,28 @@ function MessageView(props) {
             <div>{studentName}</div>
           </Row>
         )}
-        {messages.map((message, i) => {
+        {testMessages.map((message, i) => {
+          const messagePreview = message.lastMessage.length <= 30 ? 
+            message.lastMessage :
+            message.lastMessage.substring(0, 30) + '...';
+
           return (
             <Row className="message-card" onClick={() => setMessage(i)}>
-              <img
-                className="message-profile"
-                alt="Profile Picture"
-                src={message.recipientImage}
-              />
-              <div>{message.recipientName}</div>
-              <div>{message.lastMessage}</div>
+              <Col sm={4}>
+                <img
+                  className="message-profile recipient"
+                  alt="Profile Picture"
+                  src={message.recipientImage}
+                />
+              </Col>
+              <Col sm={8}>
+                <div style={{ fontWeight: 600 }}>
+                  {message.recipientName}
+                </div>
+                <div style={{ fontSize: '14px' }}>
+                  {messagePreview}
+                </div>
+              </Col>
             </Row>
           );
         })}

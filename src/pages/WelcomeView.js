@@ -53,7 +53,7 @@ function Welcome(props) {
         </div>
         <Button
           onClick={signInWithGoogle}
-          className="w-100 mt-5 mb-3"
+          className="w-100 mt-4 mb-3"
           size="lg"
         >
           Sign In

@@ -81,11 +81,23 @@ function App() {
   useEffect(() => {
     if (deny === false) getCourses();
   }, [deny]);
-  const getCourses = () => {
+  const getCourses = (codeNS) => {
     db.doc(`/profiles/${emailId}`)
       .get()
       .then((doc) => {
         setCourses(doc.data().courses);
+        return doc.data().courses;
+      })
+      .then((courses) => {
+        let c, n;
+        for (let i = 0; i < courses.length; i++) {
+          if (courses[i].code.replace(/\s/g, "") === codeNS) {
+            c = courses[i].code;
+            n = courses[i].name;
+          }
+        }
+        setCode(c);
+        setName(n);
       })
       .catch((err) => console.log(err));
   };
@@ -95,6 +107,7 @@ function App() {
   const handleName = (n) => {
     setName(n);
   };
+
   const updateCourses = (courses) => {
     setCourses(courses);
   };
@@ -234,6 +247,7 @@ function App() {
                     <CourseView
                       code={code}
                       name={name}
+                      getCourseInfo={getCourses}
                       decRequests={decRequests}
                       incRequests={incRequests}
                       updateOutgoing={updateOutgoing}

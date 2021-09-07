@@ -9,12 +9,22 @@ import { Link } from "react-router-dom";
 import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
-import { Container, Row, Col, Button, Modal, FloatingLabel, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Modal,
+  FloatingLabel,
+  Form,
+} from "react-bootstrap";
 import Logo from "../assets/Logo.png";
 
 // Styling
 import "./HomeView.css";
 import Tooltip from "@material-ui/core/Tooltip";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
@@ -195,16 +205,16 @@ function HomeView(props) {
     return (
       <Row className="search-picker my-2">
         <Col>
-        <Select
-          name="searchType"
-          defaultValue={searchTypes[0]}
-          options={searchTypes}
-          isOptionDisabled={(option) => option.disabled}
-          onChange={(options) => {
-            setSearchType(options.value);
-            setSelectedOptions([]);
-          }}
-        />
+          <Select
+            name="searchType"
+            defaultValue={searchTypes[0]}
+            options={searchTypes}
+            isOptionDisabled={(option) => option.disabled}
+            onChange={(options) => {
+              setSearchType(options.value);
+              setSelectedOptions([]);
+            }}
+          />
         </Col>
         <Col>
         <Tooltip title="Extracurriculars are grayed out if you are not involved in them" placement="right">
@@ -294,6 +304,7 @@ function HomeView(props) {
                 <div style={{ fontSize: "1.2em", fontStyle: "bold" }}>
                   {student.name}
                 </div>
+
                 <div className="card-text">Class of {student.classYear}</div>
                 <div className="card-text">
                   {student.majors.map((major) => major)}
@@ -364,7 +375,12 @@ function HomeView(props) {
                 <div className="card-text mb-3">
                   {student.name} '{student.classYear.split("0")[1]}
                 </div>
-                <div className="card-text mb-3">{student.compatibility}%</div>
+                <div style={{ width: 80, height: 80 }}>
+                  <CircularProgressbar
+                    value={student.compatability}
+                    text={`${student.compatability}%`}
+                  />
+                </div>
               </div>
             );
           })}
