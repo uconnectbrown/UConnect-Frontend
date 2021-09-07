@@ -856,9 +856,8 @@ function ProfileView(props) {
           {!editing ? (
             <React.Fragment>
               {firstTime && (
-                <h4 style={{ fontWeight: 700 }}>
-                  Before searching for and connecting with others, please
-                  customize your profile.
+                <h4 style={{ fontWeight: 600, color:"#E35E96" }} align="center">
+                  Please customize your profile to complete the onboarding process.
                 </h4>
               )}
               <button

@@ -451,7 +451,7 @@ function HomeView(props) {
                 of remaining requests one has, but requests are returned to the
                 sender when they have been accepted. Once two users are
                 connected, they now have the ability to message each other and
-                have access additional information such as their common courses.
+                have access to additional information such as their common courses.
               </p>
               <h3>Search and Filter</h3>
               <p>
