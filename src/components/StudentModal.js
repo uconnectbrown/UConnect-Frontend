@@ -9,6 +9,9 @@ import ConnectButton from "./ConnectButton";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "./StudentModal.css";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
+
 // Body
 function StudentModal(props) {
   const history = useHistory();
@@ -16,7 +19,6 @@ function StudentModal(props) {
   const studentId = props.studentId;
   const [outgoing, setOutgoing] = useState(props.outgoing);
   const [student, setStudent] = useState(null);
-  const [indexArray, setIndexArray] = useState([]);
   const [status, setStatus] = useState(null);
   const [validUndo, setValidUndo] = useState(null);
 
@@ -33,19 +35,35 @@ function StudentModal(props) {
   }, [props.outgoing]);
 
   const getStudent = () => {
-    axios
-      .get(`/user/${studentId}`)
-      .then((res) => {
-        setStudent(res.data.user);
-        let arr = [];
-        for (let j = 0; j < 5; j++) {
-          if (res.data.user.courses[j].code) {
-            arr.push(j);
-          }
+    let oCourses = [];
+    let sCodes = [];
+    let studentInfo = {};
+    let promises = [
+      db
+        .doc(`/profiles/${emailId}`)
+        .get()
+        .then((doc) => {
+          oCourses = doc.data().courses;
+        }),
+      axios.get(`/user/${studentId}`).then((res) => {
+        studentInfo = res.data.user;
+        sCodes = res.data.user.courses
+          .map((course) => course.code)
+          .filter(Boolean);
+      }),
+    ];
+
+    Promise.all(promises).then(() => {
+      let common = [];
+
+      for (let i = 0; i < oCourses.length; i++) {
+        if (sCodes.includes(oCourses[i].code)) {
+          common.push(oCourses[i]);
         }
-        setIndexArray(arr);
-      })
-      .catch((err) => console.log(err));
+      }
+      studentInfo.courses = common;
+      setStudent(studentInfo);
+    });
   };
 
   const checkStatus = () => {
@@ -177,18 +195,32 @@ function StudentModal(props) {
   };
 
   const renderCourses = () => {
-    return student.courses.map((c) => {
-      if (!c.name) return null;
-      return (
-        <div
-          className="modal-profile-courses d-flex flex-column text-center align-items-center justify-content-center"
-          // onClick={}
-        >
-          <div>{c.code}</div>
-          <div style={{ fontSize: "10px" }}>{c.name}</div>
-        </div>
-      );
-    });
+    if (status === "con") {
+      return student.courses.map((c) => {
+        if (!c.name) return null;
+        return (
+          <div
+            className="modal-profile-courses d-flex flex-column text-center align-items-center justify-content-center"
+            // onClick={}
+          >
+            <div>{c.code}</div>
+            <div style={{ fontSize: "10px" }}>{c.name}</div>
+          </div>
+        );
+      });
+    } else {
+      return student.courses.map((c) => {
+        if (!c.name) return null;
+        return (
+          <div
+            className="modal-profile-courses d-flex flex-column text-center align-items-center justify-content-center"
+            // onClick={}
+          >
+            <FontAwesomeIcon style={{ width: 15 }} icon={faLock} />
+          </div>
+        );
+      });
+    }
   };
 
   const renderInterests = () => {
@@ -318,11 +350,12 @@ function StudentModal(props) {
         />
       </Col>
       <Col sm={8} className="px-3">
-        <Row>{renderCourses()}</Row>
         <h5>Interests</h5>
         <Row>{renderInterests()}</Row>
         <h5>Extracurriculars</h5>
         <Row>{renderEcs()}</Row>
+        <h5>Common Courses</h5>
+        <Row>{renderCourses()}</Row>
       </Col>
     </Container>
   );

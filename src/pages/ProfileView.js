@@ -33,7 +33,7 @@ import {
 } from "react-bootstrap";
 import "./ProfileView.css";
 import { FormControlLabel } from "@material-ui/core";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBullseye, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const { validProfile } = require("../util/validators");
@@ -306,17 +306,27 @@ function ProfileView(props) {
             src={student.imageUrl}
           />
           {student.imageUrl ===
-            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && !editing && (
-            <p style={{ width: "100%", fontSize: 14, marginTop: 0 }}>
-              Please add an image to complete <br /> your profile.
-            </p>
-          )}
+            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" &&
+            !editing && (
+              <p style={{ width: "100%", fontSize: 14, marginTop: 0 }}>
+                Please add an image to complete <br /> your profile.
+              </p>
+            )}
           {student.imageUrl ===
-            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && editing && (
-            <p style={{ width: "100%", fontSize: 14, marginTop: 0, fontWeight: 700, color: "red" }}>
-              Please add an image to complete <br /> your profile.
-            </p>
-          )}
+            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" &&
+            editing && (
+              <p
+                style={{
+                  width: "100%",
+                  fontSize: 14,
+                  marginTop: 0,
+                  fontWeight: 700,
+                  color: "red",
+                }}
+              >
+                Please add an image to complete <br /> your profile.
+              </p>
+            )}
           {editing && (
             <Button className="mb-3" onClick={() => setEditImage(true)}>
               Edit Image
@@ -713,8 +723,10 @@ function ProfileView(props) {
         return (
           <Col sm={6} className="mb-3">
             <div className="interest-box">
-            {cat!=="Groups" && (<p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>)}
-              {cat==="Groups" && (
+              {cat !== "Groups" && (
+                <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
+              )}
+              {cat === "Groups" && (
                 <div align="center">
                 <p style={{ fontSize: "14px", textAlign: "center", display: "inline", marginRight: 6 }}>{cat}</p>
                 <Tooltip title="clubs/student groups/greek life" placement="right">
@@ -726,7 +738,7 @@ function ProfileView(props) {
                 </Tooltip>
                 </div>
               )}
-              
+
               {list.length > 0 && (
                 <ul>
                   {list.map((l) => {
@@ -817,16 +829,19 @@ function ProfileView(props) {
           {!editing ? (
             <React.Fragment>
               {firstTime && (
-                <h4 style={{fontWeight: 700}}>Before searching for and connecting with others, please customize your profile.</h4>
+                <h4 style={{ fontWeight: 700 }}>
+                  Before searching for and connecting with others, please
+                  customize your profile.
+                </h4>
               )}
               <button
-              type="button"
-              class="btn btn-outline-primary btn-sm"
-              style={{ width: "5rem" }}
-              onClick={() => setEditing(true)}
-            >
-              Edit
-            </button>
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                style={{ width: "5rem" }}
+                onClick={() => setEditing(true)}
+              >
+                Edit
+              </button>
             </React.Fragment>
           ) : (
             <React.Fragment>
@@ -844,19 +859,24 @@ function ProfileView(props) {
               </button>
               <button
                 type="button"
-                title={student.imageUrl ===
-                  "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" ? "Add an image before saving" : ""}
+                title={
+                  student.imageUrl ===
+                  "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                    ? "Add an image before saving"
+                    : ""
+                }
                 class="btn btn-outline-primary btn-sm"
                 style={{ width: "8rem" }}
                 onClick={() => {
                   setEditing(false);
                   setEditingInterests(false);
                   editProfile();
-                  // maybe move this inside of editProfile
-                  // {firstTime && (
-                  //   handleCloseOnBoard();
-                  //   axios.get(`/newFeatured/${emailId}`).catch(err => console.log(err));
-                  // )}
+                  if (firstTime) {
+                    handleCloseOnBoard();
+                    axios
+                      .get(`/newFeatured/${emailId}`)
+                      .catch((err) => console.log(err));
+                  }
                 }}
                 disabled={!validProfile(newProfile)}
               >
