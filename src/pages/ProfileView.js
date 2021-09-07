@@ -716,7 +716,7 @@ function ProfileView(props) {
             {cat!=="Groups" && (<p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>)}
               {cat==="Groups" && (
                 <div align="center">
-                <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}>{cat}{" "}</p>
+                <p style={{ fontSize: "14px", textAlign: "center", display: "inline", marginRight: 6 }}>{cat}</p>
                 <Tooltip title="clubs/student groups/greek life" placement="right">
                 {/* <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}> */}
                 <span>

@@ -40,6 +40,9 @@
 .search-picker {
   width: 40%;
 }
+.featured-title {
+  width: 33%;
+}
 
 .multiselect-search {
   width: 80%;

@@ -12,9 +12,12 @@ import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import Tooltip from "@material-ui/core/Tooltip";
 
 // Styles
 import "./Interests.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfoCircle, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Resources
 import {
@@ -219,7 +222,12 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
     case 1:
       return (
         <div>
-          <Typography variant="h5">Physical Activity and Wellness</Typography>
+          <Typography variant="h5">
+            Physical Activity and Wellness
+            
+            <Tooltip style={{marginLeft: 15}} placement="right" title="You do not necessarily have to participate in an activity for it to be an interest of yours"><span><FontAwesomeIcon icon={faInfoCircle} /></span></Tooltip>
+            </Typography>
+            
           <Grid container spacing={2} className="options-container">
             {interests2.map((interest, index) => (
               <Grid item>

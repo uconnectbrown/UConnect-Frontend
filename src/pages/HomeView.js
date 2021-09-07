@@ -357,7 +357,18 @@ function HomeView(props) {
   const renderFeatured = () => {
     return (
       <div>
+        <Row className="featured-title my-2">
+          <Col>
         <h5 className="mt-4">Featured Profiles</h5>
+        </Col>
+        <Col style={{marginTop: 24, marginLeft: -10}}>
+        <Tooltip placement="right" title="These recommended profiles are generated weekly and are determined based on the information you have provided in your profile.">
+          <span>
+          <FontAwesomeIcon icon={faInfoCircle}/>
+          </span>
+        </Tooltip>
+        </Col>
+        </Row>
         <div class="featured-container pb-4 pt-1">
           {featured.map((student, i) => {
             return (
@@ -500,7 +511,7 @@ function HomeView(props) {
           />
         </Modal.Body>
       </Modal>
-      <h1>Connect</h1>
+      <h1>Connect <Tooltip style={{marginLeft: 5}} placement="right" title="Here you are able you to search and filter though all Brown students on UConnect"><span><FontAwesomeIcon style={{fontSize: 16, marginBottom: 5}} icon={faInfoCircle}/></span></Tooltip></h1>
       {renderSearchPicker()}
       {searchType === 0 && renderSearchBar()}
       {searchType !== 0 && renderDataList(searchType)}
