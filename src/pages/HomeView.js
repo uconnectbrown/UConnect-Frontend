@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
-import { Container, Row, Col, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Button, Modal, FloatingLabel, Form } from "react-bootstrap";
 import Logo from "../assets/Logo.png";
 
 // Styling
@@ -191,6 +191,7 @@ function HomeView(props) {
   const renderSearchPicker = () => {
     return (
       <Row className="search-picker my-2">
+        <Col>
         <Select
           name="searchType"
           defaultValue={searchTypes[0]}
@@ -201,6 +202,12 @@ function HomeView(props) {
             setSelectedOptions([]);
           }}
         />
+        </Col>
+        <Col>
+        <Tooltip title="Extracurriculars are grayed out if you are not involved in them">
+          <p>(i)</p>
+        </Tooltip>
+        </Col>
       </Row>
     );
   };
@@ -354,39 +361,6 @@ function HomeView(props) {
                   {student.name} '{student.classYear.split("0")[1]}
                 </div>
                 <div className="card-text mb-3">{student.compatibility}%</div>
-                {/* maybe omit the rest of this... */}
-                <ul style={{ marginBottom: 0 }}>
-                  {student.compatability}
-                  {student.courseOverlap === 1 && (
-                    <li className="card-text">
-                      {student.courseOverlap} course in common
-                    </li>
-                  )}
-                  {student.courseOverlap > 1 && (
-                    <li className="card-text">
-                      {student.courseOverlap} courses in common
-                    </li>
-                  )}
-                  {student.interestOverlap === 1 && (
-                    <li className="card-text">
-                      {student.interestOverlap} interest in common
-                    </li>
-                  )}
-                  {student.interestOverlap > 1 && (
-                    <li className="card-text">
-                      {student.interestOverlap} interests in common
-                    </li>
-                  )}
-                  {student.shareVarsity && (
-                    <li className="card-text">Plays a varsity sport</li>
-                  )}
-                  {student.sharePickUp && (
-                    <li className="card-text">Plays pickup sports</li>
-                  )}
-                  {student.shareInstruments && (
-                    <li className="card-text">Plays an instrument</li>
-                  )}
-                </ul>
               </div>
             );
           })}
@@ -459,9 +433,7 @@ function HomeView(props) {
                 of information such as what courses you are taking and what
                 extracurriculars you are involved in. Adding more additional
                 information will also give you access to more powerful search
-                tools to find other students who are relevant to you, so, before
-                searching for and connecting with others, please customize your
-                profile.
+                tools to find other students who are relevant to you.
               </p>
             </div>
           )}
