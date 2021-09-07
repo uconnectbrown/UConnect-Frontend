@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
-import { Container, Row, Col, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Button, Modal, FloatingLabel, Form } from "react-bootstrap";
 import Logo from "../assets/Logo.png";
 
 // Styling
@@ -191,6 +191,7 @@ function HomeView(props) {
   const renderSearchPicker = () => {
     return (
       <Row className="search-picker my-2">
+        <Col>
         <Select
           name="searchType"
           defaultValue={searchTypes[0]}
@@ -201,6 +202,12 @@ function HomeView(props) {
             setSelectedOptions([]);
           }}
         />
+        </Col>
+        <Col>
+        <Tooltip title="Extracurriculars are grayed out if you are not involved in them">
+          <p>(i)</p>
+        </Tooltip>
+        </Col>
       </Row>
     );
   };
@@ -363,7 +370,7 @@ function HomeView(props) {
 
   const renderOnboard = () => {
     return (
-      <Modal show={firstTime} dialogClassName="student-modal">
+      <Modal show={false} dialogClassName="student-modal">
         <Modal.Body>
           {onboardPage === 0 && (
             <div align="center">

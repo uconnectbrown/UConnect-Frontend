@@ -596,7 +596,7 @@ function ProfileView(props) {
           )}
           {student.imageUrl ===
             "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && editing && (
-            <p style={{ width: "100%", fontSize: 14, marginTop: 0, fontWeight: 500, color: "red" }}>
+            <p style={{ width: "100%", fontSize: 14, marginTop: 0, fontWeight: 700, color: "red" }}>
               Please add an image to complete <br /> your profile.
             </p>
           )}
@@ -936,7 +936,16 @@ function ProfileView(props) {
         return (
           <Col sm={6} className="mb-3">
             <div className="interest-box">
-              <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
+            {cat!=="Groups" && (<p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>)}
+              {cat==="Groups" && (
+                <div align="center">
+                <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}>{cat}{" "}</p>
+                <Tooltip title="clubs/student groups/greek life">
+                <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}>(i)</p>
+                </Tooltip>
+                </div>
+              )}
+              
               {list.length > 0 && (
                 <ul>
                   {list.map((l) => {
@@ -985,7 +994,7 @@ function ProfileView(props) {
           {!editing ? (
             <React.Fragment>
               {firstTime && (
-                <h4>Before searching for and connecting with others, please customize your profile.</h4>
+                <h4 style={{fontWeight: 700}}>Before searching for and connecting with others, please customize your profile.</h4>
               )}
               <button
               type="button"
@@ -1020,7 +1029,6 @@ function ProfileView(props) {
                   setEditing(false);
                   setEditingInterests(false);
                   editProfile();
-
                   // maybe move this inside of editProfile
                   // {firstTime && (
                   //   handleCloseOnBoard();
