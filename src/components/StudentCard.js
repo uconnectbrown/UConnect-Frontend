@@ -16,6 +16,11 @@ const StudentCard = (props) => {
           {props.name} '{props.classYear.split("0")[1]}
         </div>
       )}
+      {props.name && !props.classYear && (
+        <div style={{ fontSize: "1rem", fontStyle: "bold" }}>
+          {props.name}
+        </div>
+      )}
       {props.majors && (
         <div className="card-text">{props.majors.map((major) => major)}</div>
       )}

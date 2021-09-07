@@ -1,7 +1,7 @@
 // Setup
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { auth } from "../firebase";
+import { db, auth } from "../firebase";
 
 // Components
 import StudentModal from "../components/StudentModal";
@@ -18,7 +18,7 @@ function Connections() {
   const [pending, setPending] = useState([]);
   const [connections, setConnections] = useState(null);
   const [connections_, setConnections_] = useState(null);
-
+  const [outgoing, setOutgoing] = useState(null);
   const [studentId, setStudentId] = useState("");
   const [messageOpen, setMessageOpen] = useState(false);
   const [emailId, setEmailId] = useState(null);
@@ -33,6 +33,10 @@ function Connections() {
 
   useEffect(() => {
     if (emailId) getPending();
+  }, [emailId]);
+
+  useEffect(() => {
+    if (emailId) getOutgoing();
   }, [emailId]);
 
   useEffect(() => {
@@ -78,6 +82,22 @@ function Connections() {
       .catch((err) => console.log(err));
   };
 
+  // Outgoing
+  const getOutgoing = () => {
+    let students = [];
+    db.collection("profiles")
+      .doc(emailId)
+      .collection("sent")
+      .get()
+      .then((data) => {
+        data.forEach((doc) => {
+          students.push(doc.data());
+        });
+        setOutgoing(students);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const getConnections = () => {
     axios
       .get(`/connections/${emailId}`)
@@ -92,6 +112,10 @@ function Connections() {
     setStudentId(pending[index].emailId);
   };
 
+  const handleOpenOutgoing = (index) => {
+    setStudentId(outgoing[index].emailId);
+  };
+
   const handleOpenConnected = (index) => {
     setStudentId(connections_[index].emailId);
   };
@@ -99,6 +123,7 @@ function Connections() {
   const handleCloseStudent = () => {
     setStudentId("");
     getPending();
+    getOutgoing();
   };
 
   const handleOpenMessage = (id, image, name) => {
@@ -147,13 +172,28 @@ function Connections() {
       <Row>
         {pending.length > 0 && (
           <>
-            <h4>Pending Connections ({pending.length})</h4>
+            <h4>Incoming Requests ({pending.length})</h4>
             {pending.map((p, i) => (
               <StudentCard
                 name={p.name}
                 classYear={p.classYear}
                 imageUrl={p.imageUrl}
                 onClick={() => handleOpenPending(i)}
+              />
+            ))}
+          </>
+        )}
+      </Row>
+
+      <Row>
+        {outgoing && outgoing.length > 0 && (
+          <>
+            <h4>Outgoing Requests ({outgoing.length})</h4>
+            {outgoing.map((p, i) => (
+              <StudentCard
+                name={p.name}
+                imageUrl={p.imageUrl}
+                onClick={() => handleOpenOutgoing(i)}
               />
             ))}
           </>

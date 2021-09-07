@@ -19,6 +19,7 @@ const SearchBar = (props) => {
           placeholder={props.placeholder}
           value={props.value}
           onChange={props.onChange}
+          autocomplete="off"
         />
       </form>
       <button onClick={props.clearSearch}>
