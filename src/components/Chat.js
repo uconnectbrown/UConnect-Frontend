@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { db } from "../firebase";
 import SendMessage from "./SendMessage";
 
+import "./Chat.css";
+
 function Chat(props) {
   const scroll = useRef();
   const [messages, setMessages] = useState([]);
@@ -25,29 +27,27 @@ function Chat(props) {
   }, [props.roomId]);
 
   return (
-    <div className="msgs">
-      {messages.map((message) => (
-        <div>
-          <div
-            key={message.id}
-            className={`msg ${message.ownId === ownId ? "sent" : "received"}`}
-          >
-            <img
-              src={message.ownImageUrl}
-              alt=""
-              style={{
-                borderRadius: "10%",
-                height: "45px",
-                width: "45px",
-                objectFit: "cover",
-                marginTop: "-20px",
-              }}
-            ></img>
-            <p>{message.text}</p>
+    <div>
+      <div className="chat-top d-flex align-items-center justify-content-center flex-column">
+        <img
+          className="recipient-profile"
+          alt="Profile Picture"
+          src={studentImageUrl}
+        />
+        {props.studentName}
+      </div>
+      <div className="chat-msgs d-flex flex-column">
+        {messages.map((message) => (
+          <div>
+            <div
+              key={message.id}
+              className={`msg ${message.ownId === ownId ? "sent" : "received"}`}
+            >
+              <p>{message.text}</p>
+            </div>
           </div>
-        </div>
-      ))}
-
+        ))}
+      </div>
       <SendMessage
         scroll={scroll}
         studentName={studentName}

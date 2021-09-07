@@ -114,8 +114,6 @@ function MessageView(props) {
   };
 
   const renderMessageCards = () => {
-    const testMessages = [...messages, ...messages, ...messages, ...messages,]
-
     if (!messages || messages.length == 0) {
       return (
         <p className="mt-3" style={{ fontSize: "14px" }}>
@@ -136,7 +134,7 @@ function MessageView(props) {
             <div>{studentName}</div>
           </Row>
         )}
-        {testMessages.map((message, i) => {
+        {messages.map((message, i) => {
           const messagePreview = message.lastMessage.length <= 30 ? 
             message.lastMessage :
             message.lastMessage.substring(0, 30) + '...';
@@ -173,7 +171,6 @@ function MessageView(props) {
             {renderLeftPanel()}
           </Col>
           <Col sm={9} className="p-2" style={{ backgroundColor: "white" }}>
-            {studentName}
             {roomId && (
               <Chat
                 studentName={studentName}
