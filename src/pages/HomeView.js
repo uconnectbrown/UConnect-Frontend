@@ -26,6 +26,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfoCircle, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
 import { DockRounded, TramOutlined } from "@material-ui/icons";
@@ -214,9 +217,11 @@ function HomeView(props) {
           />
         </Col>
         <Col>
-          <Tooltip title="Extracurriculars are grayed out if you are not involved in them">
-            <p>(i)</p>
-          </Tooltip>
+        <Tooltip title="Extracurriculars are grayed out if you are not involved in them" placement="right">
+          <span>
+            <FontAwesomeIcon icon={faInfoCircle} style={{marginTop: 10}}/>
+          </span>
+        </Tooltip>
         </Col>
       </Row>
     );

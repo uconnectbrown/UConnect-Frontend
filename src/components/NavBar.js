@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { Navbar, Container } from "react-bootstrap";
-import { faBullseye } from "@fortawesome/free-solid-svg-icons";
+import { faBullseye, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Modal } from "react-bootstrap";
 import Tooltip from "@material-ui/core/Tooltip";
