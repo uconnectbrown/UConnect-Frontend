@@ -44,3 +44,13 @@
   margin: 0;
   font-size: 15px;
 }
+
+.msg-input {
+  border-radius: 10rem;
+  background-color: #f3f3f3;
+  border-color: transparent;
+}
+
+.msg-input:focus-visible {
+  outline: none;
+}
