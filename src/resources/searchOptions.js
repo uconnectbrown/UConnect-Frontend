@@ -27,16 +27,32 @@ const searchTypes = [
 
 const classYears = [
   {
+    value: "2021.5",
+    label: "2021.5",
+  },
+  {
     value: "2022",
     label: "2022",
+  },
+  {
+    value: "2022.5",
+    label: "2022.5",
   },
   {
     value: "2023",
     label: "2023",
   },
   {
+    value: "2023.5",
+    label: "2023.5",
+  },
+  {
     value: "2024",
     label: "2024",
+  },
+  {
+    value: "2024.5",
+    label: "2024.5",
   },
   {
     value: "2025",
@@ -186,55 +202,55 @@ const majors = [
 ];
 
 const varsitySports = [
-  { value: "Baseball", label: "Baseball", disabled: true },
-  { value: "Basketball", label: "Basketball", disabled: true },
-  { value: "Crew", label: "Crew", disabled: true },
+  { value: "Baseball", label: "Baseball", disabled: false },
+  { value: "Basketball", label: "Basketball", disabled: false },
+  { value: "Crew", label: "Crew", disabled: false },
   { value: "Cross Country", label: "Cross Country", disabled: false },
-  { value: "Equestrian", label: "Equestrian", disabled: true },
-  { value: "Fencing", label: "Fencing", disabled: true },
-  { value: "Field Hockey", label: "Field Hockey", disabled: true },
-  { value: "Football", label: "Football", disabled: true },
-  { value: "Ice Hockey", label: "Ice Hockey", disabled: true },
-  { value: "Lacrosse", label: "Lacrosse", disabled: true },
-  { value: "Rugby", label: "Rugby", disabled: true },
-  { value: "Sailing", label: "Sailing", disabled: true },
-  { value: "Soccer", label: "Soccer", disabled: true },
-  { value: "Softball", label: "Softball", disabled: true },
+  { value: "Equestrian", label: "Equestrian", disabled: false },
+  { value: "Fencing", label: "Fencing", disabled: false },
+  { value: "Field Hockey", label: "Field Hockey", disabled: false },
+  { value: "Football", label: "Football", disabled: false },
+  { value: "Ice Hockey", label: "Ice Hockey", disabled: false },
+  { value: "Lacrosse", label: "Lacrosse", disabled: false },
+  { value: "Rugby", label: "Rugby", disabled: false },
+  { value: "Sailing", label: "Sailing", disabled: false },
+  { value: "Soccer", label: "Soccer", disabled: false },
+  { value: "Softball", label: "Softball", disabled: false },
   {
     value: "Swimming and Diving",
     label: "Swimming and Diving",
-    disabled: true,
+    disabled: false,
   },
-  { value: "Tennis", label: "Tennis", disabled: true },
+  { value: "Tennis", label: "Tennis", disabled: false },
   { value: "Track and Field", label: "Track and Field", disabled: false },
-  { value: "Volleyball", label: "Volleyball", disabled: true },
-  { value: "Water Polo", label: "Water Polo", disabled: true },
-  { value: "Wrestling", label: "Wrestling", disabled: true },
+  { value: "Volleyball", label: "Volleyball", disabled: false },
+  { value: "Water Polo", label: "Water Polo", disabled: false },
+  { value: "Wrestling", label: "Wrestling", disabled: false },
 ];
 
 const pickUpSports = [
-  { value: "Basketball", label: "Basketball", disabled: true },
-  { value: "Football", label: "Football", disabled: true },
-  { value: "Soccer", label: "Soccer", disabled: true },
-  { value: "Spikeball", label: "Spikeball", disabled: true },
-  { value: "Table Tennis", label: "Table Tennis", disabled: true },
-  { value: "Tennis", label: "Tennis", disabled: true },
-  { value: "Ultimate Frisbee", label: "Ultimate Frisbee", disabled: true },
-  { value: "Volleyball", label: "Volleyball", disabled: true },
+  { value: "Basketball", label: "Basketball", disabled: false },
+  { value: "Football", label: "Football", disabled: false },
+  { value: "Soccer", label: "Soccer", disabled: false },
+  { value: "Spikeball", label: "Spikeball", disabled: false },
+  { value: "Table Tennis", label: "Table Tennis", disabled: false },
+  { value: "Tennis", label: "Tennis", disabled: false },
+  { value: "Ultimate Frisbee", label: "Ultimate Frisbee", disabled: false },
+  { value: "Volleyball", label: "Volleyball", disabled: false },
 ];
 
 const instruments = [
-  { value: "Bass", label: "Bass", disabled: true },
-  { value: "Cello", label: "Cello", disabled: true },
-  { value: "Clarinet", label: "Clarinet", disabled: true },
-  { value: "Drums", label: "Drums", disabled: true },
-  { value: "Flute", label: "Flute", disabled: true },
-  { value: "Guitar", label: "Guitar", disabled: true },
-  { value: "Piano", label: "Piano", disabled: true },
-  { value: "Saxophone", label: "Saxophone", disabled: true },
-  { value: "Trumpet", label: "Trumpet", disabled: true },
-  { value: "Violin", label: "Violin", disabled: true },
-  { value: "Vocals", label: "Vocals", disabled: true },
+  { value: "Bass", label: "Bass", disabled: false },
+  { value: "Cello", label: "Cello", disabled: false },
+  { value: "Clarinet", label: "Clarinet", disabled: false },
+  { value: "Drums", label: "Drums", disabled: false },
+  { value: "Flute", label: "Flute", disabled: false },
+  { value: "Guitar", label: "Guitar", disabled: false },
+  { value: "Piano", label: "Piano", disabled: false },
+  { value: "Saxophone", label: "Saxophone", disabled: false },
+  { value: "Trumpet", label: "Trumpet", disabled: false },
+  { value: "Violin", label: "Violin", disabled: false },
+  { value: "Vocals", label: "Vocals", disabled: false },
 ];
 
 const searchOptions = [

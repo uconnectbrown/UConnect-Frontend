@@ -295,8 +295,16 @@ function ProfileView(props) {
   };
 
   const renderLeftInfo = () => {
-    const classYears = ["2022", "2023", "2024", "2025"];
-
+    const classYears = [
+      "2021.5",
+      "2022",
+      "2022.5",
+      "2023",
+      "2023.5",
+      "2024",
+      "2024.5",
+      "2025",
+    ];
     return (
       <>
         <div>
@@ -388,7 +396,7 @@ function ProfileView(props) {
           </div>
         ) : (
           <div style={{ textAlign: "left" }}>
-            <form class="form-floating">
+            <form class="form-floating mb-3">
               <h5>Basic Info </h5>
               <FloatingLabel
                 label={newProfile.firstName ? "First Name *" : "Can't be empty"}
@@ -856,8 +864,12 @@ function ProfileView(props) {
           {!editing ? (
             <React.Fragment>
               {firstTime && (
-                <h4 style={{ fontWeight: 600, color:"#E35E96" }} align="center">
-                  Please customize your profile to complete the onboarding process.
+                <h4
+                  style={{ fontWeight: 600, color: "#E35E96" }}
+                  align="center"
+                >
+                  Please customize your profile to complete the onboarding
+                  process.
                 </h4>
               )}
               <button

@@ -364,15 +364,15 @@ function HomeView(props) {
     return (
       <div>
         <p className="mt-4">
-        <h5 style={{display:"inline"}} >Featured Profiles</h5>
-        <Tooltip
-              placement="right"
-              title="These profiles are generated weekly and are recommended based on the information you have provided in your profile."
-            >
-              <span>
-                <FontAwesomeIcon style={{marginLeft: 15}} icon={faInfoCircle} />
-              </span>
-            </Tooltip>
+          <h5 style={{ display: "inline" }}>Featured Profiles</h5>
+          <Tooltip
+            placement="right"
+            title="These profiles are generated weekly and are recommended based on the information you have provided in your profile."
+          >
+            <span>
+              <FontAwesomeIcon style={{ marginLeft: 15 }} icon={faInfoCircle} />
+            </span>
+          </Tooltip>
         </p>
         <div class="featured-container pb-4 pt-1">
           {featured.map((student, i) => {
@@ -394,10 +394,10 @@ function HomeView(props) {
                 <div style={{ width: 80, height: 80 }}>
                   <Tooltip placement="top" title="Compatibility Score">
                     <span>
-                    <CircularProgressbar
-                    value={student.compatability}
-                    text={`${student.compatability}%`}
-                  />
+                      <CircularProgressbar
+                        value={student.compatability}
+                        text={`${student.compatability}%`}
+                      />
                     </span>
                   </Tooltip>
                 </div>
@@ -451,7 +451,8 @@ function HomeView(props) {
                 of remaining requests one has, but requests are returned to the
                 sender when they have been accepted. Once two users are
                 connected, they now have the ability to message each other and
-                have access to additional information such as their common courses.
+                have access to additional information such as their common
+                courses.
               </p>
               <h3>Search and Filter</h3>
               <p>
