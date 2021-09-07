@@ -55,7 +55,9 @@ function NavBar(props) {
           </button>
           
           <Tooltip title="Functionality Info">
-            <button onClick={() => setHelp(true)}>?</button>
+            <button onClick={() => setHelp(true)}>
+              <FontAwesomeIcon icon={faQuestionCircle} style={{marginLeft:-10, marginRight: 8}}/>
+            </button>
           </Tooltip>
           <Modal show={help} dialogClassName="student-modal">
             <Modal.Body className="mx-5 px-5 py-4">
