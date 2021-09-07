@@ -47,7 +47,16 @@ function ProfileBuild(props) {
 
   const [userData, setUserData] = useState(emptyProfile);
   const [email, setEmail] = useState(null);
-  const classYears = ["2022", "2023", "2024", "2025"];
+  const classYears = [
+    "2021.5",
+    "2022",
+    "2022.5",
+    "2023",
+    "2023.5",
+    "2024",
+    "2024.5",
+    "2025",
+  ];
   const { classes } = props;
   const [loading, setLoading] = useState(false);
 

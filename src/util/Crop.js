@@ -1,7 +1,7 @@
 import React from "react";
 import Cropper from "react-easy-crop";
 import Slider from "@material-ui/core/Slider";
-import Button from "@material-ui/core/Button";
+import { Button } from "react-bootstrap";
 import axios from "axios";
 import { auth } from "../firebase";
 
@@ -163,15 +163,15 @@ function Crop(props) {
           onChange={onSelectFile}
           style={{ display: "none" }}
         />
+
         <Button
-          variant="contained"
-          color="default"
+          className="mb3"
           onClick={triggerFileSelectPopup}
           style={{ marginRight: "10px" }}
         >
           Upload
         </Button>
-        <Button variant="contained" color="default" onClick={onDownload}>
+        <Button className="mb3" onClick={onDownload}>
           Save
         </Button>
       </div>
