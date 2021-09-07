@@ -34,7 +34,8 @@ import {
 } from "react-bootstrap";
 import "./ProfileView.css";
 import { FormControlLabel } from "@material-ui/core";
-import { faBullseye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBullseye, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const { validProfile } = require("../util/validators");
 
@@ -940,8 +941,12 @@ function ProfileView(props) {
               {cat==="Groups" && (
                 <div align="center">
                 <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}>{cat}{" "}</p>
-                <Tooltip title="clubs/student groups/greek life">
-                <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}>(i)</p>
+                <Tooltip title="clubs/student groups/greek life" placement="right">
+                {/* <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}> */}
+                <span>
+                <FontAwesomeIcon style={{width: 15}} icon={faInfoCircle}/>
+                </span>
+                  {/* </p> */}
                 </Tooltip>
                 </div>
               )}

@@ -16,6 +16,9 @@ import Logo from "../assets/Logo.png";
 import "./HomeView.css";
 import Tooltip from "@material-ui/core/Tooltip";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfoCircle, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
 import { DockRounded, TramOutlined } from "@material-ui/icons";
@@ -204,8 +207,10 @@ function HomeView(props) {
         />
         </Col>
         <Col>
-        <Tooltip title="Extracurriculars are grayed out if you are not involved in them">
-          <p>(i)</p>
+        <Tooltip title="Extracurriculars are grayed out if you are not involved in them" placement="right">
+          <span>
+            <FontAwesomeIcon icon={faInfoCircle} style={{marginTop: 10}}/>
+          </span>
         </Tooltip>
         </Col>
       </Row>

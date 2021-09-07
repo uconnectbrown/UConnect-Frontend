@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { Navbar, Container } from "react-bootstrap";
-import { faBullseye } from "@fortawesome/free-solid-svg-icons";
+import { faBullseye, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Modal } from "react-bootstrap";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -56,7 +56,9 @@ function NavBar(props) {
             </button>
             
             <Tooltip title="Functionality Info">
-              <button onClick={() => setHelp(true)}>?</button>
+              <button onClick={() => setHelp(true)}>
+                <FontAwesomeIcon icon={faQuestionCircle} style={{marginRight: 10, marginLeft: -10 }}/>
+              </button>
             </Tooltip>
             <Modal show={help} dialogClassName="student-modal">
         <Modal.Body>
