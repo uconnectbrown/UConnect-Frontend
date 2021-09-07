@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { db } from "../firebase";
-import SendMessage from "./SendMessage";
 
 import "./Chat.css";
 
 function Chat(props) {
-  const scroll = useRef();
   const [messages, setMessages] = useState([]);
+  const [msg, setMsg] = useState("");
   const studentName = props.studentName;
   const studentImageUrl = props.studentImageUrl;
   const studentId = props.studentId;
@@ -26,17 +25,61 @@ function Chat(props) {
       });
   }, [props.roomId]);
 
-  return (
-    <div>
-      <div className="chat-top d-flex align-items-center justify-content-center flex-column">
-        <img
-          className="recipient-profile"
-          alt="Profile Picture"
-          src={studentImageUrl}
-        />
-        {props.studentName}
-      </div>
-      <div className="chat-msgs d-flex flex-column">
+  async function sendMessage(e) {
+    e.preventDefault();
+
+    await Promise.all([
+      db.collection("messages").doc(roomId).collection("chat").add({
+        text: msg,
+        ownImageUrl,
+        ownId,
+        createdAt: new Date().toISOString(),
+      }),
+
+      db
+        .collection("profiles")
+        .doc(ownId)
+        .collection(`messages`)
+        .doc(roomId)
+        .set({
+          recipientName: studentName,
+          recipientImage: studentImageUrl,
+          roomId,
+          recipientId: studentId,
+          lastMessage: msg,
+          lastSent: new Date().toISOString(),
+        }),
+
+      db
+        .collection("profiles")
+        .doc(studentId)
+        .collection(`messages`)
+        .doc(roomId)
+        .set({
+          recipientName: ownName,
+          recipientImage: ownImageUrl,
+          roomId,
+          recipientId: ownId,
+          lastMessage: msg,
+          lastSent: new Date().toISOString(),
+        }),
+    ]);
+
+    setMsg("");
+    props.refreshMessages();
+  }
+
+  return <>
+    <div className="chat-top d-flex align-items-center" onClick={() => {}}>
+      <img
+        className="recipient-profile"
+        alt="Profile Picture"
+        src={studentImageUrl}
+      />
+      <div style={{ fontWeight: 500 }}>{props.studentName}</div>
+    </div>
+    <div className="chat-msgs d-flex flex-column-reverse">
+      <div className="d-flex flex-column">
         {messages.map((message) => (
           <div>
             <div
@@ -48,21 +91,21 @@ function Chat(props) {
           </div>
         ))}
       </div>
-      <SendMessage
-        scroll={scroll}
-        studentName={studentName}
-        studentImageUrl={studentImageUrl}
-        studentId={studentId}
-        ownId={ownId}
-        ownName={ownName}
-        ownImageUrl={ownImageUrl}
-        roomId={props.roomId}
-        refreshMessages={props.refreshMessages}
-      />
-
-      <div ref={scroll}></div>
     </div>
-  );
+    <form onSubmit={sendMessage}>
+      <input 
+        className="msg-input mx-3 px-3 py-1"
+        style={{
+          width: "100%",
+          fontSize: "15px",
+        }}
+        type="text"
+        value={msg}
+        onChange={(e) => setMsg(e.target.value)}
+        placeholder="Message..."
+      />
+    </form>
+  </>
 }
 
 export default Chat;

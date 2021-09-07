@@ -19,10 +19,6 @@ p {
   overflow-wrap: break-word;
 }
 
-.sendMsg {
-  display: flex;
-}
-
 .crop-container {
   height: 60vh;
   width: 25vw;

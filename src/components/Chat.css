@@ -1,15 +1,17 @@
 .chat-top {
   border-bottom: 3px solid #f3f3f3;
   padding: 0.5rem;
+  cursor: pointer;
 }
 
 .recipient-profile {
   border-radius: 100rem;
-  width: 3rem;
+  width: 2.5rem;
+  margin-right: 0.5rem;
 }
 
 .chat-msgs {
-  height: 25rem;
+  height: 30rem;
   overflow: scroll;
   padding: 1rem;
 }
@@ -43,4 +45,14 @@
 .chat-msgs p {
   margin: 0;
   font-size: 15px;
+}
+
+.msg-input {
+  border-radius: 10rem;
+  background-color: #f3f3f3;
+  border-color: transparent;
+}
+
+.msg-input:focus-visible {
+  outline: none;
 }

@@ -127,7 +127,7 @@ function Connections() {
   };
 
   return (
-    <Container className="uconnect-connections" style={{ marginTop: "1rem" }}>
+    <Container className="uconnect-connections h-100" style={{ marginTop: "1rem", overflow: 'auto' }}>
       <Modal
         keyboard
         show={studentId}
@@ -147,7 +147,7 @@ function Connections() {
       <Row>
         {pending.length > 0 && (
           <>
-            <h3>Pending Connections ({pending.length})</h3>
+            <h4>Pending Connections ({pending.length})</h4>
             {pending.map((p, i) => (
               <StudentCard
                 name={p.name}
