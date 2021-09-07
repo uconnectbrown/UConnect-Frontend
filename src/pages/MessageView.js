@@ -98,7 +98,7 @@ function MessageView(props) {
     return (
       <div>
         <div className="d-flex align-items-center pt-3 pb-2">
-          <h3 className="my-0">Chats</h3>
+          <h2 className="my-0">Messages</h2>
           {/* <FontAwesomeIcon
             icon={faEdit}
             style={{ height: "100%" }}
