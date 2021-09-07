@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Button } from "react-bootstrap";
+import Tooltip from "@material-ui/core/Tooltip";
 
 function ConnectButton(props) {
   const renderConnectButton = () => {
@@ -14,7 +15,9 @@ function ConnectButton(props) {
       case "out":
         component = (
           <div>
-            <Button
+            <Tooltip title="Unrequest available after 48 hours">
+              <span>
+              <Button
               disabled={!props.validUndo}
               onClick={() => {
                 if (props.closeOnUndo) {
@@ -28,6 +31,9 @@ function ConnectButton(props) {
             >
               Requested
             </Button>
+              </span>
+            </Tooltip>
+            
           </div>
         );
         break;
