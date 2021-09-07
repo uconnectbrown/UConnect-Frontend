@@ -750,14 +750,12 @@ function ProfileView(props) {
                     title="clubs, student groups, Greek life, etc."
                     placement="right"
                   >
-                    {/* <p style={{ fontSize: "14px", textAlign: "center", display: "inline" }}> */}
                     <span>
                       <FontAwesomeIcon
                         style={{ width: 15 }}
                         icon={faInfoCircle}
                       />
                     </span>
-                    {/* </p> */}
                   </Tooltip>
                 </p>
               )}

@@ -11,7 +11,7 @@ import "./StudentModal.css";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { faLock, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Body
 function StudentModal(props) {
@@ -287,14 +287,49 @@ function StudentModal(props) {
       return (
         <Col sm={6} className="mb-3">
           <div className="interest-box">
-            <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
-            {list.length > 0 && (
-              <ul>
-                {list.map((l) => {
-                  return l ? <li>{l}</li> : null;
-                })}
-              </ul>
-            )}
+
+            {cat !== "Groups" && (
+                <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
+              )}
+              {cat === "Groups" && (
+                <p align="center">
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      textAlign: "center",
+                      display: "inline",
+                      marginRight: 6,
+                    }}
+                  >
+                    {cat}
+                  </p>
+                  <Tooltip
+                    title="clubs, student groups, Greek life, etc."
+                    placement="right"
+                  >
+                    <span>
+                      <FontAwesomeIcon
+                        style={{ width: 15 }}
+                        icon={faInfoCircle}
+                      />
+                    </span>
+                  </Tooltip>
+                </p>
+              )}
+
+{list.filter(Boolean).length > 0 && (
+                <ul>
+                  {list.map((l) => {
+                    return l ? <li>{l}</li> : null;
+                  })}
+                </ul>
+              )}
+              <div align="center">
+                {list.filter(Boolean).length === 0 && (
+                  <p style={{ fontSize: "14px", textAlign: "center" }}>None</p>
+                )}
+              </div>
+
           </div>
         </Col>
       );
