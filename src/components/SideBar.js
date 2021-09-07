@@ -10,6 +10,7 @@ import {
   faUserFriends,
   faDesktop,
 } from "@fortawesome/free-solid-svg-icons";
+import Badge from "@material-ui/core/Badge";
 
 import "./SideBar.css";
 
@@ -33,7 +34,10 @@ function SideBar(props) {
       </Link>
       <Link to="/connections" style={{ textDecoration: "none" }}>
         <Button variant="outline-light" className="nav-button">
-          <FontAwesomeIcon icon={faUserFriends} style={{ width: "100%" }} />
+          <span>
+            <FontAwesomeIcon icon={faUserFriends} style={{ width: "100%" }} />
+            <Badge badgeContent={props.pending} color="primary"></Badge>
+          </span>
           Connections
         </Button>
       </Link>

@@ -216,6 +216,7 @@ function HomeView(props) {
             onChange={(options) => {
               setSearchType(options.value);
               setSelectedOptions([]);
+              setQuery("");
             }}
           />
         </Col>
@@ -313,13 +314,13 @@ function HomeView(props) {
 
                 <div className="card-text">Class of {student.classYear}</div>
                 <div className="card-text">
-                {student.majors
-                .filter(Boolean)
-                .map((major, i) =>
-                  i !== student.majors.filter(Boolean).length - 1
-                    ? major + ", "
-                    : major
-                )}
+                  {student.majors
+                    .filter(Boolean)
+                    .map((major, i) =>
+                      i !== student.majors.filter(Boolean).length - 1
+                        ? major + ", "
+                        : major
+                    )}
                 </div>
               </Col>
               <Col md={3} lg={3}>
@@ -524,6 +525,7 @@ function HomeView(props) {
             handleOpenMessage={handleOpenMessage}
             updateOutgoing={props.updateOutgoing}
             outgoing={props.outgoing}
+            decPending={props.decPending}
           />
         </Modal.Body>
       </Modal>

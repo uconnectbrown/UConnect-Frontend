@@ -244,6 +244,7 @@ function Course(props) {
           onChange={(options) => {
             setSearchType(options.value);
             setSelectedOptions([]);
+            setQuery("");
           }}
         />
       </Row>
@@ -282,6 +283,7 @@ function Course(props) {
             handleOpenMessage={handleOpenMessage}
             updateOutgoing={props.updateOutgoing}
             outgoing={props.outgoing}
+            decPending={props.decPending}
           />
         </Modal.Body>
       </Modal>

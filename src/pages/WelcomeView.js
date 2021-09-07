@@ -3,7 +3,7 @@ import React from "react";
 import firebase from "firebase";
 import { db, auth } from "../firebase.js";
 import { useHistory } from "react-router-dom";
-
+import Tooltip from "@material-ui/core/Tooltip";
 import { Button } from "react-bootstrap";
 import "./WelcomeView.css";
 
@@ -61,9 +61,11 @@ function Welcome(props) {
         <div>
           <div>
             First time using UConnect? &nbsp;&nbsp;
-            <span className="sign-in-link" onClick={signInWithGoogle}>
-              Sign Up
-            </span>
+            <Tooltip title="with @brown.edu email" placement="right">
+              <span className="sign-in-link" onClick={signInWithGoogle}>
+                Sign Up
+              </span>
+            </Tooltip>
           </div>
         </div>
       </div>
