@@ -205,8 +205,8 @@ function App() {
             updateOutgoing={updateOutgoing}
             outgoing={outgoing}
           />
-          <Container fluid>
-            <Row className="px-3 py-4">
+          <Container fluid style={{ height: '85vh' }}>
+            <Row className="px-3 py-4 h-100">
               <Col xs={1} md={2}>
                 <SideBar
                   courses={courses}

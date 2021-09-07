@@ -69,17 +69,17 @@ function Chat(props) {
     props.refreshMessages();
   }
 
-  return (
-    <div>
-      <div className="chat-top d-flex align-items-center justify-content-center flex-column">
-        <img
-          className="recipient-profile"
-          alt="Profile Picture"
-          src={studentImageUrl}
-        />
-        {props.studentName}
-      </div>
-      <div className="chat-msgs d-flex flex-column">
+  return <>
+    <div className="chat-top d-flex align-items-center" onClick={() => {}}>
+      <img
+        className="recipient-profile"
+        alt="Profile Picture"
+        src={studentImageUrl}
+      />
+      <div style={{ fontWeight: 500 }}>{props.studentName}</div>
+    </div>
+    <div className="chat-msgs d-flex flex-column-reverse">
+      <div className="d-flex flex-column">
         {messages.map((message) => (
           <div>
             <div
@@ -91,21 +91,21 @@ function Chat(props) {
           </div>
         ))}
       </div>
-      <form onSubmit={sendMessage}>
-        <input 
-          className="msg-input mx-3 px-3 py-1"
-          style={{
-            width: "100%",
-            fontSize: "15px",
-          }}
-          type="text"
-          value={msg}
-          onChange={(e) => setMsg(e.target.value)}
-          placeholder="Message..."
-        />
-      </form>
     </div>
-  );
+    <form onSubmit={sendMessage}>
+      <input 
+        className="msg-input mx-3 px-3 py-1"
+        style={{
+          width: "100%",
+          fontSize: "15px",
+        }}
+        type="text"
+        value={msg}
+        onChange={(e) => setMsg(e.target.value)}
+        placeholder="Message..."
+      />
+    </form>
+  </>
 }
 
 export default Chat;

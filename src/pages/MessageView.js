@@ -97,11 +97,8 @@ function MessageView(props) {
   const renderLeftPanel = () => {
     return (
       <div>
-        <div
-          className="d-flex align-items-center justify-content-center py-4"
-          style={{ borderBottom: "1px solid lightgrey" }}
-        >
-          <h5 className="my-0 mx-3">Messages</h5>
+        <div className="d-flex align-items-center pt-3 pb-2">
+          <h3 className="my-0">Chats</h3>
           {/* <FontAwesomeIcon
             icon={faEdit}
             style={{ height: "100%" }}
@@ -165,7 +162,7 @@ function MessageView(props) {
 
   return (
     <div className="w-100 h-100" style={{ paddingRight: "5rem" }}>
-      <Container fluid className="message-page">
+      <Container fluid className="message-page h-100">
         <Row className="h-100">
           <Col sm={3} className="p-2">
             {renderLeftPanel()}
