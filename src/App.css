@@ -19,49 +19,8 @@ p {
   overflow-wrap: break-word;
 }
 
-.msg {
-  display: flex;
-  padding: 20px 10px 0 20px;
-  margin: 20px;
-  border-radius: 3000px;
-  box-shadow: 0 0 10px rgb(164, 164, 164);
-  align-items: center;
-}
-
-.sent {
-  background-color: #395dff;
-  color: white;
-  border-bottom-right-radius: 0px;
-  flex-direction: row-reverse;
-  padding: 20px 20px 0 10px;
-  text-align: end;
-  float: right;
-}
-
-.received {
-  border: 1px solid lightgray;
-  background-color: #fafafa;
-  border-bottom-left-radius: 0px;
-  float: left;
-}
-
 .sendMsg {
-  /* position: fixed; */
   display: flex;
-  /* width: 100%;
-  max-width: 1200px;
-  bottom: 0;
-  z-index: 1;
-  border-top: 1px solid lightgray;
-  margin-left: -5px;
-  padding: 10px;
-  padding-bottom: 30px;
-  background-color: #fafafa; */
-}
-
-.msgs {
-  display: flex;
-  flex-direction: column;
 }
 
 .crop-container {

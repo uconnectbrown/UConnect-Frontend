@@ -1,0 +1,46 @@
+.chat-top {
+  border-bottom: 3px solid #f3f3f3;
+  padding: 0.5rem;
+}
+
+.recipient-profile {
+  border-radius: 100rem;
+  width: 3rem;
+}
+
+.chat-msgs {
+  height: 25rem;
+  overflow: scroll;
+  padding: 1rem;
+}
+
+.msg {
+  display: flex;
+  border-radius: 1rem;
+  align-items: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-bottom: 0.5rem;
+  width: max-content;
+  max-width: 70%;
+}
+
+.sent {
+  background-color: #395dff;
+  color: white;
+  flex-direction: row-reverse;
+  text-align: end;
+  float: right;
+}
+
+.received {
+  background-color: #f3f3f3;
+  float: left;
+}
+
+.chat-msgs p {
+  margin: 0;
+  font-size: 15px;
+}
