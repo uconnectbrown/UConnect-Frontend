@@ -313,7 +313,13 @@ function HomeView(props) {
 
                 <div className="card-text">Class of {student.classYear}</div>
                 <div className="card-text">
-                  {student.majors.map((major) => major)}
+                {student.majors
+                .filter(Boolean)
+                .map((major, i) =>
+                  i !== student.majors.filter(Boolean).length - 1
+                    ? major + ", "
+                    : major
+                )}
                 </div>
               </Col>
               <Col md={3} lg={3}>

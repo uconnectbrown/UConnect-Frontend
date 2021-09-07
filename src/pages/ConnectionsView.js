@@ -35,9 +35,9 @@ function Connections() {
     if (emailId) getPending();
   }, [emailId]);
 
-  useEffect(() => {
-    if (emailId) getOutgoing();
-  }, [emailId]);
+  // useEffect(() => {
+  //   if (emailId) getOutgoing();
+  // }, [emailId]);
 
   useEffect(() => {
     if (emailId) getConnections();
@@ -185,7 +185,7 @@ function Connections() {
         )}
       </Row>
 
-      <Row>
+      {/* <Row>
         {outgoing && outgoing.length > 0 && (
           <>
             <h4>Outgoing Requests ({outgoing.length})</h4>
@@ -198,7 +198,7 @@ function Connections() {
             ))}
           </>
         )}
-      </Row>
+      </Row> */}
 
       <h1>All Connections</h1>
       {connections_ && connections_.length === 0 && (

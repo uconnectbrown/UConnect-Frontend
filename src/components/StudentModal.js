@@ -375,7 +375,15 @@ function StudentModal(props) {
             `${student.location.country}`}
         </div>
         <div>Class of {student.classYear}</div>
-        <div>{student.majors.map((major) => major)}</div>
+        <div>
+              {student.majors
+                .filter(Boolean)
+                .map((major, i) =>
+                  i !== student.majors.filter(Boolean).length - 1
+                    ? major + ", "
+                    : major
+                )}
+            </div>
         <div className="modal-bio">{student.bio}</div>
         <ConnectButton
           closeOnUndo={props.closeOnUndo}
