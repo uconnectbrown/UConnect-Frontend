@@ -823,6 +823,7 @@ function ProfileView(props) {
                   className={j === 2 ? "mb-3" : ""}
                   value={newProfile[`${allEcsStr[i]}`][j]}
                   type="text"
+                  autoComplete="off"
                   onChange={(e) => {
                     handleArrChange(e, j);
                   }}
