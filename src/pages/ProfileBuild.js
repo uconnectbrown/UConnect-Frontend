@@ -240,7 +240,7 @@ function ProfileBuild(props) {
   };
 
   return (
-    <form noValidate onSubmit={handleSubmit} auto autoComplete="off">
+    <form noValidate onSubmit={handleSubmit} autoComplete="off">
       <Container fluid className="profile-build-container">
         <h1 className={classes.pageTitle}>Build Profile</h1>
         <div className="header-icon-wrap">
