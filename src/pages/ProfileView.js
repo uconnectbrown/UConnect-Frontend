@@ -32,9 +32,8 @@ import {
   FloatingLabel,
 } from "react-bootstrap";
 import "./ProfileView.css";
-import { FormControlLabel } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBullseye, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const { validProfile } = require("../util/validators");
 
@@ -43,7 +42,6 @@ function ProfileView(props) {
   const [emailId, setEmailId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
-  const [indexArray, setIndexArray] = useState([]);
   const [editing, setEditing] = useState(false);
   const [editingInterests, setEditingInterests] = useState(false);
   const [editImage, setEditImage] = useState(false);
@@ -88,13 +86,6 @@ function ProfileView(props) {
       .then((res) => {
         setProfile(res.data.user);
         setNewProfile(res.data.user);
-        let arr = [];
-        for (let j = 0; j < 5; j++) {
-          if (res.data.user.courses[j].code) {
-            arr.push(j);
-          }
-        }
-        setIndexArray(arr);
       })
       .catch((err) => console.log(err));
   };

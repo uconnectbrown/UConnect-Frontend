@@ -1,13 +1,7 @@
 // Setup
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  HashRouter,
-  Route,
-  Switch,
-  Link,
-} from "react-router-dom";
+import { HashRouter, Route, Switch, Link } from "react-router-dom";
 import axios from "axios";
 
 // Authentication
@@ -35,7 +29,6 @@ import Button from "@material-ui/core/Button";
 
 // Styling
 import "bootstrap/dist/css/bootstrap.min.css";
-import { arrayPattern } from "@babel/types";
 
 axios.defaults.baseURL =
   "https://us-east4-uconnect-5eebd.cloudfunctions.net/api";

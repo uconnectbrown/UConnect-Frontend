@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-import './SearchBar.css';
+import "./SearchBar.css";
 
 const SearchBar = (props) => {
   return (
@@ -19,14 +19,14 @@ const SearchBar = (props) => {
           placeholder={props.placeholder}
           value={props.value}
           onChange={props.onChange}
-          autocomplete="off"
+          autoComplete="off"
         />
       </form>
       <button onClick={props.clearSearch}>
         <FontAwesomeIcon icon={faTimes} color={"grey"} />
       </button>
     </div>
-  )
-}
+  );
+};
 
 export default SearchBar;

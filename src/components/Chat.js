@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
 
 import "./Chat.css";
@@ -69,43 +69,47 @@ function Chat(props) {
     props.refreshMessages();
   }
 
-  return <>
-    <div className="chat-top d-flex align-items-center" onClick={() => {}}>
-      <img
-        className="recipient-profile"
-        alt="Profile Picture"
-        src={studentImageUrl}
-      />
-      <div style={{ fontWeight: 500 }}>{props.studentName}</div>
-    </div>
-    <div className="chat-msgs d-flex flex-column-reverse">
-      <div className="d-flex flex-column">
-        {messages.map((message) => (
-          <div>
-            <div
-              key={message.id}
-              className={`msg ${message.ownId === ownId ? "sent" : "received"}`}
-            >
-              <p>{message.text}</p>
-            </div>
-          </div>
-        ))}
+  return (
+    <>
+      <div className="chat-top d-flex align-items-center" onClick={() => {}}>
+        <img
+          className="recipient-profile"
+          alt="Profile Picture"
+          src={studentImageUrl}
+        />
+        <div style={{ fontWeight: 500 }}>{props.studentName}</div>
       </div>
-    </div>
-    <form onSubmit={sendMessage}>
-      <input 
-        className="msg-input mx-3 px-3 py-1"
-        style={{
-          width: "100%",
-          fontSize: "15px",
-        }}
-        type="text"
-        value={msg}
-        onChange={(e) => setMsg(e.target.value)}
-        placeholder="Message..."
-      />
-    </form>
-  </>
+      <div className="chat-msgs d-flex flex-column-reverse">
+        <div className="d-flex flex-column">
+          {messages.map((message) => (
+            <div>
+              <div
+                key={message.id}
+                className={`msg ${
+                  message.ownId === ownId ? "sent" : "received"
+                }`}
+              >
+                <p>{message.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <form onSubmit={sendMessage}>
+        <input
+          className="msg-input mx-3 px-3 py-1"
+          style={{
+            width: "100%",
+            fontSize: "15px",
+          }}
+          type="text"
+          value={msg}
+          onChange={(e) => setMsg(e.target.value)}
+          placeholder="Message..."
+        />
+      </form>
+    </>
+  );
 }
 
 export default Chat;

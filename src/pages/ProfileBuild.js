@@ -15,9 +15,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/AddCircle";
 import Tooltip from "@material-ui/core/Tooltip";
-import UncheckedButton from "@material-ui/icons/RadioButtonUnchecked";
-import CheckedCircle from "@material-ui/icons/CheckCircleOutline";
-import CircularProgress from "@material-ui/core/CircularProgress";
+
 import { Row, Col, Container, Button } from "react-bootstrap";
 
 // Import Data

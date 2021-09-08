@@ -9,7 +9,6 @@ import Select from "react-select";
 
 // Components
 import StudentModal from "../components/StudentModal";
-import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
 import StudentCard from "../components/StudentCard";
 import { Row, Modal, Button } from "react-bootstrap";
