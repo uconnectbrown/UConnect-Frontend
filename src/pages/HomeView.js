@@ -15,22 +15,17 @@ import {
   Col,
   Button,
   Modal,
-  FloatingLabel,
-  Form,
 } from "react-bootstrap";
 import Logo from "../assets/Logo.png";
 
 // Styling
 import "./HomeView.css";
 import Tooltip from "@material-ui/core/Tooltip";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faInfoCircle,
-  faQuestionCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
@@ -225,7 +220,7 @@ function HomeView(props) {
             placement="right"
           >
             <span>
-              <FontAwesomeIcon icon={faInfoCircle} style={{ marginTop: 10 }} />
+              <FontAwesomeIcon icon={faQuestionCircle} color="#505050" style={{ marginTop: 10 }} />
             </span>
           </Tooltip>
         </Col>
@@ -376,7 +371,7 @@ function HomeView(props) {
             title="These profiles are generated weekly and are recommended based on the information you have provided in your profile."
           >
             <span>
-              <FontAwesomeIcon style={{ marginLeft: 15 }} icon={faInfoCircle} />
+              <FontAwesomeIcon style={{ marginLeft: 15 }} icon={faQuestionCircle} color="#505050" />
             </span>
           </Tooltip>
         </p>
@@ -530,7 +525,7 @@ function HomeView(props) {
       </Modal>
       <h1>
         Connect{" "}
-        <Tooltip
+        {/* <Tooltip
           style={{ marginLeft: 5 }}
           placement="right"
           title="Search and filter through all Brown students on UConnect"
@@ -538,10 +533,10 @@ function HomeView(props) {
           <span>
             <FontAwesomeIcon
               style={{ fontSize: 16, marginBottom: 5 }}
-              icon={faInfoCircle}
+              icon={faQuestionCircle}
             />
           </span>
-        </Tooltip>
+        </Tooltip> */}
       </h1>
       {renderSearchPicker()}
       {searchType === 0 && renderSearchBar()}

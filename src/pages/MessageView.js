@@ -123,12 +123,16 @@ function MessageView(props) {
       <div>
         {newMessage && (
           <Row className="message-card">
-            <img
-              className="message-profile"
-              alt="Profile Picture"
-              src={studentImageUrl}
-            />
-            <div>{studentName}</div>
+            <Col sm={4}>
+              <img
+                className="message-profile recipient"
+                alt="Profile Picture"
+                src={studentImageUrl}
+              />
+            </Col>
+            <Col sm={8}>
+              <div>{studentName}</div>
+            </Col>
           </Row>
         )}
         {messages.map((message, i) => {

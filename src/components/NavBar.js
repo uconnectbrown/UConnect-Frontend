@@ -2,26 +2,36 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { Navbar, Container } from "react-bootstrap";
-import { faBullseye, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Modal } from "react-bootstrap";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import Logo from "../assets/Logo.png";
+import Arrow from '../assets/arrow_vector.svg';
+import ArrowFilled from '../assets/arrow_vector_filled.svg';
 
 import "./NavBar.css";
 
-// Components
-import Requests from "./Requests";
-
 function NavBar(props) {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [outgoing, setOutgoing] = useState(props.outgoing);
   const [help, setHelp] = useState(false);
 
-  useEffect(() => {
-    setOutgoing(props.outgoing);
-  }, [props.outgoing]);
+  const renderRequests = () => {
+    const requests = [...Array(10).keys()];
+    const spent = 10 - props.requests;
+
+    return <Tooltip title={
+      <div style={{ fontSize: '12px', padding: '5px'}}>
+        {`You have ${props.requests} requests remaining`}
+      </div>
+    }>
+      <div className="d-inline-block mx-2"> 
+        {requests.map(i => {
+          return <img src={i < spent ? Arrow : ArrowFilled} alt="Request Arrow"/>
+        })}
+      </div>
+    </Tooltip>
+  }
 
   return (
     <Navbar variant="light" className="topbar">
@@ -31,38 +41,29 @@ function NavBar(props) {
             <div className="d-inline-block m-2">
               <img alt="UConnect Logo" src={Logo} className="topbar-logo" />
             </div>
-            <h2 className="d-inline-block align-middle nav-header">UConnect</h2>
+            <h2 className="d-inline-block align-middle nav-header"> 
+              UConnect
+            </h2>
           </Navbar.Brand>
         </Link>
         <div>
-          {/* <button onClick={props.handleProfile} className="requests-tracker">
-            <div
-              onMouseEnter={() => setShowDropdown(true)}
-              onMouseLeave={() => setShowDropdown(false)}
-              style={{ fontSize: 14 }}
-            >
-              {!showDropdown && "Requests"}
-              {showDropdown && (
-                <Requests
-                  requests={props.requests}
-                  incRequests={props.incRequests}
-                  outgoing={props.outgoing}
-                  updateOutgoing={props.updateOutgoing}
-                  style={{ width: "100%" }}
-                />
-              )}
-            </div>
-          </button> */}
-          <button style={{pointerEvents: "none"}} className="requests-tracker">
-            Requests: {props.requests}
-          </button>
+          {renderRequests()}
           
-          <Tooltip title="Functionality Info">
+          <Tooltip title={
+            <div style={{ fontSize: '12px', padding: '5px'}}>
+              User Guide
+            </div>
+          }>
             <button onClick={() => setHelp(true)}>
-              <FontAwesomeIcon icon={faQuestionCircle} style={{marginLeft:-10, marginRight: 8}}/>
+              <FontAwesomeIcon icon={faQuestionCircle} size="lg" color="#473F9B"/>
             </button>
           </Tooltip>
-          <Modal show={help} dialogClassName="student-modal">
+          <Modal 
+            keyboard 
+            dialogClassName="student-modal"
+            show={help} 
+            onHide={() => setHelp(false)}
+          >
             <Modal.Body className="mx-5 px-5 py-4">
               <h3>Featured Profiles</h3>
               <p style={{ fontSize: '14px' }}>
@@ -103,20 +104,17 @@ function NavBar(props) {
                 information will also give you access to more powerful search
                 tools to find other students who are relevant to you.
               </p>
-              <div align="right">
-                <button onClick={() => setHelp(false)}>Close</button>
-              </div>
             </Modal.Body>
           </Modal>
           <Link to="/profile">
-          <button>
-            <img
-              alt="Profile Picture"
-              src={props.imageUrl}
-              className="nav-profile-img"
-            />
-          </button>
-        </Link>
+            <button>
+              <img
+                alt="Profile Picture"
+                src={props.imageUrl}
+                className="nav-profile-img"
+              />
+            </button>
+          </Link>
         </div>
       </Container>
     </Navbar>

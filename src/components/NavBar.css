@@ -18,18 +18,8 @@ button {
 }
 
 .nav-header {
-  font-weight: 500;
+  font-weight: 700;
   color: #473f9b;
-}
-
-.topbar .requests-tracker {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  background-color: white;
-  border-radius: 20px;
-  margin-right: 2rem;
 }
 
 @media (max-width: 576px) {
@@ -39,14 +29,5 @@ button {
 
   .nav-profile-img {
     width: 30px;
-  }
-
-  .topbar .requests-tracker {
-    margin: 0;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    font-size: 8px;
   }
 }
