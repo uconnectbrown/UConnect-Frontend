@@ -258,6 +258,7 @@ function ProfileBuild(props) {
               variant="outlined"
               size={"small"}
               required
+              autoComplete="off"
               // style={{ width: "80%" }}
             />
           </Col>
@@ -272,6 +273,7 @@ function ProfileBuild(props) {
               variant="outlined"
               size={"small"}
               required
+              autoComplete="off"
               // style={{ width: "80%" }}
             />
           </Col>
