@@ -35,7 +35,7 @@ function NavBar(props) {
           </Navbar.Brand>
         </Link>
         <div>
-          <button onClick={props.handleProfile} className="requests-tracker">
+          {/* <button onClick={props.handleProfile} className="requests-tracker">
             <div
               onMouseEnter={() => setShowDropdown(true)}
               onMouseLeave={() => setShowDropdown(false)}
@@ -52,6 +52,9 @@ function NavBar(props) {
                 />
               )}
             </div>
+          </button> */}
+          <button style={{pointerEvents: "none"}} className="requests-tracker">
+            Requests: {props.requests}
           </button>
           
           <Tooltip title="Functionality Info">
