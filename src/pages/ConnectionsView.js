@@ -32,7 +32,10 @@ function Connections(props) {
   }, []);
 
   useEffect(() => {
-    if (emailId) getPending();
+    if (emailId) {
+      getPending();
+      props.fetchPending();
+    }
   }, [emailId]);
 
   // useEffect(() => {

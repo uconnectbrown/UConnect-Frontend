@@ -253,7 +253,10 @@ function App() {
                   </Route>
                   <Route exact path="/messages" component={MessageView} />
                   <Route exact path="/connections">
-                    <Connections decPending={decPending} />
+                    <Connections
+                      decPending={decPending}
+                      fetchPending={getPending}
+                    />
                   </Route>
                   <Route exact path="/profile">
                     <ProfileView
