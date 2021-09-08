@@ -383,7 +383,7 @@ function StudentModal(props) {
                 : major
             )}
         </div>
-        <div className="modal-bio">{student.bio}</div>
+        <p className="modal-bio">{student.bio}</p>
         <ConnectButton
           closeOnUndo={props.closeOnUndo}
           handleClose={props.handleClose}
