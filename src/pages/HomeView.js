@@ -119,7 +119,6 @@ function HomeView(props) {
     axios
       .get(`/featured/${emailId}`)
       .then((res) => {
-        console.log(res.data.featured);
         setFeatured(res.data.featured);
       })
       .catch((err) => console.log(err));
