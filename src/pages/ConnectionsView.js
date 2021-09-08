@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import StudentCard from "../components/StudentCard";
 
-function Connections() {
+function Connections(props) {
   const [pending, setPending] = useState([]);
   const [connections, setConnections] = useState(null);
   const [connections_, setConnections_] = useState(null);
@@ -152,7 +152,10 @@ function Connections() {
   };
 
   return (
-    <Container className="uconnect-connections h-100" style={{ marginTop: "1rem", overflow: 'auto' }}>
+    <Container
+      className="uconnect-connections h-100"
+      style={{ marginTop: "1rem", overflow: "auto" }}
+    >
       <Modal
         keyboard
         show={studentId}
@@ -166,6 +169,7 @@ function Connections() {
             // requests={props.requests}
             updateConnections={getConnections}
             handleOpenMessage={handleOpenMessage}
+            decPending={props.decPending}
           />
         </Modal.Body>
       </Modal>
@@ -201,10 +205,10 @@ function Connections() {
       </Row> */}
 
       <h1>All Connections</h1>
-      {connections_ && connections_.length === 0 && (
+      {connections && connections.length === 0 && (
         <h3>You do not have any connections yet.</h3>
       )}
-      {connections_ && connections_.length > 0 && renderSearchBar()}
+      {connections && connections.length > 0 && renderSearchBar()}
       <Row className="mt-3">
         {connections_ &&
           connections_.map((c, i) => (

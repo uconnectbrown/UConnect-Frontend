@@ -171,6 +171,7 @@ function StudentModal(props) {
           })
           .then(() => {
             props.updateConnections();
+            props.decPending();
           })
           .catch((err) => console.log(err));
       });
@@ -287,49 +288,47 @@ function StudentModal(props) {
       return (
         <Col sm={6} className="mb-3">
           <div className="interest-box">
-
             {cat !== "Groups" && (
-                <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
-              )}
-              {cat === "Groups" && (
-                <p align="center">
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      textAlign: "center",
-                      display: "inline",
-                      marginRight: 6,
-                    }}
-                  >
-                    {cat}
-                  </p>
-                  <Tooltip
-                    title="clubs, student groups, Greek life, etc."
-                    placement="right"
-                  >
-                    <span>
-                      <FontAwesomeIcon
-                        style={{ width: 15 }}
-                        icon={faInfoCircle}
-                      />
-                    </span>
-                  </Tooltip>
+              <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
+            )}
+            {cat === "Groups" && (
+              <p align="center">
+                <p
+                  style={{
+                    fontSize: "14px",
+                    textAlign: "center",
+                    display: "inline",
+                    marginRight: 6,
+                  }}
+                >
+                  {cat}
                 </p>
-              )}
+                <Tooltip
+                  title="clubs, student groups, Greek life, etc."
+                  placement="right"
+                >
+                  <span>
+                    <FontAwesomeIcon
+                      style={{ width: 15 }}
+                      icon={faInfoCircle}
+                    />
+                  </span>
+                </Tooltip>
+              </p>
+            )}
 
-{list.filter(Boolean).length > 0 && (
-                <ul>
-                  {list.map((l) => {
-                    return l ? <li>{l}</li> : null;
-                  })}
-                </ul>
+            {list.filter(Boolean).length > 0 && (
+              <ul>
+                {list.map((l) => {
+                  return l ? <li>{l}</li> : null;
+                })}
+              </ul>
+            )}
+            <div align="center">
+              {list.filter(Boolean).length === 0 && (
+                <p style={{ fontSize: "14px", textAlign: "center" }}>None</p>
               )}
-              <div align="center">
-                {list.filter(Boolean).length === 0 && (
-                  <p style={{ fontSize: "14px", textAlign: "center" }}>None</p>
-                )}
-              </div>
-
+            </div>
           </div>
         </Col>
       );
@@ -376,14 +375,14 @@ function StudentModal(props) {
         </div>
         <div>Class of {student.classYear}</div>
         <div>
-              {student.majors
-                .filter(Boolean)
-                .map((major, i) =>
-                  i !== student.majors.filter(Boolean).length - 1
-                    ? major + ", "
-                    : major
-                )}
-            </div>
+          {student.majors
+            .filter(Boolean)
+            .map((major, i) =>
+              i !== student.majors.filter(Boolean).length - 1
+                ? major + ", "
+                : major
+            )}
+        </div>
         <div className="modal-bio">{student.bio}</div>
         <ConnectButton
           closeOnUndo={props.closeOnUndo}
@@ -403,7 +402,7 @@ function StudentModal(props) {
         <h5>Extracurriculars</h5>
         <Row>{renderEcs()}</Row>
         <h5>Common Courses</h5>
-        {student.courses.length === 0 && (<p>You have no common courses.</p>)}
+        {student.courses.length === 0 && <p>You have no common courses.</p>}
         <Row>{renderCourses()}</Row>
       </Col>
     </Container>

@@ -396,7 +396,7 @@ function ProfileView(props) {
           </div>
         ) : (
           <div style={{ textAlign: "left" }}>
-            <form class="form-floating mb-3">
+            <form class="form-floating mb-3" autoComplete="off">
               <h5>Basic Info </h5>
               <FloatingLabel
                 label={newProfile.firstName ? "First Name *" : "Can't be empty"}

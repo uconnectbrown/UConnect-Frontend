@@ -149,10 +149,14 @@ function App() {
     setImageUrl(url);
   };
 
-  // Outgoing
+  // Outgoing and pending
   const [outgoing, setOutgoing] = useState(null);
+  const [pending, setPending] = useState(null);
   useEffect(() => {
-    if (deny === false) getOutgoing();
+    if (deny === false) {
+      getOutgoing();
+      getPending();
+    }
   }, [deny]);
   const getOutgoing = () => {
     let students = [];
@@ -170,6 +174,23 @@ function App() {
   };
   const updateOutgoing = (students) => {
     setOutgoing(students);
+  };
+  const getPending = () => {
+    let number = 0;
+    db.collection("profiles")
+      .doc(emailId)
+      .collection("pending")
+      .get()
+      .then((data) => {
+        data.forEach((doc) => {
+          number += 1;
+        });
+        setPending(number);
+      })
+      .catch((err) => console.log(err));
+  };
+  const decPending = () => {
+    setPending(pending - 1);
   };
 
   // Reset states
@@ -205,13 +226,14 @@ function App() {
             updateOutgoing={updateOutgoing}
             outgoing={outgoing}
           />
-          <Container fluid style={{ height: '85vh' }}>
+          <Container fluid style={{ height: "85vh" }}>
             <Row className="px-3 py-4 h-100">
               <Col xs={1} md={2}>
                 <SideBar
                   courses={courses}
                   handleCode={handleCode}
                   handleName={handleName}
+                  pending={pending}
                 />
               </Col>
               <Col xs={11} md={10}>
@@ -220,6 +242,7 @@ function App() {
                     <Home
                       requests={requests}
                       decRequests={decRequests}
+                      decPending={decPending}
                       incRequests={incRequests}
                       updateOutgoing={updateOutgoing}
                       outgoing={outgoing}
@@ -229,13 +252,16 @@ function App() {
                     <Home
                       requests={requests}
                       decRequests={decRequests}
+                      decPending={decPending}
                       incRequests={incRequests}
                       updateOutgoing={updateOutgoing}
                       outgoing={outgoing}
                     />
                   </Route>
                   <Route exact path="/messages" component={MessageView} />
-                  <Route exact path="/connections" component={Connections} />
+                  <Route exact path="/connections">
+                    <Connections decPending={decPending} />
+                  </Route>
                   <Route exact path="/profile">
                     <ProfileView
                       handleImage={updateImage}
@@ -249,6 +275,7 @@ function App() {
                       name={name}
                       getCourseInfo={getCourses}
                       decRequests={decRequests}
+                      decPending={decPending}
                       incRequests={incRequests}
                       updateOutgoing={updateOutgoing}
                       outgoing={outgoing}
