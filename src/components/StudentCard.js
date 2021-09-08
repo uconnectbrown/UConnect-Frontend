@@ -22,7 +22,15 @@ const StudentCard = (props) => {
         </div>
       )}
       {props.majors && (
-        <div className="card-text">{props.majors.map((major) => major)}</div>
+        <div className="card-text">
+          {props.majors
+                .filter(Boolean)
+                .map((major, i) =>
+                  i !== props.majors.filter(Boolean).length - 1
+                    ? major + ", "
+                    : major
+                )}
+          </div>
       )}
     </Col>
   );
