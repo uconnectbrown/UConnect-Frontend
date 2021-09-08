@@ -297,9 +297,12 @@ function ProfileBuild(props) {
           </Col>
           <Col xs={12} md={6}>
             {!countryArr.includes(userData.country) && renderEmptyLocation()}
-            {userData.country === "United States of America" && renderUSA()}
+            {(userData.country === "United States of America" ||
+              userData.country === "United States") &&
+              renderUSA()}
             {countryArr.includes(userData.country) &&
               userData.country !== "United States of America" &&
+              userData.country !== "United States" &&
               renderNotUSA()}
           </Col>
           <Col xs={12} md={6}>

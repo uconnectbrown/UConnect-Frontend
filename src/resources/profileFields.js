@@ -166,6 +166,7 @@ const pronouns = (
 
 const countries = (
   <datalist id="countries">
+    <option label="United States of America" value="United States of America" />
     <option value="Afghanistan" />
     <option value="Albania" />
     <option value="Algeria" />
@@ -364,7 +365,7 @@ const countries = (
     <option value="Ukraine" />
     <option value="United Arab Emirates" />
     <option value="United Kingdom" />
-    <option value="United States of America" />
+    <option value="United States" />
     <option value="Uruguay" />
     <option value="Uzbekistan" />
     <option value="Venezuela" />
