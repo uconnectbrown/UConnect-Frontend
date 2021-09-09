@@ -586,6 +586,7 @@ function ProfileView(props) {
             <Form.Control
               list="courseCodes"
               name="courses"
+              autoComplete="off"
               onChange={(e) => {
                 handleCourseChange(e, i);
               }}
