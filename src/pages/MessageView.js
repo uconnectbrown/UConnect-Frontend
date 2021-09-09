@@ -1,21 +1,22 @@
 // Set-up
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { auth } from "../firebase";
+import { db, auth } from "../firebase";
 import md5 from "md5";
 
 // Components
 import Chat from "../components/Chat";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { Container, Row, Col } from "react-bootstrap";
 import "./MessageView.css";
 
 // Body
 function MessageView(props) {
-  const emailId = auth.currentUser.email.split("@")[0];
+  const [emailId, setEmailId] = useState(null);
+
   const [messages, setMessages] = useState([]);
   const [studentId, setStudentId] = useState("");
   const [studentImageUrl, setStudentImageUrl] = useState("");
@@ -29,12 +30,21 @@ function MessageView(props) {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    if (props.history.location.state) {
-      startMessage();
-    } else {
-      getMessages();
+    if (auth.currentUser) {
+      setEmailId(auth.currentUser.email.split("@")[0]);
     }
   }, []);
+
+  useEffect(() => {
+    if (emailId) {
+      if (props.history.location.state) {
+        startMessage();
+      } else {
+        getMessages();
+      }
+      props.fetchMessageCount();
+    }
+  }, [emailId]);
 
   const startMessage = () => {
     let info = props.history.location.state.messageInfo;
@@ -55,6 +65,7 @@ function MessageView(props) {
           setNewMessage(true);
         }
       })
+
       .catch((err) => console.log(err));
   };
 
@@ -77,6 +88,7 @@ function MessageView(props) {
           setRoomId(res[0].data[0].roomId);
         } else return;
       })
+
       .catch((err) => console.error(err));
   };
 
@@ -87,6 +99,19 @@ function MessageView(props) {
     setStudentImageUrl(messages[index].recipientImage);
     setStudentName(messages[index].recipientName);
     setRoomId(messages[index].roomId);
+    if (!messages[index].read) {
+      db.doc(`/profiles/${emailId}/messages/${messages[index].roomId}`)
+        .update({
+          read: true,
+        })
+        .then(() => {
+          props.decMessageCount();
+          let newMessages = [...messages];
+          newMessages[index].read = true;
+          setMessages(newMessages);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const refreshMessages = () => {
@@ -136,9 +161,10 @@ function MessageView(props) {
           </Row>
         )}
         {messages.map((message, i) => {
-          const messagePreview = message.lastMessage.length <= 30 ? 
-            message.lastMessage :
-            message.lastMessage.substring(0, 30) + '...';
+          const messagePreview =
+            message.lastMessage.length <= 30
+              ? message.lastMessage
+              : message.lastMessage.substring(0, 30) + "...";
 
           return (
             <Row className="message-card" onClick={() => setMessage(i)}>
@@ -151,9 +177,21 @@ function MessageView(props) {
               </Col>
               <Col sm={8}>
                 <div style={{ fontWeight: 600 }}>
-                  {message.recipientName}
+                  {message.recipientName}{" "}
+                  {!message.read && (
+                    <FontAwesomeIcon
+                      color="#473F9B"
+                      style={{ width: 12 }}
+                      icon={faCircle}
+                    />
+                  )}
                 </div>
-                <div style={{ fontSize: '14px' }}>
+                <div
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: !message.read ? "bold" : "",
+                  }}
+                >
                   {messagePreview}
                 </div>
               </Col>
