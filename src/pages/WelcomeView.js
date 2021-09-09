@@ -61,11 +61,10 @@ function Welcome(props) {
         <div>
           <div>
             First time using UConnect? &nbsp;&nbsp;
-            <Tooltip title="with @brown.edu email" placement="right">
-              <span className="sign-in-link" onClick={signInWithGoogle}>
-                Sign Up
-              </span>
-            </Tooltip>
+            <br />
+            <span className="sign-in-link" onClick={signInWithGoogle}>
+              Sign Up with Brown email
+            </span>
           </div>
         </div>
       </div>
