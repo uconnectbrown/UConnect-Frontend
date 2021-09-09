@@ -283,6 +283,7 @@ function ProfileView(props) {
     setProfile({ ...profile, imageUrl: url });
     setNewProfile({ ...newProfile, imageUrl: url });
     props.handleImage(url);
+    return axios.get(`/update/${emailId}`);
   };
 
   const renderLeftInfo = () => {
@@ -585,6 +586,7 @@ function ProfileView(props) {
             <Form.Control
               list="courseCodes"
               name="courses"
+              autoComplete="off"
               onChange={(e) => {
                 handleCourseChange(e, i);
               }}

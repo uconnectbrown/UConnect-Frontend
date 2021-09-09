@@ -39,10 +39,6 @@ const { validProfile } = require("../util/validators");
 // Body
 function ProfileBuild(props) {
   let history = useHistory();
-  const countryArr = countryList.props.children.map(
-    (country) => country.props.value
-  );
-
   const [userData, setUserData] = useState(emptyProfile);
   const [email, setEmail] = useState(null);
   const classYears = [
@@ -126,21 +122,24 @@ function ProfileBuild(props) {
     return (
       <span>
         <TextField
-          variant="outlined"
-          autoComplete="off"
-          size={"small"}
+          select
           label="Country of Origin"
           className="profile-build-half-input"
           onChange={(event) =>
             setUserData({ ...userData, country: event.target.value })
           }
-          InputProps={{
-            endAdornment: countryList,
-            inputProps: {
-              list: "countries",
-            },
-          }}
-        />
+          value={userData.country}
+          variant="outlined"
+          size={"small"}
+        >
+          {countryList.map((country) => {
+            return (
+              <MenuItem key={country} value={country}>
+                {country}
+              </MenuItem>
+            );
+          })}
+        </TextField>
         <TextField
           variant="outlined"
           disabled={true}
@@ -157,39 +156,43 @@ function ProfileBuild(props) {
     return (
       <span>
         <TextField
-          variant="outlined"
-          autoComplete="off"
-          size={"small"}
-          label="Country"
-          className="profile-build-third-input"
-          value={"USA"}
+          select
+          label="Country of Origin"
+          className="profile-build-half-input"
           onChange={(event) =>
             setUserData({ ...userData, country: event.target.value })
           }
-          InputProps={{
-            endAdornment: countryList,
-            inputProps: {
-              list: "countries",
-            },
-          }}
-          helperText="Where are you from?"
-        />
-        <TextField
+          value={userData.country}
           variant="outlined"
-          autoComplete="off"
           size={"small"}
+        >
+          {countryList.map((country) => {
+            return (
+              <MenuItem key={country} value={country}>
+                {country}
+              </MenuItem>
+            );
+          })}
+        </TextField>
+        <TextField
+          select
           label="State"
           className="profile-build-third-input"
           onChange={(event) =>
             setUserData({ ...userData, state: event.target.value })
           }
-          InputProps={{
-            endAdornment: stateList,
-            inputProps: {
-              list: "states",
-            },
-          }}
-        />
+          value={userData.state}
+          variant="outlined"
+          size={"small"}
+        >
+          {stateList.map((country) => {
+            return (
+              <MenuItem key={country} value={country}>
+                {country}
+              </MenuItem>
+            );
+          })}
+        </TextField>
         <TextField
           className="profile-build-third-input"
           label="City"
@@ -208,23 +211,24 @@ function ProfileBuild(props) {
     return (
       <span>
         <TextField
-          variant="outlined"
-          autoComplete="off"
-          size={"small"}
-          label="Country"
+          select
+          label="Country of Origin"
           className="profile-build-half-input"
-          value={userData.country}
           onChange={(event) =>
             setUserData({ ...userData, country: event.target.value })
           }
-          InputProps={{
-            endAdornment: countryList,
-            inputProps: {
-              list: "countries",
-            },
-          }}
-          helperText="Where are you from?"
-        />
+          value={userData.country}
+          variant="outlined"
+          size={"small"}
+        >
+          {countryList.map((country) => {
+            return (
+              <MenuItem key={country} value={country}>
+                {country}
+              </MenuItem>
+            );
+          })}
+        </TextField>
         <TextField
           className="profile-build-half-input"
           label="City"
@@ -296,13 +300,10 @@ function ProfileBuild(props) {
             />
           </Col>
           <Col xs={12} md={6}>
-            {!countryArr.includes(userData.country) && renderEmptyLocation()}
-            {(userData.country === "United States of America" ||
-              userData.country === "United States") &&
-              renderUSA()}
-            {countryArr.includes(userData.country) &&
+            {!countryList.includes(userData.country) && renderEmptyLocation()}
+            {userData.country === "United States of America" && renderUSA()}
+            {countryList.includes(userData.country) &&
               userData.country !== "United States of America" &&
-              userData.country !== "United States" &&
               renderNotUSA()}
           </Col>
           <Col xs={12} md={6}>
