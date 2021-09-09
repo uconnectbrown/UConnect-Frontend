@@ -137,6 +137,7 @@ const varsitySportsList = [
   "Fencing",
   "Field Hockey",
   "Football",
+  "Gymnastics",
   "Ice Hockey",
   "Lacrosse",
   "Rugby",
