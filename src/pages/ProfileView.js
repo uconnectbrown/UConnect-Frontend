@@ -283,6 +283,7 @@ function ProfileView(props) {
     setProfile({ ...profile, imageUrl: url });
     setNewProfile({ ...newProfile, imageUrl: url });
     props.handleImage(url);
+    return axios.get(`/update/${emailId}`);
   };
 
   const renderLeftInfo = () => {
