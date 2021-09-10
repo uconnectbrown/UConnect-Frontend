@@ -24,13 +24,11 @@ function Chat(props) {
         const msgs = [];
         const id = "";
         snapshot.forEach((doc, i) => {
-          if (i === 0) id = doc.data().ownId;
-          console.log(doc.data());
-          msgs.push(doc.data());
+          if (doc.data().roomId === roomId) {
+            msgs.push(doc.data());
+          }
         });
-        if (id === studentId) {
-          setMessages(snapshot.docs.map((doc) => doc.data()));
-        }
+        setMessages(snapshot.docs.map((doc) => doc.data()));
       });
   }, [props.roomId]);
 
