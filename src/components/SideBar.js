@@ -28,13 +28,16 @@ function SideBar(props) {
       </Link>
       <Link to="/messages" style={{ textDecoration: "none" }}>
         <Button variant="outline-light" className="nav-button">
-          <FontAwesomeIcon icon={faCommentAlt} style={{ width: "100%" }} />
+          <span>
+            <FontAwesomeIcon icon={faCommentAlt} style={{ width: "100%" }} />
+
+            <Badge
+              badgeContent={props.messageCount}
+              color="primary"
+              style={{ marginTop: 18 }}
+            ></Badge>
+          </span>
           Messages
-          <Badge
-            badgeContent={props.messageCount}
-            color="primary"
-            style={{ marginTop: 18 }}
-          ></Badge>
         </Button>
       </Link>
       <Link to="/connections" style={{ textDecoration: "none" }}>
