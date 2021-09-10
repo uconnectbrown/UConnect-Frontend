@@ -9,13 +9,7 @@ import { Link } from "react-router-dom";
 import StudentModal from "../components/StudentModal";
 import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Modal,
-} from "react-bootstrap";
+import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import Logo from "../assets/Logo.png";
 
 // Styling
@@ -220,7 +214,11 @@ function HomeView(props) {
             placement="right"
           >
             <span>
-              <FontAwesomeIcon icon={faQuestionCircle} color="#505050" style={{ marginTop: 10 }} />
+              <FontAwesomeIcon
+                icon={faQuestionCircle}
+                color="#505050"
+                style={{ marginTop: 10 }}
+              />
             </span>
           </Tooltip>
         </Col>
@@ -371,7 +369,11 @@ function HomeView(props) {
             title="These profiles are generated weekly and are recommended based on the information you have provided in your profile."
           >
             <span>
-              <FontAwesomeIcon style={{ marginLeft: 15 }} icon={faQuestionCircle} color="#505050" />
+              <FontAwesomeIcon
+                style={{ marginLeft: 15 }}
+                icon={faQuestionCircle}
+                color="#505050"
+              />
             </span>
           </Tooltip>
         </p>

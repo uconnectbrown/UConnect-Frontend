@@ -860,8 +860,8 @@ function ProfileView(props) {
                   style={{ fontWeight: 600, color: "#E35E96" }}
                   align="center"
                 >
-                  Please add a photo and customize your profile to complete the onboarding
-                  process.
+                  Please add a photo and customize your profile to complete the
+                  onboarding process.
                 </h4>
               )}
               <button
