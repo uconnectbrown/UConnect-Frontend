@@ -48,6 +48,7 @@ function Chat(props) {
           recipientId: studentId,
           lastMessage: msg,
           lastSent: new Date().toISOString(),
+          read: true,
         }),
 
       db
@@ -62,6 +63,7 @@ function Chat(props) {
           recipientId: ownId,
           lastMessage: msg,
           lastSent: new Date().toISOString(),
+          read: false,
         }),
     ]);
 

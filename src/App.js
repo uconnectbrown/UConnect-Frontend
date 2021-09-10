@@ -186,6 +186,23 @@ function App() {
     setPending(pending - 1);
   };
 
+  // Messages
+  const [messageCount, setMessageCount] = useState(null);
+  useEffect(() => {
+    if (deny === false) getMessageCount();
+  }, [deny]);
+  const getMessageCount = () => {
+    axios
+      .get(`/messages/${emailId}`)
+      .then((res) => {
+        setMessageCount(res.data.filter((message) => !message.read).length);
+      })
+      .catch((err) => console.log(err));
+  };
+  const decMessageCount = () => {
+    setMessageCount(messageCount - 1);
+  };
+
   // Reset states
   const reset = () => {
     setImageUrl("");
@@ -227,6 +244,7 @@ function App() {
                   handleCode={handleCode}
                   handleName={handleName}
                   pending={pending}
+                  messageCount={messageCount}
                 />
               </Col>
               <Col xs={11} md={10}>
@@ -251,7 +269,22 @@ function App() {
                       outgoing={outgoing}
                     />
                   </Route>
-                  <Route exact path="/messages" component={MessageView} />
+                  <Route
+                    exact
+                    path="/messages"
+                    render={(props) => (
+                      <MessageView
+                        {...props}
+                        decMessageCount={decMessageCount}
+                        fetchMessageCount={getMessageCount}
+                      />
+                    )}
+                  />
+                  {/* <MessageView */}
+                  {/* decMessageCount={decMessageCount}
+                      fetchMessageCount={getMessageCount}
+                     />
+                   </Route> */}
                   <Route exact path="/connections">
                     <Connections
                       decPending={decPending}

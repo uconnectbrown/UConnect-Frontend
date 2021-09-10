@@ -210,6 +210,7 @@ const varsitySports = [
   { value: "Fencing", label: "Fencing", disabled: false },
   { value: "Field Hockey", label: "Field Hockey", disabled: false },
   { value: "Football", label: "Football", disabled: false },
+  { value: "Gymnastics", label: "Gymnastics", disabled: false },
   { value: "Ice Hockey", label: "Ice Hockey", disabled: false },
   { value: "Lacrosse", label: "Lacrosse", disabled: false },
   { value: "Rugby", label: "Rugby", disabled: false },

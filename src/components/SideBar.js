@@ -30,13 +30,22 @@ function SideBar(props) {
         <Button variant="outline-light" className="nav-button">
           <FontAwesomeIcon icon={faCommentAlt} style={{ width: "100%" }} />
           Messages
+          <Badge
+            badgeContent={props.messageCount}
+            color="primary"
+            style={{ marginTop: 18 }}
+          ></Badge>
         </Button>
       </Link>
       <Link to="/connections" style={{ textDecoration: "none" }}>
         <Button variant="outline-light" className="nav-button">
           <span>
             <FontAwesomeIcon icon={faUserFriends} style={{ width: "100%" }} />
-            <Badge badgeContent={props.pending} color="primary" style={{marginTop: 18}}></Badge>
+            <Badge
+              badgeContent={props.pending}
+              color="primary"
+              style={{ marginTop: 18 }}
+            ></Badge>
           </span>
           Connections
         </Button>
