@@ -21,7 +21,16 @@ function Chat(props) {
       .orderBy("createdAt")
       .limit(50)
       .onSnapshot((snapshot) => {
-        setMessages(snapshot.docs.map((doc) => doc.data()));
+        const msgs = [];
+        const id = "";
+        snapshot.forEach((doc, i) => {
+          if (i === 0) id = doc.data().ownId;
+          console.log(doc.data());
+          msgs.push(doc.data());
+        });
+        if (id === studentId) {
+          setMessages(snapshot.docs.map((doc) => doc.data()));
+        }
       });
   }, [props.roomId]);
 
@@ -34,6 +43,7 @@ function Chat(props) {
         ownImageUrl,
         ownId,
         createdAt: new Date().toISOString(),
+        roomId,
       }),
 
       db
