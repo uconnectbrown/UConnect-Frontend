@@ -97,7 +97,6 @@ function Connections(props) {
         data.forEach((doc) => {
           students.push(doc.data());
         });
-        console.log(students);
         setOutgoing(students);
       })
       .catch((err) => console.log(err));
