@@ -15,21 +15,24 @@ function Chat(props) {
   let roomId = props.roomId;
 
   useEffect(() => {
-    db.collection("messages")
+    const switchRoom = db
+      .collection("messages")
       .doc(props.roomId)
       .collection("chat")
       .orderBy("createdAt")
       .limit(50)
       .onSnapshot((snapshot) => {
-        const msgs = [];
-        const id = "";
-        snapshot.forEach((doc, i) => {
-          if (doc.data().roomId === roomId) {
-            msgs.push(doc.data());
-          }
-        });
         setMessages(snapshot.docs.map((doc) => doc.data()));
       });
+    return () => {
+      switchRoom();
+      db.collection("messages")
+        .doc(props.roomId)
+        .collection("chat")
+        .orderBy("createdAt")
+        .limit(50)
+        .onSnapshot(() => {});
+    };
   }, [props.roomId]);
 
   async function sendMessage(e) {

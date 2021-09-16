@@ -79,9 +79,9 @@ function ProfileBuild(props) {
         majors: [userData.major1, userData.major2],
         pronouns: userData.pronouns,
         location: {
-          country: userData.country,
-          state: userData.state,
-          city: userData.city,
+          country: userData.country.trim(),
+          state: userData.state.trim(),
+          city: userData.city.trim(),
         },
         email,
         // Interests
