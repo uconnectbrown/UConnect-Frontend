@@ -15,25 +15,30 @@ function ConnectButton(props) {
       case "out":
         component = (
           <div>
-            <Tooltip title="Unrequest available after 48 hours">
-              <span>
-              <Button
-              disabled={!props.validUndo}
-              onClick={() => {
-                if (props.closeOnUndo) {
-                  props.undoRequest();
-                  props.handleClose();
-                }
-                if (!props.closeOnUndo) {
-                  props.undoRequest();
-                }
-              }}
+            <Tooltip
+              title={
+                props.validUndo
+                  ? "Unrequest"
+                  : "Unrequest available after 48 hours"
+              }
             >
-              Requested
-            </Button>
+              <span>
+                <Button
+                  disabled={!props.validUndo}
+                  onClick={() => {
+                    if (props.closeOnUndo) {
+                      props.undoRequest();
+                      props.handleClose();
+                    }
+                    if (!props.closeOnUndo) {
+                      props.undoRequest();
+                    }
+                  }}
+                >
+                  Requested
+                </Button>
               </span>
             </Tooltip>
-            
           </div>
         );
         break;

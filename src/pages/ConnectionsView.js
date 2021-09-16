@@ -175,6 +175,7 @@ function Connections(props) {
             updateConnections={getConnections}
             handleOpenMessage={handleOpenMessage}
             decPending={props.decPending}
+            outgoing={outgoing}
           />
         </Modal.Body>
       </Modal>
