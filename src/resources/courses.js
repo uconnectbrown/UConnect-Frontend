@@ -1091,7 +1091,10 @@ const courseList = [
   ["ENGN 2912J", "Asymptotic and Perturbation Methods"],
   ["ENGN 2912L", "Topics in Bioelectronics"],
   // ["ENGN 2912T", "Experimental Fluid Mechanics"],
-  ["ENGN 2920G", "Creating Economic and Social Value from Your Science or Engineering Research"],
+  [
+    "ENGN 2920G",
+    "Creating Economic and Social Value from Your Science or Engineering Research",
+  ],
   ["ENGN 2920H", "Materials and Interfaces for Energy Storage Devices"],
   ["ENGN 2970", "Preliminary Examination Preparation"],
   ["ENGN 2990", "Thesis Preparation"],
@@ -1226,7 +1229,7 @@ const courseList = [
   ["ENGL 2970", "Preliminary Examination Preparation"],
   ["ENGL 2990", "Thesis Preparation"],
   // ["ENGL XLIST", "Courses of Interest to Students Concentrating in English"],
-  
+
   ["ENVS 0070C", "Transcending Transportation Impacts"],
   [
     "ENVS 0110",
@@ -1288,7 +1291,10 @@ const courseList = [
   // ["FREN 2980", "Reading and Research"],
   ["FREN 2990", "Thesis Preparation"],
 
-  ["GNSS 0091A", "Documenting the Feminized Body: Literature, Photography, Science"],
+  [
+    "GNSS 0091A",
+    "Documenting the Feminized Body: Literature, Photography, Science",
+  ],
   ["GNSS 0120", "Introduction to Gender and Sexuality Studies"],
   ["GNSS 0710", "Feminist Digital Humanities"],
   ["GNSS 1510A", "Reproductive In/Justice"],
@@ -1331,10 +1337,7 @@ const courseList = [
     "GRMN 2662F",
     "Police, Strike, Justice: Revisiting Walter Benjamin’s “Critique of Violence”",
   ],
-  [
-    "GRMN 2662G",
-    "On Interpretation",
-  ],
+  ["GRMN 2662G", "On Interpretation"],
 
   ["HISP 0100", "Basic Spanish"],
   // ["HISP 0200", "Basic Spanish"],
@@ -1367,20 +1370,26 @@ const courseList = [
     "War, Revolution and the Cult of the Hero in Latin American Culture",
   ],
   ["HISP 1331K", "Borges y la Literatura Fantástica"],
-  ["HISP 1331M", "Race, Gender, and Sexuality in Hispanophone Caribbean Literature"],
+  [
+    "HISP 1331M",
+    "Race, Gender, and Sexuality in Hispanophone Caribbean Literature",
+  ],
   // ["HISP 1980", "Independent Study"],
   // ["HISP 1990", "Senior Thesis Preparation"],
   ["HISP 2350H", "The History of Wonder in Colonial Spanish America"],
   // ["HISP 2350V", "The Politics of Romanticism in Spanish American Literature"],
   // ["HISP 2450", "Exchange Scholar Program"],
-  ["HISP 2520Q", "Critical Readings in Cuban, Puerto Rican, and Dominican Literature"],
+  [
+    "HISP 2520Q",
+    "Critical Readings in Cuban, Puerto Rican, and Dominican Literature",
+  ],
   ["HISP 2620O", "Authorship and Authoritarianism in Spain and Latin America"],
   ["HISP 2970", "Preliminary Examination Preparation"],
   ["HISP 2990", "Thesis Preparation"],
   ["HISP 2990A", "Learning and Teaching Spanish as a Foreign Language"],
   // ["HISP 2991", "Thesis Preparation"],
   // ["HISP XLIST", "Courses of Interest to Concentrators in Hispanic Studies"],
-  
+
   ["HIST 0150A", "History of Capitalism"],
   // ["HIST 0233", "Colonial Latin America"],
   [
@@ -1404,7 +1413,10 @@ const courseList = [
     "Formation of the Classical Heritage: Greeks, Romans, Jews, Christians, and Muslims",
   ],
   ["HIST 1205", "The Long Fall of the Roman Empire"],
-  ["HIST 1211A", "From Imperial Diadem to Papal Tiara: Analyzing the Sources for the History of Europe, 476 to 1215"],
+  [
+    "HIST 1211A",
+    "From Imperial Diadem to Papal Tiara: Analyzing the Sources for the History of Europe, 476 to 1215",
+  ],
   ["HIST 1240A", "Politics of Violence in 20C Europe"],
   ["HIST 1262M", "Truth on Trial: Justice in Italy, 1400-1800"],
   ["HIST 1310", "History of Brazil"],
@@ -1456,44 +1468,17 @@ const courseList = [
     "HIAA 0062",
     "Dutch and Flemish Art: Visual Culture of the Netherlands in the Seventeenth Century",
   ],
-  [
-    "HIAA 0072",
-    "Introduction to American Art: The Twentieth Century",
-  ],
-  [
-    "HIAA 0081",
-    "Architecture of the House Through Space and Time",
-  ],
-  [
-    "HIAA 0100",
-    "Introduction to Architectural Design Studio",
-  ],
-  [
-    "HIAA 0150",
-    "Intermediate Architectural Design Studio",
-  ],
-  [
-    "HIAA 0190",
-    "Advanced Design Studio",
-  ],
-  [
-    "HIAA 0211",
-    "Art of Empire: The Early Modern Hispanic World",
-  ],
+  ["HIAA 0072", "Introduction to American Art: The Twentieth Century"],
+  ["HIAA 0081", "Architecture of the House Through Space and Time"],
+  ["HIAA 0100", "Introduction to Architectural Design Studio"],
+  ["HIAA 0150", "Intermediate Architectural Design Studio"],
+  ["HIAA 0190", "Advanced Design Studio"],
+  ["HIAA 0211", "Art of Empire: The Early Modern Hispanic World"],
   ["HIAA 0850", "Modern Architecture"],
-  [
-    "HIAA 1307",
-    "Politics and Spectacle in the Arts of Ancient Rome",
-  ],
-  [
-    "HIAA 1401",
-    "Objects of Devotion in the Middle Ages",
-  ],
+  ["HIAA 1307", "Politics and Spectacle in the Arts of Ancient Rome"],
+  ["HIAA 1401", "Objects of Devotion in the Middle Ages"],
   ["HIAA 1620", "Arts Between Europe and the World: 1500-1700"],
-  [
-    "HIAA 1822",
-    "Dada and Surrealism: Anarchy, Exile, Alterity",
-  ],
+  ["HIAA 1822", "Dada and Surrealism: Anarchy, Exile, Alterity"],
   // [
   //   "HIAA 1920",
   //   "Individual Study Project in the History of Art and Architecture",
@@ -1504,10 +1489,7 @@ const courseList = [
     "Finding the Viewer: The Reception of Ancient Art and Architecture",
   ],
   // ["HIAA 2450", "Exchange Scholar Program"],
-  [
-    "HIAA 2860D",
-    "Photography and Objectivity",
-  ],
+  ["HIAA 2860D", "Photography and Objectivity"],
   ["HIAA 2880", "Race and Architecture"],
   // ["HIAA 2940", "Master's Qualifying Paper Preparation"],
   // ["HIAA 2980", "Individual Reading (Single Credit)"],
@@ -1623,7 +1605,10 @@ const courseList = [
   ["HNDI 1080", "Advanced Hindi-Urdu"],
 
   ["LANG 0150S", "Swahili I"],
-  ["LANG 1000A", "Living in Translation: Trans/national Mobilities and Multilingualism"],
+  [
+    "LANG 1000A",
+    "Living in Translation: Trans/national Mobilities and Multilingualism",
+  ],
   ["LANG 1900", "Independent Study in Languages"],
   ["LANG 2450", "Exchange Scholar Program"],
 
@@ -1757,7 +1742,7 @@ const courseList = [
   // ["MATH 2980", "Reading and Research"],
   ["MATH 2990", "Thesis Preparation"],
   ["MATH XLIST", "Courses of Interest to Students Majoring in Mathematics"],
-  
+
   ["MDVL 1610", "The Divina Commedia: Inferno and Purgatorio (ITAL 1610)"],
   [
     "MDVL 1900Y",
@@ -1799,9 +1784,18 @@ const courseList = [
   ["MCM 1506X", "Love Hurts: Romance, Media, Masochism"],
   ["MCM 1700F", "Theory for Practice / Practice as Theory"],
   ["MCM 1701G", "Text in Time-based Art"],
-  ["MCM 1701I", "Digital Worlding: Terraforming Future, Fact, Fiction, and Fabulation"],
-  ["MCM 1701R", "Script, Cut, Repeat, Break: Critical Theory, Black Feminist Thought, Time-based Art"],
-  ["MCM 1701S", "Anti-Social Reproduction: Art, Activism, and the Question of Reproductive Labor"],
+  [
+    "MCM 1701I",
+    "Digital Worlding: Terraforming Future, Fact, Fiction, and Fabulation",
+  ],
+  [
+    "MCM 1701R",
+    "Script, Cut, Repeat, Break: Critical Theory, Black Feminist Thought, Time-based Art",
+  ],
+  [
+    "MCM 1701S",
+    "Anti-Social Reproduction: Art, Activism, and the Question of Reproductive Labor",
+  ],
   // [
   //   "MCM 1980",
   //   "Honors Thesis/Project Research in Modern Culture and Media (Part 1)",

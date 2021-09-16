@@ -924,22 +924,7 @@ function ProfileView(props) {
             <Row>{renderInterests()}</Row>
             <h5>Extracurriculars</h5>
             <Row>{renderEcs()}</Row>
-            <h5>
-              Courses{" "}
-              {editing && (
-                <Tooltip
-                  title="All Fall Semester courses will be available by the end of the week"
-                  placement="right"
-                >
-                  <span>
-                    <FontAwesomeIcon
-                      style={{ width: 15 }}
-                      icon={faInfoCircle}
-                    />
-                  </span>
-                </Tooltip>
-              )}
-            </h5>
+            <h5>Courses</h5>
 
             <Row>{renderCourses()}</Row>
             <SignOut
