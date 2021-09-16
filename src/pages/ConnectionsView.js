@@ -7,12 +7,13 @@ import { db, auth } from "../firebase";
 import StudentModal from "../components/StudentModal";
 import SearchBar from "../components/SearchBar";
 import Message from "../components/Message";
+import StudentCard from "../components/StudentCard";
+import StudentCardSm from "../components/StudentCardSm";
 
 import { Container, Row, Modal } from "react-bootstrap";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import StudentCard from "../components/StudentCard";
 
 function Connections(props) {
   const [pending, setPending] = useState([]);
@@ -38,9 +39,9 @@ function Connections(props) {
     }
   }, [emailId]);
 
-  // useEffect(() => {
-  //   if (emailId) getOutgoing();
-  // }, [emailId]);
+  useEffect(() => {
+    if (emailId) getOutgoing();
+  }, [emailId]);
 
   useEffect(() => {
     if (emailId) getConnections();
@@ -96,6 +97,7 @@ function Connections(props) {
         data.forEach((doc) => {
           students.push(doc.data());
         });
+        console.log(students);
         setOutgoing(students);
       })
       .catch((err) => console.log(err));
@@ -181,7 +183,7 @@ function Connections(props) {
           <>
             <h4>Incoming Requests ({pending.length})</h4>
             {pending.map((p, i) => (
-              <StudentCard
+              <StudentCardSm
                 name={p.name}
                 classYear={p.classYear}
                 imageUrl={p.imageUrl}
@@ -192,12 +194,12 @@ function Connections(props) {
         )}
       </Row>
 
-      {/* <Row>
+      <Row>
         {outgoing && outgoing.length > 0 && (
           <>
             <h4>Outgoing Requests ({outgoing.length})</h4>
             {outgoing.map((p, i) => (
-              <StudentCard
+              <StudentCardSm
                 name={p.name}
                 imageUrl={p.imageUrl}
                 onClick={() => handleOpenOutgoing(i)}
@@ -205,7 +207,7 @@ function Connections(props) {
             ))}
           </>
         )}
-      </Row> */}
+      </Row>
 
       <h1>All Connections</h1>
       {connections && connections.length === 0 && (
