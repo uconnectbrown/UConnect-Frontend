@@ -283,6 +283,7 @@ function Course(props) {
             updateOutgoing={props.updateOutgoing}
             outgoing={props.outgoing}
             decPending={props.decPending}
+            imageUrl={props.imageUrl}
           />
         </Modal.Body>
       </Modal>
@@ -308,6 +309,7 @@ function Course(props) {
                 classYear={student.classYear}
                 majors={student.majors}
                 imageUrl={student.imageUrl}
+                ownImageUrl={props.imageUrl}
                 onClick={() => handleOpenStudent(i)}
               />
             );
