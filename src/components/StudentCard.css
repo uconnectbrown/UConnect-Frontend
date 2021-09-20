@@ -1,8 +1,17 @@
 .student-card-profile-img {
+  position: relative;
   width: 100%;
   border-radius: 10rem;
   max-width: 4rem;
   margin-bottom: 0.5rem;
+}
+.student-card-profile-img-blur {
+  position: relative;
+  width: 100%;
+  border-radius: 10rem;
+  max-width: 4rem;
+  filter: blur(7px);
+  transform: scale(0.9);
 }
 
 .student-card {

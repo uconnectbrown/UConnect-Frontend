@@ -6,11 +6,18 @@ import "./StudentCardSm.css";
 const StudentCardSm = (props) => {
   return (
     <Col sm={1} className="student-card" onClick={props.onClick}>
-      <img
-        className="student-card-profile-img"
-        alt="Profile Picture"
-        src={props.imageUrl}
-      />
+      <div style={{ border: "5px solid #f3f3f3", borderRadius: "10rem" }}>
+        <img
+          className={
+            props.ownImageUrl ===
+            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+              ? "student-card-profile-img-blur"
+              : "student-card-profile-img"
+          }
+          alt="Profile Picture"
+          src={props.imageUrl}
+        />
+      </div>
       {props.name && props.classYear && (
         <div style={{ fontSize: "1rem", fontStyle: "bold" }}>
           {props.name} '{props.classYear.split("0")[1]}

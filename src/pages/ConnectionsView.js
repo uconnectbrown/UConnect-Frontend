@@ -175,6 +175,7 @@ function Connections(props) {
             handleOpenMessage={handleOpenMessage}
             decPending={props.decPending}
             outgoing={outgoing}
+            imageUrl={props.imageUrl}
           />
         </Modal.Body>
       </Modal>
@@ -188,6 +189,7 @@ function Connections(props) {
                 classYear={p.classYear}
                 imageUrl={p.imageUrl}
                 onClick={() => handleOpenPending(i)}
+                ownImageUrl={props.imageUrl}
               />
             ))}
           </>
@@ -202,6 +204,7 @@ function Connections(props) {
               <StudentCardSm
                 name={p.name}
                 imageUrl={p.imageUrl}
+                ownImageUrl={props.imageUrl}
                 onClick={() => handleOpenOutgoing(i)}
               />
             ))}
@@ -219,6 +222,7 @@ function Connections(props) {
           connections_.map((c, i) => (
             <StudentCard
               name={c.name}
+              ownImageUrl={props.imageUrl}
               classYear={c.classYear}
               imageUrl={c.imageUrl}
               onClick={() => handleOpenConnected(i)}

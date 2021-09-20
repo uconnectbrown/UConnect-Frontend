@@ -313,6 +313,7 @@ function App() {
                     <Connections
                       decPending={decPending}
                       fetchPending={getPending}
+                      imageUrl={imageUrl}
                     />
                   </Route>
                   <Route exact path="/profile">

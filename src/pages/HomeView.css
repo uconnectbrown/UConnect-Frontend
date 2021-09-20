@@ -82,7 +82,7 @@
   width: 6rem;
   border-radius: 10rem;
   margin-bottom: 0.5rem;
-  filter: blur(5px);
+  filter: blur(8px);
   transform: scale(0.9);
 }
 
