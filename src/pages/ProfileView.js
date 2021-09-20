@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { db, auth } from "../firebase";
+import { useHistory } from "react-router-dom";
 
 // Components
 import EditInterests from "../components/EditInterests";
@@ -39,6 +40,7 @@ const { validProfile } = require("../util/validators");
 
 // Body
 function ProfileView(props) {
+  let history = useHistory();
   const [emailId, setEmailId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
@@ -305,13 +307,32 @@ function ProfileView(props) {
             alt="Profile Picture"
             src={student.imageUrl}
           />
-          {student.imageUrl ===
-            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" &&
-            !editing && (
-              <p style={{ width: "100%", fontSize: 14, marginTop: 0 }}>
-                Please add an image to complete <br /> your profile.
-              </p>
-            )}
+          <br />
+          {!editing && (
+            <button
+              type="button"
+              class={
+                firstTime ? "btn btn-sm" : "btn btn-outline-primary btn-sm"
+              }
+              style={{
+                width: "8rem",
+                backgroundColor: firstTime ? "#E35E96" : "#FFFFFF",
+                color: firstTime ? "white" : "default",
+              }}
+              onClick={() => {
+                if (firstTime) {
+                  setEditing(true);
+                }
+                setEditImage(true);
+              }}
+            >
+              {student.imageUrl ===
+              "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                ? "Add Image"
+                : "Edit Image"}
+            </button>
+          )}
+
           {student.imageUrl ===
             "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" &&
             editing && (
@@ -321,15 +342,18 @@ function ProfileView(props) {
                   fontSize: 14,
                   marginTop: 0,
                   fontWeight: 700,
-                  color: "red",
+                  color: "#E35E96",
                 }}
               >
-                Please add an image to complete <br /> your profile.
+                Please add a profile image
               </p>
             )}
           {editing && (
             <Button className="mb-3" onClick={() => setEditImage(true)}>
-              Edit Image
+              {student.imageUrl ===
+              "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                ? "Add Image"
+                : "Edit Image"}
             </Button>
           )}
           <Dialog open={editImage}>
@@ -550,8 +574,14 @@ function ProfileView(props) {
           <Col sm={3} className="mb-3">
             <button
               type="button"
-              class="btn btn-outline-primary btn-sm"
-              style={{ width: "5rem" }}
+              class={
+                firstTime ? "btn btn-sm" : "btn btn-outline-primary btn-sm"
+              }
+              style={{
+                width: "5rem",
+                backgroundColor: firstTime ? "#E35E96" : "#FFFFFF",
+                color: firstTime ? "white" : "default",
+              }}
               onClick={() => setEditing(true)}
             >
               Add
@@ -764,8 +794,16 @@ function ProfileView(props) {
                 {list.filter(Boolean).length === 0 && (
                   <button
                     type="button"
-                    class="btn btn-outline-primary btn-sm"
-                    style={{ width: "5rem" }}
+                    class={
+                      firstTime
+                        ? "btn btn-sm"
+                        : "btn btn-outline-primary btn-sm"
+                    }
+                    style={{
+                      width: "5rem",
+                      backgroundColor: firstTime ? "#E35E96" : "#FFFFFF",
+                      color: firstTime ? "white" : "default",
+                    }}
                     onClick={() => setEditing(true)}
                   >
                     Add
@@ -860,14 +898,19 @@ function ProfileView(props) {
                   style={{ fontWeight: 600, color: "#E35E96" }}
                   align="center"
                 >
-                  Please add a photo and customize your profile to complete the
-                  onboarding process.
+                  Click any pink button to customize your profile!
                 </h4>
               )}
               <button
                 type="button"
-                class="btn btn-outline-primary btn-sm"
-                style={{ width: "5rem" }}
+                class={
+                  firstTime ? "btn btn-sm" : "btn btn-outline-primary btn-sm"
+                }
+                style={{
+                  width: "5rem",
+                  backgroundColor: firstTime ? "#E35E96" : "#FFFFFF",
+                  color: firstTime ? "white" : "default",
+                }}
                 onClick={() => setEditing(true)}
               >
                 Edit
@@ -875,6 +918,15 @@ function ProfileView(props) {
             </React.Fragment>
           ) : (
             <React.Fragment>
+              {firstTime && (
+                <h4
+                  style={{ fontWeight: 600, color: "#E35E96" }}
+                  align="center"
+                >
+                  Once you are done customizing your profile click "Save
+                  Changes" to complete the onboarding process!
+                </h4>
+              )}
               <button
                 type="button"
                 class="btn btn-outline-primary btn-sm"
@@ -905,6 +957,12 @@ function ProfileView(props) {
                     handleCloseOnBoard();
                     axios
                       .get(`/newFeatured/${emailId}`)
+                      .then(() => {
+                        props.finishOB();
+                      })
+                      .then(() => {
+                        history.push("/home");
+                      })
                       .catch((err) => console.log(err));
                   }
                 }}

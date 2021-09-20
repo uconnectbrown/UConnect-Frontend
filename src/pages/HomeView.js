@@ -4,6 +4,7 @@ import axios from "axios";
 import { db, auth } from "../firebase.js";
 import Select from "react-select";
 import { Link } from "react-router-dom";
+import ReactPlayer from "react-player";
 
 // Components
 import StudentModal from "../components/StudentModal";
@@ -20,6 +21,10 @@ import "react-circular-progressbar/dist/styles.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import FeaturedOB from "../assets/Featured.png";
+import CoursesOB from "../assets/Courses.png";
+import ProfileOB from "../assets/Profile.png";
+import OtherProfileOB from "../assets/OtherProfile.png";
 
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
@@ -37,8 +42,9 @@ function HomeView(props) {
   const [searching, setSearching] = useState(false);
   const [searchType, setSearchType] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [firstTime, setFirstTime] = useState(null);
   const [onboardPage, setOnboardPage] = useState(0);
+  const [firstTime, setFirstTime] = useState(props.firstTime);
+
   const params = [
     "",
     "classYear",
@@ -49,6 +55,10 @@ function HomeView(props) {
   ];
 
   useEffect(() => {
+    setFirstTime(props.firstTime);
+  }, [props.firstTime]);
+
+  useEffect(() => {
     if (auth.currentUser) {
       setEmailId(auth.currentUser.email.split("@")[0]);
       setEmail(auth.currentUser.email);
@@ -57,20 +67,10 @@ function HomeView(props) {
 
   useEffect(() => {
     if (emailId) {
-      checkFirstTime();
       getFeatured();
       disableSearchTypes();
     }
   }, [emailId]);
-
-  const checkFirstTime = () => {
-    db.doc(`profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        return setFirstTime(doc.data().firstTime);
-      })
-      .catch((err) => console.log(err));
-  };
 
   const handleNextPage = () => {
     setOnboardPage(onboardPage + 1);
@@ -293,11 +293,20 @@ function HomeView(props) {
               key={i}
             >
               <Col md={2} lg={1}>
-                <img
-                  className="search-profile-img"
-                  alt="Profile Picture"
-                  src={student.imageUrl}
-                />
+                <div
+                  style={{ border: "5px solid #f3f3f3", borderRadius: "10rem" }}
+                >
+                  <img
+                    className={
+                      props.imageUrl ===
+                      "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                        ? "search-profile-img-blur"
+                        : "search-profile-img"
+                    }
+                    alt="Profile Picture"
+                    src={student.imageUrl}
+                  />
+                </div>
               </Col>
               <Col md={4} lg={4}>
                 <div style={{ fontSize: "1.2em", fontStyle: "bold" }}>
@@ -386,11 +395,20 @@ function HomeView(props) {
                   handleOpenFeatured(i);
                 }}
               >
-                <img
-                  className="featured-profile-img"
-                  alt="Profile Picture"
-                  src={student.imageUrl}
-                />
+                <div
+                  style={{ border: "5px solid #ffffff", borderRadius: "10rem" }}
+                >
+                  <img
+                    className={
+                      props.imageUrl ===
+                      "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                        ? "featured-profile-img-blur"
+                        : "featured-profile-img"
+                    }
+                    alt="Profile Picture"
+                    src={student.imageUrl}
+                  />
+                </div>
                 <div className="card-text mb-3">
                   {student.name} '{student.classYear.split("0")[1]}
                 </div>
@@ -432,65 +450,85 @@ function HomeView(props) {
               <h3>Welcome to UConnect!</h3>
               <p>
                 A platform designed to help you form meaningful connections with
-                other Brown students. The following slide will walk you through
+                other Brown students. The following slides will walk you through
                 the site's core functionality.
               </p>
             </div>
           )}
           {onboardPage === 1 && (
-            <div>
-              <h3>Featured Profiles</h3>
+            <div align="center">
+              <h3>Your Profile (1/5)</h3>
               <p>
-                Every Thursday at 9PM EST, each user will receive a new set of
-                featured profiles. These recommended profiles are determined
-                based on the information you have provided in your profile. The
-                more information you provide, the better your featured profiles
-                will be.
-              </p>
-              <h3>Requests and Connections</h3>
-              <p>
-                Every user has a set of 10 connection requests which can be sent
-                to any other UConnect user. Sending a request reduces the number
-                of remaining requests one has, but requests are returned to the
-                sender when they have been accepted. Once two users are
-                connected, they now have the ability to message each other and
-                have access to additional information such as their common
+                Customize your profile with interests, extracurriculars, and
                 courses.
               </p>
-              <h3>Search and Filter</h3>
+              <hr />
+              <img alt="profile" src={ProfileOB} className="onboarding" />
+            </div>
+          )}
+          {onboardPage === 2 && (
+            <div align="center">
+              <h3>Search and Filter (2/5)</h3>
               <p>
-                One of the best ways to find others is by using the search bar
-                on the home page. You are able to search for people by criteria
-                such as their name, concentration, or extracurriculars.
+                Search for Brown students by name, concentration, or
+                extracurriculars.
               </p>
-              <h3>Courses</h3>
+              <hr />
+              <ReactPlayer
+                className="video"
+                url={"https://www.youtube.com/watch?v=KPVWQ1nq-VI"}
+                playing={true}
+                loop={true}
+              />
+            </div>
+          )}
+          {onboardPage === 3 && (
+            <div align="center">
+              <h3>Requests and Connections (3/5)</h3>
               <p>
-                You can also access the other students in your courses by adding
-                courses to your profile and then clicking on the course tab on
-                the left side panel. The search bar at the top of the course
-                page allows you to easily search and filter your classmates
-                based on their name, class year, and concentration.
+                Request to connect with other users. You can send up to 10
+                requests at any given time and connected users can message each
+                other.
               </p>
-              <h3>Your Profile</h3>
+              <hr />
+              <img
+                alt="otherProfile"
+                src={OtherProfileOB}
+                className="onboarding"
+              />
+            </div>
+          )}
+          {onboardPage === 4 && (
+            <div align="center">
+              <h3>Courses (4/5)</h3>
+              <p>Connect with classmates.</p>
+              <hr />
+              <img alt="courses" src={CoursesOB} className="onboarding" />
+            </div>
+          )}
+          {onboardPage === 5 && (
+            <div align="center">
+              <h3>Featured Profiles (5/5)</h3>
               <p>
-                Your profile page allows you to edit your profile and add pieces
-                of information such as what courses you are taking and what
-                extracurriculars you are involved in. Adding more additional
-                information will also give you access to more powerful search
-                tools to find other students who are relevant to you.
+                Not sure who you're looking for? Every Thursday, you will
+                receive a new set of featured profiles that are recommended
+                based on the info you have provided in your profile.
               </p>
+              <hr />
+              <img alt="featured" src={FeaturedOB} className="onboarding" />
             </div>
           )}
           <div align="right">
             {onboardPage > 0 && (
               <button onClick={handlePreviousPage}>Back</button>
             )}
-            {onboardPage < 1 && <button onClick={handleNextPage}>Next</button>}
-            {onboardPage === 1 && (
+            {onboardPage < 5 && <button onClick={handleNextPage}>Next</button>}
+            {onboardPage === 5 && (
               <Link to="/profile">
                 <button>Done</button>
               </Link>
             )}
+            <br />
           </div>
         </Modal.Body>
       </Modal>
@@ -522,6 +560,7 @@ function HomeView(props) {
             updateOutgoing={props.updateOutgoing}
             outgoing={props.outgoing}
             decPending={props.decPending}
+            imageUrl={props.imageUrl}
           />
         </Modal.Body>
       </Modal>

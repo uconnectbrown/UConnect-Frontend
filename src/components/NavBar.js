@@ -8,8 +8,8 @@ import { Modal } from "react-bootstrap";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import Logo from "../assets/Logo.png";
-import Arrow from '../assets/arrow_vector.svg';
-import ArrowFilled from '../assets/arrow_vector_filled.svg';
+import Arrow from "../assets/arrow_vector.svg";
+import ArrowFilled from "../assets/arrow_vector_filled.svg";
 
 import "./NavBar.css";
 
@@ -20,18 +20,24 @@ function NavBar(props) {
     const requests = [...Array(10).keys()];
     const spent = 10 - props.requests;
 
-    return <Tooltip title={
-      <div style={{ fontSize: '12px', padding: '5px'}}>
-        {`You have ${props.requests} requests remaining`}
-      </div>
-    }>
-      <div className="d-inline-block mx-2"> 
-        {requests.map(i => {
-          return <img src={i < spent ? Arrow : ArrowFilled} alt="Request Arrow"/>
-        })}
-      </div>
-    </Tooltip>
-  }
+    return (
+      <Tooltip
+        title={
+          <div style={{ fontSize: "12px", padding: "5px" }}>
+            {`You have ${props.requests} requests remaining`}
+          </div>
+        }
+      >
+        <div className="d-inline-block mx-2">
+          {requests.map((i) => {
+            return (
+              <img src={i < spent ? Arrow : ArrowFilled} alt="Request Arrow" />
+            );
+          })}
+        </div>
+      </Tooltip>
+    );
+  };
 
   return (
     <Navbar variant="light" className="topbar">
@@ -41,40 +47,42 @@ function NavBar(props) {
             <div className="d-inline-block m-2">
               <img alt="UConnect Logo" src={Logo} className="topbar-logo" />
             </div>
-            <h2 className="d-inline-block align-middle nav-header"> 
-              UConnect
-            </h2>
+            <h2 className="d-inline-block align-middle nav-header">UConnect</h2>
           </Navbar.Brand>
         </Link>
         <div>
           {renderRequests()}
-          
-          <Tooltip title={
-            <div style={{ fontSize: '12px', padding: '5px'}}>
-              User Guide
-            </div>
-          }>
+
+          <Tooltip
+            title={
+              <div style={{ fontSize: "12px", padding: "5px" }}>User Guide</div>
+            }
+          >
             <button onClick={() => setHelp(true)}>
-              <FontAwesomeIcon icon={faQuestionCircle} size="lg" color="#473F9B"/>
+              <FontAwesomeIcon
+                icon={faQuestionCircle}
+                size="lg"
+                color="#473F9B"
+              />
             </button>
           </Tooltip>
-          <Modal 
-            keyboard 
+          <Modal
+            keyboard
             dialogClassName="student-modal"
-            show={help} 
+            show={help}
             onHide={() => setHelp(false)}
           >
             <Modal.Body className="mx-5 px-5 py-4">
               <h3>Featured Profiles</h3>
-              <p style={{ fontSize: '14px' }}>
-                Every Thursday at 9PM EST, each user will receive a new set of
-                featured profiles. These recommended profiles are determined
-                based on the information you have provided in your profile. The
-                more information you provide, the better your featured profiles
-                will be.
+              <p style={{ fontSize: "14px" }}>
+                Every Thursday, each user will receive a new set of featured
+                profiles. These recommended profiles are determined based on the
+                information you have provided in your profile. The more
+                information you provide, the better your featured profiles will
+                be.
               </p>
               <h3>Requests and Connections</h3>
-              <p style={{ fontSize: '14px' }}>
+              <p style={{ fontSize: "14px" }}>
                 Every user has a set of 10 connection requests which can be sent
                 to any other UConnect user. Sending a request reduces the number
                 of remaining requests one has, but requests are returned to the
@@ -83,13 +91,13 @@ function NavBar(props) {
                 have access additional information such as their common courses.
               </p>
               <h3>Search and Filter</h3>
-              <p style={{ fontSize: '14px' }}>
+              <p style={{ fontSize: "14px" }}>
                 One of the best ways to find others is by using the search bar
                 on the home page. You are able to search for people by criteria
                 such as their name, concentration, or extracurriculars.
               </p>
               <h3>Courses</h3>
-              <p style={{ fontSize: '14px' }}>
+              <p style={{ fontSize: "14px" }}>
                 You can also access the other students in your courses by adding
                 courses to your profile and then clicking on the course tab on
                 the left side panel. The search bar at the top of the course
@@ -97,7 +105,7 @@ function NavBar(props) {
                 based on their name, class year, and concentration.
               </p>
               <h3>Your Profile</h3>
-              <p style={{ fontSize: '14px' }}>
+              <p style={{ fontSize: "14px" }}>
                 Your profile page allows you to edit your profile and add pieces
                 of information such as what courses you are taking and what
                 extracurriculars you are involved in. Adding more additional

@@ -340,11 +340,18 @@ function StudentModal(props) {
   return (
     <Container className="modal-profile-wrap d-flex py-3">
       <Col sm={4} className="align-items-center text-center px-3">
-        <img
-          className="modal-profile-img"
-          alt="Profile Picture"
-          src={student.imageUrl}
-        />
+        <div style={{ border: "5px solid #ffffff", borderRadius: "10rem" }}>
+          <img
+            className={
+              props.imageUrl ===
+              "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                ? "modal-profile-img-blur"
+                : "modal-profile-img"
+            }
+            alt="Profile Picture"
+            src={student.imageUrl}
+          />
+        </div>
         <div style={{ fontSize: "1.5em", fontStyle: "bold" }}>
           {student.firstName + " " + student.lastName}
         </div>

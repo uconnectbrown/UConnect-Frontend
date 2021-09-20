@@ -203,6 +203,23 @@ function App() {
     setMessageCount(messageCount - 1);
   };
 
+  // First Time
+  const [firstTime, setFirstTime] = useState(null);
+  useEffect(() => {
+    if (deny === false) checkFirstTime();
+  }, [deny]);
+  const checkFirstTime = () => {
+    db.doc(`profiles/${emailId}`)
+      .get()
+      .then((doc) => {
+        return setFirstTime(doc.data().firstTime);
+      })
+      .catch((err) => console.log(err));
+  };
+  const finishOB = () => {
+    setFirstTime(false);
+  };
+
   // Reset states
   const reset = () => {
     setImageUrl("");
@@ -239,13 +256,16 @@ function App() {
           <Container fluid style={{ height: "85vh" }}>
             <Row className="px-3 py-4 h-100">
               <Col xs={1} md={2}>
-                <SideBar
-                  courses={courses}
-                  handleCode={handleCode}
-                  handleName={handleName}
-                  pending={pending}
-                  messageCount={messageCount}
-                />
+                {!firstTime && (
+                  <SideBar
+                    courses={courses}
+                    handleCode={handleCode}
+                    handleName={handleName}
+                    pending={pending}
+                    messageCount={messageCount}
+                    firstTime={firstTime}
+                  />
+                )}
               </Col>
               <Col xs={11} md={10}>
                 <Switch>
@@ -257,6 +277,8 @@ function App() {
                       incRequests={incRequests}
                       updateOutgoing={updateOutgoing}
                       outgoing={outgoing}
+                      firstTime={firstTime}
+                      imageUrl={imageUrl}
                     />
                   </Route>
                   <Route exact path="/home">
@@ -267,6 +289,8 @@ function App() {
                       incRequests={incRequests}
                       updateOutgoing={updateOutgoing}
                       outgoing={outgoing}
+                      firstTime={firstTime}
+                      imageUrl={imageUrl}
                     />
                   </Route>
                   <Route
@@ -296,6 +320,7 @@ function App() {
                       handleImage={updateImage}
                       handleCourses={updateCourses}
                       reset={reset}
+                      finishOB={finishOB}
                     />
                   </Route>
                   <Route path="/courses/:codeParam">
