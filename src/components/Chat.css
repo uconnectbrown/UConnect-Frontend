@@ -10,6 +10,13 @@
   margin-right: 0.5rem;
 }
 
+.recipient-profile-blur {
+  border-radius: 100rem;
+  width: 2.5rem;
+  filter: blur(3px);
+  transform: scale(0.9);
+}
+
 .chat-msgs {
   height: 30rem;
   overflow: scroll;

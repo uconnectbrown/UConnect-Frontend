@@ -150,7 +150,12 @@ function MessageView(props) {
           <Row className="message-card">
             <Col sm={4}>
               <img
-                className="message-profile recipient"
+                className={
+                  props.imageUrl ===
+                  "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                    ? "message-profile recipient-blur"
+                    : "message-profile recipient"
+                }
                 alt="Profile Picture"
                 src={studentImageUrl}
               />
@@ -170,7 +175,12 @@ function MessageView(props) {
             <Row className="message-card" onClick={() => setMessage(i)}>
               <Col sm={4}>
                 <img
-                  className="message-profile recipient"
+                  className={
+                    props.imageUrl ===
+                    "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                      ? "message-profile recipient-blur"
+                      : "message-profile recipient"
+                  }
                   alt="Profile Picture"
                   src={message.recipientImage}
                 />
@@ -220,6 +230,7 @@ function MessageView(props) {
                 ownName={ownName}
                 roomId={roomId}
                 refreshMessages={refreshMessages}
+                imageUrl={props.imageUrl}
               />
             )}
           </Col>

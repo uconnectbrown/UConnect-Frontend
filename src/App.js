@@ -301,6 +301,7 @@ function App() {
                         {...props}
                         decMessageCount={decMessageCount}
                         fetchMessageCount={getMessageCount}
+                        imageUrl={imageUrl}
                       />
                     )}
                   />

@@ -85,11 +85,18 @@ function Chat(props) {
   return (
     <>
       <div className="chat-top d-flex align-items-center" onClick={() => {}}>
-        <img
-          className="recipient-profile"
-          alt="Profile Picture"
-          src={studentImageUrl}
-        />
+        <div style={{ border: "5px solid #ffffff", borderRadius: "10rem" }}>
+          <img
+            className={
+              props.imageUrl ===
+              "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                ? "recipient-profile-blur"
+                : "recipient-profile"
+            }
+            alt="Profile Picture"
+            src={studentImageUrl}
+          />
+        </div>
         <div style={{ fontWeight: 500 }}>{props.studentName}</div>
       </div>
       <div className="chat-msgs d-flex flex-column-reverse">
