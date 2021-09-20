@@ -335,7 +335,7 @@ function App() {
                       incRequests={incRequests}
                       updateOutgoing={updateOutgoing}
                       outgoing={outgoing}
-                      imageurl={imageUrl}
+                      imageUrl={imageUrl}
                     />
                   </Route>
                   <Route path="*">
