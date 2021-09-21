@@ -9,6 +9,7 @@ import EditInterests from "../components/EditInterests";
 import Crop from "../util/Crop";
 import SignOut from "../components/SignOut";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -47,6 +48,7 @@ function ProfileView(props) {
   const [editing, setEditing] = useState(false);
   const [editingInterests, setEditingInterests] = useState(false);
   const [editImage, setEditImage] = useState(false);
+  const [skipImage, setSkipImage] = useState(false);
   const [firstTime, setFirstTime] = useState(null);
 
   const student = profile;
@@ -68,6 +70,9 @@ function ProfileView(props) {
     db.doc(`profiles/${emailId}`)
       .get()
       .then((doc) => {
+        if (doc.data().firstTime) {
+          setEditImage(true);
+        }
         return setFirstTime(doc.data().firstTime);
       })
       .catch((err) => console.log(err));
@@ -357,7 +362,11 @@ function ProfileView(props) {
             </Button>
           )}
           <Dialog open={editImage}>
-            <DialogTitle>Select Picture</DialogTitle>{" "}
+            <DialogTitle>Select Profile Picture</DialogTitle>{" "}
+            <DialogContent>
+              Note: You will only be able to view other people's profile
+              pictures if you provide one yourself
+            </DialogContent>
             <Crop update={updateImage} />
             <menu>
               <button
@@ -365,10 +374,42 @@ function ProfileView(props) {
                 class="btn btn-outline-primary btn-sm"
                 style={{ width: "5rem" }}
                 onClick={() => {
+                  if (firstTime) {
+                    setSkipImage(true);
+                  } else setEditImage(false);
+                }}
+              >
+                {firstTime ? "Skip" : "Cancel"}
+              </button>
+            </menu>
+          </Dialog>
+          <Dialog open={skipImage}>
+            <DialogTitle>Acknowledgement</DialogTitle>{" "}
+            <DialogContent>
+              You will not be able to see other people's profile pictures until
+              you provide your own. You can always add a profile picture later.
+            </DialogContent>
+            <menu>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                style={{ width: "8rem" }}
+                onClick={() => {
+                  setSkipImage(false);
+                }}
+              >
+                Upload Picture
+              </button>{" "}
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                style={{ width: "8rem" }}
+                onClick={() => {
+                  setSkipImage(false);
                   setEditImage(false);
                 }}
               >
-                Cancel
+                Understood, skip
               </button>
             </menu>
           </Dialog>
