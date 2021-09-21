@@ -220,6 +220,23 @@ function App() {
     setFirstTime(false);
   };
 
+  // Blur Announcement
+  // const [blur, setBlur] = useState(null);
+  // useEffect(() => {
+  //   if (deny === false) checkBlur();
+  // }, [deny]);
+  // const checkBlur = () => {
+  //   db.doc(`profiles/${emailId}`)
+  //     .get()
+  //     .then((doc) => {
+  //       return setBlur(doc.data().blur);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+  // const finishBlur = () => {
+  //   setBlur(false);
+  // };
+
   // Reset states
   const reset = () => {
     setImageUrl("");
@@ -279,6 +296,8 @@ function App() {
                       outgoing={outgoing}
                       firstTime={firstTime}
                       imageUrl={imageUrl}
+                      // blur={blur}
+                      // finishBlur={finishBlur}
                     />
                   </Route>
                   <Route exact path="/home">
@@ -291,6 +310,8 @@ function App() {
                       outgoing={outgoing}
                       firstTime={firstTime}
                       imageUrl={imageUrl}
+                      // blur={blur}
+                      // finishBlur={finishBlur}
                     />
                   </Route>
                   <Route

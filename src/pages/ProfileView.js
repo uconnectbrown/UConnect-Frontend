@@ -362,11 +362,14 @@ function ProfileView(props) {
             </Button>
           )}
           <Dialog open={editImage}>
-            <DialogTitle>Select Profile Picture</DialogTitle>{" "}
-            <DialogContent>
-              Note: You will only be able to view other people's profile
-              pictures if you provide one yourself
-            </DialogContent>
+            <DialogTitle>Select Profile Picture</DialogTitle>
+            {student.imageUrl ===
+              "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
+              <DialogContent>
+                Note: You will be able to view other people's profile pictures
+                once you've provided one yourself
+              </DialogContent>
+            )}
             <Crop update={updateImage} />
             <menu>
               <button
@@ -374,12 +377,20 @@ function ProfileView(props) {
                 class="btn btn-outline-primary btn-sm"
                 style={{ width: "5rem" }}
                 onClick={() => {
-                  if (firstTime) {
+                  if (
+                    firstTime &&
+                    student.imageUrl ===
+                      "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                  ) {
                     setSkipImage(true);
                   } else setEditImage(false);
                 }}
               >
-                {firstTime ? "Skip" : "Cancel"}
+                {firstTime &&
+                student.imageUrl ===
+                  "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                  ? "Skip"
+                  : "Cancel"}
               </button>
             </menu>
           </Dialog>

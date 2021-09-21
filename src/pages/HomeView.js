@@ -12,6 +12,9 @@ import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import Logo from "../assets/Logo.png";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import Dialog from "@material-ui/core/Dialog";
 
 // Styling
 import "./HomeView.css";
@@ -44,6 +47,7 @@ function HomeView(props) {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [onboardPage, setOnboardPage] = useState(0);
   const [firstTime, setFirstTime] = useState(props.firstTime);
+  // const [blur, setBlur] = useState(props.blur);
 
   const params = [
     "",
@@ -57,6 +61,10 @@ function HomeView(props) {
   useEffect(() => {
     setFirstTime(props.firstTime);
   }, [props.firstTime]);
+
+  // useEffect(() => {
+  //   setBlur(props.blur);
+  // }, [props.blur]);
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -537,11 +545,26 @@ function HomeView(props) {
 
   return (
     <Container fluid className="uconnect-home" style={{ marginTop: "1rem" }}>
-      {/* <Dialog open={messageOpen && studentInfo}>
-        <Message
-          handleCloseMessage={handleCloseMessage}
-          studentInfo={studentInfo}
-        />
+      {/* <Dialog open={blur}>
+        <DialogTitle>Update</DialogTitle>
+        <DialogContent>
+          You no longer need to provide a profile picture to use the website.
+          However, you will only be able to see other user's profile pictures if
+          you provide one yourself.
+        </DialogContent>
+        <menu>
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            style={{ width: "5rem" }}
+            onClick={() => {
+              props.finishBlur();
+              setBlur(false);
+            }}
+          >
+            Got it
+          </button>
+        </menu>
       </Dialog> */}
       {renderOnboard()}
       <Modal
