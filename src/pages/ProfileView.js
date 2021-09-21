@@ -939,7 +939,7 @@ function ProfileView(props) {
                   style={{ fontWeight: 600, color: "#E35E96" }}
                   align="center"
                 >
-                  Click any pink button to customize your profile!
+                  Last step! Click any pink button to customize your profile.
                 </h4>
               )}
               <button
