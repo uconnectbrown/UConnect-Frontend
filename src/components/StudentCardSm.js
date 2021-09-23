@@ -18,25 +18,6 @@ const StudentCardSm = (props) => {
           src={props.imageUrl}
         />
       </div>
-      {props.name && props.classYear && (
-        <div style={{ fontSize: "1rem", fontStyle: "bold" }}>
-          {props.name} '{props.classYear.split("0")[1]}
-        </div>
-      )}
-      {props.name && !props.classYear && (
-        <div style={{ fontSize: "1rem", fontStyle: "bold" }}>{props.name}</div>
-      )}
-      {props.majors && (
-        <div className="card-text">
-          {props.majors
-            .filter(Boolean)
-            .map((major, i) =>
-              i !== props.majors.filter(Boolean).length - 1
-                ? major + ", "
-                : major
-            )}
-        </div>
-      )}
     </Col>
   );
 };
