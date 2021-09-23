@@ -19,7 +19,7 @@ import Dialog from "@material-ui/core/Dialog";
 // Styling
 import "./HomeView.css";
 import Tooltip from "@material-ui/core/Tooltip";
-import { CircularProgressbar } from "react-circular-progressbar";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -377,6 +377,7 @@ function HomeView(props) {
   };
 
   const renderFeatured = () => {
+    let color;
     return (
       <div>
         <p className="mt-4">
@@ -396,6 +397,21 @@ function HomeView(props) {
         </p>
         <div class="featured-container pb-4 pt-1">
           {featured.map((student, i) => {
+            {student.compatability >= 95 && (
+              color = '#3498DB'
+            )}
+            {(student.compatability < 95 && student.compatability >= 90) && (
+              color = '#2ECC71'
+            )}
+            {(student.compatability < 90 && student.compatability >= 85) && (
+              color = '#F4D03F'
+            )}
+            {(student.compatability < 85 && student.compatability >= 80) && (
+              color = '#E67E22'
+            )}
+            {(student.compatability < 80) && (
+              color = '#D35400'
+            )}
             return (
               <div
                 className="featured-card mx-lg-3 mx-sm-1"
@@ -423,10 +439,16 @@ function HomeView(props) {
                 <div style={{ width: 80, height: 80 }}>
                   <Tooltip placement="top" title="Compatibility Score">
                     <span>
-                      <CircularProgressbar
+                      {color && (
+                        <CircularProgressbar
                         value={student.compatability}
                         text={`${student.compatability}%`}
+                        styles={buildStyles({
+                          pathColor: `${color}`,
+                          textColor: `${color}`,
+                        })}
                       />
+                      )}
                     </span>
                   </Tooltip>
                 </div>
