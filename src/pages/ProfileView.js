@@ -112,6 +112,13 @@ function ProfileView(props) {
       if (newProfile.instruments !== profile.instruments) {
         handleDeleteInstrument();
       }
+      if (
+        newProfile.firstName !== profile.firstName ||
+        newProfile.lastName !== profile.lastName ||
+        newProfile.classYear !== profile.classYear
+      ) {
+        handleConnections();
+      }
       axios
         .post(`/edit/${emailId}`, newProfile)
         .then(() => {
@@ -135,6 +142,20 @@ function ProfileView(props) {
       })
       .then(() => {
         return axios.get(`/updateP/${emailId}`);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleConnections = () => {
+    let info = {
+      name: newProfile.firstName + " " + newProfile.lastName,
+      classYear: newProfile.classYear,
+      imageUrl: newProfile.imageUrl,
+    };
+    axios
+      .post(`/updateC/${emailId}`, info)
+      .then(() => {
+        return;
       })
       .catch((err) => console.log(err));
   };
@@ -290,7 +311,20 @@ function ProfileView(props) {
     setProfile({ ...profile, imageUrl: url });
     setNewProfile({ ...newProfile, imageUrl: url });
     props.handleImage(url);
-    return axios.get(`/update/${emailId}`);
+    let info = {
+      name: newProfile.firstName + " " + newProfile.lastName,
+      classYear: newProfile.classYear,
+      imageUrl: url,
+    };
+    let promises = [
+      axios.get(`/update/${emailId}`),
+      axios.post(`/updateC/${emailId}`, info),
+    ];
+    Promise.all(promises)
+      .then(() => {
+        return;
+      })
+      .catch((err) => console.log(err));
   };
 
   const renderLeftInfo = () => {

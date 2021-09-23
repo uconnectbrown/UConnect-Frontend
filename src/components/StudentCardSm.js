@@ -5,8 +5,8 @@ import "./StudentCardSm.css";
 
 const StudentCardSm = (props) => {
   return (
-    <Col sm={1} className="student-card" onClick={props.onClick}>
-      <div style={{ border: "5px solid #f3f3f3", borderRadius: "10rem" }}>
+    <Col sm={1} className="student-card-sm" onClick={props.onClick}>
+      <div style={{ border: "5px solid #ffffff", borderRadius: "10rem" }}>
         <img
           className={
             props.ownImageUrl ===
