@@ -204,9 +204,10 @@ function Connections(props) {
             {outgoing.map((p, i) => (
               <StudentCardSm
                 name={p.name}
+                classYear={p.classYear}
                 imageUrl={p.imageUrl}
-                ownImageUrl={props.imageUrl}
                 onClick={() => handleOpenOutgoing(i)}
+                ownImageUrl={props.imageUrl}
               />
             ))}
           </>

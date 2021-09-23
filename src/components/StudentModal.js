@@ -102,6 +102,8 @@ function StudentModal(props) {
           senderInfo.imageUrl = doc.data().imageUrl;
           senderInfo.classYear = doc.data().classYear;
           senderInfo.receiverImageUrl = student.imageUrl;
+          senderInfo.receiverClassYear = student.classYear;
+          senderInfo.receiverName = student.firstName + " " + student.lastName;
           return senderInfo;
         })
         .then((info) => {

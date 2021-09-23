@@ -220,23 +220,6 @@ function App() {
     setFirstTime(false);
   };
 
-  // Blur Announcement
-  // const [blur, setBlur] = useState(null);
-  // useEffect(() => {
-  //   if (deny === false) checkBlur();
-  // }, [deny]);
-  // const checkBlur = () => {
-  //   db.doc(`profiles/${emailId}`)
-  //     .get()
-  //     .then((doc) => {
-  //       return setBlur(doc.data().blur);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-  // const finishBlur = () => {
-  //   setBlur(false);
-  // };
-
   // Reset states
   const reset = () => {
     setImageUrl("");
@@ -250,11 +233,16 @@ function App() {
   const NoMatch = () => {
     return (
       <h3>
-        Page not found. Click
-        <Link to="/home">
-          <Button>here</Button>
-        </Link>
-        to go back to UConnect
+        Page not found. Click <Link to="/home">here</Link> to go back to
+        UConnect
+      </h3>
+    );
+  };
+
+  const NoMatch2 = () => {
+    return (
+      <h3>
+        Page not found. Click <Link to="/">here</Link> to go back to UConnect
       </h3>
     );
   };
@@ -296,8 +284,6 @@ function App() {
                       outgoing={outgoing}
                       firstTime={firstTime}
                       imageUrl={imageUrl}
-                      // blur={blur}
-                      // finishBlur={finishBlur}
                     />
                   </Route>
                   <Route exact path="/home">
@@ -310,8 +296,6 @@ function App() {
                       outgoing={outgoing}
                       firstTime={firstTime}
                       imageUrl={imageUrl}
-                      // blur={blur}
-                      // finishBlur={finishBlur}
                     />
                   </Route>
                   <Route
@@ -326,11 +310,6 @@ function App() {
                       />
                     )}
                   />
-                  {/* <MessageView */}
-                  {/* decMessageCount={decMessageCount}
-                      fetchMessageCount={getMessageCount}
-                     />
-                   </Route> */}
                   <Route exact path="/connections">
                     <Connections
                       decPending={decPending}
@@ -377,6 +356,9 @@ function App() {
               </Route>
               <Route exact path="/profileBuild">
                 <ProfileBuild grantAccess={grantAccess} />
+              </Route>
+              <Route path="*">
+                <NoMatch2 />
               </Route>
             </Switch>
           </Container>

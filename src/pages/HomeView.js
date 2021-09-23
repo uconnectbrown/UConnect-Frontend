@@ -47,7 +47,6 @@ function HomeView(props) {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [onboardPage, setOnboardPage] = useState(0);
   const [firstTime, setFirstTime] = useState(props.firstTime);
-  // const [blur, setBlur] = useState(props.blur);
 
   const params = [
     "",
@@ -61,10 +60,6 @@ function HomeView(props) {
   useEffect(() => {
     setFirstTime(props.firstTime);
   }, [props.firstTime]);
-
-  // useEffect(() => {
-  //   setBlur(props.blur);
-  // }, [props.blur]);
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -397,21 +392,6 @@ function HomeView(props) {
         </p>
         <div class="featured-container pb-4 pt-1">
           {featured.map((student, i) => {
-            {student.compatability >= 95 && (
-              color = '#3498DB'
-            )}
-            {(student.compatability < 95 && student.compatability >= 90) && (
-              color = '#2ECC71'
-            )}
-            {(student.compatability < 90 && student.compatability >= 85) && (
-              color = '#F4D03F'
-            )}
-            {(student.compatability < 85 && student.compatability >= 80) && (
-              color = '#E67E22'
-            )}
-            {(student.compatability < 80) && (
-              color = '#D35400'
-            )}
             return (
               <div
                 className="featured-card mx-lg-3 mx-sm-1"
@@ -439,16 +419,18 @@ function HomeView(props) {
                 <div style={{ width: 80, height: 80 }}>
                   <Tooltip placement="top" title="Compatibility Score">
                     <span>
-                      {color && (
-                        <CircularProgressbar
+                      <CircularProgressbar
                         value={student.compatability}
                         text={`${student.compatability}%`}
                         styles={buildStyles({
-                          pathColor: `${color}`,
-                          textColor: `${color}`,
+                          pathColor: `rgba(62, 152, ${
+                            256 - 10 * (100 - student.compatability)
+                          })`,
+                          textColor: `rgba(62, 152, ${
+                            256 - 10 * (100 - student.compatability)
+                          })`,
                         })}
                       />
-                      )}
                     </span>
                   </Tooltip>
                 </div>
@@ -567,27 +549,6 @@ function HomeView(props) {
 
   return (
     <Container fluid className="uconnect-home" style={{ marginTop: "1rem" }}>
-      {/* <Dialog open={blur}>
-        <DialogTitle>Update</DialogTitle>
-        <DialogContent>
-          You no longer need to provide a profile picture to use the website.
-          However, you will only be able to see other user's profile pictures if
-          you provide one yourself.
-        </DialogContent>
-        <menu>
-          <button
-            type="button"
-            class="btn btn-outline-primary btn-sm"
-            style={{ width: "5rem" }}
-            onClick={() => {
-              props.finishBlur();
-              setBlur(false);
-            }}
-          >
-            Got it
-          </button>
-        </menu>
-      </Dialog> */}
       {renderOnboard()}
       <Modal
         keyboard
@@ -609,21 +570,7 @@ function HomeView(props) {
           />
         </Modal.Body>
       </Modal>
-      <h1>
-        Connect{" "}
-        {/* <Tooltip
-          style={{ marginLeft: 5 }}
-          placement="right"
-          title="Search and filter through all Brown students on UConnect"
-        >
-          <span>
-            <FontAwesomeIcon
-              style={{ fontSize: 16, marginBottom: 5 }}
-              icon={faQuestionCircle}
-            />
-          </span>
-        </Tooltip> */}
-      </h1>
+      <h1>Connect</h1>
       {renderSearchPicker()}
       {searchType === 0 && renderSearchBar()}
       {searchType !== 0 && renderDataList(searchType)}
