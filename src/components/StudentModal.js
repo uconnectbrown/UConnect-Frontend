@@ -85,7 +85,7 @@ function StudentModal(props) {
           let sentTime = new Date(outgoing[i].sent);
           if ((currentTime - sentTime) / 60000 > 2880) {
             setValidUndo(true);
-          }
+          } else setValidUndo(false);
         }
       }
     }

@@ -56,9 +56,16 @@ function ConnectButton(props) {
         break;
       default:
         component = (
-          <Button disabled={props.requests <= 0} onClick={props.sendRequest}>
-            Request
-          </Button>
+          <Tooltip title={props.requests <= 0 ? "No requests remaining" : ""}>
+            <span>
+              <Button
+                disabled={props.requests <= 0}
+                onClick={props.sendRequest}
+              >
+                Request
+              </Button>
+            </span>
+          </Tooltip>
         );
     }
 

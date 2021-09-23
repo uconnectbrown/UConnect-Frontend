@@ -176,6 +176,7 @@ function Connections(props) {
             decPending={props.decPending}
             outgoing={outgoing}
             imageUrl={props.imageUrl}
+            incRequests={props.incRequests}
           />
         </Modal.Body>
       </Modal>

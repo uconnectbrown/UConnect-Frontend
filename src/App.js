@@ -165,8 +165,8 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
-  const updateOutgoing = (students) => {
-    setOutgoing(students);
+  const updateOutgoing = (s) => {
+    setOutgoing(s);
   };
   const getPending = () => {
     let number = 0;
@@ -336,6 +336,7 @@ function App() {
                       decPending={decPending}
                       fetchPending={getPending}
                       imageUrl={imageUrl}
+                      incRequests={incRequests}
                     />
                   </Route>
                   <Route exact path="/profile">

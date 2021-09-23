@@ -24,7 +24,10 @@ function NavBar(props) {
       <Tooltip
         title={
           <div style={{ fontSize: "12px", padding: "5px" }}>
-            {`You have ${props.requests} requests remaining`}
+            {props.requests !== 1 &&
+              `You have ${props.requests} requests remaining`}
+            {props.requests === 1 &&
+              `You have ${props.requests} request remaining`}
           </div>
         }
       >
