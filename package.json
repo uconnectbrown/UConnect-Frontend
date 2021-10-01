@@ -12,6 +12,7 @@
     "@rpldy/upload-button": "^0.13.2",
     "@rpldy/upload-preview": "^0.13.2",
     "@rpldy/uploady": "^0.13.2",
+    "@sendgrid/mail": "^7.4.7",
     "@synapsestudios/react-drop-n-crop": "^0.2.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",

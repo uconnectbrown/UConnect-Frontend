@@ -357,9 +357,9 @@ function App() {
               <Route exact path="/profileBuild">
                 <ProfileBuild grantAccess={grantAccess} />
               </Route>
-              <Route path="*">
+              {/* <Route path="*">
                 <NoMatch2 />
-              </Route>
+              </Route> */}
             </Switch>
           </Container>
         </HashRouter>
