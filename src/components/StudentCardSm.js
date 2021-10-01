@@ -5,7 +5,7 @@ import "./StudentCardSm.css";
 
 const StudentCardSm = (props) => {
   return (
-    <Col sm={1} className="student-card-sm" onClick={props.onClick}>
+    <Col xs={6} md={2} className="student-card-sm" onClick={props.onClick}>
       <div style={{ border: "5px solid #ffffff", borderRadius: "10rem" }}>
         <img
           className={

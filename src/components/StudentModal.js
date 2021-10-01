@@ -340,8 +340,8 @@ function StudentModal(props) {
   if (!(student && status)) return null;
 
   return (
-    <Container className="modal-profile-wrap d-flex py-3">
-      <Col sm={4} className="align-items-center text-center px-3">
+    <Container className="modal-profile-wrap d-flex flex-wrap py-3">
+      <Col xs={12} md={4} className="align-items-center text-center px-3">
         <div style={{ border: "5px solid #ffffff", borderRadius: "10rem" }}>
           <img
             className={

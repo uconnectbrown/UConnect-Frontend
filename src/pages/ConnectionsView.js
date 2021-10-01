@@ -184,15 +184,17 @@ function Connections(props) {
         {pending.length > 0 && (
           <>
             <h4>Incoming Requests ({pending.length})</h4>
-            {pending.map((p, i) => (
-              <StudentCardSm
-                name={p.name}
-                classYear={p.classYear}
-                imageUrl={p.imageUrl}
-                onClick={() => handleOpenPending(i)}
-                ownImageUrl={props.imageUrl}
-              />
-            ))}
+            <Row>
+              {pending.map((p, i) => (
+                <StudentCardSm
+                  name={p.name}
+                  classYear={p.classYear}
+                  imageUrl={p.imageUrl}
+                  onClick={() => handleOpenPending(i)}
+                  ownImageUrl={props.imageUrl}
+                />
+              ))}
+            </Row>
           </>
         )}
       </Row>
