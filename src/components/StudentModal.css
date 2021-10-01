@@ -43,3 +43,9 @@
 .modal-profile-wrap h5 {
   margin-top: 2rem;
 }
+
+@media (max-width: 576px) {
+  .modal-profile-img {
+    width: 50%;
+  }
+}

@@ -95,6 +95,10 @@
 }
 
 @media (max-width: 576px) {
+  .student-modal {
+    max-width: 100% !important;
+  }
+
   .uconnect-home {
     margin: 0;
     padding: 0;

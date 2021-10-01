@@ -260,7 +260,7 @@ function App() {
           />
           <Container fluid style={{ height: "85vh" }}>
             <Row className="px-3 py-4 h-100">
-              <Col xs={1} md={2}>
+              <Col sm={12} md={2}>
                 {!firstTime && (
                   <SideBar
                     courses={courses}
