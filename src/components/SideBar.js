@@ -9,6 +9,8 @@ import {
   NavDropdown,
   Button,
   ButtonGroup,
+  Row,
+  Col,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -39,7 +41,7 @@ function SideBar(props) {
   const screenWidth = window.innerWidth;
 
   // render laptop-screen sidebar
-  if (screenWidth > 576) {
+  if (screenWidth >= 768) {
     return (
       <Nav defaultActiveKey="/home" className="flex-column px-lg-4">
         <Link to="/home" style={{ textDecoration: "none" }}>
@@ -52,7 +54,6 @@ function SideBar(props) {
           <Button variant="outline-light" className="nav-button">
             <span>
               <FontAwesomeIcon icon={faCommentAlt} style={{ width: "100%" }} />
-
               <Badge
                 badgeContent={props.messageCount}
                 color="primary"
@@ -139,92 +140,72 @@ function SideBar(props) {
 
   // render mobile-friendly collapsible navbar
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" defaultExpanded>
       <Container>
-        {/* <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand> */}
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Link to="/home" style={{ textDecoration: "none" }}>
-              <Button variant="outline-light" className="nav-button">
-                <FontAwesomeIcon icon={faHome} style={{ width: "100%" }} />
-                Home
-              </Button>
-            </Link>
-            <Link to="/messages" style={{ textDecoration: "none" }}>
-              <Button variant="outline-light" className="nav-button">
-                <span>
-                  <FontAwesomeIcon
-                    icon={faCommentAlt}
-                    style={{ width: "100%" }}
-                  />
-
-                  <Badge
-                    badgeContent={props.messageCount}
-                    color="primary"
-                    style={{ marginTop: 18 }}
-                  ></Badge>
-                </span>
-                Messages
-              </Button>
-            </Link>
-            <Link to="/connections" style={{ textDecoration: "none" }}>
-              <Button variant="outline-light" className="nav-button">
-                <span>
-                  <FontAwesomeIcon
-                    icon={faUserFriends}
-                    style={{ width: "100%" }}
-                  />
-                  <Badge
-                    badgeContent={props.pending}
-                    color="primary"
-                    style={{ marginTop: 18 }}
-                  ></Badge>
-                </span>
-                Connections
-              </Button>
-            </Link>
-            <div
-              onMouseEnter={() => setShowDropdown(true)}
-              onMouseLeave={() => setShowDropdown(false)}
-            >
-              <Button
-                variant="outline-light"
-                className="nav-button dropdown mb-5"
+        <Nav className="me-auto">
+          <Row>
+            <Col>
+              <Link to="/home" style={{ textDecoration: "none" }}>
+                <Button variant="outline-light" className="nav-button">
+                  <FontAwesomeIcon icon={faHome} style={{ width: "100%" }} />
+                </Button>
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/messages" style={{ textDecoration: "none" }}>
+                <Button variant="outline-light" className="nav-button">
+                  <span>
+                    <FontAwesomeIcon
+                      icon={faCommentAlt}
+                      style={{ width: "100%" }}
+                    />
+                    <Badge
+                      badgeContent={props.messageCount}
+                      color="primary"
+                      style={{ marginTop: 18 }}
+                    ></Badge>
+                  </span>
+                </Button>
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/connections" style={{ textDecoration: "none" }}>
+                <Button variant="outline-light" className="nav-button">
+                  <span>
+                    <FontAwesomeIcon
+                      icon={faUserFriends}
+                      style={{ width: "100%" }}
+                    />
+                    <Badge
+                      badgeContent={props.pending}
+                      color="primary"
+                      style={{ marginTop: 18 }}
+                    ></Badge>
+                  </span>
+                </Button>
+              </Link>
+            </Col>
+            <Col>
+              <div
+                onMouseEnter={() => setShowDropdown(true)}
+                onMouseLeave={() => setShowDropdown(false)}
               >
-                <FontAwesomeIcon icon={faDesktop} style={{ width: "100%" }} />
-                Courses
-                {showDropdown && (
-                  <ButtonGroup vertical style={{ width: "100%" }}>
-                    {courses
-                      .map((course) => {
-                        if (course.code) {
-                          return course.code;
-                        }
-                      })
-                      .filter(Boolean).length === 0 && (
-                      <Link
-                        to="/profile"
-                        style={{
-                          textDecoration: "none",
-                          width: "100%",
-                          maxWidth: "100%",
-                        }}
-                      >
-                        <Button
-                          variant="outline-light"
-                          className="nav-button m-0"
-                        >
-                          Add courses to your profile.
-                        </Button>
-                      </Link>
-                    )}
-                    {courses.map((course, i) => {
-                      if (!course.code) return null;
-                      let link = "/courses/" + course.code.replace(/\s/g, "");
-                      return (
+                <Button
+                  variant="outline-light"
+                  className="nav-button dropdown mb-5"
+                >
+                  <FontAwesomeIcon icon={faDesktop} style={{ width: "100%" }} />
+                  {showDropdown && (
+                    <ButtonGroup vertical style={{ width: "100%" }}>
+                      {courses
+                        .map((course) => {
+                          if (course.code) {
+                            return course.code;
+                          }
+                        })
+                        .filter(Boolean).length === 0 && (
                         <Link
-                          to={link}
+                          to="/profile"
                           style={{
                             textDecoration: "none",
                             width: "100%",
@@ -234,22 +215,44 @@ function SideBar(props) {
                           <Button
                             variant="outline-light"
                             className="nav-button m-0"
-                            onClick={() => {
-                              props.handleCode(course.code);
-                              props.handleName(course.name);
-                            }}
                           >
-                            {course.code}
+                            Add courses to your profile.
                           </Button>
                         </Link>
-                      );
-                    })}
-                  </ButtonGroup>
-                )}
-              </Button>
-            </div>
-          </Nav>
-        </Navbar.Collapse>
+                      )}
+                      {courses.map((course, i) => {
+                        if (!course.code) return null;
+                        let link = "/courses/" + course.code.replace(/\s/g, "");
+                        return (
+                          <Link
+                            to={link}
+                            style={{
+                              textDecoration: "none",
+                              width: "100%",
+                              maxWidth: "100%",
+                            }}
+                          >
+                            <Button
+                              variant="outline-light"
+                              className="nav-button m-0"
+                              onClick={() => {
+                                props.handleCode(course.code);
+                                props.handleName(course.name);
+                              }}
+                            >
+                              {course.code}
+                            </Button>
+                          </Link>
+                        );
+                      })}
+                    </ButtonGroup>
+                  )}
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Nav>
+        {/* </Navbar.Collapse> */}
       </Container>
     </Navbar>
   );
