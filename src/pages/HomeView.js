@@ -390,12 +390,15 @@ function HomeView(props) {
             </span>
           </Tooltip>
         </p>
-        <div class="featured-container pb-4 pt-1" style={{display:"flex flex-row"}}>
+        <div
+          class="featured-container pb-4 pt-1"
+          style={{ display: "flex flex-row" }}
+        >
           {featured.map((student, i) => {
             return (
               <div
                 className="featured-card mx-lg-3 mx-sm-1"
-                style={{display:"flex", marginRight:15}}
+                style={{ display: "flex", marginRight: 15 }}
                 onClick={() => {
                   handleOpenFeatured(i);
                 }}
@@ -568,6 +571,7 @@ function HomeView(props) {
             outgoing={props.outgoing}
             decPending={props.decPending}
             imageUrl={props.imageUrl}
+            onHide={handleCloseStudent}
           />
         </Modal.Body>
       </Modal>

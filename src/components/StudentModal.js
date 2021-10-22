@@ -341,6 +341,10 @@ function StudentModal(props) {
 
   return (
     <Container className="modal-profile-wrap d-flex flex-wrap py-3">
+      {/* close button to close modal */}
+      <Col sm={12} className="d-flex justify-content-end">
+        <Button onClick={props.onHide}>&times;</Button>
+      </Col>
       <Col xs={12} md={4} className="align-items-center text-center px-3">
         <div style={{ border: "5px solid #ffffff", borderRadius: "10rem" }}>
           <img
