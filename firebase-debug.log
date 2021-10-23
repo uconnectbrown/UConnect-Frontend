@@ -1,0 +1,35 @@
+[debug] [2021-10-14T18:05:07.427Z] ----------------------------------------------------------------------
+[debug] [2021-10-14T18:05:07.430Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ethan\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2021-10-14T18:05:07.431Z] CLI Version:   9.16.6
+[debug] [2021-10-14T18:05:07.431Z] Platform:      win32
+[debug] [2021-10-14T18:05:07.431Z] Node Version:  v14.17.1
+[debug] [2021-10-14T18:05:07.433Z] Time:          Thu Oct 14 2021 14:05:07 GMT-0400 (Eastern Daylight Time)
+[debug] [2021-10-14T18:05:07.433Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-10-14T18:05:07.514Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-10-14T18:05:07.514Z] > authorizing via signed-in user (brownuconnect@gmail.com)
+[debug] [2021-10-14T18:05:07.514Z] [iam] checking project uconnect-5eebd for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2021-10-14T18:05:07.518Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-10-14T18:05:07.518Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-10-14T18:05:07.679Z] <<< HTTP RESPONSE 200 {"date":"Thu, 14 Oct 2021 18:05:07 GMT","pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-10-14T18:05:07.716Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/uconnect-5eebd:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2021-10-14T18:05:07.945Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Thu, 14 Oct 2021 18:05:07 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=121","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-10-14T18:05:07.951Z] > refreshing access token with scopes: []
+[debug] [2021-10-14T18:05:07.952Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-10-14T18:05:08.042Z] <<< HTTP RESPONSE 200 {"date":"Thu, 14 Oct 2021 18:05:08 GMT","pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-10-14T18:05:08.074Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/uconnect-5eebd [none]
+[debug] [2021-10-14T18:05:08.391Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/uconnect-5eebd 200
+[debug] [2021-10-14T18:05:08.391Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/uconnect-5eebd {"projectId":"uconnect-5eebd","projectNumber":"43709566606","displayName":"UConnect","name":"projects/uconnect-5eebd","resources":{"hostingSite":"uconnect-5eebd","storageBucket":"uconnect-5eebd.appspot.com","locationId":"us-east1"},"state":"ACTIVE"}
+[info] 
+[info] === Deploying to 'uconnect-5eebd'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2021-10-14T18:05:08.409Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-10-14T18:05:08.409Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-10-14T18:05:08.515Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","date":"Thu, 14 Oct 2021 18:05:08 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-10-14T18:05:08.544Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/uconnect-5eebd/versions  
+ {"config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"}}

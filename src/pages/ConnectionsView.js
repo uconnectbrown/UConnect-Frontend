@@ -171,6 +171,7 @@ function Connections(props) {
             studentId={studentId}
             // handleRequest={props.handleRequest}
             // requests={props.requests}
+            onHide={handleCloseStudent}
             updateConnections={getConnections}
             handleOpenMessage={handleOpenMessage}
             decPending={props.decPending}

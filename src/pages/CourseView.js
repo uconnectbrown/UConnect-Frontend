@@ -278,6 +278,7 @@ function Course(props) {
             studentId={studentId}
             decRequests={props.decRequests}
             incRequests={props.incRequests}
+            onHide={handleCloseStudent}
             requests={props.requests}
             handleOpenMessage={handleOpenMessage}
             updateOutgoing={props.updateOutgoing}
