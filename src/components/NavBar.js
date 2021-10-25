@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import { Navbar, Container } from "react-bootstrap";
+import { Navbar, Container, Col, Button } from "react-bootstrap";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Modal } from "react-bootstrap";
@@ -75,6 +75,11 @@ function NavBar(props) {
             show={help}
             onHide={() => setHelp(false)}
           >
+            {/* close button to close modal */}
+            <Modal.Header closeButton>
+              <Modal.Title>User Guide</Modal.Title>
+              </Modal.Header>
+
             <Modal.Body className="mx-5 px-5 py-4">
               <h3>Featured Profiles</h3>
               <p style={{ fontSize: "14px" }}>
