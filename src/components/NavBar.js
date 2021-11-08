@@ -20,6 +20,18 @@ function NavBar(props) {
     const requests = [...Array(10).keys()];
     const spent = 10 - props.requests;
 
+    // ArrowIcon is smaller on mobile devices
+    const ArrowIcon = (index) => (
+      <img src={index < spent ? Arrow : ArrowFilled} alt="Request Arrow" />
+    );
+    const MobileArrowIcon = (index) => (
+      <img
+        src={index < spent ? Arrow : ArrowFilled}
+        alt="Request Arrow"
+        width="12px"
+      />
+    );
+
     return (
       <Tooltip
         title={
@@ -33,9 +45,11 @@ function NavBar(props) {
       >
         <div className="d-inline-block mx-2">
           {requests.map((i) => {
-            return (
-              <img src={i < spent ? Arrow : ArrowFilled} alt="Request Arrow" />
-            );
+            if (window.innerWidth < 768) {
+              return <MobileArrowIcon key={i} index={i} />;
+            } else {
+              return <ArrowIcon key={i} index={i} />;
+            }
           })}
         </div>
       </Tooltip>
@@ -78,7 +92,7 @@ function NavBar(props) {
             {/* close button to close modal */}
             <Modal.Header closeButton>
               <Modal.Title>User Guide</Modal.Title>
-              </Modal.Header>
+            </Modal.Header>
 
             <Modal.Body className="mx-5 px-5 py-4">
               <h3>Featured Profiles</h3>
