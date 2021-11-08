@@ -94,7 +94,7 @@ function NavBar(props) {
               <Modal.Title>User Guide</Modal.Title>
             </Modal.Header>
 
-            <Modal.Body className="mx-5 px-5 py-4">
+            <Modal.Body className="mx-1 px-5 py-4">
               <h3>Featured Profiles</h3>
               <p style={{ fontSize: "14px" }}>
                 Every Thursday, each user will receive a new set of featured
