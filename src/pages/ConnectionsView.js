@@ -6,14 +6,10 @@ import { db, auth } from "../firebase";
 // Components
 import StudentModal from "../components/StudentModal";
 import SearchBar from "../components/SearchBar";
-import Message from "../components/Message";
 import StudentCard from "../components/StudentCard";
 import StudentCardSm from "../components/StudentCardSm";
 
 import { Container, Row, Modal } from "react-bootstrap";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 function Connections(props) {
   const [pending, setPending] = useState([]);
@@ -21,9 +17,9 @@ function Connections(props) {
   const [connections_, setConnections_] = useState(null);
   const [outgoing, setOutgoing] = useState(null);
   const [studentId, setStudentId] = useState("");
-  const [messageOpen, setMessageOpen] = useState(false);
+  const [, setMessageOpen] = useState(false);
   const [emailId, setEmailId] = useState(null);
-  const [studentInfo, setStudentInfo] = useState([]);
+  const [, setStudentInfo] = useState([]);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -133,10 +129,6 @@ function Connections(props) {
   const handleOpenMessage = (id, image, name) => {
     setStudentInfo([id, image, name]);
     setMessageOpen(true);
-  };
-
-  const handleCloseMessage = () => {
-    setMessageOpen(false);
   };
 
   const clearSearch = () => {

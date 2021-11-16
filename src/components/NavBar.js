@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Navbar, Container, Col, Button } from "react-bootstrap";
+import { Navbar, Container, Modal } from "react-bootstrap";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Modal } from "react-bootstrap";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import Logo from "../assets/Logo.png";
@@ -139,7 +138,7 @@ function NavBar(props) {
           <Link to="/profile">
             <button>
               <img
-                alt="Profile Picture"
+                alt="Profile"
                 src={props.imageUrl}
                 className="nav-profile-img"
               />

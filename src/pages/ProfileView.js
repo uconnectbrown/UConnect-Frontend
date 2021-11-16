@@ -81,10 +81,8 @@ function ProfileView(props) {
   const handleCloseOnBoard = () => {
     setFirstTime(false);
     // backend function to turn firsttime to false in the profile
-    {
-      emailId &&
-        axios.get(`/onboard/${emailId}`).catch((err) => console.log(err));
-    }
+    emailId &&
+      axios.get(`/onboard/${emailId}`).catch((err) => console.log(err));
   };
 
   const getProfile = () => {
@@ -343,7 +341,7 @@ function ProfileView(props) {
         <div>
           <img
             className="profile-view-img"
-            alt="Profile Picture"
+            alt="Profile"
             src={student.imageUrl}
           />
           <br />
@@ -718,27 +716,6 @@ function ProfileView(props) {
       );
     });
 
-    return student.courses.map((c, i) => {
-      return (
-        <Col sm={6} className="mb-3">
-          <FloatingLabel label={`Course ${i + 1}`}>
-            <Form.Control
-              list="courseCodes"
-              name="courses"
-              onChange={(e) => {
-                handleCourseChange(e, i);
-              }}
-              value={newProfile?.courses[i].code}
-            />
-            <datalist id="courseCodes">
-              {courseList.map((course, i) => (
-                <option key={i} value={course[0] + ": " + course[1]} />
-              ))}
-            </datalist>
-          </FloatingLabel>
-        </Col>
-      );
-    });
   };
 
   const renderInterests = () => {
@@ -1083,8 +1060,6 @@ function ProfileView(props) {
 
   if (!profile) return null;
   return renderProfile();
-
-  // return editing ? renderEdit() : renderProfile();
 }
 
 export default ProfileView;

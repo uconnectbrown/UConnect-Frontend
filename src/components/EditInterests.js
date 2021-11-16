@@ -172,19 +172,6 @@ function GetStepContent(
     sendInterests3(convertInterests(select3, interests3));
   }, [select3]);
 
-  let palette = [
-    "#16a085",
-    "#27ae60",
-    "#2980b9",
-    "#8e44ad",
-    "#2c3e50",
-    "#f1c40f",
-    "#e67e22",
-    "#e74c3c",
-    "#ecf0f1",
-    "#95a5a6",
-  ];
-
   switch (step) {
     case 0:
       return (

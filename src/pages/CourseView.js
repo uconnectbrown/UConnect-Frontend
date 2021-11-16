@@ -18,7 +18,6 @@ import "./CourseView.css";
 
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
-import { tSExportAssignment } from "@babel/types";
 
 function Course(props) {
   const { codeParam } = useParams();
@@ -26,16 +25,15 @@ function Course(props) {
   const [code, setCode] = useState(props.code);
   const codeNS = codeParam;
   const [email, setEmail] = useState(null);
-  const [emailId, setEmailId] = useState(null);
+  const [, setEmailId] = useState(null);
 
   const [students, setStudents] = useState(null);
   const [students_, setStudents_] = useState(null);
   const [studentId, setStudentId] = useState("");
-  const [messageOpen, setMessageOpen] = useState(false);
-  const [studentInfo, setStudentInfo] = useState([]);
-  const [searchMode, setSearchMode] = useState(false);
+  const [, setMessageOpen] = useState(false);
+  const [, setStudentInfo] = useState([]);
   const [query, setQuery] = useState("");
-  const [searching, setSearching] = useState(false);
+  const [, setSearching] = useState(false);
   const [searchType, setSearchType] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const params = [
@@ -125,27 +123,8 @@ function Course(props) {
     setMessageOpen(true);
   };
 
-  const handleCloseMessage = () => {
-    setMessageOpen(false);
-  };
-
   const handleCloseStudent = () => {
     setStudentId("");
-  };
-
-  const searchField = (options, param) => {
-    options = options.map((option) => option.value);
-    if (codeNS && email) {
-      axios
-        .post(`/searchCField/${codeNS}/${email}`, { options, param })
-        .then((res) => {
-          setStudents(res.data);
-        })
-        .then(() => {
-          setSearching(true);
-        })
-        .catch((err) => console.log(err));
-    }
   };
 
   const filterName = (fn, ln, query) => {
@@ -158,35 +137,6 @@ function Course(props) {
       let query1 = query.split(" ")[0];
       let query2 = query.split(" ")[1];
       if (fn.split(query1)[0] === "" && ln.split(query2)[0] === "") return true;
-    }
-  };
-
-  const searchName = (query) => {
-    if (codeNS && email) {
-      axios
-        .get(`/searchCV/${codeNS}/${email}/${query}`)
-        .then((res) => {
-          setStudents(
-            res.data.filter((student) =>
-              filterName(student.firstName, student.lastName, query)
-            )
-          );
-        })
-        .then(() => {
-          setSearching(true);
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  const onSearchSubmit = (e) => {
-    e.preventDefault();
-    if (query.length > 0) searchName(query);
-    else {
-      setStudents([]);
-      setSearching(false);
-      setQuery("");
-      getStudents();
     }
   };
 

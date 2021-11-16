@@ -101,7 +101,6 @@ function ProfileBuild(props) {
         .post("/signup", newUserData)
         .then(() => {
           setUserData({ ...userData, validProfile: true });
-          let emailId = email.split("@")[0];
         })
         .then(() => {
           props.grantAccess();

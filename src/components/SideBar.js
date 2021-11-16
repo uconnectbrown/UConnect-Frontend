@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
-import {
-  Container,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Button,
-  ButtonGroup,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Nav, Button, ButtonGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
@@ -27,7 +17,7 @@ function SideBar(props) {
   const [showDropdown, setShowDropdown] = useState(false);
   const courses = props.courses;
 
-  const [width, setWidth] = useState(window.innerWidth);
+  const [, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     function handleResize() {
