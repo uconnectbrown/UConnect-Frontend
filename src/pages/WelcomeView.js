@@ -3,7 +3,6 @@ import React from "react";
 import firebase from "firebase";
 import { db, auth } from "../firebase.js";
 import { useHistory } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
 import { Button } from "react-bootstrap";
 import "./WelcomeView.css";
 

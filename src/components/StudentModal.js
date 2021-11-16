@@ -18,7 +18,7 @@ function StudentModal(props) {
   const history = useHistory();
   const emailId = auth.currentUser.email.split("@")[0];
   const studentId = props.studentId;
-  const [outgoing, setOutgoing] = useState(props.outgoing);
+  const [outgoing] = useState(props.outgoing);
   const [student, setStudent] = useState(null);
   const [status, setStatus] = useState(null);
   const [validUndo, setValidUndo] = useState(null);
@@ -354,7 +354,7 @@ function StudentModal(props) {
                 ? "modal-profile-img-blur"
                 : "modal-profile-img"
             }
-            alt="Profile Picture"
+            alt="Profile"
             src={student.imageUrl}
           />
         </div>

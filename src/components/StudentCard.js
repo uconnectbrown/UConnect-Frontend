@@ -14,7 +14,7 @@ const StudentCard = (props) => {
               ? "student-card-profile-img-blur"
               : "student-card-profile-img"
           }
-          alt="Profile Picture"
+          alt="Profile"
           src={props.imageUrl}
         />
       </div>

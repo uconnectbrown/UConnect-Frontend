@@ -8,9 +8,6 @@ import axios from "axios";
 import { db, auth } from "./firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import { Container, Row, Col } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-
 // Pages
 import MessageView from "./pages/MessageView";
 import Home from "./pages/HomeView";
@@ -25,10 +22,10 @@ import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
 
 // MUI Stuff
-import Button from "@material-ui/core/Button";
 
 // Styling
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Row, Col } from "react-bootstrap";
 
 axios.defaults.baseURL =
   "https://us-east4-uconnect-5eebd.cloudfunctions.net/api";
@@ -235,14 +232,6 @@ function App() {
       <h3>
         Page not found. Click <Link to="/home">here</Link> to go back to
         UConnect
-      </h3>
-    );
-  };
-
-  const NoMatch2 = () => {
-    return (
-      <h3>
-        Page not found. Click <Link to="/">here</Link> to go back to UConnect
       </h3>
     );
   };

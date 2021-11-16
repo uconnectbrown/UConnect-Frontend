@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { db, auth } from "../firebase";
-import md5 from "md5";
 
 // Components
 import Chat from "../components/Chat";
@@ -26,8 +25,7 @@ function MessageView(props) {
   const [ownName, setOwnName] = useState("");
   const [roomId, setRoomId] = useState("");
   const [newMessage, setNewMessage] = useState(false);
-  const [selectedM, setSelectedM] = useState(0);
-  const [query, setQuery] = useState("");
+  const [, setSelectedM] = useState(0);
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -136,7 +134,7 @@ function MessageView(props) {
   };
 
   const renderMessageCards = () => {
-    if (!messages || messages.length == 0) {
+    if (!messages || messages.length === 0) {
       return (
         <p className="mt-3" style={{ fontSize: "14px" }}>
           No messages yet.
@@ -156,7 +154,7 @@ function MessageView(props) {
                     ? "message-profile recipient-blur"
                     : "message-profile recipient"
                 }
-                alt="Profile Picture"
+                alt="Profile"
                 src={studentImageUrl}
               />
             </Col>
@@ -181,7 +179,7 @@ function MessageView(props) {
                       ? "message-profile recipient-blur"
                       : "message-profile recipient"
                   }
-                  alt="Profile Picture"
+                  alt="Profile"
                   src={message.recipientImage}
                 />
               </Col>

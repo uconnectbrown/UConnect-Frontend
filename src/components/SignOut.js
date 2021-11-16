@@ -1,7 +1,6 @@
 import React from "react";
 import { auth } from "../firebase.js";
 
-import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 function SignOut(props) {

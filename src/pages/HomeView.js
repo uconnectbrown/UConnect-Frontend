@@ -8,13 +8,9 @@ import ReactPlayer from "react-player";
 
 // Components
 import StudentModal from "../components/StudentModal";
-import Message from "../components/Message";
 import SearchBar from "../components/SearchBar";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import Logo from "../assets/Logo.png";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import Dialog from "@material-ui/core/Dialog";
 
 // Styling
 import "./HomeView.css";
@@ -31,7 +27,6 @@ import OtherProfileOB from "../assets/OtherProfile.png";
 
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
-import { DockRounded, TramOutlined } from "@material-ui/icons";
 
 function HomeView(props) {
   const [emailId, setEmailId] = useState(null);
@@ -40,8 +35,8 @@ function HomeView(props) {
   const [students, setStudents] = useState(null);
   const [query, setQuery] = useState("");
   const [studentId, setStudentId] = useState("");
-  const [studentInfo, setStudentInfo] = useState([]);
-  const [messageOpen, setMessageOpen] = useState(false);
+  const [, setStudentInfo] = useState([]);
+  const [, setMessageOpen] = useState(false);
   const [searching, setSearching] = useState(false);
   const [searchType, setSearchType] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -143,19 +138,6 @@ function HomeView(props) {
       .catch((err) => console.log(err));
   };
 
-  const filterName = (fn, ln, query) => {
-    fn = fn.toLowerCase().trim();
-    ln = ln.toLowerCase().trim();
-    query = query.toLowerCase().trim();
-    if (fn.split(query)[0] === "") return true;
-    if (ln === query) return true;
-    if (query.split(" ").length === 2) {
-      let query1 = query.split(" ")[0];
-      let query2 = query.split(" ")[1];
-      if (fn.split(query1)[0] === "" && ln.split(query2)[0] === "") return true;
-    }
-  };
-
   const handleOpenStudent = (index) => {
     setStudentId(students[index].emailId);
   };
@@ -171,10 +153,6 @@ function HomeView(props) {
   const handleOpenMessage = (id, image, name) => {
     setStudentInfo([id, image, name]);
     setMessageOpen(true);
-  };
-
-  const handleCloseMessage = () => {
-    setMessageOpen(false);
   };
 
   const onSearchSubmit = (e) => {
@@ -306,7 +284,7 @@ function HomeView(props) {
                         ? "search-profile-img-blur"
                         : "search-profile-img"
                     }
-                    alt="Profile Picture"
+                    alt="Profile"
                     src={student.imageUrl}
                   />
                 </div>
@@ -372,7 +350,6 @@ function HomeView(props) {
   };
 
   const renderFeatured = () => {
-    let color;
     return (
       <div>
         <p className="mt-4">
@@ -413,7 +390,7 @@ function HomeView(props) {
                         ? "featured-profile-img-blur"
                         : "featured-profile-img"
                     }
-                    alt="Profile Picture"
+                    alt="Profile"
                     src={student.imageUrl}
                   />
                 </div>
@@ -580,7 +557,6 @@ function HomeView(props) {
       {searchType === 0 && renderSearchBar()}
       {searchType !== 0 && renderDataList(searchType)}
       {searchType !== 0 && renderSearchButtons()}
-      {/* {renderFilters()} */}
       {students && renderSearchResults()}
       {!searching && featured && renderFeatured()}
     </Container>

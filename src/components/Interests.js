@@ -16,8 +16,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 // Styles
 import "./Interests.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInfoCircle, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Resources
 import {
@@ -182,19 +182,6 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
     sendInterests3(convertInterests(select3, interests3));
   }, [select3]);
 
-  let palette = [
-    "#16a085",
-    "#27ae60",
-    "#2980b9",
-    "#8e44ad",
-    "#2c3e50",
-    "#f1c40f",
-    "#e67e22",
-    "#e74c3c",
-    "#ecf0f1",
-    "#95a5a6",
-  ];
-
   switch (step) {
     case 0:
       return (
@@ -224,10 +211,17 @@ function GetStepContent(step, sendInterests1, sendInterests2, sendInterests3) {
         <div>
           <Typography variant="h5">
             Physical Activity and Wellness
-            
-            <Tooltip style={{marginLeft: 15}} placement="right" title="You do not necessarily have to participate in an activity for it to be an interest of yours"><span><FontAwesomeIcon icon={faInfoCircle} /></span></Tooltip>
-            </Typography>
-            
+            <Tooltip
+              style={{ marginLeft: 15 }}
+              placement="right"
+              title="You do not necessarily have to participate in an activity for it to be an interest of yours"
+            >
+              <span>
+                <FontAwesomeIcon icon={faInfoCircle} />
+              </span>
+            </Tooltip>
+          </Typography>
+
           <Grid container spacing={2} className="options-container">
             {interests2.map((interest, index) => (
               <Grid item>

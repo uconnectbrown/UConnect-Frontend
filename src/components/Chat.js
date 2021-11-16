@@ -30,8 +30,7 @@ function Chat(props) {
         .doc(props.roomId)
         .collection("chat")
         .orderBy("createdAt")
-        .limit(50)
-        .onSnapshot(() => {});
+        .limit(50);
     };
   }, [props.roomId]);
 
@@ -84,7 +83,7 @@ function Chat(props) {
 
   return (
     <>
-      <div className="chat-top d-flex align-items-center" onClick={() => {}}>
+      <div className="chat-top d-flex align-items-center">
         <div style={{ border: "5px solid #ffffff", borderRadius: "10rem" }}>
           <img
             className={
@@ -93,7 +92,7 @@ function Chat(props) {
                 ? "recipient-profile-blur"
                 : "recipient-profile"
             }
-            alt="Profile Picture"
+            alt="Profile"
             src={studentImageUrl}
           />
         </div>
