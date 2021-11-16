@@ -21,10 +21,7 @@ import Welcome from "./pages/WelcomeView";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
 
-// MUI Stuff
-
 // Styling
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col } from "react-bootstrap";
 
 axios.defaults.baseURL =
