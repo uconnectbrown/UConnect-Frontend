@@ -19,18 +19,6 @@ function NavBar(props) {
     const requests = [...Array(10).keys()];
     const spent = 10 - props.requests;
 
-    // ArrowIcon is smaller on mobile devices
-    const ArrowIcon = (index) => (
-      <img src={index < spent ? Arrow : ArrowFilled} alt="Request Arrow" />
-    );
-    const MobileArrowIcon = (index) => (
-      <img
-        src={index < spent ? Arrow : ArrowFilled}
-        alt="Request Arrow"
-        width="12px"
-      />
-    );
-
     return (
       <Tooltip
         title={
@@ -44,11 +32,13 @@ function NavBar(props) {
       >
         <div className="d-inline-block mx-2">
           {requests.map((i) => {
-            if (window.innerWidth < 768) {
-              return <MobileArrowIcon key={i} index={i} />;
-            } else {
-              return <ArrowIcon key={i} index={i} />;
-            }
+            return (
+              <img
+                src={i < spent ? Arrow : ArrowFilled}
+                alt="Request Arrow"
+                width={window.innerWidth >= 768 ? "20px" : "10px"}
+              />
+            );
           })}
         </div>
       </Tooltip>
