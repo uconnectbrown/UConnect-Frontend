@@ -10,7 +10,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 // Pages
 import MessageView from "./pages/MessageView";
-import Home from "./pages/HomeView";
+import Discover from "./pages/DiscoverView";
 import Connections from "./pages/ConnectionsView";
 import ProfileView from "./pages/ProfileView";
 import ProfileBuild from "./pages/ProfileBuild";
@@ -227,7 +227,7 @@ function App() {
   const NoMatch = () => {
     return (
       <h3>
-        Page not found. Click <Link to="/home">here</Link> to go back to
+        Page not found. Click <Link to="/discover">here</Link> to go back to
         UConnect
       </h3>
     );
@@ -261,7 +261,7 @@ function App() {
               <Col xs={11} md={10}>
                 <Switch>
                   <Route exact path="/">
-                    <Home
+                    <Discover
                       requests={requests}
                       decRequests={decRequests}
                       decPending={decPending}
@@ -272,8 +272,8 @@ function App() {
                       imageUrl={imageUrl}
                     />
                   </Route>
-                  <Route exact path="/home">
-                    <Home
+                  <Route exact path="/discover">
+                    <Discover
                       requests={requests}
                       decRequests={decRequests}
                       decPending={decPending}
