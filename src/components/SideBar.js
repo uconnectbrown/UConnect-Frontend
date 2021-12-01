@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import { Nav, Button, ButtonGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faHome,
-  faCommentAlt,
+  faSearch,
   faUserFriends,
   faDesktop,
 } from "@fortawesome/free-solid-svg-icons";
@@ -33,11 +32,11 @@ function SideBar(props) {
   // render laptop-screen sidebar
   if (screenWidth >= 768) {
     return (
-      <Nav defaultActiveKey="/home" className="flex-column px-lg-4">
-        <Link to="/home" style={{ textDecoration: "none" }}>
+      <Nav defaultActiveKey="/discover" className="flex-column px-lg-4">
+        <Link to="/discover" style={{ textDecoration: "none" }}>
           <Button variant="outline-light" className="nav-button">
-            <FontAwesomeIcon icon={faHome} style={{ width: "100%" }} />
-            Home
+            <FontAwesomeIcon icon={faSearch} style={{ width: "100%" }} />
+            Discover
           </Button>
         </Link>
         <Link to="/connections" style={{ textDecoration: "none" }}>
@@ -119,9 +118,9 @@ function SideBar(props) {
   return (
     <Nav bg="light" variant="pills" fill justify>
       <Nav.Item>
-        <Link to="/home" style={{ textDecoration: "none" }}>
+        <Link to="/discover" style={{ textDecoration: "none" }}>
           <Button variant="outline-light" className="nav-button">
-            <FontAwesomeIcon icon={faHome} />
+            <FontAwesomeIcon icon={faSearch} />
           </Button>
         </Link>
       </Nav.Item>
@@ -143,6 +142,7 @@ function SideBar(props) {
         <div
           onMouseEnter={() => setShowDropdown(true)}
           onMouseLeave={() => setShowDropdown(false)}
+          onClick={() => setShowDropdown(!showDropdown)}
         >
           <Button variant="outline-light" className="nav-button dropdown mb-5">
             <FontAwesomeIcon icon={faDesktop} />

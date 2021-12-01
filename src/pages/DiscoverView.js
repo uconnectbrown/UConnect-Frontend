@@ -13,7 +13,7 @@ import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import Logo from "../assets/Logo.png";
 
 // Styling
-import "./HomeView.css";
+import "./DiscoverView.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -28,7 +28,7 @@ import OtherProfileOB from "../assets/OtherProfile.png";
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
 
-function HomeView(props) {
+function DiscoverView(props) {
   const [emailId, setEmailId] = useState(null);
   const [email, setEmail] = useState(null);
   const [featured, setFeatured] = useState([]);
@@ -563,4 +563,4 @@ function HomeView(props) {
   );
 }
 
-export default HomeView;
+export default DiscoverView;
