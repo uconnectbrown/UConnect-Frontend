@@ -1,0 +1,23 @@
+name: 🧪 Build App
+
+on: pull_request
+
+jobs:
+  build:
+    name: NPM Build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.3.4
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.13.1
+
+      - name: Build
+        run: |
+          npm ci
+          CI=false npm run build
