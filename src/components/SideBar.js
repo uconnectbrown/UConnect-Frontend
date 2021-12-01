@@ -40,19 +40,6 @@ function SideBar(props) {
             Home
           </Button>
         </Link>
-        <Link to="/messages" style={{ textDecoration: "none" }}>
-          <Button variant="outline-light" className="nav-button">
-            <span>
-              <FontAwesomeIcon icon={faCommentAlt} style={{ width: "100%" }} />
-              <Badge
-                badgeContent={props.messageCount}
-                color="primary"
-                style={{ marginTop: 18 }}
-              ></Badge>
-            </span>
-            Messages
-          </Button>
-        </Link>
         <Link to="/connections" style={{ textDecoration: "none" }}>
           <Button variant="outline-light" className="nav-button">
             <span>
@@ -135,20 +122,6 @@ function SideBar(props) {
         <Link to="/home" style={{ textDecoration: "none" }}>
           <Button variant="outline-light" className="nav-button">
             <FontAwesomeIcon icon={faHome} />
-          </Button>
-        </Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Link to="/messages" style={{ textDecoration: "none" }}>
-          <Button variant="outline-light" className="nav-button">
-            <span>
-              <FontAwesomeIcon icon={faCommentAlt} />
-              <Badge
-                badgeContent={props.messageCount}
-                color="primary"
-                style={{ marginTop: 18 }}
-              ></Badge>
-            </span>
           </Button>
         </Link>
       </Nav.Item>
