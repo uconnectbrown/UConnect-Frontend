@@ -51,7 +51,7 @@ function NavBar(props) {
   return (
     <Navbar variant="light" className="topbar">
       <Container>
-        <Link to="/home">
+        <Link to="/discover">
           <Navbar.Brand>
             <div className="d-inline-block m-2">
               <img alt="UConnect Logo" src={Logo} className="topbar-logo" />
@@ -160,22 +160,3 @@ function NavBar(props) {
 }
 
 export default NavBar;
-
-// <AppBar color="secondary">
-//   <Toolbar>
-//     Requests: {props.requests}
-//     <SignOut
-//       style={{ position: "absolute", right: "10%" }}
-//       reset={props.reset}
-//     />
-//     <Link to="/profile">
-//       <Button>
-//         <img
-//           alt="imageUrl"
-//           src={props.imageUrl}
-//           style={{ width: "50px" }}
-//         />
-//       </Button>
-//     </Link>
-//   </Toolbar>
-// </AppBar>

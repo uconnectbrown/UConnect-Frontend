@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import "./SearchBar.css";
+import { Spinner } from "react-bootstrap";
 
 const SearchBar = (props) => {
   return (
@@ -22,6 +23,11 @@ const SearchBar = (props) => {
           autoComplete="off"
         />
       </form>
+      {props.loading && (
+        <div align="center">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      )}
       <button onClick={props.clearSearch}>
         <FontAwesomeIcon icon={faTimes} color={"grey"} />
       </button>

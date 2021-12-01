@@ -42,6 +42,7 @@ function DiscoverView(props) {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [onboardPage, setOnboardPage] = useState(0);
   const [firstTime, setFirstTime] = useState(props.firstTime);
+  const [loading, setLoading] = useState(false);
 
   const params = [
     "",
@@ -112,11 +113,13 @@ function DiscoverView(props) {
   };
 
   const searchField = (options, param) => {
+    setLoading(true);
     options = options.map((option) => option.value);
     axios
       .post(`/searchField/${email}`, { options, param })
       .then((res) => {
         setStudents(res.data);
+        setLoading(false);
       })
       .then(() => {
         setSearching(true);
@@ -125,10 +128,12 @@ function DiscoverView(props) {
   };
 
   const searchName = (query) => {
+    setLoading(true);
     axios
       .get(`/searchName/${email}/${query}`)
       .then((res) => {
         setStudents(res.data);
+        setLoading(false);
       })
       .then(() => {
         if (query) {
@@ -230,6 +235,7 @@ function DiscoverView(props) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         clearSearch={clearSearch}
+        loading={loading}
       />
     );
   };
@@ -552,7 +558,7 @@ function DiscoverView(props) {
           />
         </Modal.Body>
       </Modal>
-      <h1>Connect</h1>
+      <h1>Discover &amp; Connect</h1>
       {renderSearchPicker()}
       {searchType === 0 && renderSearchBar()}
       {searchType !== 0 && renderDataList(searchType)}
