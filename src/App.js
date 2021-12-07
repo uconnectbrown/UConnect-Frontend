@@ -16,6 +16,7 @@ import ProfileView from "./pages/ProfileView";
 import ProfileBuild from "./pages/ProfileBuild";
 import CourseView from "./pages/CourseView";
 import Welcome from "./pages/WelcomeView";
+import HomeView from "./pages/HomeView";
 
 // Components
 import NavBar from "./components/NavBar";
@@ -261,16 +262,10 @@ function App() {
               <Col xs={11} md={10}>
                 <Switch>
                   <Route exact path="/">
-                    <Discover
-                      requests={requests}
-                      decRequests={decRequests}
-                      decPending={decPending}
-                      incRequests={incRequests}
-                      updateOutgoing={updateOutgoing}
-                      outgoing={outgoing}
-                      firstTime={firstTime}
-                      imageUrl={imageUrl}
-                    />
+                    <HomeView />
+                  </Route>
+                  <Route exact path="/home">
+                    <HomeView />
                   </Route>
                   <Route exact path="/discover">
                     <Discover
