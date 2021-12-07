@@ -149,8 +149,9 @@ function Connections(props) {
 
   return (
     <Container
+      fluid
       className="uconnect-connections h-100"
-      style={{ marginTop: "1rem", overflow: "auto" }}
+      style={{ marginTop: "1rem" }}
     >
       <Modal
         keyboard

@@ -942,6 +942,7 @@ function ProfileView(props) {
   const renderProfile = () => {
     return (
       <Container
+        fluid
         className={`profile-view-wrap d-flex flex-column pb-3 ${
           editing ? "editing" : ""
         }`}
@@ -1036,10 +1037,10 @@ function ProfileView(props) {
           )}
         </Row>
         <Row>
-          <Col sm={4} className="align-items-center text-center px-3">
+          <Col md={4} xl={3} className="align-items-center text-center px-3">
             {renderLeftInfo()}
           </Col>
-          <Col sm={8} className="px-3">
+          <Col md={8} xl={6} className="px-3">
             <h5>Interests</h5>
             <Row>{renderInterests()}</Row>
             <h5>Extracurriculars</h5>
