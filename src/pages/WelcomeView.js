@@ -18,7 +18,7 @@ function Welcome(props) {
       .then((doc) => {
         if (doc.exists) {
           props.grantAccess();
-          history.push("/home");
+          history.push("/discover");
         } else {
           props.denyAccess();
           history.push({
