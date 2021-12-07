@@ -244,7 +244,7 @@ function App() {
             updateOutgoing={updateOutgoing}
             outgoing={outgoing}
           />
-          <Container fluid style={{ height: "85vh" }}>
+          <Container fluid>
             <Row className="px-3 py-4 h-100">
               <Col sm={12} md={2}>
                 {!firstTime && (
