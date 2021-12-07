@@ -7,6 +7,7 @@ import {
   faSearch,
   faUserFriends,
   faDesktop,
+  faHome,
 } from "@fortawesome/free-solid-svg-icons";
 import Badge from "@material-ui/core/Badge";
 
@@ -32,7 +33,13 @@ function SideBar(props) {
   // render laptop-screen sidebar
   if (screenWidth >= 768) {
     return (
-      <Nav defaultActiveKey="/discover" className="flex-column px-lg-4">
+      <Nav defaultActiveKey="/home" className="flex-column px-lg-4">
+        <Link to="/home" style={{ textDecoration: "none" }}>
+          <Button variant="outline-light" className="nav-button">
+            <FontAwesomeIcon icon={faHome} style={{ width: "100%" }} />
+            Home
+          </Button>
+        </Link>
         <Link to="/discover" style={{ textDecoration: "none" }}>
           <Button variant="outline-light" className="nav-button">
             <FontAwesomeIcon icon={faSearch} style={{ width: "100%" }} />
@@ -117,6 +124,13 @@ function SideBar(props) {
   // render mobile-friendly navbar
   return (
     <Nav bg="light" variant="pills" fill justify>
+      <Nav.Item>
+        <Link to="/home" style={{ textDecoration: "none" }}>
+          <Button variant="outline-light" className="nav-button">
+            <FontAwesomeIcon icon={faHome} />
+          </Button>
+        </Link>
+      </Nav.Item>
       <Nav.Item>
         <Link to="/discover" style={{ textDecoration: "none" }}>
           <Button variant="outline-light" className="nav-button">

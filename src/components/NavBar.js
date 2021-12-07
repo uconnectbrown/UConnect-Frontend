@@ -51,7 +51,7 @@ function NavBar(props) {
   return (
     <Navbar variant="light" className="topbar">
       <Container>
-        <Link to="/discover">
+        <Link to="/home">
           <Navbar.Brand>
             <div className="d-inline-block m-2">
               <img alt="UConnect Logo" src={Logo} className="topbar-logo" />
