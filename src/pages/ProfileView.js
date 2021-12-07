@@ -715,7 +715,6 @@ function ProfileView(props) {
         </Col>
       );
     });
-
   };
 
   const renderInterests = () => {
@@ -1024,7 +1023,7 @@ function ProfileView(props) {
                         props.finishOB();
                       })
                       .then(() => {
-                        history.push("/home");
+                        history.push("/discover");
                       })
                       .catch((err) => console.log(err));
                   }
