@@ -17,6 +17,7 @@ import ProfileBuild from "./pages/ProfileBuild";
 import CourseView from "./pages/CourseView";
 import Welcome from "./pages/WelcomeView";
 import HomeView from "./pages/HomeView";
+import PostView from "./pages/PostView";
 
 // Components
 import NavBar from "./components/NavBar";
@@ -319,6 +320,9 @@ function App() {
                       outgoing={outgoing}
                       imageUrl={imageUrl}
                     />
+                  </Route>
+                  <Route path="/post/:postId">
+                    <PostView />
                   </Route>
                   <Route path="*">
                     <NoMatch />

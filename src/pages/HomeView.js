@@ -1,33 +1,14 @@
 import React from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+import PostCard from "../components/PostCard";
 import "./HomeView.css";
 
-export default function HomeView() {
-  const MyCard = (props) => (
-    <Card className="PostCard" as={Link} to={`/post/${props.postNumber}`}>
-      <Card.Title>Post {props.postNumber}</Card.Title>
-      <Card.Body>
-        <Card.Text>
-          Bacon ipsum dolor amet ball tip cupim alcatra meatball kevin jerky.
-          Shankle rump burgdoggen ball tip filet mignon hamburger flank tri-tip
-          shank sausage turducken kevin porchetta. Leberkas kevin capicola
-          hamburger filet mignon biltong sirloin flank fatback boudin. Chuck
-          buffalo chislic swine strip steak ball tip jerky beef pastrami
-          chicken. Cow ball tip jowl pig strip steak rump.
-        </Card.Text>
-        {/* Like button with count of number of reactions */}
-        <Button variant="secondary" size="sm">
-          Like
-        </Button>
-      </Card.Body>
-      <Card.Footer className="PostFooter">
-        <small className="text-muted">3 mins ago</small>
-      </Card.Footer>
-    </Card>
-  );
+const ipsum =
+  "Bacon ipsum dolor amet burgdoggen frankfurter corned beef pork swine prosciutto pig doner chicken alcatra meatball chislic leberkas fatback. T-bone strip steak alcatra tenderloin pork chop kielbasa. Pork ball tip buffalo hamburger. Shankle porchetta venison sirloin flank. Prosciutto venison pastrami spare ribs ground round tenderloin. Jerky short ribs rump pastrami ribeye.";
 
+export default function HomeView() {
   return (
     <div className="HomeView">
       <Row>
@@ -44,7 +25,14 @@ export default function HomeView() {
         <Container fluid py={5} className="FeedContainer">
           <Row sm={1} lg={2} xl={3}>
             {Array.from({ length: 10 }).map((_, idx) => (
-              <MyCard key={idx} postNumber={idx} />
+              <PostCard
+                key={idx}
+                postNumber={idx}
+                postText={ipsum}
+                likeCount={Math.floor(Math.random() * 100)}
+                commentCount={Math.floor(Math.random() * 100)}
+                timeAgoPosted={Math.floor(Math.random() * 100)}
+              />
             ))}
           </Row>
         </Container>
