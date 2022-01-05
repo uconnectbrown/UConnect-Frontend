@@ -18,6 +18,7 @@ import CourseView from "./pages/CourseView";
 import Welcome from "./pages/WelcomeView";
 import HomeView from "./pages/HomeView";
 import PostView from "./pages/PostView";
+import CreatePostView from "./pages/CreatePostView";
 
 // Components
 import NavBar from "./components/NavBar";
@@ -267,6 +268,9 @@ function App() {
                   </Route>
                   <Route exact path="/home">
                     <HomeView />
+                  </Route>
+                  <Route exact path="/post/create">
+                    <CreatePostView />
                   </Route>
                   <Route exact path="/discover">
                     <Discover

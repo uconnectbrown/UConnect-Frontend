@@ -10,10 +10,10 @@ export default function PostCard(props) {
         <Card.Text>{props.postText}</Card.Text>
         {/* Like button with count of number of reactions */}
         <Button variant="secondary" size="sm">
-          Like ({props.likeCount})
+          <i class="far fa-heart"></i> ({props.likeCount})
         </Button>{" "}
         <Button variant="secondary" size="sm">
-          Comment ({props.commentCount})
+          <i class="far fa-comments"></i> ({props.commentCount})
         </Button>
       </Card.Body>
       <Card.Footer className="PostFooter">
