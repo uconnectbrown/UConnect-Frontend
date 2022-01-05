@@ -1,6 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import CommentCard from "../components/CommentCard";
 
 import PostCard from "../components/PostCard";
 import "./PostView.css";
@@ -21,6 +22,11 @@ export default function PostView() {
           commentCount={Math.floor(Math.random() * 100)}
           timeAgoPosted={Math.floor(Math.random() * 100)}
         />
+        <div className="PostComments">
+          <h3>Comments</h3>
+          <CommentCard />
+          <CommentCard />
+        </div>
       </Container>
     </div>
   );
