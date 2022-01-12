@@ -6,9 +6,6 @@ import PostCard from "../components/PostCard";
 import { getPosts } from "../util/postingBoardUtil";
 import "./HomeView.css";
 
-const ipsum =
-  "Bacon ipsum dolor amet burgdoggen frankfurter corned beef pork swine prosciutto pig doner chicken alcatra meatball chislic leberkas fatback. T-bone strip steak alcatra tenderloin pork chop kielbasa. Pork ball tip buffalo hamburger. Shankle porchetta venison sirloin flank. Prosciutto venison pastrami spare ribs ground round tenderloin. Jerky short ribs rump pastrami ribeye.";
-
 export default function HomeView() {
   const [posts, setPosts] = React.useState([]);
 

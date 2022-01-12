@@ -66,6 +66,25 @@ export async function getPosts() {
   }
 }
 
+// Output: array of post objects
+export async function getModFeedPosts() {
+  return Array.from({ length: 10 }).map((_, idx) => ({
+    postId: idx,
+    postText: ipsum,
+    author: {
+      displayName: "John Doe",
+      avatar: "https://placekitten.com/g/64/64",
+    },
+  }));
+
+  try {
+    const response = await axios.get(`/api/posts/modfeed`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 // Input: integer post id number, boolean for like or unlike
 // Output: post object
 export async function likePost(postId, like) {
