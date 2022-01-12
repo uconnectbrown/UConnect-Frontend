@@ -1,16 +1,43 @@
 import axios from "axios";
 
+const ipsum =
+  "Bacon ipsum dolor amet burgdoggen frankfurter corned beef pork swine prosciutto pig doner chicken alcatra meatball chislic leberkas fatback. T-bone strip steak alcatra tenderloin pork chop kielbasa. Pork ball tip buffalo hamburger. Shankle porchetta venison sirloin flank. Prosciutto venison pastrami spare ribs ground round tenderloin. Jerky short ribs rump pastrami ribeye.";
+
 // Input: integer post id number
 // Output: post object
-export async function getPost(postId) {
+export async function getPost(postNumber) {
   return {
-    id: postId,
-    author: "John Doe",
-    post: "This is a test post",
+    postNumber: postNumber,
+    postText: ipsum,
+    likeCount: Math.floor(Math.random() * 100),
+    commentCount: Math.floor(Math.random() * 100),
+    timeAgoPosted: Math.floor(Math.random() * 100),
+    author: {
+      displayName: "John Doe",
+      avatar: "https://placekitten.com/g/64/64",
+    },
+    comments: [
+      {
+        author: {
+          displayName: "John Doe",
+          avatar: "https://placekitten.com/g/62/62",
+        },
+        timestamp: "1 hour ago",
+        comment: "This is a comment",
+      },
+      {
+        author: {
+          displayName: "Bob Smith",
+          avatar: "https://placekitten.com/g/60/60",
+        },
+        timestamp: "2 hour ago",
+        comment: "This is another comment!!!",
+      },
+    ],
   };
 
   try {
-    const response = await axios.get(`/api/posts/${postId}`);
+    const response = await axios.get(`/api/posts/${postNumber}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -19,18 +46,17 @@ export async function getPost(postId) {
 
 // Output: array of post objects
 export async function getPosts() {
-  return [
-    {
-      id: 1,
-      author: "John Doe",
-      post: "This is a test post",
+  return Array.from({ length: 10 }).map((_, idx) => ({
+    postNumber: idx,
+    postText: ipsum,
+    likeCount: Math.floor(Math.random() * 100),
+    commentCount: Math.floor(Math.random() * 100),
+    timeAgoPosted: Math.floor(Math.random() * 100),
+    author: {
+      displayName: "John Doe",
+      avatar: "https://placekitten.com/g/64/64",
     },
-    {
-      id: 2,
-      author: "Bobby Joe",
-      post: "Whoop whoop",
-    },
-  ];
+  }));
 
   try {
     const response = await axios.get(`/api/posts`);

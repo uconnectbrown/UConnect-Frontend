@@ -6,29 +6,32 @@ import { Link } from "react-router-dom";
 
 export default function PostCard(props) {
   return (
-    <Link to={`/post/${props.postNumber}`} style={{ textDecoration: "none" }}>
+    <Link
+      to={`/post/${props.post.postNumber}`}
+      style={{ textDecoration: "none" }}
+    >
       <Card className="PostCard">
-        <Card.Title>Post {props.postNumber}</Card.Title>
+        <Card.Title>Post {props.post.postNumber}</Card.Title>
         <Card.Body style={{ textAlign: "center" }}>
-          <Card.Text>{props.postText}</Card.Text>
+          <Card.Text>{props.post.postText}</Card.Text>
           <Link to="#">
             <Button variant="secondary" size="sm">
-              <FontAwesomeIcon icon={faHeart} /> {props.likeCount}
+              <FontAwesomeIcon icon={faHeart} /> {props.post.likeCount}
             </Button>{" "}
             <Button
               variant="secondary"
               size="sm"
               as={Link}
-              to={`/post/${props.postNumber}/comment`}
+              to={`/post/${props.post.postNumber}/comment`}
             >
-              <FontAwesomeIcon icon={faComment} /> {props.commentCount}
+              <FontAwesomeIcon icon={faComment} /> {props.post.commentCount}
             </Button>{" "}
             <Button
               variant="secondary"
               size="sm"
               onClick={() =>
                 navigator.clipboard.writeText(
-                  `https://uconnectbrown.com/post/${props.postNumber}`
+                  `https://uconnectbrown.com/post/${props.post.postNumber}`
                 )
               }
             >
@@ -40,17 +43,17 @@ export default function PostCard(props) {
           <Row>
             <Col className="text-start">
               <Image
-                src={props.author.avatar}
+                src={props.post.author.avatar}
                 alt="avatar"
                 roundedCircle
                 width={32}
                 height={32}
               />
-              <b> {props.author.displayName}</b>
+              <b> {props.post.author.displayName}</b>
             </Col>
             <Col className="text-end">
               <small className="text-muted">
-                {props.timeAgoPosted} mins ago
+                {props.post.timeAgoPosted} mins ago
               </small>
             </Col>
           </Row>
