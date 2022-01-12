@@ -19,6 +19,7 @@ import Welcome from "./pages/WelcomeView";
 import HomeView from "./pages/HomeView";
 import PostView from "./pages/PostView";
 import CreatePostView from "./pages/CreatePostView";
+import ModView from "./pages/ModView";
 
 // Components
 import NavBar from "./components/NavBar";
@@ -268,6 +269,9 @@ function App() {
                   </Route>
                   <Route exact path="/home">
                     <HomeView />
+                  </Route>
+                  <Route exact path="/moderator">
+                    <ModView />
                   </Route>
                   <Route exact path="/post/create">
                     <CreatePostView />
