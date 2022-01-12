@@ -1,6 +1,6 @@
 import React from "react";
-import { Container } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Button, Card, Container, Form } from "react-bootstrap";
+import { useParams, useLocation } from "react-router-dom";
 import CommentCard from "../components/CommentCard";
 
 import PostCard from "../components/PostCard";
@@ -11,6 +11,9 @@ const ipsum =
 
 export default function PostView() {
   const { postId } = useParams();
+  const location = useLocation();
+
+  const isAuthoring = location.pathname.includes("comment");
 
   const comment = {
     author: {
@@ -33,6 +36,35 @@ export default function PostView() {
         />
         <div className="PostComments">
           <h3>Comments</h3>
+          {isAuthoring && (
+            <>
+              <Card>
+                <Container>
+                  <Form>
+                    <Form.Group controlId="commenter">
+                      <Form.Label>Commenter</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter commenter name"
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="commentText">
+                      <Form.Label>Comment Text</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows="3"
+                        placeholder="Enter comment body"
+                      />
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                      Submit
+                    </Button>
+                  </Form>
+                </Container>
+              </Card>
+              <hr />
+            </>
+          )}
           <CommentCard comment={comment} />
           <CommentCard comment={comment} />
           <CommentCard comment={comment} />

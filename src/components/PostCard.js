@@ -15,7 +15,12 @@ export default function PostCard(props) {
             <Button variant="secondary" size="sm">
               <FontAwesomeIcon icon={faHeart} /> {props.likeCount}
             </Button>{" "}
-            <Button variant="secondary" size="sm">
+            <Button
+              variant="secondary"
+              size="sm"
+              as={Link}
+              to={`/post/${props.postNumber}/comment`}
+            >
               <FontAwesomeIcon icon={faComment} /> {props.commentCount}
             </Button>{" "}
             <Button
