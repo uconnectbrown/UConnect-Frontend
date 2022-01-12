@@ -14,7 +14,11 @@ export default function CreatePostView() {
             </Form.Group>
             <Form.Group controlId="postText">
               <Form.Label>Post Text</Form.Label>
-              <Form.Control as="textarea" rows="3" />
+              <Form.Control
+                as="textarea"
+                rows="3"
+                placeholder="Enter post body"
+              />
             </Form.Group>
             <Button variant="primary" type="submit">
               Submit
