@@ -41,15 +41,8 @@ export default function PostView() {
               <Card>
                 <Container>
                   <Form>
-                    <Form.Group controlId="commenter">
-                      <Form.Label>Commenter</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter commenter name"
-                      />
-                    </Form.Group>
+                    <Form.Label>Post a comment</Form.Label>
                     <Form.Group controlId="commentText">
-                      <Form.Label>Comment Text</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows="3"
