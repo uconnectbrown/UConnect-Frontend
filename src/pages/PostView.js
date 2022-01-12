@@ -12,6 +12,15 @@ const ipsum =
 export default function PostView() {
   const { postId } = useParams();
 
+  const comment = {
+    author: {
+      displayName: "John Doe",
+      avatar: "https://placekitten.com/g/64/64",
+    },
+    timestamp: "1 hour ago",
+    comment: "This is a comment",
+  };
+
   return (
     <div className="PostView">
       <Container className="PostContainer">
@@ -24,8 +33,9 @@ export default function PostView() {
         />
         <div className="PostComments">
           <h3>Comments</h3>
-          <CommentCard />
-          <CommentCard />
+          <CommentCard comment={comment} />
+          <CommentCard comment={comment} />
+          <CommentCard comment={comment} />
         </div>
       </Container>
     </div>
