@@ -33,6 +33,10 @@ export default function PostView() {
           likeCount={Math.floor(Math.random() * 100)}
           commentCount={Math.floor(Math.random() * 100)}
           timeAgoPosted={Math.floor(Math.random() * 100)}
+          author={{
+            displayName: "John Doe",
+            avatar: "https://placekitten.com/g/64/64",
+          }}
         />
         <div className="PostComments">
           <h3>Comments</h3>
