@@ -21,7 +21,7 @@ export default function HomeView() {
           </Button>
         </Col>
       </Row>
-      <div class="p-3 mb-4 bg-light rounded-3">
+      <div class="p-3 mb-4 rounded-3">
         <Container fluid py={5} className="FeedContainer">
           <Row sm={1} lg={2} xl={3}>
             {Array.from({ length: 10 }).map((_, idx) => (
@@ -32,6 +32,10 @@ export default function HomeView() {
                 likeCount={Math.floor(Math.random() * 100)}
                 commentCount={Math.floor(Math.random() * 100)}
                 timeAgoPosted={Math.floor(Math.random() * 100)}
+                author={{
+                  displayName: "John Doe",
+                  avatar: "https://placekitten.com/g/64/64",
+                }}
               />
             ))}
           </Row>

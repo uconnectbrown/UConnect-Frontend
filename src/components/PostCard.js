@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Col, Image, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment, faShare } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
@@ -37,7 +37,23 @@ export default function PostCard(props) {
           </Link>
         </Card.Body>
         <Card.Footer className="PostFooter">
-          <small className="text-muted">{props.timeAgoPosted} mins ago</small>
+          <Row>
+            <Col className="text-start">
+              <Image
+                src={props.author.avatar}
+                alt="avatar"
+                roundedCircle
+                width={32}
+                height={32}
+              />
+              <b> {props.author.displayName}</b>
+            </Col>
+            <Col className="text-end">
+              <small className="text-muted">
+                {props.timeAgoPosted} mins ago
+              </small>
+            </Col>
+          </Row>
         </Card.Footer>
       </Card>
     </Link>
