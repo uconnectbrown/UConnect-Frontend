@@ -127,21 +127,19 @@ function NavBar(props) {
               </p>
             </Modal.Body>
           </Modal>
-          <Link to="/profile">
-            <button>
-              {props.imageUrl ? (
-                <img
-                  alt="Profile"
-                  src={props.imageUrl}
-                  className="nav-profile-img"
-                />
-              ) : (
-                <Button variant="primary" onClick={signInWithGoogle}>
-                  Sign In
-                </Button>
-              )}
-            </button>
-          </Link>
+          {props.imageUrl ? (
+            <Link to="/profile">
+              <img
+                alt="Profile"
+                src={props.imageUrl}
+                className="nav-profile-img"
+              />
+            </Link>
+          ) : (
+            <Button variant="primary" onClick={signInWithGoogle}>
+              Sign In
+            </Button>
+          )}
         </div>
       </Container>
     </Navbar>

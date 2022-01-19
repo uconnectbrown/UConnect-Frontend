@@ -32,7 +32,7 @@ export default function HomeView() {
           </Button>
         </Col>
       </Row>
-      <div class="p-3 mb-4 rounded-3">
+      <div className="p-3 mb-4 rounded-3">
         <Container fluid py={5} className="FeedContainer">
           <Row sm={1} lg={2} xl={3}>
             {posts.map((post) => (
