@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Navbar, Container, Modal, Badge } from "react-bootstrap";
-import {
-  faQuestionCircle,
-  faCommentAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { Navbar, Container, Modal, Button } from "react-bootstrap";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import Logo from "../assets/Logo.png";
 import Arrow from "../assets/arrow_vector.svg";
 import ArrowFilled from "../assets/arrow_vector_filled.svg";
+import { signInWithGoogle } from "../util/authUtil";
 
 import "./NavBar.css";
 
@@ -40,6 +38,7 @@ function NavBar(props) {
                 src={i < spent ? Arrow : ArrowFilled}
                 alt="Request Arrow"
                 width={window.innerWidth >= 768 ? "20px" : "10px"}
+                key={i}
               />
             );
           })}
@@ -128,29 +127,19 @@ function NavBar(props) {
               </p>
             </Modal.Body>
           </Modal>
-          <Link to="/messages" style={{ textDecoration: "none" }}>
-            <button variant="outline-light" className="nav-profile-img">
-              <span>
-                <FontAwesomeIcon
-                  icon={faCommentAlt}
-                  size="lg"
-                  color="#473F9B"
-                />
-                <Badge
-                  badgeContent={props.messageCount}
-                  color="primary"
-                  style={{ marginTop: 18 }}
-                />
-              </span>
-            </button>
-          </Link>
           <Link to="/profile">
             <button>
-              <img
-                alt="Profile"
-                src={props.imageUrl}
-                className="nav-profile-img"
-              />
+              {props.imageUrl ? (
+                <img
+                  alt="Profile"
+                  src={props.imageUrl}
+                  className="nav-profile-img"
+                />
+              ) : (
+                <Button variant="primary" onClick={signInWithGoogle}>
+                  Sign In
+                </Button>
+              )}
             </button>
           </Link>
         </div>

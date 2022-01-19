@@ -1,44 +1,13 @@
 // Setup
 import React from "react";
-import firebase from "firebase";
-import { db, auth } from "../firebase.js";
-import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "./WelcomeView.css";
+import { signInWithGoogle } from "../util/authUtil.js";
 
 import Logo from "../assets/Logo.png";
 
 // Body
 function Welcome(props) {
-  let history = useHistory();
-
-  function checkExists(emailId) {
-    db.doc(`/profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          props.grantAccess();
-          history.push("/discover");
-        } else {
-          props.denyAccess();
-          history.push({
-            pathname: "/profileBuild",
-          });
-        }
-      });
-  }
-
-  function signInWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth
-      .signInWithPopup(provider)
-      .then(() => {
-        let emailId = auth.currentUser.email.split("@")[0];
-        checkExists(emailId);
-      })
-      .catch((err) => console.log(err));
-  }
-
   return (
     <div className="welcome-page">
       <div className="welcome-container">

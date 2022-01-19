@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { db, auth } from "../firebase";
 import md5 from "md5";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 
 import ConnectButton from "./ConnectButton";
 import { Container, Row, Col, Button } from "react-bootstrap";
@@ -15,7 +15,7 @@ import { faLock, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Body
 function StudentModal(props) {
-  const history = useHistory();
+  const history = useNavigate();
   const emailId = auth.currentUser.email.split("@")[0];
   const studentId = props.studentId;
   const [outgoing] = useState(props.outgoing);
@@ -33,7 +33,7 @@ function StudentModal(props) {
 
   useEffect(() => {
     if (outgoing) checkUndo();
-  }, [props.outgoing]);
+  }, [outgoing]);
 
   const getStudent = () => {
     let oCourses = [];
@@ -110,13 +110,7 @@ function StudentModal(props) {
           return axios.post(`/request/${emailId}/${studentId}`, info);
         })
         .then(() => {
-          props.decRequests();
-          arr.push({
-            sent: new Date().toISOString(),
-            emailId: studentId,
-            imageUrl: student.imageUrl,
-          });
-          props.updateOutgoing(arr);
+          props.fetchUser();
           return setStatus("out");
         })
         .then(() => {
@@ -172,28 +166,18 @@ function StudentModal(props) {
             setStatus("con");
           })
           .then(() => {
-            props.updateConnections();
-            props.decPending();
+            props.fetchUser();
           })
           .catch((err) => console.log(err));
       });
   };
 
   const undoRequest = () => {
-    let arr = [...outgoing];
     axios
       .get(`/undoRequest/${emailId}/${studentId}`)
       .then(() => {
         setStatus("nil");
-        props.incRequests();
-        for (let i = 0; i < outgoing.length; i++) {
-          if (outgoing[i].emailId === studentId) {
-            arr.splice(i, 1);
-          }
-        }
-      })
-      .then(() => {
-        props.updateOutgoing(arr);
+        props.fetchUser();
       })
       .catch((err) => console.log(err));
   };

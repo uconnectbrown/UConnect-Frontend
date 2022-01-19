@@ -226,14 +226,11 @@ function Course(props) {
         <Modal.Body>
           <StudentModal
             studentId={studentId}
-            decRequests={props.decRequests}
-            incRequests={props.incRequests}
             onHide={handleCloseStudent}
             requests={props.requests}
             handleOpenMessage={handleOpenMessage}
             updateOutgoing={props.updateOutgoing}
             outgoing={props.outgoing}
-            decPending={props.decPending}
             imageUrl={props.imageUrl}
           />
         </Modal.Body>
