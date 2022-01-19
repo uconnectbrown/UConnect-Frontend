@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { db, auth } from "../firebase.js";
 import Select from "react-select";
-import { Link } from "react-router-dom";
-import ReactPlayer from "react-player";
 
 // Components
 import StudentModal from "../components/StudentModal";
@@ -20,10 +18,6 @@ import "react-circular-progressbar/dist/styles.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
-import FeaturedOB from "../assets/Featured.png";
-import CoursesOB from "../assets/Courses.png";
-import ProfileOB from "../assets/Profile.png";
-import OtherProfileOB from "../assets/OtherProfile.png";
 
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";

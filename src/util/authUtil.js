@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
 export function signInWithGoogle() {
@@ -72,14 +73,22 @@ export async function getUser(username) {
   }
 }
 
-export async function GoogleOAuthComponent() {
-  const oneTimeCode = new URLSearchParams(window.location.search).get("code");
-  if (!oneTimeCode) return <Navigate to="/" />;
+export function GoogleOAuthComponent() {
+  const [finished, setFinished] = useState(false);
 
-  const token = await authenticateGoogleOAuth(oneTimeCode);
-  if (!token) return <Navigate to="/" />;
+  useEffect(() => {
+    async function handleAuth() {
+      const oneTimeCode = new URLSearchParams(window.location.search).get(
+        "code"
+      );
+      if (oneTimeCode) {
+        const token = await authenticateGoogleOAuth(oneTimeCode);
+        if (token) localStorage.setItem("JWTToken", token);
+      }
+      setFinished(true);
+    }
+    handleAuth();
+  }, []);
 
-  localStorage.setItem("JWTToken", token);
-
-  return <Navigate to="/" />;
+  return finished ? <Navigate to="/" /> : <></>;
 }
