@@ -4,7 +4,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { auth } from "../firebase";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Components
 import Interests from "../components/Interests.js";
@@ -38,7 +38,7 @@ const { validProfile } = require("../util/validators");
 
 // Body
 function ProfileBuild(props) {
-  let history = useHistory();
+  let history = useNavigate();
   const [userData, setUserData] = useState(emptyProfile);
   const [email, setEmail] = useState(null);
   const classYears = [
@@ -103,7 +103,7 @@ function ProfileBuild(props) {
           setUserData({ ...userData, validProfile: true });
         })
         .then(() => {
-          props.grantAccess();
+          props.fetchUser();
           setLoading(false);
         })
         .then(() => {

@@ -24,7 +24,7 @@ export default function HomeView() {
           <h1>Home</h1>
         </Col>
         <Col sm={2}>
-          <Button as={Link} variant="primary" to="/post/create">
+          <Button as={Link} variant="primary" to="/post-create">
             Create Post
           </Button>
           <Button as={Link} variant="danger" to="/moderator">

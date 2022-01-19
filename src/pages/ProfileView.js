@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { db, auth } from "../firebase";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Components
 import EditInterests from "../components/EditInterests";
@@ -41,7 +41,7 @@ const { validProfile } = require("../util/validators");
 
 // Body
 function ProfileView(props) {
-  let history = useHistory();
+  let history = useNavigate();
   const [emailId, setEmailId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
@@ -98,7 +98,7 @@ function ProfileView(props) {
   const editProfile = () => {
     if (emailId) {
       if (newProfile.courses !== profile.courses) {
-        props.handleCourses(newProfile.courses);
+        // TODO: update courses in db (newProfile.courses)
         handleDeleteCourses();
       }
       if (newProfile.varsitySports !== profile.varsitySports) {
@@ -308,7 +308,7 @@ function ProfileView(props) {
     setEditImage(false);
     setProfile({ ...profile, imageUrl: url });
     setNewProfile({ ...newProfile, imageUrl: url });
-    props.handleImage(url);
+    // TODO: update image in database (url)
     let info = {
       name: newProfile.firstName + " " + newProfile.lastName,
       classYear: newProfile.classYear,
@@ -1021,10 +1021,7 @@ function ProfileView(props) {
                     axios
                       .get(`/newFeatured/${emailId}`)
                       .then(() => {
-                        props.finishOB();
-                      })
-                      .then(() => {
-                        history.push("/discover");
+                        history.push("/");
                       })
                       .catch((err) => console.log(err));
                   }

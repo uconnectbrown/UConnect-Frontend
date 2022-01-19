@@ -50,11 +50,13 @@ function SideBar(props) {
           <Button variant="outline-light" className="nav-button">
             <span>
               <FontAwesomeIcon icon={faUserFriends} style={{ width: "100%" }} />
-              <Badge
-                badgeContent={props.pending}
-                color="primary"
-                style={{ marginTop: 18 }}
-              ></Badge>
+              {props.pending > 0 && (
+                <Badge
+                  badgeContent={props.pending}
+                  color="primary"
+                  style={{ marginTop: 18 }}
+                />
+              )}
             </span>
             Connections
           </Button>

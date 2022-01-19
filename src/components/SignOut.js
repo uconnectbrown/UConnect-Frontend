@@ -1,10 +1,10 @@
 import React from "react";
 import { auth } from "../firebase.js";
 
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function SignOut(props) {
-  let history = useHistory();
+  let history = useNavigate();
 
   async function signout() {
     await auth.signOut();
