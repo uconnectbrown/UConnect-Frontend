@@ -1,6 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect } from "react";
 
 export function signInWithGoogle() {
   window.open(
@@ -24,15 +23,13 @@ export async function authenticateGoogleOAuth(authCode) {
       authCode,
     });
 
-    const token = res.data.token;
-    if (!token) return null;
+    const token = res.data.jwtToken;
+    if (!token) return;
 
     localStorage.setItem("JWTToken", token);
     localStorage.setItem("Username", "nicholas_bottone@brown.edu"); // FIXME: remove this
-
-    return token;
   } catch (err) {
-    return null;
+    console.error(err);
   }
 }
 
@@ -66,29 +63,31 @@ export async function getUser(username) {
   // };
 
   try {
-    const res = await axios.get(`/v1/user/${username}`);
+    const res = await axios.post(`/v1/user/${username}`);
+    console.log(res.data);
     return res.data;
   } catch (err) {
+    if (err.response.status === 403) {
+      localStorage.removeItem("JWTToken");
+      localStorage.removeItem("Username");
+    }
     return null;
   }
 }
 
 export function GoogleOAuthComponent() {
-  const [finished, setFinished] = useState(false);
-
   useEffect(() => {
     async function handleAuth() {
       const oneTimeCode = new URLSearchParams(window.location.search).get(
         "code"
       );
       if (oneTimeCode) {
-        const token = await authenticateGoogleOAuth(oneTimeCode);
-        if (token) localStorage.setItem("JWTToken", token);
+        await authenticateGoogleOAuth(oneTimeCode);
       }
-      setFinished(true);
+      window.open("/", "_self");
     }
     handleAuth();
   }, []);
 
-  return finished ? <Navigate to="/" /> : <></>;
+  return <></>;
 }
