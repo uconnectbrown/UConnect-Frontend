@@ -40,7 +40,6 @@ const { validProfile } = require("../util/validators");
 function ProfileBuild(props) {
   let navigate = useNavigate();
   const [userData, setUserData] = useState(emptyProfile);
-  const [email, setEmail] = useState(null);
   const classYears = [
     "2021.5",
     "2022",
@@ -63,56 +62,51 @@ function ProfileBuild(props) {
     });
   };
 
-  useEffect(() => {
-    if (auth.currentUser) setEmail(auth.currentUser.email);
-  }, []);
-
   const handleSubmit = (event) => {
-    if (email) {
-      event.preventDefault();
-      setLoading(true);
-      const newUserData = {
-        // Basic Info
-        firstName: userData.firstName.trim(),
-        lastName: userData.lastName.trim(),
-        classYear: userData.classYear,
-        majors: [userData.major1, userData.major2],
-        pronouns: userData.pronouns,
-        location: {
-          country: userData.country.trim(),
-          state: userData.state.trim(),
-          city: userData.city.trim(),
-        },
-        email,
-        // Interests
-        interests1: userData.interests1,
-        interests2: userData.interests2,
-        interests3: userData.interests3,
-      };
+    event.preventDefault();
+    setLoading(true);
+    const newUserData = {
+      // Basic Info
+      firstName: userData.firstName.trim(),
+      lastName: userData.lastName.trim(),
+      classYear: userData.classYear,
+      majors: [userData.major1, userData.major2],
+      pronouns: userData.pronouns,
+      location: {
+        country: userData.country.trim(),
+        state: userData.state.trim(),
+        city: userData.city.trim(),
+      },
+      // Interests
+      interests1: userData.interests1,
+      interests2: userData.interests2,
+      interests3: userData.interests3,
+    };
 
-      // TODO: Check courses validator
-      if (!validProfile(newUserData)) {
-        setUserData({ ...userData, validProfile: false });
-        setLoading(false);
-        return;
-      }
-
-      axios
-        .post("/signup", newUserData)
-        .then(() => {
-          setUserData({ ...userData, validProfile: true });
-        })
-        .then(() => {
-          props.fetchUser();
-          setLoading(false);
-        })
-        .then(() => {
-          navigate("/discover");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    // TODO: Check courses validator
+    if (!validProfile(newUserData)) {
+      setUserData({ ...userData, validProfile: false });
+      setLoading(false);
+      return;
     }
+
+    console.log(newUserData);
+
+    axios
+      .post("/v1/user/updateUser", newUserData)
+      .then(() => {
+        setUserData({ ...userData, validProfile: true });
+      })
+      .then(() => {
+        props.fetchUser();
+        setLoading(false);
+      })
+      .then(() => {
+        navigate("/discover");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const renderEmptyLocation = () => {
@@ -407,7 +401,6 @@ function ProfileBuild(props) {
               lastName: userData.lastName.trim(),
               classYear: userData.classYear,
               majors: [userData.major1, userData.major2, userData.major3],
-              email,
               interests1: userData.interests1,
               interests2: userData.interests2,
               interests3: userData.interests3,
@@ -430,7 +423,6 @@ function ProfileBuild(props) {
                   lastName: userData.lastName.trim(),
                   classYear: userData.classYear,
                   majors: [userData.major1, userData.major2],
-                  email,
                   interests1: userData.interests1,
                   interests2: userData.interests2,
                   interests3: userData.interests3,

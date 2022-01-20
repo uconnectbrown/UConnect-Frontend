@@ -46,7 +46,7 @@ function SideBar(props) {
             Discover
           </Button>
         </Link>
-        <Link to="/connections" style={{ textDecoration: "none" }}>
+        {/* <Link to="/connections" style={{ textDecoration: "none" }}>
           <Button variant="outline-light" className="nav-button">
             <span>
               <FontAwesomeIcon icon={faUserFriends} style={{ width: "100%" }} />
@@ -60,7 +60,7 @@ function SideBar(props) {
             </span>
             Connections
           </Button>
-        </Link>
+        </Link> */}
         <div
           onMouseEnter={() => setShowDropdown(true)}
           onMouseLeave={() => setShowDropdown(false)}
@@ -139,7 +139,7 @@ function SideBar(props) {
           </Button>
         </Link>
       </Nav.Item>
-      <Nav.Item>
+      {/* <Nav.Item>
         <Link to="/connections" style={{ textDecoration: "none" }}>
           <Button variant="outline-light" className="nav-button">
             <span>
@@ -152,7 +152,7 @@ function SideBar(props) {
             </span>
           </Button>
         </Link>
-      </Nav.Item>
+      </Nav.Item> */}
       <Nav.Item>
         <div
           onMouseEnter={() => setShowDropdown(true)}
