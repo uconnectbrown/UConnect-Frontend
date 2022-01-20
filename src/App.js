@@ -24,13 +24,13 @@ import SideBar from "./components/SideBar";
 import { Container, Row, Col } from "react-bootstrap";
 import { getUser, GoogleOAuthComponent } from "./util/authUtil";
 
-axios.defaults.baseURL = "https://api.uconnectbrown.com";
+axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 
 // Body
 function App() {
   // Authentication
-  const [token, setToken] = useState(localStorage.getItem("JWTToken"));
-  const [username, setUsername] = useState(localStorage.getItem("Username"));
+  const token = localStorage.getItem("JWTToken");
+  const username = localStorage.getItem("Username");
   const [user, setUser] = useState(null);
 
   axios.interceptors.request.use((config) => {
@@ -95,15 +95,14 @@ function App() {
     );
   };
 
+  // Google OAuth if at path /auth/google/callback
+  if (window.location.pathname === "/auth/google/callback") {
+    return <GoogleOAuthComponent />;
+  }
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
-          <Route
-            path="/auth/google/callback"
-            element={<GoogleOAuthComponent />}
-          />
-        </Routes>
         <NavBar
           requests={user ? user.requests : 0}
           imageUrl={user ? user.profilePicture : ""}
