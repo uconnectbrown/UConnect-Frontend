@@ -24,44 +24,16 @@ export async function authenticateGoogleOAuth(authCode) {
     });
 
     const token = res.data.jwtToken;
-    if (!token) return;
+    const username = res.data.username;
 
-    localStorage.setItem("JWTToken", token);
-    localStorage.setItem("Username", "nicholas_bottone@brown.edu"); // FIXME: remove this
+    if (token) localStorage.setItem("JWTToken", token);
+    if (username) localStorage.setItem("Username", username);
   } catch (err) {
     console.error(err);
   }
 }
 
 export async function getUser(username) {
-  // return {
-  //   username,
-  //   email: "",
-  //   firstName: "",
-  //   lastName: "",
-  //   classYear: "",
-  //   requests: 10,
-  //   profilePicture: "",
-  //   profileCompleted: true,
-  //   courses: [
-  //     {
-  //       code: "CSCI 0330",
-  //       name: "Introduction to Computer Systems",
-  //     },
-  //   ],
-  //   majors: [],
-  //   pronouns: "",
-  //   location: {
-  //     city: "",
-  //     state: "",
-  //     country: "",
-  //   },
-  //   interests: [],
-  //   connections: [],
-  //   sentRequests: [],
-  //   receivedRequests: [],
-  // };
-
   try {
     const res = await axios.post(`/v1/user/${username}`);
     console.log(res.data);

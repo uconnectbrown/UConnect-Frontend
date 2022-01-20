@@ -15,7 +15,7 @@ import { faLock, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Body
 function StudentModal(props) {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const emailId = auth.currentUser.email.split("@")[0];
   const studentId = props.studentId;
   const [outgoing] = useState(props.outgoing);
@@ -135,7 +135,7 @@ function StudentModal(props) {
         info.roomId = md5([res.data.emailId, studentId].sort().join(" "));
       })
       .then(() => {
-        history.push({
+        navigate({
           pathname: "/messages",
           state: {
             messageInfo: info,

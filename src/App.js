@@ -60,7 +60,7 @@ function App() {
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   useEffect(() => {
-    if (user?.profileCompleted) getCourses();
+    if (user?.isProfileCompleted) getCourses();
   }, [user]);
   const getCourses = (codeNS) => {
     let c, n;
@@ -111,10 +111,14 @@ function App() {
           <Row className="px-3 py-4 h-100">
             <Col sm={12} md={2}>
               <SideBar
-                courses={user ? user.courses : []}
+                courses={user && user.courses ? user.courses : []}
                 handleCode={handleCode}
                 handleName={handleName}
-                pending={user ? user.receivedRequests.length : 0}
+                pending={
+                  user && user.receivedRequests
+                    ? user.receivedRequests.length
+                    : 0
+                }
               />
             </Col>
             <Col xs={11} md={10}>
@@ -122,7 +126,7 @@ function App() {
                 <Route exact path="/" element={<HomeView />} />
                 <Route exact path="/home" element={<HomeView />} />
                 <Route path="/post/:postId" element={<PostView />} />
-                {user && user.profileCompleted ? (
+                {user && user.isProfileCompleted ? (
                   <>
                     <Route exact path="/moderator" element={<ModView />} />
                     <Route
