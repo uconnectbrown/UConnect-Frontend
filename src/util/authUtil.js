@@ -34,6 +34,34 @@ export async function authenticateGoogleOAuth(authCode) {
 }
 
 export async function getUser(username) {
+  return {
+    username,
+    firstName: "Nicholas",
+    lastName: "Bottone",
+    classYear: "2024",
+    requests: 10,
+    profilePicture:
+      "https://www.pnglib.com/wp-content/uploads/2020/02/gravatar-logo_5e53aa6dbee91.png",
+    isProfileCompleted: true,
+    courses: [
+      {
+        code: "CSCI 0330",
+        name: "Introduction to Computer Systems",
+      },
+    ],
+    majors: ["Computer Science"],
+    pronouns: "he/him",
+    location: {
+      city: "Greenville",
+      state: "RI",
+      country: "USA",
+    },
+    interests: ["Computer Science", "Video Games"],
+    connections: [],
+    sentRequests: [],
+    receivedRequests: [],
+  };
+
   try {
     const res = await axios.post(`/v1/user/${username}`);
     console.log(res.data);

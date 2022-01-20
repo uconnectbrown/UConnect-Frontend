@@ -146,7 +146,7 @@ function App() {
                         />
                       }
                     />
-                    <Route
+                    {/* <Route
                       exact
                       path="/connections"
                       element={
@@ -155,7 +155,7 @@ function App() {
                           imageUrl={user.profilePicture}
                         />
                       }
-                    />
+                    /> */}
                     <Route
                       exact
                       path="/profile"
@@ -180,7 +180,9 @@ function App() {
                     {user && (
                       <Route
                         path="*"
-                        element={<ProfileBuild fetchUser={fetchUser} />}
+                        element={
+                          <ProfileBuild fetchUser={fetchUser} user={user} />
+                        }
                       />
                     )}
                     {!user && (
