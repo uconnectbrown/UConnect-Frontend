@@ -4,11 +4,11 @@ import { auth } from "../firebase.js";
 import { useNavigate } from "react-router-dom";
 
 function SignOut(props) {
-  let history = useNavigate();
+  let navigate = useNavigate();
 
   async function signout() {
     await auth.signOut();
-    history.push("/");
+    navigate("/");
   }
   return (
     <div style={props.style}>

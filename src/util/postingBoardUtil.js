@@ -24,6 +24,7 @@ export async function getPost(postNumber) {
         },
         timestamp: "1 hour ago",
         comment: "This is a comment",
+        commentNumber: 1,
       },
       {
         author: {
@@ -32,6 +33,7 @@ export async function getPost(postNumber) {
         },
         timestamp: "2 hour ago",
         comment: "This is another comment!!!",
+        commentNumber: 2,
       },
     ],
   };

@@ -41,7 +41,7 @@ const { validProfile } = require("../util/validators");
 
 // Body
 function ProfileView(props) {
-  let history = useNavigate();
+  let navigate = useNavigate();
   const [emailId, setEmailId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
@@ -1021,7 +1021,7 @@ function ProfileView(props) {
                     axios
                       .get(`/newFeatured/${emailId}`)
                       .then(() => {
-                        history.push("/");
+                        navigate("/");
                       })
                       .catch((err) => console.log(err));
                   }

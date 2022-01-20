@@ -38,7 +38,7 @@ const { validProfile } = require("../util/validators");
 
 // Body
 function ProfileBuild(props) {
-  let history = useNavigate();
+  let navigate = useNavigate();
   const [userData, setUserData] = useState(emptyProfile);
   const [email, setEmail] = useState(null);
   const classYears = [
@@ -90,7 +90,7 @@ function ProfileBuild(props) {
         interests3: userData.interests3,
       };
 
-      // TO-DO: Check courses validator
+      // TODO: Check courses validator
       if (!validProfile(newUserData)) {
         setUserData({ ...userData, validProfile: false });
         setLoading(false);
@@ -107,9 +107,7 @@ function ProfileBuild(props) {
           setLoading(false);
         })
         .then(() => {
-          history.push({
-            pathname: "/discover",
-          });
+          navigate("/discover");
         })
         .catch((err) => {
           console.log(err);

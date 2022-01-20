@@ -64,60 +64,59 @@ function SideBar(props) {
         <div
           onMouseEnter={() => setShowDropdown(true)}
           onMouseLeave={() => setShowDropdown(false)}
+          className="nav-button btn btn-outline-light dropdown mb-5 text-center"
         >
-          <Button variant="outline-light" className="nav-button dropdown mb-5">
-            <FontAwesomeIcon icon={faDesktop} style={{ width: "100%" }} />
-            Courses
-            {showDropdown && (
-              <ButtonGroup vertical style={{ width: "100%" }}>
-                {courses
-                  .map((course) => {
-                    if (course.code) {
-                      return course.code;
-                    }
-                  })
-                  .filter(Boolean).length === 0 && (
+          <FontAwesomeIcon icon={faDesktop} style={{ width: "100%" }} />
+          Courses
+          {showDropdown && (
+            <ButtonGroup vertical style={{ width: "100%" }}>
+              {courses
+                .map((course) => {
+                  if (course.code) {
+                    return course.code;
+                  }
+                })
+                .filter(Boolean).length === 0 && (
+                <Link
+                  to="/profile"
+                  style={{
+                    textDecoration: "none",
+                    width: "100%",
+                    maxWidth: "100%",
+                  }}
+                >
+                  <Button variant="outline-light" className="nav-button m-0">
+                    Add courses to your profile.
+                  </Button>
+                </Link>
+              )}
+              {courses.map((course, i) => {
+                if (!course.code) return null;
+                let link = "/courses/" + course.code.replace(/\s/g, "");
+                return (
                   <Link
-                    to="/profile"
+                    to={link}
                     style={{
                       textDecoration: "none",
                       width: "100%",
                       maxWidth: "100%",
                     }}
                   >
-                    <Button variant="outline-light" className="nav-button m-0">
-                      Add courses to your profile.
-                    </Button>
-                  </Link>
-                )}
-                {courses.map((course, i) => {
-                  if (!course.code) return null;
-                  let link = "/courses/" + course.code.replace(/\s/g, "");
-                  return (
-                    <Link
-                      to={link}
-                      style={{
-                        textDecoration: "none",
-                        width: "100%",
-                        maxWidth: "100%",
+                    <Button
+                      variant="outline-light"
+                      className="nav-button m-0"
+                      onClick={() => {
+                        props.handleCode(course.code);
+                        props.handleName(course.name);
                       }}
                     >
-                      <Button
-                        variant="outline-light"
-                        className="nav-button m-0"
-                        onClick={() => {
-                          props.handleCode(course.code);
-                          props.handleName(course.name);
-                        }}
-                      >
-                        {course.code}
-                      </Button>
-                    </Link>
-                  );
-                })}
-              </ButtonGroup>
-            )}
-          </Button>
+                      {course.code}
+                    </Button>
+                  </Link>
+                );
+              })}
+            </ButtonGroup>
+          )}
         </div>
       </Nav>
     );
