@@ -33,15 +33,26 @@ export async function authenticateGoogleOAuth(authCode) {
   }
 }
 
+export async function getMyUser() {
+  const username = localStorage.getItem("Username");
+  const user = await getUser(username);
+  if (user === 403) {
+    localStorage.removeItem("JWTToken");
+    localStorage.removeItem("Username");
+    return null;
+  }
+  return user;
+}
+
 export async function getUser(username) {
   return {
     username,
     firstName: "Nicholas",
     lastName: "Bottone",
     classYear: "2024",
+    bio: "I am a student at Brown University studying Computer Science.",
     requests: 10,
-    profilePicture:
-      "https://www.pnglib.com/wp-content/uploads/2020/02/gravatar-logo_5e53aa6dbee91.png",
+    profilePicture: "https://i.imgur.com/1m8kMyt.png",
     isProfileCompleted: true,
     courses: [
       {
@@ -60,16 +71,25 @@ export async function getUser(username) {
     connections: [],
     sentRequests: [],
     receivedRequests: [],
+    groups: [],
+    varsitySports: [],
+    pickUpSports: [],
+    instruments: [],
+    interests1: [],
+    interests2: [],
+    interests3: [],
   };
 
   try {
     const res = await axios.post(`/v1/user/${username}`);
-    console.log(res.data);
-    return res.data;
+    const user = res.data;
+    if (!user.profilePicture)
+      user.profilePicture = "https://i.imgur.com/1m8kMyt.png";
+    console.log(user);
+    return user;
   } catch (err) {
     if (err.response.status === 403) {
-      localStorage.removeItem("JWTToken");
-      localStorage.removeItem("Username");
+      return 403;
     }
     return null;
   }

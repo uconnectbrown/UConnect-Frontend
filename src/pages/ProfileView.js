@@ -1,8 +1,6 @@
 // Setup
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { db, auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
 
 // Components
 import EditInterests from "../components/EditInterests";
@@ -41,219 +39,21 @@ const { validProfile } = require("../util/validators");
 
 // Body
 function ProfileView(props) {
-  let navigate = useNavigate();
-  const [emailId, setEmailId] = useState(null);
-  const [profile, setProfile] = useState(null);
-  const [newProfile, setNewProfile] = useState(null);
+  const { user } = props;
+  const [newProfile, setNewProfile] = useState(user);
   const [editing, setEditing] = useState(false);
   const [editingInterests, setEditingInterests] = useState(false);
   const [editImage, setEditImage] = useState(false);
-  const [skipImage, setSkipImage] = useState(false);
-  const [firstTime, setFirstTime] = useState(null);
-
-  const student = profile;
-
-  useEffect(() => {
-    if (auth.currentUser) {
-      setEmailId(auth.currentUser.email.split("@")[0]);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (emailId) {
-      checkFirstTime();
-      getProfile();
-    }
-  }, [emailId]);
-
-  const checkFirstTime = () => {
-    db.doc(`profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        if (doc.data().firstTime) {
-          setEditImage(true);
-        }
-        return setFirstTime(doc.data().firstTime);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleCloseOnBoard = () => {
-    setFirstTime(false);
-    // backend function to turn firsttime to false in the profile
-    emailId &&
-      axios.get(`/onboard/${emailId}`).catch((err) => console.log(err));
-  };
-
-  const getProfile = () => {
-    axios
-      .get(`/user/${emailId}`)
-      .then((res) => {
-        setProfile(res.data.user);
-        setNewProfile(res.data.user);
-      })
-      .catch((err) => console.log(err));
-  };
+  const noProfilePic =
+    user?.profilePicture === "https://i.imgur.com/1m8kMyt.png";
 
   const editProfile = () => {
-    if (emailId) {
-      if (newProfile.courses !== profile.courses) {
-        // TODO: update courses in db (newProfile.courses)
-        handleDeleteCourses();
-      }
-      if (newProfile.varsitySports !== profile.varsitySports) {
-        handleDeleteVarsity();
-      }
-      if (newProfile.pickUpSports !== profile.pickUpSports) {
-        handleDeletePickUp();
-      }
-      if (newProfile.instruments !== profile.instruments) {
-        handleDeleteInstrument();
-      }
-      if (
-        newProfile.firstName !== profile.firstName ||
-        newProfile.lastName !== profile.lastName ||
-        newProfile.classYear !== profile.classYear
-      ) {
-        handleConnections();
-      }
-      axios
-        .post(`/edit/${emailId}`, newProfile)
-        .then(() => {
-          setProfile(newProfile);
-        })
-        .then(() => {
-          updateInfo();
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  const updateInfo = () => {
     axios
-      .get(`/update/${emailId}`)
-      .then(() => {
-        axios.get(`/updateV/${emailId}`);
-      })
-      .then(() => {
-        axios.get(`/updateI/${emailId}`);
-      })
-      .then(() => {
-        return axios.get(`/updateP/${emailId}`);
+      .post("/v1/user/updateUser", newProfile)
+      .then(async () => {
+        setNewProfile(await props.fetchUser());
       })
       .catch((err) => console.log(err));
-  };
-
-  const handleConnections = () => {
-    let info = {
-      name: newProfile.firstName + " " + newProfile.lastName,
-      classYear: newProfile.classYear,
-      imageUrl: newProfile.imageUrl,
-    };
-    axios
-      .post(`/updateC/${emailId}`, info)
-      .then(() => {
-        return;
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleDeleteCourses = () => {
-    if (emailId) {
-      let promises = [];
-      for (let i = 0; i < profile.courses.length; i++) {
-        if (
-          profile.courses[i].code !== newProfile.courses[i].code &&
-          profile.courses[i].code
-        ) {
-          promises.push(
-            axios.get(
-              `/delete/${emailId}/${profile.courses[i].code.replace(/\s/g, "")}`
-            )
-          );
-        }
-      }
-      Promise.all(promises)
-        .then(() => {
-          return;
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  const handleDeleteVarsity = () => {
-    if (emailId) {
-      let promises = [];
-      for (let i = 0; i < profile.varsitySports.length; i++) {
-        if (
-          profile.varsitySports[i] !== newProfile.varsitySports[i] &&
-          profile.varsitySports[i]
-        ) {
-          promises.push(
-            axios.get(
-              `/deleteV/${emailId}/${profile.varsitySports[i].replace(
-                /\s/g,
-                ""
-              )}`
-            )
-          );
-        }
-      }
-      Promise.all(promises)
-        .then(() => {
-          return;
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  const handleDeletePickUp = () => {
-    if (emailId) {
-      let promises = [];
-      for (let i = 0; i < profile.pickUpSports.length; i++) {
-        if (
-          profile.pickUpSports[i] !== newProfile.pickUpSports[i] &&
-          profile.pickUpSports[i]
-        ) {
-          promises.push(
-            axios.get(
-              `/deleteP/${emailId}/${profile.pickUpSports[i].replace(
-                /\s/g,
-                ""
-              )}`
-            )
-          );
-        }
-      }
-      Promise.all(promises)
-        .then(() => {
-          return;
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  const handleDeleteInstrument = () => {
-    if (emailId) {
-      let promises = [];
-      for (let i = 0; i < profile.instruments.length; i++) {
-        if (
-          profile.instruments[i] !== newProfile.instruments[i] &&
-          profile.instruments[i]
-        ) {
-          promises.push(
-            axios.get(
-              `/deleteI/${emailId}/${profile.instruments[i].replace(/\s/g, "")}`
-            )
-          );
-        }
-      }
-      Promise.all(promises)
-        .then(() => {
-          return;
-        })
-        .catch((err) => console.log(err));
-    }
   };
 
   const handleChange = (event) => {
@@ -306,28 +106,17 @@ function ProfileView(props) {
 
   const updateImage = (url) => {
     setEditImage(false);
-    setProfile({ ...profile, imageUrl: url });
-    setNewProfile({ ...newProfile, imageUrl: url });
-    // TODO: update image in database (url)
-    let info = {
-      name: newProfile.firstName + " " + newProfile.lastName,
-      classYear: newProfile.classYear,
-      imageUrl: url,
-    };
-    let promises = [
-      axios.get(`/update/${emailId}`),
-      axios.post(`/updateC/${emailId}`, info),
-    ];
-    Promise.all(promises)
-      .then(() => {
-        return;
+    setNewProfile({ ...newProfile, profilePicture: url });
+    axios
+      .post("/v1/user/updateUser", newProfile)
+      .then(async () => {
+        setNewProfile(await props.fetchUser());
       })
       .catch((err) => console.log(err));
   };
 
   const renderLeftInfo = () => {
     const classYears = [
-      "2021.5",
       "2022",
       "2022.5",
       "2023",
@@ -335,6 +124,7 @@ function ProfileView(props) {
       "2024",
       "2024.5",
       "2025",
+      "2025.5",
     ];
     return (
       <>
@@ -342,61 +132,47 @@ function ProfileView(props) {
           <img
             className="profile-view-img"
             alt="Profile"
-            src={student.imageUrl}
+            src={user.profilePicture}
           />
           <br />
           {!editing && (
             <button
               type="button"
-              class={
-                firstTime ? "btn btn-sm" : "btn btn-outline-primary btn-sm"
-              }
+              className={"btn btn-outline-primary btn-sm"}
               style={{
                 width: "8rem",
-                backgroundColor: firstTime ? "#E35E96" : "#FFFFFF",
-                color: firstTime ? "white" : "default",
+                backgroundColor: noProfilePic ? "#E35E96" : "#FFFFFF",
+                color: noProfilePic ? "white" : "default",
               }}
               onClick={() => {
-                if (firstTime) {
-                  setEditing(true);
-                }
                 setEditImage(true);
               }}
             >
-              {student.imageUrl ===
-              "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
-                ? "Add Image"
-                : "Edit Image"}
+              {noProfilePic ? "Add Image" : "Edit Image"}
             </button>
           )}
 
-          {student.imageUrl ===
-            "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" &&
-            editing && (
-              <p
-                style={{
-                  width: "100%",
-                  fontSize: 14,
-                  marginTop: 0,
-                  fontWeight: 700,
-                  color: "#E35E96",
-                }}
-              >
-                Please add a profile image
-              </p>
-            )}
+          {noProfilePic && editing && (
+            <p
+              style={{
+                width: "100%",
+                fontSize: 14,
+                marginTop: 0,
+                fontWeight: 700,
+                color: "#E35E96",
+              }}
+            >
+              Please add a profile image
+            </p>
+          )}
           {editing && (
             <Button className="mb-3" onClick={() => setEditImage(true)}>
-              {student.imageUrl ===
-              "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
-                ? "Add Image"
-                : "Edit Image"}
+              {noProfilePic ? "Add Image" : "Edit Image"}
             </Button>
           )}
           <Dialog open={editImage}>
             <DialogTitle>Select Profile Picture</DialogTitle>
-            {student.imageUrl ===
-              "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media" && (
+            {noProfilePic && (
               <DialogContent>
                 Note: You will be able to view other people's profile pictures
                 once you've provided one yourself
@@ -406,53 +182,13 @@ function ProfileView(props) {
             <menu>
               <button
                 type="button"
-                class="btn btn-outline-primary btn-sm"
+                className="btn btn-outline-primary btn-sm"
                 style={{ width: "5rem" }}
                 onClick={() => {
-                  if (
-                    firstTime &&
-                    student.imageUrl ===
-                      "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
-                  ) {
-                    setSkipImage(true);
-                  } else setEditImage(false);
-                }}
-              >
-                {firstTime &&
-                student.imageUrl ===
-                  "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
-                  ? "Skip"
-                  : "Cancel"}
-              </button>
-            </menu>
-          </Dialog>
-          <Dialog open={skipImage}>
-            <DialogTitle>Acknowledgement</DialogTitle>{" "}
-            <DialogContent>
-              You will not be able to see other people's profile pictures until
-              you provide your own. You can always add a profile picture later.
-            </DialogContent>
-            <menu>
-              <button
-                type="button"
-                class="btn btn-outline-primary btn-sm"
-                style={{ width: "8rem" }}
-                onClick={() => {
-                  setSkipImage(false);
-                }}
-              >
-                Upload Picture
-              </button>{" "}
-              <button
-                type="button"
-                class="btn btn-outline-primary btn-sm"
-                style={{ width: "8rem" }}
-                onClick={() => {
-                  setSkipImage(false);
                   setEditImage(false);
                 }}
               >
-                Understood, skip
+                {noProfilePic ? "Skip" : "Cancel"}
               </button>
             </menu>
           </Dialog>
@@ -460,43 +196,42 @@ function ProfileView(props) {
         {!editing ? (
           <div>
             <div style={{ fontSize: "1.5em", fontStyle: "bold" }}>
-              {student.firstName + " " + student.lastName}
+              {user.firstName + " " + user.lastName}
             </div>
-            <div>{student.pronouns && `(${student.pronouns})`}</div>
+            <div>{user.pronouns && `(${user.pronouns})`}</div>
             <div className="card-text">
-              {student.location &&
-                student.location.state !== "" &&
-                student.location.city !== "" &&
-                `${student.location.city}, ${student.location.state}`}
-              {student.location &&
-                student.location.state !== "" &&
-                student.location.city === "" &&
-                `${student.location.state}, ${student.location.country}`}
-
-              {student.location &&
-                student.location.country !== "United States of America" &&
-                student.location.city !== "" &&
-                `${student.location.city}, ${student.location.country}`}
-              {student.location &&
-                student.location.country !== "United States of America" &&
-                student.location.city === "" &&
-                `${student.location.country}`}
+              {user.location &&
+                user.location.state !== "" &&
+                user.location.city !== "" &&
+                `${user.location.city}, ${user.location.state}`}
+              {user.location &&
+                user.location.state !== "" &&
+                user.location.city === "" &&
+                `${user.location.state}, ${user.location.country}`}
+              {user.location &&
+                user.location.country !== "United States of America" &&
+                user.location.city !== "" &&
+                `${user.location.city}, ${user.location.country}`}
+              {user.location &&
+                user.location.country !== "United States of America" &&
+                user.location.city === "" &&
+                `${user.location.country}`}
             </div>
-            <div>Class of {student.classYear}</div>
+            <div>Class of {user.classYear}</div>
             <div>
-              {student.majors
+              {user.majors
                 .filter(Boolean)
                 .map((major, i) =>
-                  i !== student.majors.filter(Boolean).length - 1
+                  i !== user.majors.filter(Boolean).length - 1
                     ? major + ", "
                     : major
                 )}
             </div>
-            <div className="profile-view-bio">{student.bio}</div>
+            <div className="profile-view-bio">{user.bio}</div>
           </div>
         ) : (
           <div style={{ textAlign: "left" }}>
-            <form class="form-floating mb-3" autoComplete="off">
+            <form className="form-floating mb-3" autoComplete="off">
               <h5>Basic Info </h5>
               <FloatingLabel
                 label={newProfile.firstName ? "First Name *" : "Can't be empty"}
@@ -504,7 +239,7 @@ function ProfileView(props) {
               >
                 <input
                   type="text"
-                  class={
+                  className={
                     !newProfile?.firstName
                       ? "form-control is-invalid"
                       : "form-control"
@@ -521,7 +256,7 @@ function ProfileView(props) {
               >
                 <input
                   type="text"
-                  class={
+                  className={
                     !newProfile?.lastName
                       ? "form-control is-invalid"
                       : "form-control"
@@ -587,8 +322,12 @@ function ProfileView(props) {
                   onChange={handleChange}
                   name="classYear"
                 >
-                  {classYears.map((year) => {
-                    return <option value={year}>{year}</option>;
+                  {classYears.map((year, i) => {
+                    return (
+                      <option key={i} value={year}>
+                        {year}
+                      </option>
+                    );
                   })}
                 </Form.Select>
               </FloatingLabel>
@@ -602,7 +341,7 @@ function ProfileView(props) {
                 <Form.Control
                   list="majors"
                   name="majors"
-                  class={
+                  className={
                     newProfile?.majors.filter(Boolean).length < 1
                       ? "form-control is-invalid"
                       : "form-control"
@@ -651,20 +390,19 @@ function ProfileView(props) {
   const renderCourses = () => {
     if (!editing) {
       if (
-        student.courses.map((course) => course.code).filter(Boolean).length ===
-        0
+        user.courses.map((course) => course.code).filter(Boolean).length === 0
       ) {
         return (
           <Col sm={3} className="mb-3">
             <button
               type="button"
-              class={
-                firstTime ? "btn btn-sm" : "btn btn-outline-primary btn-sm"
+              className={
+                noProfilePic ? "btn btn-sm" : "btn btn-outline-primary btn-sm"
               }
               style={{
                 width: "5rem",
-                backgroundColor: firstTime ? "#E35E96" : "#FFFFFF",
-                color: firstTime ? "white" : "default",
+                backgroundColor: noProfilePic ? "#E35E96" : "#FFFFFF",
+                color: noProfilePic ? "white" : "default",
               }}
               onClick={() => setEditing(true)}
             >
@@ -673,10 +411,10 @@ function ProfileView(props) {
           </Col>
         );
       } else
-        return student.courses.map((c, i) => {
+        return user.courses.map((c, i) => {
           if (!c.name) return null;
           return (
-            <Col sm={3} className="mb-3">
+            <Col key={i} sm={3} className="mb-3">
               <div className="profile-view-courses">
                 <div>{c.code}</div>
                 <div style={{ fontSize: "10px" }}>{c.name}</div>
@@ -688,14 +426,14 @@ function ProfileView(props) {
 
     const range = [...Array(5).keys()];
 
-    return range.map((i) => {
+    return range.map((i, idx) => {
       let value = "";
-      if (i < student.courses.length) {
+      if (i < user.courses.length) {
         value = newProfile?.courses[i].code;
       }
 
       return (
-        <Col sm={6}>
+        <Col key={idx} sm={6}>
           <FloatingLabel label={`Course ${i + 1}`}>
             <Form.Control
               list="courseCodes"
@@ -723,11 +461,7 @@ function ProfileView(props) {
       "Physical Activity and Wellness",
       "General Hobbies",
     ];
-    const interests = [
-      student.interests1,
-      student.interests2,
-      student.interests3,
-    ];
+    const interests = [user.interests1, user.interests2, user.interests3];
 
     const editInterestsButton = (
       <div className="mt-3">
@@ -743,7 +477,7 @@ function ProfileView(props) {
           {categories.map((cat, i) => {
             const list = interests[i];
             return (
-              <Col sm={4} className="">
+              <Col sm={4} className="" key={i}>
                 <div className="interest-box">
                   <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
                   {list && (
@@ -788,17 +522,17 @@ function ProfileView(props) {
       "Pick-up Sports",
       "Instruments",
     ];
-    const groups = [profile.groups[0], profile.groups[1], profile.groups[2]];
-    const varsitySports = [profile.varsitySports[0], profile.varsitySports[1]];
+    const groups = [user.groups[0], user.groups[1], user.groups[2]];
+    const varsitySports = [user.varsitySports[0], user.varsitySports[1]];
     const pickUpSports = [
-      profile.pickUpSports[0],
-      profile.pickUpSports[1],
-      profile.pickUpSports[2],
+      user.pickUpSports[0],
+      user.pickUpSports[1],
+      user.pickUpSports[2],
     ];
     const instruments = [
-      profile.instruments[0],
-      profile.instruments[1],
-      profile.instruments[2],
+      user.instruments[0],
+      user.instruments[1],
+      user.instruments[2],
     ];
 
     const allEcs = [groups, varsitySports, pickUpSports, instruments];
@@ -814,7 +548,7 @@ function ProfileView(props) {
 
       if (!editing) {
         return (
-          <Col sm={6} className="mb-3">
+          <Col sm={6} className="mb-3" key={i}>
             <div className="interest-box">
               {cat !== "Groups" && (
                 <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
@@ -847,8 +581,8 @@ function ProfileView(props) {
 
               {list.filter(Boolean).length > 0 && (
                 <ul>
-                  {list.map((l) => {
-                    return l ? <li>{l}</li> : null;
+                  {list.map((l, idx) => {
+                    return l ? <li key={idx}>{l}</li> : null;
                   })}
                 </ul>
               )}
@@ -856,15 +590,15 @@ function ProfileView(props) {
                 {list.filter(Boolean).length === 0 && (
                   <button
                     type="button"
-                    class={
-                      firstTime
+                    className={
+                      noProfilePic
                         ? "btn btn-sm"
                         : "btn btn-outline-primary btn-sm"
                     }
                     style={{
                       width: "5rem",
-                      backgroundColor: firstTime ? "#E35E96" : "#FFFFFF",
-                      color: firstTime ? "white" : "default",
+                      backgroundColor: noProfilePic ? "#E35E96" : "#FFFFFF",
+                      color: noProfilePic ? "white" : "default",
                     }}
                     onClick={() => setEditing(true)}
                   >
@@ -880,7 +614,7 @@ function ProfileView(props) {
       return (
         <Col sm={6}>
           {list.map((l, j) => (
-            <FloatingLabel label={`${cat} ${j + 1}`}>
+            <FloatingLabel label={`${cat} ${j + 1}`} key={j}>
               {cat === "Varsity Sports" && (
                 <Form.Select
                   aria-label="Select varsity sport"
@@ -889,8 +623,12 @@ function ProfileView(props) {
                   onChange={(e) => handleArrChange(e, j)}
                   name="varsitySports"
                 >
-                  {varsitySportsList.map((sport) => {
-                    return <option value={sport}>{sport}</option>;
+                  {varsitySportsList.map((sport, idx) => {
+                    return (
+                      <option key={idx} value={sport}>
+                        {sport}
+                      </option>
+                    );
                   })}
                 </Form.Select>
               )}
@@ -902,8 +640,12 @@ function ProfileView(props) {
                   onChange={(e) => handleArrChange(e, j)}
                   name="pickUpSports"
                 >
-                  {pickUpSportsList.map((sport) => {
-                    return <option value={sport}>{sport}</option>;
+                  {pickUpSportsList.map((sport, idx) => {
+                    return (
+                      <option key={idx} value={sport}>
+                        {sport}
+                      </option>
+                    );
                   })}
                 </Form.Select>
               )}
@@ -915,15 +657,19 @@ function ProfileView(props) {
                   onChange={(e) => handleArrChange(e, j)}
                   name="instruments"
                 >
-                  {instrumentsList.map((instrument) => {
-                    return <option value={instrument}>{instrument}</option>;
+                  {instrumentsList.map((instrument, idx) => {
+                    return (
+                      <option key={idx} value={instrument}>
+                        {instrument}
+                      </option>
+                    );
                   })}
                 </Form.Select>
               )}
               {cat === "Groups" && (
                 <Form.Control
                   className={j === 2 ? "mb-3" : ""}
-                  value={newProfile[`${allEcsStr[i]}`][j]}
+                  value={newProfile?.groups[j]}
                   type="text"
                   autoComplete="off"
                   onChange={(e) => {
@@ -956,23 +702,13 @@ function ProfileView(props) {
         >
           {!editing ? (
             <React.Fragment>
-              {firstTime && (
-                <h4
-                  style={{ fontWeight: 600, color: "#E35E96" }}
-                  align="center"
-                >
-                  Last step! Click any pink button to customize your profile.
-                </h4>
-              )}
               <button
                 type="button"
-                class={
-                  firstTime ? "btn btn-sm" : "btn btn-outline-primary btn-sm"
-                }
+                className={"btn btn-outline-primary btn-sm"}
                 style={{
                   width: "5rem",
-                  backgroundColor: firstTime ? "#E35E96" : "#FFFFFF",
-                  color: firstTime ? "white" : "default",
+                  backgroundColor: "#FFFFFF",
+                  color: "default",
                 }}
                 onClick={() => setEditing(true)}
               >
@@ -981,50 +717,27 @@ function ProfileView(props) {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              {firstTime && (
-                <h4
-                  style={{ fontWeight: 600, color: "#E35E96" }}
-                  align="center"
-                >
-                  Once you are done customizing your profile click "Save
-                  Changes" to complete the onboarding process!
-                </h4>
-              )}
               <button
                 type="button"
-                class="btn btn-outline-primary btn-sm"
+                className="btn btn-outline-primary btn-sm"
                 style={{ width: "8rem" }}
                 onClick={() => {
                   setEditing(false);
                   setEditingInterests(false);
-                  setNewProfile(profile);
+                  setNewProfile(user);
                 }}
               >
                 Cancel
               </button>
               <button
                 type="button"
-                title={
-                  student.imageUrl ===
-                  "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
-                    ? "Add an image before saving"
-                    : ""
-                }
-                class="btn btn-outline-primary btn-sm"
+                title={noProfilePic ? "Add an image before saving" : ""}
+                className="btn btn-outline-primary btn-sm"
                 style={{ width: "8rem" }}
                 onClick={() => {
                   setEditing(false);
                   setEditingInterests(false);
                   editProfile();
-                  if (firstTime) {
-                    handleCloseOnBoard();
-                    axios
-                      .get(`/newFeatured/${emailId}`)
-                      .then(() => {
-                        navigate("/");
-                      })
-                      .catch((err) => console.log(err));
-                  }
                 }}
                 disabled={!validProfile(newProfile)}
               >
@@ -1055,7 +768,7 @@ function ProfileView(props) {
     );
   };
 
-  if (!profile) return null;
+  if (!user) return null;
   return renderProfile();
 }
 
