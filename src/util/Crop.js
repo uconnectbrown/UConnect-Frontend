@@ -2,8 +2,6 @@ import React from "react";
 import Cropper from "react-easy-crop";
 import Slider from "@material-ui/core/Slider";
 import { Button } from "react-bootstrap";
-import axios from "axios";
-import { auth } from "../firebase";
 
 /**
  * This function was adapted from the one in the ReadMe of https://github.com/DominicTobias/react-image-crop
@@ -78,17 +76,27 @@ function Crop(props) {
     let url;
     canvas.toBlob(
       (blob) => {
-        const formData = new FormData();
-        formData.append("image", blob, "image.jpg");
-        axios
-          .post(`/image/${auth.currentUser.email}`, formData)
-          .then((data) => {
-            return (url = data.data.imageUrl);
+        // Upload image to Imgur API
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Client-ID {{clientId}}");
+
+        var formData = new FormData();
+        formData.append("image", blob);
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: formData,
+          redirect: "follow",
+        };
+
+        fetch("https://api.imgur.com/3/image", requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            url = result.data.link;
+            console.log(result);
           })
-          .then((url) => {
-            props.update(url);
-          })
-          .catch((err) => console.log(err));
+          .catch((error) => console.error(error));
       },
       "image/jpeg",
       0.66

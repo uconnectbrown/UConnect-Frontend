@@ -27,10 +27,6 @@ const searchTypes = [
 
 const classYears = [
   {
-    value: "2021.5",
-    label: "2021.5",
-  },
-  {
     value: "2022",
     label: "2022",
   },
@@ -57,6 +53,10 @@ const classYears = [
   {
     value: "2025",
     label: "2025",
+  },
+  {
+    value: "2025.5",
+    label: "2025.5",
   },
 ];
 

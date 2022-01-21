@@ -41,7 +41,6 @@ function ProfileBuild(props) {
   let navigate = useNavigate();
   const [userData, setUserData] = useState(emptyProfile);
   const classYears = [
-    "2021.5",
     "2022",
     "2022.5",
     "2023",
@@ -49,6 +48,7 @@ function ProfileBuild(props) {
     "2024",
     "2024.5",
     "2025",
+    "2025.5",
   ];
   const { classes } = props;
   const [loading, setLoading] = useState(false);

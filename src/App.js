@@ -22,7 +22,7 @@ import SideBar from "./components/SideBar";
 
 // Styling
 import { Container, Row, Col } from "react-bootstrap";
-import { getUser, GoogleOAuthComponent } from "./util/authUtil";
+import { getMyUser, getUser, GoogleOAuthComponent } from "./util/authUtil";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 
@@ -48,8 +48,9 @@ function App() {
       setUser(null);
       return;
     }
-    const userRes = await getUser(username);
+    const userRes = await getMyUser();
     setUser(userRes);
+    return userRes;
   }, [username]);
 
   useEffect(() => {
@@ -159,7 +160,13 @@ function App() {
                     <Route
                       exact
                       path="/profile"
-                      element={<ProfileView reset={reset} />}
+                      element={
+                        <ProfileView
+                          reset={reset}
+                          user={user}
+                          fetchUser={fetchUser}
+                        />
+                      }
                     />
                     <Route
                       path="/courses/:codeParam"
