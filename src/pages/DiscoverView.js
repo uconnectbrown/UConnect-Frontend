@@ -21,21 +21,21 @@ import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
+import { fetchFeatured } from "../util/discoverUtil.js";
 
 function DiscoverView(props) {
-  const [emailId, setEmailId] = useState(null);
-  const [email, setEmail] = useState(null);
+  const { user } = props;
+
   const [featured, setFeatured] = useState([]);
   const [students, setStudents] = useState(null);
+
   const [query, setQuery] = useState("");
-  const [studentId, setStudentId] = useState("");
-  const [, setStudentInfo] = useState([]);
-  const [, setMessageOpen] = useState(false);
   const [searching, setSearching] = useState(false);
   const [searchType, setSearchType] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [onboardPage, setOnboardPage] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  const [studentId, setStudentId] = useState("");
 
   const params = [
     "",
@@ -47,25 +47,9 @@ function DiscoverView(props) {
   ];
 
   useEffect(() => {
-    if (auth.currentUser) {
-      setEmailId(auth.currentUser.email.split("@")[0]);
-      setEmail(auth.currentUser.email);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (emailId) {
-      getFeatured();
-      disableSearchTypes();
-    }
-  }, [emailId]);
-
-  const handleNextPage = () => {
-    setOnboardPage(onboardPage + 1);
-  };
-  const handlePreviousPage = () => {
-    setOnboardPage(onboardPage - 1);
-  };
+    getFeatured();
+    disableSearchTypes();
+  }, [user]);
 
   const disableSearchTypes = () => {
     let optionBools = [false, false, false, true, true, true];
@@ -93,12 +77,9 @@ function DiscoverView(props) {
   };
 
   const getFeatured = () => {
-    axios
-      .get(`/featured/${emailId}`)
-      .then((res) => {
-        setFeatured(res.data.featured);
-      })
-      .catch((err) => console.log(err));
+    fetchFeatured().then((f) => {
+      if (f) setFeatured(f);
+    });
   };
 
   const searchField = (options, param) => {
@@ -418,114 +399,8 @@ function DiscoverView(props) {
     );
   };
 
-  // const renderOnboard = () => {
-  //   return (
-  //     <Modal show={false} dialogClassName="student-modal">
-  //       <Modal.Body>
-  //         {onboardPage === 0 && (
-  //           <div align="center">
-  //             <img
-  //               alt="UConnect Logo"
-  //               style={{
-  //                 width: "auto",
-  //                 height: "auto",
-  //                 maxHeight: "200px",
-  //                 marginBottom: "20px",
-  //               }}
-  //               src={Logo}
-  //               className="topbar-logo"
-  //             />
-  //             <h3>Welcome to UConnect!</h3>
-  //             <p>
-  //               A platform designed to help you form meaningful connections with
-  //               other Brown students. The following slides will walk you through
-  //               the site's core functionality.
-  //             </p>
-  //           </div>
-  //         )}
-  //         {onboardPage === 1 && (
-  //           <div align="center">
-  //             <h3>Your Profile (1/5)</h3>
-  //             <p>
-  //               Customize your profile with interests, extracurriculars, and
-  //               courses.
-  //             </p>
-  //             <hr />
-  //             <img alt="profile" src={ProfileOB} className="onboarding" />
-  //           </div>
-  //         )}
-  //         {onboardPage === 2 && (
-  //           <div align="center">
-  //             <h3>Search and Filter (2/5)</h3>
-  //             <p>
-  //               Search for Brown students by name, concentration, or
-  //               extracurriculars.
-  //             </p>
-  //             <hr />
-  //             <ReactPlayer
-  //               className="video"
-  //               url={"https://www.youtube.com/watch?v=KPVWQ1nq-VI"}
-  //               playing={true}
-  //               loop={true}
-  //             />
-  //           </div>
-  //         )}
-  //         {onboardPage === 3 && (
-  //           <div align="center">
-  //             <h3>Requests and Connections (3/5)</h3>
-  //             <p>
-  //               Request to connect with other users. You can send up to 10
-  //               requests at any given time and connected users can message each
-  //               other.
-  //             </p>
-  //             <hr />
-  //             <img
-  //               alt="otherProfile"
-  //               src={OtherProfileOB}
-  //               className="onboarding"
-  //             />
-  //           </div>
-  //         )}
-  //         {onboardPage === 4 && (
-  //           <div align="center">
-  //             <h3>Courses (4/5)</h3>
-  //             <p>Connect with classmates.</p>
-  //             <hr />
-  //             <img alt="courses" src={CoursesOB} className="onboarding" />
-  //           </div>
-  //         )}
-  //         {onboardPage === 5 && (
-  //           <div align="center">
-  //             <h3>Featured Profiles (5/5)</h3>
-  //             <p>
-  //               Not sure who you're looking for? Every Thursday, you will
-  //               receive a new set of featured profiles that are recommended
-  //               based on the info you have provided in your profile.
-  //             </p>
-  //             <hr />
-  //             <img alt="featured" src={FeaturedOB} className="onboarding" />
-  //           </div>
-  //         )}
-  //         <div align="right">
-  //           {onboardPage > 0 && (
-  //             <button onClick={handlePreviousPage}>Back</button>
-  //           )}
-  //           {onboardPage < 5 && <button onClick={handleNextPage}>Next</button>}
-  //           {onboardPage === 5 && (
-  //             <Link to="/profile">
-  //               <button>Done</button>
-  //             </Link>
-  //           )}
-  //           <br />
-  //         </div>
-  //       </Modal.Body>
-  //     </Modal>
-  //   );
-  // };
-
   return (
     <Container fluid className="uconnect-home" style={{ marginTop: "1rem" }}>
-      {/* {renderOnboard()} */}
       <Modal
         keyboard
         show={studentId}
