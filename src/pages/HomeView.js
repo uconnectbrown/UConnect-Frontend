@@ -2,19 +2,19 @@ import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import PostCard from "../components/PostCard";
-import { getPosts } from "../util/postingBoardUtil";
+import EventCard from "../components/EventCard";
+import { getEvents } from "../util/eventBoardUtil";
 import "./HomeView.css";
 
 export default function HomeView() {
-  const [posts, setPosts] = React.useState([]);
+  const [events, setEvents] = React.useState([]);
 
   React.useEffect(() => {
-    async function fetchPosts() {
-      const postsRes = await getPosts();
-      setPosts(postsRes || []);
+    async function fetchEvents() {
+      const eventsRes = await getEvents();
+      setEvents(eventsRes || []);
     }
-    fetchPosts();
+    fetchEvents();
   }, []);
 
   return (
@@ -24,8 +24,8 @@ export default function HomeView() {
           <h1>Home</h1>
         </Col>
         <Col sm={2}>
-          <Button as={Link} variant="primary" to="/post-create">
-            Create Post
+          <Button as={Link} variant="primary" to="/event-create">
+            Create Event
           </Button>
           <Button as={Link} variant="danger" to="/moderator">
             Moderator
@@ -35,8 +35,8 @@ export default function HomeView() {
       <div className="p-3 mb-4 rounded-3">
         <Container fluid py={5} className="FeedContainer">
           <Row sm={1} lg={2} xl={3}>
-            {posts.map((post) => (
-              <PostCard key={post.postNumber} post={post} />
+            {events.map((event) => (
+              <EventCard key={event.eventNumber} event={event} />
             ))}
           </Row>
         </Container>

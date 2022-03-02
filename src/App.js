@@ -6,14 +6,13 @@ import axios from "axios";
 
 // Pages
 import Discover from "./pages/DiscoverView";
-import Connections from "./pages/ConnectionsView";
 import ProfileView from "./pages/ProfileView";
 import ProfileBuild from "./pages/ProfileBuild";
 import CourseView from "./pages/CourseView";
 import Welcome from "./pages/WelcomeView";
 import HomeView from "./pages/HomeView";
-import PostView from "./pages/PostView";
-import CreatePostView from "./pages/CreatePostView";
+import EventView from "./pages/EventView";
+import CreateEventView from "./pages/CreateEventView";
 import ModView from "./pages/ModView";
 
 // Components
@@ -22,7 +21,7 @@ import SideBar from "./components/SideBar";
 
 // Styling
 import { Container, Row, Col } from "react-bootstrap";
-import { getMyUser, getUser, GoogleOAuthComponent } from "./util/authUtil";
+import { getMyUser, GoogleOAuthComponent } from "./util/authUtil";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 
@@ -126,20 +125,22 @@ function App() {
               <Routes>
                 <Route exact path="/" element={<HomeView />} />
                 <Route exact path="/home" element={<HomeView />} />
-                <Route path="/post/:postId" element={<PostView />} />
+                <Route path="/event/:eventId" element={<EventView />} />
+                <Route path="/event/:eventId/comment" element={<EventView />} />
                 {user && user.isProfileCompleted ? (
                   <>
                     <Route exact path="/moderator" element={<ModView />} />
                     <Route
                       exact
-                      path="/post-create"
-                      element={<CreatePostView />}
+                      path="/event-create"
+                      element={<CreateEventView />}
                     />
                     <Route
                       exact
                       path="/discover"
                       element={
                         <Discover
+                          user={user}
                           requests={user.requests}
                           outgoing={user.sentRequests}
                           imageUrl={user.profilePicture}

@@ -4,37 +4,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment, faShare } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function PostCard(props) {
+export default function EventCard({ event }) {
   const navigate = useNavigate();
 
   return (
     <Card
       className="PostCard"
       onClick={() => {
-        navigate(`/post/${props.post.postNumber}`);
+        navigate(`/event/${event.eventId}`);
       }}
     >
-      <Card.Title>Post {props.post.postNumber}</Card.Title>
+      <Card.Title>{event.eventTitle}</Card.Title>
       <Card.Body style={{ textAlign: "center" }}>
-        <Card.Text>{props.post.postText}</Card.Text>
-        <span onClick={(event) => event.stopPropagation()}>
+        <Card.Text>{event.eventDescription}</Card.Text>
+        <Card.Text>{event.eventLocation}</Card.Text>
+        <Card.Text>{new Date(event.eventDate).toLocaleString()}</Card.Text>
+        <span onClick={(e) => e.stopPropagation()}>
           <Button variant="secondary" size="sm">
-            <FontAwesomeIcon icon={faHeart} /> {props.post.likeCount}
+            <FontAwesomeIcon icon={faHeart} /> {event.likeCount}
           </Button>{" "}
           <Button
             variant="secondary"
             size="sm"
             as={Link}
-            to={`/post/${props.post.postNumber}/comment`}
+            to={`/event/${event.eventId}/comment`}
           >
-            <FontAwesomeIcon icon={faComment} /> {props.post.commentCount}
+            <FontAwesomeIcon icon={faComment} /> {event.commentCount}
           </Button>{" "}
           <Button
             variant="secondary"
             size="sm"
             onClick={() =>
               navigator.clipboard.writeText(
-                `https://uconnectbrown.com/post/${props.post.postNumber}`
+                `https://uconnectbrown.com/event/${event.eventId}`
               )
             }
           >
@@ -44,20 +46,19 @@ export default function PostCard(props) {
       </Card.Body>
       <Card.Footer className="PostFooter">
         <Row>
-          <Col className="text-start">
+          <Col className="text-start" sm={9}>
             <Image
-              src={props.post.author.avatar}
+              src={event.author.avatar}
               alt="avatar"
               roundedCircle
               width={32}
               height={32}
             />
-            <b> {props.post.author.displayName}</b>
+            <b> {event.author.displayName}</b> on behalf of{" "}
+            <b>{event.hostedBy}</b>
           </Col>
-          <Col className="text-end">
-            <small className="text-muted">
-              {props.post.timeAgoPosted} mins ago
-            </small>
+          <Col className="text-end" sm={3}>
+            <small className="text-muted">{event.timeAgoPosted} mins ago</small>
           </Col>
         </Row>
       </Card.Footer>

@@ -5,10 +5,11 @@ export default function CreatePostView() {
   const [posterMode, setPosterMode] = React.useState(true);
   const [poster, setPoster] = React.useState("Me");
   const [postText, setPostText] = React.useState("");
+  // TODO: Renovate this to include all the new event fields
 
   return (
     <div className="CreatePostView">
-      <h1>Create Post</h1>
+      <h1>Create Event</h1>
       <div class="p-3 mb-4 bg-light rounded-3">
         <Container fluid py={5} className="PostFormContainer">
           <Form>

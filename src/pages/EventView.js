@@ -3,36 +3,33 @@ import { Button, Card, Container, Form } from "react-bootstrap";
 import { useParams, useLocation } from "react-router-dom";
 import CommentCard from "../components/CommentCard";
 
-import PostCard from "../components/PostCard";
-import "./PostView.css";
-import { getPost } from "../util/postingBoardUtil";
+import EventCard from "../components/EventCard";
+import "./EventView.css";
+import { getEvent } from "../util/eventBoardUtil";
 
-const ipsum =
-  "Bacon ipsum dolor amet burgdoggen frankfurter corned beef pork swine prosciutto pig doner chicken alcatra meatball chislic leberkas fatback. T-bone strip steak alcatra tenderloin pork chop kielbasa. Pork ball tip buffalo hamburger. Shankle porchetta venison sirloin flank. Prosciutto venison pastrami spare ribs ground round tenderloin. Jerky short ribs rump pastrami ribeye.";
-
-export default function PostView() {
-  const { postId } = useParams();
+export default function EventView() {
+  const { eventId } = useParams();
   const location = useLocation();
   const isAuthoring = location.pathname.includes("comment");
 
-  const [post, setPost] = React.useState();
+  const [event, setEvent] = React.useState();
 
   React.useEffect(() => {
-    async function fetchPost() {
-      const postRes = await getPost(postId);
-      setPost(postRes);
+    async function fetchEvent() {
+      const eventRes = await getEvent(eventId);
+      setEvent(eventRes);
     }
-    fetchPost();
-  }, [postId]);
+    fetchEvent();
+  }, [eventId]);
 
-  if (!post) {
+  if (!event) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="PostView">
       <Container className="PostContainer">
-        <PostCard post={post} />
+        <EventCard event={event} />
         <div className="PostComments">
           <h3>Comments</h3>
           {isAuthoring && (
@@ -57,7 +54,7 @@ export default function PostView() {
               <hr />
             </>
           )}
-          {post.comments.map((comment) => (
+          {event.comments.map((comment) => (
             <CommentCard key={comment.commentNumber} comment={comment} />
           ))}
         </div>
