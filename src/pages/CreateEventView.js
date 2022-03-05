@@ -41,16 +41,54 @@ export default function CreatePostView() {
                 disabled={posterMode}
               />
             </Form.Group>
-            <Form.Group controlId="postText">
-              <Form.Label>Post Text</Form.Label>
+            <Form.Group controlId="title">
+              <Form.Label>Event Title</Form.Label>
+              <Form.Control
+                type="text"
+                rows="3"
+                placeholder="Enter event title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="description">
+              <Form.Label>Event Description</Form.Label>
               <Form.Control
                 as="textarea"
                 rows="3"
-                placeholder="Enter post body"
+                placeholder="Enter event description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Form.Group>
+            <Form.Group controlId="location">
+              <Form.Label>Event Location</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter event location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="date">
+              <Form.Label>Event Date</Form.Label>
+              <Form.Control
+                type="date"
+                placeholder="Enter event date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="host">
+              <Form.Label>Host</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter event host"
+                value={host}
+                onChange={(e) => setHost(e.target.value)}
+              />
+            </Form.Group>
+            <br />
             <Button variant="primary" type="submit">
               Submit
             </Button>
