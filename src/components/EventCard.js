@@ -11,32 +11,32 @@ export default function EventCard({ event }) {
     <Card
       className="PostCard"
       onClick={() => {
-        navigate(`/event/${event.eventId}`);
+        navigate(`/event/${event.index}`);
       }}
     >
-      <Card.Title>{event.eventTitle}</Card.Title>
+      <Card.Title>{event.title}</Card.Title>
       <Card.Body style={{ textAlign: "center" }}>
-        <Card.Text>{event.eventDescription}</Card.Text>
-        <Card.Text>{event.eventLocation}</Card.Text>
+        <Card.Text>{event.description}</Card.Text>
+        <Card.Text>{event.location}</Card.Text>
         <Card.Text>{new Date(event.eventDate).toLocaleString()}</Card.Text>
         <span onClick={(e) => e.stopPropagation()}>
           <Button variant="secondary" size="sm">
-            <FontAwesomeIcon icon={faHeart} /> {event.likeCount}
+            <FontAwesomeIcon icon={faHeart} /> {event.likes}
           </Button>{" "}
           <Button
             variant="secondary"
             size="sm"
             as={Link}
-            to={`/event/${event.eventId}/comment`}
+            to={`/event/${event.index}/comment`}
           >
-            <FontAwesomeIcon icon={faComment} /> {event.commentCount}
+            <FontAwesomeIcon icon={faComment} /> {event.comments.length}
           </Button>{" "}
           <Button
             variant="secondary"
             size="sm"
             onClick={() =>
               navigator.clipboard.writeText(
-                `https://uconnectbrown.com/event/${event.eventId}`
+                `https://uconnectbrown.com/event/${event.index}`
               )
             }
           >
@@ -48,17 +48,22 @@ export default function EventCard({ event }) {
         <Row>
           <Col className="text-start" sm={9}>
             <Image
-              src={event.author.avatar}
+              src={event.authorInfo.imageUrl}
               alt="avatar"
               roundedCircle
               width={32}
               height={32}
             />
-            <b> {event.author.displayName}</b> on behalf of{" "}
-            <b>{event.hostedBy}</b>
+            <b>
+              {" "}
+              {event.authorInfo.firstName} {event.authorInfo.lastName}
+            </b>{" "}
+            on behalf of <b>{event.host}</b>
           </Col>
           <Col className="text-end" sm={3}>
-            <small className="text-muted">{event.timeAgoPosted} mins ago</small>
+            <small className="text-muted">
+              {Math.floor((Date.now() - event.timestamp) / 60_000)} mins ago
+            </small>
           </Col>
         </Row>
       </Card.Footer>

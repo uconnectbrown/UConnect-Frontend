@@ -6,44 +6,10 @@ const ipsum =
 // Input: integer event id number
 // Output: event object
 export async function getEvent(eventNumber) {
-  return {
-    eventId: eventNumber,
-    eventTitle: "UConnect Launch Party",
-    eventDescription: ipsum,
-    eventDate: new Date(),
-    eventLocation: "Petteruti Lounge",
-    likeCount: Math.floor(Math.random() * 100),
-    commentCount: Math.floor(Math.random() * 100),
-    timeAgoPosted: Math.floor(Math.random() * 100),
-    author: {
-      displayName: "John Doe",
-      avatar: "https://placekitten.com/g/64/64",
-    },
-    hostedBy: "UConnect Team",
-    comments: [
-      {
-        author: {
-          displayName: "John Doe",
-          avatar: "https://placekitten.com/g/62/62",
-        },
-        timestamp: "1 hour ago",
-        comment: "This is a comment",
-        commentNumber: 1,
-      },
-      {
-        author: {
-          displayName: "Bob Smith",
-          avatar: "https://placekitten.com/g/60/60",
-        },
-        timestamp: "2 hour ago",
-        comment: "This is another comment!!!",
-        commentNumber: 2,
-      },
-    ],
-  };
-
   try {
-    const response = await axios.get(`/api/events/${eventNumber}`);
+    const response = await axios.get(
+      `/v1/event-board/anonymous/event/get?index=${eventNumber}`
+    );
     return response.data;
   } catch (error) {
     console.error(error);
@@ -52,45 +18,15 @@ export async function getEvent(eventNumber) {
 
 // Output: array of event objects
 export async function getEvents() {
-  return Array.from({ length: 10 }).map((_, idx) => ({
-    eventId: idx,
-    eventTitle: "UConnect Launch Party",
-    eventDescription: ipsum,
-    eventDate: new Date(),
-    eventLocation: "Petteruti Lounge",
-    likeCount: Math.floor(Math.random() * 100),
-    commentCount: Math.floor(Math.random() * 100),
-    timeAgoPosted: Math.floor(Math.random() * 100),
-    author: {
-      displayName: "John Doe",
-      avatar: "https://placekitten.com/g/64/64",
-    },
-    hostedBy: "UConnect Team",
-    comments: [
-      {
-        author: {
-          displayName: "John Doe",
-          avatar: "https://placekitten.com/g/62/62",
-        },
-        timestamp: "1 hour ago",
-        comment: "This is a comment",
-        commentNumber: 1,
-      },
-      {
-        author: {
-          displayName: "Bob Smith",
-          avatar: "https://placekitten.com/g/60/60",
-        },
-        timestamp: "2 hour ago",
-        comment: "This is another comment!!!",
-        commentNumber: 2,
-      },
-    ],
-  }));
-
   try {
-    const response = await axios.get(`/api/events`);
-    return response.data;
+    const response = await axios.get(
+      "/v1/event-board/anonymous/event/get-latest",
+      {
+        startIndex: -1,
+        eventCount: 10,
+      }
+    );
+    return response.data.events;
   } catch (error) {
     console.error(error);
   }
@@ -132,13 +68,20 @@ export async function likeEvent(eventId, like) {
   }
 }
 
-// Input: integer event id number, string comment text
-// Output: event object
-export async function postComment(eventId, comment) {
+// Input: string parent (either an event or a comment)'s id, string comment text, string author name, boolean if comment is anon
+// Output: response body
+export async function postComment(parentId, content, author, isAnonymous) {
+  const identity = isAnonymous ? "anonymous" : "verified";
   try {
-    const response = await axios.post(`/api/events/${eventId}/comment`, {
-      comment,
-    });
+    const response = await axios.post(
+      `/v1/event-board/${identity}/comment/new`,
+      {
+        parentId: parentId,
+        author: author,
+        content: content,
+        anonymous: isAnonymous,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error(error);
@@ -152,15 +95,19 @@ export async function postEvent(
   eventDescription,
   eventDate,
   eventLocation,
-  hostedBy
+  hostedBy,
+  isAnonymous,
+  author
 ) {
   try {
-    const response = await axios.post(`/api/events`, {
-      eventTitle,
-      eventDescription,
-      eventDate,
-      eventLocation,
-      hostedBy,
+    const response = await axios.post("/v1/event-board/verified/event/new", {
+      title: eventTitle,
+      author: author.firstName,
+      host: hostedBy,
+      description: eventDescription,
+      date: eventDate,
+      location: eventLocation,
+      isAnonymous,
     });
     return response.data;
   } catch (error) {
