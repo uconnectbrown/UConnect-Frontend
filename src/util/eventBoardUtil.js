@@ -19,7 +19,7 @@ export async function getEvent(eventNumber) {
 // Output: array of event objects
 export async function getEvents() {
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       "/v1/event-board/anonymous/event/get-latest",
       {
         startIndex: -1,
@@ -38,7 +38,7 @@ export async function getModFeedEvents() {
     index: idx,
     title: "UConnect Launch Party",
     description: ipsum,
-    eventDate: new Date(),
+    startTime: new Date(),
     location: "Petteruti Lounge",
     host: "UConnect Team",
     authorInfo: {
@@ -94,19 +94,20 @@ export async function postComment(parentId, content, author, isAnonymous) {
 export async function postEvent(
   eventTitle,
   eventDescription,
-  eventDate,
+  startTime,
   eventLocation,
   hostedBy,
   isAnonymous,
   author
 ) {
+  console.log(author);
   try {
     const response = await axios.post("/v1/event-board/verified/event/new", {
       title: eventTitle,
-      author: author.firstName,
+      author: author,
       host: hostedBy,
       description: eventDescription,
-      date: eventDate,
+      startTime,
       location: eventLocation,
       isAnonymous,
     });

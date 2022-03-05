@@ -29,7 +29,7 @@ export default function EventView(props) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    postComment(event.id, commentText, props.user.firstName, false);
+    postComment(event.id, commentText, props.user.username, false);
   };
 
   return (

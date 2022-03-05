@@ -50,7 +50,7 @@ function ProfileBuild(props) {
     "2025",
     "2025.5",
   ];
-  const { classes } = props;
+  const { classes, user } = props;
   const [loading, setLoading] = useState(false);
 
   const handleInterests = (i1, i2, i3) => {
@@ -69,8 +69,11 @@ function ProfileBuild(props) {
       // Basic Info
       firstName: userData.firstName.trim(),
       lastName: userData.lastName.trim(),
+      username: user.username,
       classYear: userData.classYear,
-      majors: [userData.major1, userData.major2],
+      majors: userData.major2
+        ? [(userData.major1, userData.major2)]
+        : [userData.major1],
       pronouns: userData.pronouns,
       location: {
         country: userData.country.trim(),

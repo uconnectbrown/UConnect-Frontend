@@ -36,7 +36,7 @@ export default function ModView() {
                 <p>{event.title}</p>
                 <p>{event.description}</p>
                 <p>{event.location}</p>
-                <p>{new Date(event.eventDate).toLocaleString()}</p>
+                <p>{new Date(event.startTime).toLocaleString()}</p>
                 <p>
                   Submitted by: {event.authorInfo.firstName}{" "}
                   {event.authorInfo.lastName}, Hosted By: {event.host}
