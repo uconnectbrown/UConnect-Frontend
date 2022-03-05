@@ -1,19 +1,16 @@
 // Setup
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { db, auth } from "../firebase.js";
 import Select from "react-select";
 
 // Components
 import StudentModal from "../components/StudentModal";
 import SearchBar from "../components/SearchBar";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
-import Logo from "../assets/Logo.png";
 
 // Styling
 import "./DiscoverView.css";
 import Tooltip from "@material-ui/core/Tooltip";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,12 +18,10 @@ import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Resources
 import { searchOptions, searchTypes } from "../resources/searchOptions";
-import { fetchFeatured } from "../util/discoverUtil.js";
 
 function DiscoverView(props) {
   const { user } = props;
 
-  const [featured, setFeatured] = useState([]);
   const [students, setStudents] = useState(null);
 
   const [query, setQuery] = useState("");
@@ -46,47 +41,11 @@ function DiscoverView(props) {
     "instruments",
   ];
 
-  useEffect(() => {
-    getFeatured();
-    disableSearchTypes();
-  }, [user]);
-
-  const disableSearchTypes = () => {
-    let optionBools = [false, false, false, true, true, true];
-    db.doc(`/profiles/${emailId}`)
-      .get()
-      .then((doc) => {
-        if (doc.data().varsitySports.filter(Boolean).length > 0) {
-          optionBools[3] = false;
-        }
-        if (doc.data().pickUpSports.filter(Boolean).length > 0) {
-          optionBools[4] = false;
-        }
-        if (doc.data().instruments.filter(Boolean).length > 0) {
-          optionBools[5] = false;
-        }
-        return optionBools;
-      })
-      .then((bools) => {
-        for (let i = 0; i < bools.length; i++) {
-          if (bools[i]) {
-            searchTypes[i].disabled = true;
-          } else searchTypes[i].disabled = false;
-        }
-      });
-  };
-
-  const getFeatured = () => {
-    fetchFeatured().then((f) => {
-      if (f) setFeatured(f);
-    });
-  };
-
   const searchField = (options, param) => {
     setLoading(true);
     options = options.map((option) => option.value);
     axios
-      .post(`/searchField/${email}`, { options, param })
+      .post(`/searchField`, { options, param })
       .then((res) => {
         setStudents(res.data);
         setLoading(false);
@@ -100,7 +59,7 @@ function DiscoverView(props) {
   const searchName = (query) => {
     setLoading(true);
     axios
-      .get(`/searchName/${email}/${query}`)
+      .get(`/searchName?q=${query}`)
       .then((res) => {
         setStudents(res.data);
         setLoading(false);
@@ -117,17 +76,8 @@ function DiscoverView(props) {
     setStudentId(students[index].emailId);
   };
 
-  const handleOpenFeatured = (index) => {
-    setStudentId(featured[index].emailId);
-  };
-
   const handleCloseStudent = () => {
     setStudentId(null);
-  };
-
-  const handleOpenMessage = (id, image, name) => {
-    setStudentInfo([id, image, name]);
-    setMessageOpen(true);
   };
 
   const onSearchSubmit = (e) => {
@@ -137,7 +87,6 @@ function DiscoverView(props) {
       setStudents([]);
       setQuery("");
       setSearching(false);
-      getFeatured();
     }
   };
 
@@ -145,7 +94,6 @@ function DiscoverView(props) {
     setStudents([]);
     setQuery("");
     setSearching(false);
-    getFeatured();
   };
 
   const renderSearchPicker = () => {
@@ -156,7 +104,6 @@ function DiscoverView(props) {
             name="searchType"
             defaultValue={searchTypes[0]}
             options={searchTypes}
-            isOptionDisabled={(option) => option.disabled}
             onChange={(options) => {
               setSearchType(options.value);
               setSelectedOptions([]);
@@ -190,7 +137,6 @@ function DiscoverView(props) {
           isMulti
           value={selectedOptions}
           options={searchOptions[i]}
-          isOptionDisabled={(option) => option.disabled}
           onChange={(options) => setSelectedOptions(options)}
         />
       </Row>
@@ -218,7 +164,6 @@ function DiscoverView(props) {
           onClick={() => {
             searchField(selectedOptions, params[searchType]);
           }}
-          disabled={selectedOptions.length === 0}
         >
           Search
         </Button>
@@ -229,7 +174,6 @@ function DiscoverView(props) {
             setStudents([]);
             setSelectedOptions([]);
             setSearching(false);
-            getFeatured();
           }}
         >
           Clear
@@ -255,8 +199,7 @@ function DiscoverView(props) {
                 >
                   <img
                     className={
-                      props.imageUrl ===
-                      "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
+                      props.imageUrl === "https://i.imgur.com/1m8kMyt.png"
                         ? "search-profile-img-blur"
                         : "search-profile-img"
                     }
@@ -325,80 +268,6 @@ function DiscoverView(props) {
     );
   };
 
-  const renderFeatured = () => {
-    return (
-      <div>
-        <p className="mt-4">
-          <h5 style={{ display: "inline" }}>Featured Profiles</h5>
-          <Tooltip
-            placement="right"
-            title="These profiles are generated weekly and are recommended based on the information you have provided in your profile."
-          >
-            <span>
-              <FontAwesomeIcon
-                style={{ marginLeft: 15 }}
-                icon={faQuestionCircle}
-                color="#505050"
-              />
-            </span>
-          </Tooltip>
-        </p>
-        <div
-          class="featured-container pb-4 pt-1"
-          style={{ display: "flex flex-row" }}
-        >
-          {featured.map((student, i) => {
-            return (
-              <div
-                className="featured-card mx-lg-3 mx-sm-1"
-                style={{ display: "flex", marginRight: 15 }}
-                onClick={() => {
-                  handleOpenFeatured(i);
-                }}
-              >
-                <div
-                  style={{ border: "5px solid #ffffff", borderRadius: "10rem" }}
-                >
-                  <img
-                    className={
-                      props.imageUrl ===
-                      "https://firebasestorage.googleapis.com/v0/b/uconnect-5eebd.appspot.com/o/no-img.png?alt=media"
-                        ? "featured-profile-img-blur"
-                        : "featured-profile-img"
-                    }
-                    alt="Profile"
-                    src={student.imageUrl}
-                  />
-                </div>
-                <div className="card-text mb-3">
-                  {student.name} '{student.classYear.split("0")[1]}
-                </div>
-                <div style={{ width: 80, height: 80 }}>
-                  <Tooltip placement="top" title="Compatibility Score">
-                    <span>
-                      <CircularProgressbar
-                        value={student.compatability}
-                        text={`${student.compatability}%`}
-                        styles={buildStyles({
-                          pathColor: `rgba(62, 152, ${
-                            256 - 10 * (100 - student.compatability)
-                          })`,
-                          textColor: `rgba(62, 152, ${
-                            256 - 10 * (100 - student.compatability)
-                          })`,
-                        })}
-                      />
-                    </span>
-                  </Tooltip>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
-
   return (
     <Container fluid className="uconnect-home" style={{ marginTop: "1rem" }}>
       <Modal
@@ -413,7 +282,6 @@ function DiscoverView(props) {
             decRequests={props.decRequests}
             incRequests={props.incRequests}
             requests={props.requests}
-            handleOpenMessage={handleOpenMessage}
             outgoing={props.outgoing}
             decPending={props.decPending}
             imageUrl={props.imageUrl}
@@ -428,7 +296,6 @@ function DiscoverView(props) {
       {searchType !== 0 && renderDataList(searchType)}
       {searchType !== 0 && renderSearchButtons()}
       {students && renderSearchResults()}
-      {!searching && featured && renderFeatured()}
     </Container>
   );
 }
