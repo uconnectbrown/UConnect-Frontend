@@ -35,15 +35,16 @@ export async function getEvents() {
 // Output: array of post objects
 export async function getModFeedEvents() {
   return Array.from({ length: 10 }).map((_, idx) => ({
-    eventId: idx,
-    eventTitle: "UConnect Launch Party",
-    eventDescription: ipsum,
+    index: idx,
+    title: "UConnect Launch Party",
+    description: ipsum,
     eventDate: new Date(),
-    eventLocation: "Petteruti Lounge",
-    hostedBy: "UConnect Team",
-    author: {
-      displayName: "John Doe",
-      avatar: "https://placekitten.com/g/64/64",
+    location: "Petteruti Lounge",
+    host: "UConnect Team",
+    authorInfo: {
+      firstName: "John",
+      lastName: "Doe",
+      imageUrl: "https://placekitten.com/g/64/64",
     },
   }));
 

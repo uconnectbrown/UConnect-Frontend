@@ -24,22 +24,22 @@ export default function ModView() {
             <Card className="ModCard">
               <Card.Header>
                 <Image
-                  src={event.author.avatar}
+                  src={event.authorInfo.imageUrl}
                   alt="avatar"
                   roundedCircle
                   width={32}
                   height={32}
                 />
-                <b> {event.author.displayName}</b>
+                <b> {event.authorInfo.firstName}</b>
               </Card.Header>
               <Card.Body>
-                <p>{event.eventTitle}</p>
-                <p>{event.eventDescription}</p>
-                <p>{event.eventLocation}</p>
+                <p>{event.title}</p>
+                <p>{event.description}</p>
+                <p>{event.location}</p>
                 <p>{new Date(event.eventDate).toLocaleString()}</p>
                 <p>
-                  Submitted by: {event.author.displayName}, Hosted By:{" "}
-                  {event.hostedBy}
+                  Submitted by: {event.authorInfo.firstName}{" "}
+                  {event.authorInfo.lastName}, Hosted By: {event.host}
                 </p>
               </Card.Body>
               <Card.Footer>
