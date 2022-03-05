@@ -7,7 +7,10 @@ export default function CommentCard(props) {
       <Row>
         <Col className="comment-card-display-name">
           <Image
-            src={props.comment.authorInfo.imageUrl}
+            src={
+              props.comment.authorInfo.imageUrl ||
+              "https://i.imgur.com/1m8kMyt.png"
+            }
             alt="avatar"
             roundedCircle
             width={32}
@@ -20,7 +23,9 @@ export default function CommentCard(props) {
           </b>
         </Col>
         <Col className="text-end">
-          <small className="text-muted">{props.comment.timestamp}</small>
+          <small className="text-muted">
+            {new Date(props.comment.timestamp).toLocaleString()}
+          </small>
         </Col>
       </Row>
 

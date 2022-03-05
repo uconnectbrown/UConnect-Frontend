@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { postEvent } from "../util/eventBoardUtil";
 
-export default function CreatePostView() {
+export default function CreateEventView({ user }) {
   const [posterMode, setPosterMode] = React.useState(true);
   const [author, setAuthor] = React.useState("Me");
   const [description, setDescription] = React.useState("");
@@ -13,13 +13,21 @@ export default function CreatePostView() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    postEvent(title, description, date, location, host, !posterMode, author);
+    postEvent(
+      title,
+      description,
+      new Date(date),
+      location,
+      host,
+      !posterMode,
+      posterMode ? user.username : author
+    );
   };
 
   return (
     <div className="CreatePostView">
       <h1>Create Event</h1>
-      <div class="p-3 mb-4 bg-light rounded-3">
+      <div className="p-3 mb-4 bg-light rounded-3">
         <Container fluid py={5} className="PostFormContainer">
           <Form onSubmit={onSubmit}>
             <Form.Group controlId="posterMode">
@@ -71,12 +79,13 @@ export default function CreatePostView() {
               />
             </Form.Group>
             <Form.Group controlId="date">
-              <Form.Label>Event Date</Form.Label>
+              <Form.Label>Event Date and Time</Form.Label>
               <Form.Control
-                type="date"
-                placeholder="Enter event date"
+                type="datetime-local"
                 value={date}
-                onChange={(e) => setDate(e.target.value)}
+                onChange={(e) =>
+                  e.target.value ? setDate(e.target.value) : setDate("")
+                }
               />
             </Form.Group>
             <Form.Group controlId="host">

@@ -44,8 +44,7 @@ function ProfileView(props) {
   const [editing, setEditing] = useState(false);
   const [editingInterests, setEditingInterests] = useState(false);
   const [editImage, setEditImage] = useState(false);
-  const noProfilePic =
-    user?.profilePicture === "https://i.imgur.com/1m8kMyt.png";
+  const noProfilePic = user?.imageUrl === "https://i.imgur.com/1m8kMyt.png";
 
   const editProfile = () => {
     axios
@@ -61,7 +60,9 @@ function ProfileView(props) {
   };
 
   const handleArrChange = (event, index) => {
-    let newArr = [...newProfile[event.target.name]];
+    let newArr = newProfile[event.target.name]
+      ? [...newProfile[event.target.name]]
+      : ["", ""];
     newArr[index] = event.target.value;
     setNewProfile({
       ...newProfile,
@@ -129,11 +130,7 @@ function ProfileView(props) {
     return (
       <>
         <div>
-          <img
-            className="profile-view-img"
-            alt="Profile"
-            src={user.profilePicture}
-          />
+          <img className="profile-view-img" alt="Profile" src={user.imageUrl} />
           <br />
           {!editing && (
             <button
@@ -201,20 +198,21 @@ function ProfileView(props) {
             <div>{user.pronouns && `(${user.pronouns})`}</div>
             <div className="card-text">
               {user.location &&
-                user.location.state !== "" &&
-                user.location.city !== "" &&
+                user.location.state &&
+                user.location.city &&
                 `${user.location.city}, ${user.location.state}`}
               {user.location &&
-                user.location.state !== "" &&
-                user.location.city === "" &&
+                user.location.state &&
+                !user.location.city &&
                 `${user.location.state}, ${user.location.country}`}
               {user.location &&
                 user.location.country !== "United States of America" &&
-                user.location.city !== "" &&
+                user.location.city &&
                 `${user.location.city}, ${user.location.country}`}
               {user.location &&
                 user.location.country !== "United States of America" &&
-                user.location.city === "" &&
+                !user.location.city &&
+                user.location.country &&
                 `${user.location.country}`}
             </div>
             <div>Class of {user.classYear}</div>
@@ -272,7 +270,7 @@ function ProfileView(props) {
                   list="pronouns"
                   name="pronouns"
                   onChange={handleChange}
-                  value={newProfile?.pronouns}
+                  value={newProfile?.pronouns || ""}
                 />
               </FloatingLabel>
 
@@ -280,7 +278,7 @@ function ProfileView(props) {
                 <Form.Control
                   list="countries"
                   onChange={(e) => handleLocationChange(e, "country")}
-                  value={newProfile.location.country}
+                  value={newProfile.location.country || ""}
                 />
               </FloatingLabel>
               <datalist id="countries">
@@ -294,7 +292,7 @@ function ProfileView(props) {
                     list="states"
                     name="state"
                     onChange={(e) => handleLocationChange(e, "state")}
-                    value={newProfile.location.state}
+                    value={newProfile.location.state || ""}
                   />
                   <datalist id="states">
                     {states.map((state, i) => {
@@ -305,7 +303,7 @@ function ProfileView(props) {
               )}
               <FloatingLabel label="City">
                 <Form.Control
-                  value={newProfile.location.city}
+                  value={newProfile.location.city || ""}
                   onChange={(e) => handleLocationChange(e, "city")}
                   name="city"
                 />
@@ -369,7 +367,7 @@ function ProfileView(props) {
                   maxLength="140"
                   onChange={handleChange}
                   name="bio"
-                  value={newProfile?.bio}
+                  value={newProfile?.bio || ""}
                 />
               </FloatingLabel>
 
@@ -387,73 +385,77 @@ function ProfileView(props) {
     );
   };
 
-  const renderCourses = () => {
-    if (!editing) {
-      if (
-        user.courses.map((course) => course.code).filter(Boolean).length === 0
-      ) {
-        return (
-          <Col sm={3} className="mb-3">
-            <button
-              type="button"
-              className={
-                noProfilePic ? "btn btn-sm" : "btn btn-outline-primary btn-sm"
-              }
-              style={{
-                width: "5rem",
-                backgroundColor: noProfilePic ? "#E35E96" : "#FFFFFF",
-                color: noProfilePic ? "white" : "default",
-              }}
-              onClick={() => setEditing(true)}
-            >
-              Add
-            </button>
-          </Col>
-        );
-      } else
-        return user.courses.map((c, i) => {
-          if (!c.name) return null;
-          return (
-            <Col key={i} sm={3} className="mb-3">
-              <div className="profile-view-courses">
-                <div>{c.code}</div>
-                <div style={{ fontSize: "10px" }}>{c.name}</div>
-              </div>
-            </Col>
-          );
-        });
-    }
+  // const renderCourses = () => {
+  //   if (!editing) {
+  //     if (
+  //       user.courses.map((course) => course.code).filter(Boolean).length === 0
+  //     ) {
+  //       return (
+  //         <Col sm={3} className="mb-3">
+  //           <button
+  //             type="button"
+  //             className={
+  //               noProfilePic ? "btn btn-sm" : "btn btn-outline-primary btn-sm"
+  //             }
+  //             style={{
+  //               width: "5rem",
+  //               backgroundColor: noProfilePic ? "#E35E96" : "#FFFFFF",
+  //               color: noProfilePic ? "white" : "default",
+  //             }}
+  //             onClick={() => setEditing(true)}
+  //           >
+  //             Add
+  //           </button>
+  //         </Col>
+  //       );
+  //     } else
+  //       return !user.courses ? (
+  //         <></>
+  //       ) : (
+  //         user.courses.map((c, i) => {
+  //           if (!c.name) return null;
+  //           return (
+  //             <Col key={i} sm={3} className="mb-3">
+  //               <div className="profile-view-courses">
+  //                 <div>{c.code}</div>
+  //                 <div style={{ fontSize: "10px" }}>{c.name}</div>
+  //               </div>
+  //             </Col>
+  //           );
+  //         })
+  //       );
+  //   }
 
-    const range = [...Array(5).keys()];
+  //   const range = [...Array(5).keys()];
 
-    return range.map((i, idx) => {
-      let value = "";
-      if (i < user.courses.length) {
-        value = newProfile?.courses[i].code;
-      }
+  //   return range.map((i, idx) => {
+  //     let value = "";
+  //     if (i < user.courses.length) {
+  //       value = newProfile?.courses[i].code;
+  //     }
 
-      return (
-        <Col key={idx} sm={6}>
-          <FloatingLabel label={`Course ${i + 1}`}>
-            <Form.Control
-              list="courseCodes"
-              name="courses"
-              autoComplete="off"
-              onChange={(e) => {
-                handleCourseChange(e, i);
-              }}
-              value={value}
-            />
-            <datalist id="courseCodes">
-              {courseList.map((course, i) => (
-                <option key={i} value={course[0] + ": " + course[1]} />
-              ))}
-            </datalist>
-          </FloatingLabel>
-        </Col>
-      );
-    });
-  };
+  //     return (
+  //       <Col key={idx} sm={6}>
+  //         <FloatingLabel label={`Course ${i + 1}`}>
+  //           <Form.Control
+  //             list="courseCodes"
+  //             name="courses"
+  //             autoComplete="off"
+  //             onChange={(e) => {
+  //               handleCourseChange(e, i);
+  //             }}
+  //             value={value}
+  //           />
+  //           <datalist id="courseCodes">
+  //             {courseList.map((course, i) => (
+  //               <option key={i} value={course[0] + ": " + course[1]} />
+  //             ))}
+  //           </datalist>
+  //         </FloatingLabel>
+  //       </Col>
+  //     );
+  //   });
+  // };
 
   const renderInterests = () => {
     const categories = [
@@ -482,8 +484,8 @@ function ProfileView(props) {
                   <p style={{ fontSize: "14px", textAlign: "center" }}>{cat}</p>
                   {list && (
                     <ul>
-                      {list.map((l) => (
-                        <li>{l.interest}</li>
+                      {list.map((l, idx) => (
+                        <li key={idx}>{l.interest}</li>
                       ))}
                     </ul>
                   )}
@@ -522,18 +524,18 @@ function ProfileView(props) {
       "Pick-up Sports",
       "Instruments",
     ];
-    const groups = [user.groups[0], user.groups[1], user.groups[2]];
-    const varsitySports = [user.varsitySports[0], user.varsitySports[1]];
-    const pickUpSports = [
-      user.pickUpSports[0],
-      user.pickUpSports[1],
-      user.pickUpSports[2],
-    ];
-    const instruments = [
-      user.instruments[0],
-      user.instruments[1],
-      user.instruments[2],
-    ];
+    const groups = user.groups
+      ? [user.groups[0], user.groups[1], user.groups[2]]
+      : ["", "", ""];
+    const varsitySports = user.varsitySports
+      ? [user.varsitySports[0], user.varsitySports[1]]
+      : ["", ""];
+    const pickUpSports = user.pickUpSports
+      ? [user.pickUpSports[0], user.pickUpSports[1], user.pickUpSports[2]]
+      : ["", "", ""];
+    const instruments = user.instruments
+      ? [user.instruments[0], user.instruments[1], user.instruments[2]]
+      : ["", "", ""];
 
     const allEcs = [groups, varsitySports, pickUpSports, instruments];
     const allEcsStr = [
@@ -619,7 +621,11 @@ function ProfileView(props) {
                 <Form.Select
                   aria-label="Select varsity sport"
                   className={j === 1 ? "mb-3" : ""}
-                  value={newProfile?.varsitySports[j]}
+                  value={
+                    newProfile?.varsitySports
+                      ? newProfile?.varsitySports[j]
+                      : ""
+                  }
                   onChange={(e) => handleArrChange(e, j)}
                   name="varsitySports"
                 >
@@ -636,7 +642,9 @@ function ProfileView(props) {
                 <Form.Select
                   aria-label="Select pick-up sport"
                   className={j === 2 ? "mb-3" : ""}
-                  value={newProfile?.pickUpSports[j]}
+                  value={
+                    newProfile?.pickUpSports ? newProfile?.pickUpSports[j] : ""
+                  }
                   onChange={(e) => handleArrChange(e, j)}
                   name="pickUpSports"
                 >
@@ -653,7 +661,9 @@ function ProfileView(props) {
                 <Form.Select
                   aria-label="Select instrument"
                   className={j === 2 ? "mb-3" : ""}
-                  value={newProfile?.instruments[j]}
+                  value={
+                    newProfile?.instruments ? newProfile?.instruments[j] : ""
+                  }
                   onChange={(e) => handleArrChange(e, j)}
                   name="instruments"
                 >
@@ -669,7 +679,7 @@ function ProfileView(props) {
               {cat === "Groups" && (
                 <Form.Control
                   className={j === 2 ? "mb-3" : ""}
-                  value={newProfile?.groups[j]}
+                  value={newProfile?.groups ? newProfile?.groups[j] : ""}
                   type="text"
                   autoComplete="off"
                   onChange={(e) => {
@@ -755,9 +765,9 @@ function ProfileView(props) {
             <Row>{renderInterests()}</Row>
             <h5>Extracurriculars</h5>
             <Row>{renderEcs()}</Row>
-            <h5>Courses</h5>
+            {/* <h5>Courses</h5> */}
 
-            <Row>{renderCourses()}</Row>
+            {/* <Row>{renderCourses()}</Row> */}
             <SignOut
               style={{ position: "absolute", right: "10%" }}
               reset={props.reset}

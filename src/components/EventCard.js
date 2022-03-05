@@ -18,7 +18,7 @@ export default function EventCard({ event }) {
       <Card.Body style={{ textAlign: "center" }}>
         <Card.Text>{event.description}</Card.Text>
         <Card.Text>{event.location}</Card.Text>
-        <Card.Text>{new Date(event.eventDate).toLocaleString()}</Card.Text>
+        <Card.Text>{new Date(event.startTime).toLocaleString()}</Card.Text>
         <span onClick={(e) => e.stopPropagation()}>
           <Button variant="secondary" size="sm">
             <FontAwesomeIcon icon={faHeart} /> {event.likes}
@@ -48,7 +48,9 @@ export default function EventCard({ event }) {
         <Row>
           <Col className="text-start" sm={9}>
             <Image
-              src={event.authorInfo.imageUrl}
+              src={
+                event.authorInfo.imageUrl || "https://i.imgur.com/1m8kMyt.png"
+              }
               alt="avatar"
               roundedCircle
               width={32}

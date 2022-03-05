@@ -60,7 +60,7 @@ function App() {
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   useEffect(() => {
-    if (user?.isProfileCompleted) getCourses();
+    if (user?.courses) getCourses();
   }, [user]);
   const getCourses = (codeNS) => {
     let c, n;
@@ -105,7 +105,7 @@ function App() {
       <BrowserRouter>
         <NavBar
           requests={user ? user.requests : 0}
-          imageUrl={user ? user.profilePicture : ""}
+          imageUrl={user ? user.imageUrl : ""}
         />
         <Container fluid>
           <Row className="px-3 py-4 h-100">
@@ -130,13 +130,13 @@ function App() {
                   path="/event/:eventId/comment"
                   element={<EventView user={user} />}
                 />
-                {user && user.isProfileCompleted ? (
+                {user && user.profileCompleted ? (
                   <>
                     <Route exact path="/moderator" element={<ModView />} />
                     <Route
                       exact
                       path="/event-create"
-                      element={<CreateEventView />}
+                      element={<CreateEventView user={user} />}
                     />
                     <Route
                       exact
