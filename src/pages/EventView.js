@@ -5,12 +5,13 @@ import CommentCard from "../components/CommentCard";
 
 import EventCard from "../components/EventCard";
 import "./EventView.css";
-import { getEvent } from "../util/eventBoardUtil";
+import { getEvent, postComment } from "../util/eventBoardUtil";
 
-export default function EventView() {
+export default function EventView(props) {
   const { eventId } = useParams();
   const location = useLocation();
   const isAuthoring = location.pathname.includes("comment");
+  const [commentText, setCommentText] = React.useState("");
 
   const [event, setEvent] = React.useState();
 
@@ -26,6 +27,11 @@ export default function EventView() {
     return <div>Loading...</div>;
   }
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    postComment(event.id, commentText, props.user.firstName, false);
+  };
+
   return (
     <div className="PostView">
       <Container className="PostContainer">
@@ -36,13 +42,15 @@ export default function EventView() {
             <>
               <Card>
                 <Container>
-                  <Form>
+                  <Form onSubmit={onSubmit}>
                     <Form.Label>Post a comment</Form.Label>
                     <Form.Group controlId="commentText">
                       <Form.Control
                         as="textarea"
                         rows="3"
                         placeholder="Enter comment body"
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
                       />
                     </Form.Group>
                     <Button variant="primary" type="submit">
@@ -55,7 +63,7 @@ export default function EventView() {
             </>
           )}
           {event.comments.map((comment) => (
-            <CommentCard key={comment.commentNumber} comment={comment} />
+            <CommentCard key={comment.id} comment={comment} />
           ))}
         </div>
       </Container>

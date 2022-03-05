@@ -7,20 +7,24 @@ export default function CommentCard(props) {
       <Row>
         <Col className="comment-card-display-name">
           <Image
-            src={props.comment.author.avatar}
+            src={props.comment.authorInfo.imageUrl}
             alt="avatar"
             roundedCircle
             width={32}
             height={32}
           />
-          <b> {props.comment.author.displayName}</b>
+          <b>
+            {" "}
+            {props.comment.authorInfo.firstName}{" "}
+            {props.comment.authorInfo.lastName}
+          </b>
         </Col>
         <Col className="text-end">
           <small className="text-muted">{props.comment.timestamp}</small>
         </Col>
       </Row>
 
-      <div className="comment-card-text">{props.comment.comment}</div>
+      <div className="comment-card-text">{props.comment.content}</div>
     </Card>
   );
 }

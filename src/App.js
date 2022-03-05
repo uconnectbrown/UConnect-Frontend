@@ -126,7 +126,10 @@ function App() {
                 <Route exact path="/" element={<HomeView />} />
                 <Route exact path="/home" element={<HomeView />} />
                 <Route path="/event/:eventId" element={<EventView />} />
-                <Route path="/event/:eventId/comment" element={<EventView />} />
+                <Route
+                  path="/event/:eventId/comment"
+                  element={<EventView user={user} />}
+                />
                 {user && user.isProfileCompleted ? (
                   <>
                     <Route exact path="/moderator" element={<ModView />} />

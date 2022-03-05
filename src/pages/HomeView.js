@@ -36,7 +36,7 @@ export default function HomeView() {
         <Container fluid py={5} className="FeedContainer">
           <Row sm={1} lg={2} xl={3}>
             {events.map((event) => (
-              <EventCard key={event.eventNumber} event={event} />
+              <EventCard key={event.index} event={event} />
             ))}
           </Row>
         </Container>

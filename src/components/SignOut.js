@@ -1,5 +1,4 @@
 import React from "react";
-import { auth } from "../firebase.js";
 
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +6,7 @@ function SignOut(props) {
   let navigate = useNavigate();
 
   async function signout() {
-    await auth.signOut();
+    localStorage.clear();
     navigate("/");
   }
   return (
