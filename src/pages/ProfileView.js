@@ -47,6 +47,8 @@ function ProfileView(props) {
   const noProfilePic = user?.imageUrl === "https://i.imgur.com/1m8kMyt.png";
 
   const editProfile = () => {
+    delete newProfile.password;
+    delete newProfile.id;
     axios
       .post("/v1/user/updateUser", newProfile)
       .then(async () => {
