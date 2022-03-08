@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import CommentCard from "../components/CommentCard";
 
 import EventCard from "../components/EventCard";
@@ -8,8 +8,10 @@ import "./EventView.css";
 import { getEvent, postComment } from "../util/eventBoardUtil";
 
 export default function EventView(props) {
+  const navigate = useNavigate();
   const { eventId } = useParams();
   const location = useLocation();
+
   const isAuthoring = location.pathname.includes("comment");
   const [commentText, setCommentText] = React.useState("");
 
@@ -27,9 +29,21 @@ export default function EventView(props) {
     return <div>Loading...</div>;
   }
 
-  const onSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    postComment(event.id, commentText, props.user.username, false);
+    const res = await postComment(
+      event.id,
+      commentText,
+      props.user.username,
+      false
+    );
+    if (res) {
+      // Hacky way to refresh the page until the backend returns a proper response
+      navigate("/");
+      navigate(`/event/${event.index}`);
+    } else {
+      alert("Error creating comment");
+    }
   };
 
   return (
@@ -42,7 +56,7 @@ export default function EventView(props) {
             <>
               <Card>
                 <Container>
-                  <Form onSubmit={onSubmit}>
+                  <Form onSubmit={handleSubmit}>
                     <Form.Label>Post a comment</Form.Label>
                     <Form.Group controlId="commentText">
                       <Form.Control
@@ -51,6 +65,7 @@ export default function EventView(props) {
                         placeholder="Enter comment body"
                         value={commentText}
                         onChange={(e) => setCommentText(e.target.value)}
+                        required
                       />
                     </Form.Group>
                     <Button variant="primary" type="submit">
