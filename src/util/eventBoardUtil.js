@@ -100,7 +100,6 @@ export async function postEvent(
   isAnonymous,
   author
 ) {
-  console.log(author);
   try {
     const response = await axios.post("/v1/event-board/verified/event/new", {
       title: eventTitle,

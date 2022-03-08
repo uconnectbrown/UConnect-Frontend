@@ -1,8 +1,11 @@
 import React from "react";
 import { Button, Container, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { postEvent } from "../util/eventBoardUtil";
 
 export default function CreateEventView({ user }) {
+  const navigate = useNavigate();
+
   const [posterMode, setPosterMode] = React.useState(true);
   const [author, setAuthor] = React.useState("Me");
   const [description, setDescription] = React.useState("");
@@ -11,9 +14,19 @@ export default function CreateEventView({ user }) {
   const [date, setDate] = React.useState("");
   const [host, setHost] = React.useState("");
 
-  const onSubmit = (e) => {
+  const [validated, setValidated] = React.useState(false);
+
+  const handleSubmit = async (e) => {
+    const form = e.currentTarget;
+    setValidated(true);
     e.preventDefault();
-    postEvent(
+    e.stopPropagation();
+
+    if (form.checkValidity() === false) {
+      return;
+    }
+
+    const res = await postEvent(
       title,
       description,
       new Date(date),
@@ -22,6 +35,11 @@ export default function CreateEventView({ user }) {
       !posterMode,
       posterMode ? user.username : author
     );
+    if (res) {
+      navigate("/");
+    } else {
+      alert("Error creating event");
+    }
   };
 
   return (
@@ -29,8 +47,8 @@ export default function CreateEventView({ user }) {
       <h1>Create Event</h1>
       <div className="p-3 mb-4 bg-light rounded-3">
         <Container fluid py={5} className="PostFormContainer">
-          <Form onSubmit={onSubmit}>
-            <Form.Group controlId="posterMode">
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form.Group controlId="validationCustom01">
               <Form.Label>Poster</Form.Label>
               <Form.Check
                 type="switch"
@@ -47,6 +65,7 @@ export default function CreateEventView({ user }) {
                 placeholder="Enter poster name"
                 value={author}
                 disabled={posterMode}
+                required={!posterMode}
               />
             </Form.Group>
             <Form.Group controlId="title">
@@ -57,6 +76,7 @@ export default function CreateEventView({ user }) {
                 placeholder="Enter event title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                required
               />
             </Form.Group>
             <Form.Group controlId="description">
@@ -67,6 +87,7 @@ export default function CreateEventView({ user }) {
                 placeholder="Enter event description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                required
               />
             </Form.Group>
             <Form.Group controlId="location">
@@ -76,6 +97,7 @@ export default function CreateEventView({ user }) {
                 placeholder="Enter event location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
+                required
               />
             </Form.Group>
             <Form.Group controlId="date">
@@ -86,6 +108,7 @@ export default function CreateEventView({ user }) {
                 onChange={(e) =>
                   e.target.value ? setDate(e.target.value) : setDate("")
                 }
+                required
               />
             </Form.Group>
             <Form.Group controlId="host">
@@ -95,6 +118,7 @@ export default function CreateEventView({ user }) {
                 placeholder="Enter event host"
                 value={host}
                 onChange={(e) => setHost(e.target.value)}
+                required
               />
             </Form.Group>
             <br />
