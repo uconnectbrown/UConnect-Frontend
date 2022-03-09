@@ -17,7 +17,7 @@ export default function EventCard({ event }) {
       <Card.Title>{event.title}</Card.Title>
       <Card.Body style={{ textAlign: "center" }}>
         <Card.Text>{event.description}</Card.Text>
-        <Card.Text>{event.location}</Card.Text>
+        <Card.Text>Location: {event.location}</Card.Text>
         <Card.Text>{new Date(event.startTime).toLocaleString()}</Card.Text>
         <span onClick={(e) => e.stopPropagation()}>
           <Button variant="secondary" size="sm">
