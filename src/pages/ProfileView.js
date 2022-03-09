@@ -135,9 +135,10 @@ function ProfileView(props) {
           <img className="profile-view-img" alt="Profile" src={user.imageUrl} />
           <br />
           {!editing && (
-            <button
+            <Button
               type="button"
-              className={"btn btn-outline-primary btn-sm"}
+              variant="outline-secondary"
+              size="sm"
               style={{
                 width: "8rem",
                 backgroundColor: noProfilePic ? "#E35E96" : "#FFFFFF",
@@ -148,7 +149,7 @@ function ProfileView(props) {
               }}
             >
               {noProfilePic ? "Add Image" : "Edit Image"}
-            </button>
+            </Button>
           )}
 
           {noProfilePic && editing && (
@@ -165,7 +166,11 @@ function ProfileView(props) {
             </p>
           )}
           {editing && (
-            <Button className="mb-3" onClick={() => setEditImage(true)}>
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              onClick={() => setEditImage(true)}
+            >
               {noProfilePic ? "Add Image" : "Edit Image"}
             </Button>
           )}
@@ -469,7 +474,11 @@ function ProfileView(props) {
 
     const editInterestsButton = (
       <div className="mt-3">
-        <Button onClick={() => setEditingInterests(!editingInterests)}>
+        <Button
+          variant="outline-secondary"
+          size="sm"
+          onClick={() => setEditingInterests(!editingInterests)}
+        >
           {!editingInterests ? "Edit Interests" : "Close Interests"}
         </Button>
       </div>
@@ -729,9 +738,8 @@ function ProfileView(props) {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <button
-                type="button"
-                className="btn btn-outline-primary btn-sm"
+              <Button
+                variant="danger"
                 style={{ width: "8rem" }}
                 onClick={() => {
                   setEditing(false);
@@ -740,11 +748,10 @@ function ProfileView(props) {
                 }}
               >
                 Cancel
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
                 title={noProfilePic ? "Add an image before saving" : ""}
-                className="btn btn-outline-primary btn-sm"
+                variant="success"
                 style={{ width: "8rem" }}
                 onClick={() => {
                   setEditing(false);
@@ -754,7 +761,7 @@ function ProfileView(props) {
                 disabled={!validProfile(newProfile)}
               >
                 Save Changes
-              </button>
+              </Button>
             </React.Fragment>
           )}
         </Row>
