@@ -64,6 +64,7 @@ export default function CreateEventView({ user }) {
                 type="text"
                 placeholder="Enter poster name"
                 value={author}
+                onChange={(e) => setAuthor(e.target.value)}
                 disabled={posterMode}
                 required={!posterMode}
               />
