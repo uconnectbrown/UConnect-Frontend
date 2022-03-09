@@ -101,15 +101,18 @@ export async function postEvent(
   author
 ) {
   try {
-    const response = await axios.post("/v1/event-board/verified/event/new", {
-      title: eventTitle,
-      author: author,
-      host: hostedBy,
-      description: eventDescription,
-      startTime,
-      location: eventLocation,
-      isAnonymous,
-    });
+    const response = await axios.post(
+      `/v1/event-board/${isAnonymous ? "anonymous" : "verified"}/event/new`,
+      {
+        title: eventTitle,
+        author: author,
+        host: hostedBy,
+        description: eventDescription,
+        startTime,
+        location: eventLocation,
+        isAnonymous,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error(error);
