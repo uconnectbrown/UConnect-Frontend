@@ -59,9 +59,9 @@ function NavBar(props) {
           </Navbar.Brand>
         </Link>
         <div>
-          {renderRequests()}
+          {/* {renderRequests()} */}
 
-          <Tooltip
+          {/* <Tooltip
             title={
               <div style={{ fontSize: "12px", padding: "5px" }}>User Guide</div>
             }
@@ -73,7 +73,7 @@ function NavBar(props) {
                 color="#473F9B"
               />
             </button>
-          </Tooltip>
+          </Tooltip> */}
           <Modal
             keyboard
             dialogClassName="student-modal"

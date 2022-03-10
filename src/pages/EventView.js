@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Container, Form } from "react-bootstrap";
+import { Button, Card, Container, Form, Row } from "react-bootstrap";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import CommentCard from "../components/CommentCard";
 
@@ -49,7 +49,9 @@ export default function EventView(props) {
   return (
     <div className="PostView">
       <Container className="PostContainer">
-        <EventCard event={event} />
+        <Row sm={1}>
+          <EventCard event={event} />
+        </Row>
         <div className="PostComments">
           <h3>Comments</h3>
           {isAuthoring && (
