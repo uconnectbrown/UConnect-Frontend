@@ -27,9 +27,9 @@ export default function HomeView() {
           <Button as={Link} variant="primary" to="/event-create">
             Create Event
           </Button>
-          <Button as={Link} variant="danger" to="/moderator">
+          {/* <Button as={Link} variant="danger" to="/moderator">
             Moderator
-          </Button>
+          </Button> */}
         </Col>
       </Row>
       <div className="p-3 mb-4 rounded-3">

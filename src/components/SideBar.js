@@ -40,12 +40,12 @@ function SideBar(props) {
             Home
           </Button>
         </Link>
-        <Link to="/discover" style={{ textDecoration: "none" }}>
-          <Button variant="outline-light" className="nav-button">
-            <FontAwesomeIcon icon={faSearch} style={{ width: "100%" }} />
-            Discover
-          </Button>
-        </Link>
+        {/* <Link to="/discover" style={{ textDecoration: "none" }}> */}
+        <Button variant="outline-light" className="nav-button" disabled>
+          <FontAwesomeIcon icon={faSearch} style={{ width: "100%" }} />
+          Discover
+        </Button>
+        {/* </Link> */}
         {/* <Link to="/connections" style={{ textDecoration: "none" }}>
           <Button variant="outline-light" className="nav-button">
             <span>
@@ -61,15 +61,16 @@ function SideBar(props) {
             Connections
           </Button>
         </Link> */}
-        <div
+        <Button
           onMouseEnter={() => setShowDropdown(true)}
           onMouseLeave={() => setShowDropdown(false)}
-          className="nav-button btn btn-outline-light dropdown mb-5 text-center"
+          className="btn btn-outline-light dropdown mb-5 text-center"
+          disabled
         >
           <FontAwesomeIcon icon={faDesktop} style={{ width: "100%" }} />
           Courses
           {showDropdown && (
-            <ButtonGroup vertical style={{ width: "100%" }}>
+            <ButtonGroup vertical style={{ width: "100%" }} disabled>
               {courses
                 .map((course) => {
                   if (course.code) {
@@ -77,47 +78,52 @@ function SideBar(props) {
                   }
                 })
                 .filter(Boolean).length === 0 && (
-                <Link
-                  to="/profile"
-                  style={{
-                    textDecoration: "none",
-                    width: "100%",
-                    maxWidth: "100%",
-                  }}
+                // <Link
+                //   to="/profile"
+                //   style={{
+                //     textDecoration: "none",
+                //     width: "100%",
+                //     maxWidth: "100%",
+                //   }}
+                // >
+                <Button
+                  variant="outline-light"
+                  className="nav-button m-0"
+                  disabled
                 >
-                  <Button variant="outline-light" className="nav-button m-0">
-                    Add courses to your profile.
-                  </Button>
-                </Link>
+                  Add courses to your profile.
+                </Button>
+                // </Link>
               )}
               {courses.map((course, i) => {
                 if (!course.code) return null;
                 let link = "/courses/" + course.code.replace(/\s/g, "");
                 return (
-                  <Link
-                    to={link}
-                    style={{
-                      textDecoration: "none",
-                      width: "100%",
-                      maxWidth: "100%",
+                  // <Link
+                  //   to={link}
+                  //   style={{
+                  //     textDecoration: "none",
+                  //     width: "100%",
+                  //     maxWidth: "100%",
+                  //   }}
+                  // >
+                  <Button
+                    variant="outline-light"
+                    className="nav-button m-0"
+                    onClick={() => {
+                      props.handleCode(course.code);
+                      props.handleName(course.name);
                     }}
+                    disabled
                   >
-                    <Button
-                      variant="outline-light"
-                      className="nav-button m-0"
-                      onClick={() => {
-                        props.handleCode(course.code);
-                        props.handleName(course.name);
-                      }}
-                    >
-                      {course.code}
-                    </Button>
-                  </Link>
+                    {course.code}
+                  </Button>
+                  /* </Link> */
                 );
               })}
             </ButtonGroup>
           )}
-        </div>
+        </Button>
       </Nav>
     );
   }
@@ -133,11 +139,11 @@ function SideBar(props) {
         </Link>
       </Nav.Item>
       <Nav.Item>
-        <Link to="/discover" style={{ textDecoration: "none" }}>
-          <Button variant="outline-light" className="nav-button">
-            <FontAwesomeIcon icon={faSearch} />
-          </Button>
-        </Link>
+        {/* <Link to="/discover" style={{ textDecoration: "none" }}> */}
+        <Button variant="outline-light" className="nav-button" disabled>
+          <FontAwesomeIcon icon={faSearch} />
+        </Button>
+        {/* </Link> */}
       </Nav.Item>
       {/* <Nav.Item>
         <Link to="/connections" style={{ textDecoration: "none" }}>
@@ -159,10 +165,14 @@ function SideBar(props) {
           onMouseLeave={() => setShowDropdown(false)}
           onClick={() => setShowDropdown(!showDropdown)}
         >
-          <Button variant="outline-light" className="nav-button dropdown mb-5">
+          <Button
+            variant="outline-light"
+            className="nav-button dropdown mb-5"
+            disabled
+          >
             <FontAwesomeIcon icon={faDesktop} />
             {showDropdown && (
-              <ButtonGroup vertical style={{ width: "100%" }}>
+              <ButtonGroup vertical style={{ width: "100%" }} disabled>
                 {courses
                   .map((course) => {
                     if (course.code) {
@@ -170,42 +180,47 @@ function SideBar(props) {
                     }
                   })
                   .filter(Boolean).length === 0 && (
-                  <Link
-                    to="/profile"
-                    style={{
-                      textDecoration: "none",
-                      width: "100%",
-                      maxWidth: "100%",
-                    }}
+                  // <Link
+                  //   to="/profile"
+                  //   style={{
+                  //     textDecoration: "none",
+                  //     width: "100%",
+                  //     maxWidth: "100%",
+                  //   }}
+                  // >
+                  <Button
+                    variant="outline-light"
+                    className="nav-button m-0"
+                    disabled
                   >
-                    <Button variant="outline-light" className="nav-button m-0">
-                      Add courses to your profile.
-                    </Button>
-                  </Link>
+                    Add courses to your profile.
+                  </Button>
+                  // </Link>
                 )}
                 {courses.map((course, i) => {
                   if (!course.code) return null;
                   let link = "/courses/" + course.code.replace(/\s/g, "");
                   return (
-                    <Link
-                      to={link}
-                      style={{
-                        textDecoration: "none",
-                        width: "100%",
-                        maxWidth: "100%",
+                    // <Link
+                    //   to={link}
+                    //   style={{
+                    //     textDecoration: "none",
+                    //     width: "100%",
+                    //     maxWidth: "100%",
+                    //   }}
+                    // >
+                    <Button
+                      variant="outline-light"
+                      className="nav-button m-0"
+                      onClick={() => {
+                        props.handleCode(course.code);
+                        props.handleName(course.name);
                       }}
+                      disabled
                     >
-                      <Button
-                        variant="outline-light"
-                        className="nav-button m-0"
-                        onClick={() => {
-                          props.handleCode(course.code);
-                          props.handleName(course.name);
-                        }}
-                      >
-                        {course.code}
-                      </Button>
-                    </Link>
+                      {course.code}
+                    </Button>
+                    // </Link>
                   );
                 })}
               </ButtonGroup>
