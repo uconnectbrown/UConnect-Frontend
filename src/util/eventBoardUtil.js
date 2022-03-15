@@ -17,16 +17,16 @@ export async function getEvent(eventNumber) {
 }
 
 // Output: array of event objects
-export async function getEvents() {
+export async function getEvents(startIndex, eventCount) {
   try {
     const response = await axios.post(
       "/v1/event-board/anonymous/event/get-latest",
       {
-        startIndex: -1,
-        eventCount: 10,
+        startIndex: startIndex,
+        eventCount: eventCount,
       }
     );
-    return response.data.events;
+    return response.data;
   } catch (error) {
     console.error(error);
   }
