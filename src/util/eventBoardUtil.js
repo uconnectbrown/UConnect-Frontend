@@ -56,17 +56,30 @@ export async function getModFeedEvents() {
   }
 }
 
-// Input: integer event id number, boolean for like or unlike
-// Output: event object
-export async function likeEvent(eventId, like) {
+// Input: String id of event/comment, String reaction type
+// Output: success message
+export async function react(id, reactionType) {
   try {
-    const response = await axios.post(`/api/events/${eventId}/like`, {
-      like,
+    const response = await axios.post(`/api/event-board/verified/react`, {
+      id,
+      reactionType,
     });
     return response.data;
   } catch (error) {
     console.error(error);
   }
+}
+
+export async function like(id) {
+  return react(id, "LIKE");
+}
+
+export async function love(id) {
+  return react(id, "LOVE");
+}
+
+export async function interested(id) {
+  return react(id, "INTERESTED");
 }
 
 // Input: string parent (either an event or a comment)'s id, string comment text, string author name, boolean if comment is anon
