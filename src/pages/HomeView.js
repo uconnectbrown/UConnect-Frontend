@@ -7,7 +7,7 @@ import { getEvents } from "../util/eventBoardUtil";
 import "./HomeView.css";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
 
-export default function HomeView() {
+export default function HomeView({ user }) {
   const [events, setEvents] = React.useState([]);
   // Set to -2 on startup because backend return 0 if end is reached, -1 if no content,
   // both 0 and -1 indicates no more query calls are necessary.
@@ -17,7 +17,6 @@ export default function HomeView() {
 
   const fetchEvents = React.useCallback(async () => {
     const lastQueriedIndex = lastQueriedIndexRef.current;
-    console.log(lastQueriedIndex);
     if (lastQueriedIndex === 0 || lastQueriedIndex === -1) {
       return;
     }
@@ -70,7 +69,7 @@ export default function HomeView() {
         <Container fluid py={5} className="FeedContainer">
           <Row sm={1} lg={2} xl={3}>
             {events.map((event) => (
-              <EventCard key={event.index} event={event} />
+              <EventCard key={event.index} event={event} user={user} />
             ))}
           </Row>
           <Row>

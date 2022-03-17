@@ -49,7 +49,6 @@ export async function getUser(username) {
     const res = await axios.post(`/v1/user/${username}`);
     const user = res.data;
     if (!user.imageUrl) user.imageUrl = "https://i.imgur.com/1m8kMyt.png";
-    console.log(user);
     return user;
   } catch (err) {
     if (err.response.status === 403) {

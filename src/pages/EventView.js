@@ -49,8 +49,8 @@ export default function EventView(props) {
   return (
     <div className="PostView">
       <Container className="PostContainer">
-        <Row sm={1}>
-          <EventCard event={event} />
+        <Row xxl={1}>
+          <EventCard event={event} user={props.user} />
         </Row>
         <div className="PostComments">
           <h3>Comments</h3>
