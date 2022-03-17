@@ -60,10 +60,13 @@ export async function getModFeedEvents() {
 // Output: success message
 export async function react(id, reactionType) {
   try {
-    const response = await axios.post(`/api/event-board/verified/react`, {
-      id,
-      reactionType,
-    });
+    const response = await axios.get(
+      `/v1/event-board/verified/react?id=${id}&reactionType=${reactionType}`,
+      {
+        id,
+        reactionType,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error(error);
@@ -78,7 +81,7 @@ export async function love(id) {
   return react(id, "LOVE");
 }
 
-export async function interested(id) {
+export async function interest(id) {
   return react(id, "INTERESTED");
 }
 

@@ -89,7 +89,7 @@ function App() {
   const NoMatch = () => {
     return (
       <h3>
-        Page not found. Click <Link to="/discover">here</Link> to go back to
+        Page not found. Click <Link to="/home">here</Link> to go back to
         UConnect
       </h3>
     );
@@ -123,15 +123,18 @@ function App() {
             </Col>
             <Col xs={11} md={10}>
               <Routes>
-                <Route exact path="/" element={<HomeView />} />
-                <Route exact path="/home" element={<HomeView />} />
-                <Route path="/event/:eventId" element={<EventView />} />
+                <Route exact path="/" element={<HomeView user={user} />} />
+                <Route exact path="/home" element={<HomeView user={user} />} />
                 <Route
-                  path="/event/:eventId/comment"
+                  path="/event/:eventId"
                   element={<EventView user={user} />}
                 />
                 {user && user.profileCompleted ? (
                   <>
+                    <Route
+                      path="/event/:eventId/comment"
+                      element={<EventView user={user} />}
+                    />
                     <Route exact path="/moderator" element={<ModView />} />
                     <Route
                       exact

@@ -105,7 +105,7 @@ function ProfileBuild(props) {
         setLoading(false);
       })
       .then(() => {
-        navigate("/discover");
+        navigate("/home");
       })
       .catch((err) => {
         console.log(err);
