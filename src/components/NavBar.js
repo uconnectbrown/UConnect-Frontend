@@ -89,11 +89,11 @@ function NavBar(props) {
             <Modal.Body className="mx-1 px-3 py-4">
               <h3>Featured Profiles</h3>
               <p style={{ fontSize: "14px" }}>
-                Every Thursday, each user will receive a new set of featured
-                profiles. These recommended profiles are determined based on the
-                information you have provided in your profile. The more
-                information you provide, the better your featured profiles will
-                be.
+                Testing. Every Thursday, each user will receive a new set of
+                featured profiles. These recommended profiles are determined
+                based on the information you have provided in your profile. The
+                more information you provide, the better your featured profiles
+                will be.
               </p>
               <h3>Requests and Connections</h3>
               <p style={{ fontSize: "14px" }}>
