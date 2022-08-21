@@ -54,6 +54,7 @@ function ProfileBuild(props) {
   const { classes } = props;
   const [loading, setLoading] = useState(false);
 
+  // extract interests
   const handleInterests = (i1, i2, i3) => {
     setUserData({
       ...userData,
@@ -63,10 +64,12 @@ function ProfileBuild(props) {
     });
   };
 
+  // authenticate
   useEffect(() => {
     if (auth.currentUser) setEmail(auth.currentUser.email);
   }, []);
 
+  // create profile
   const handleSubmit = (event) => {
     if (email) {
       event.preventDefault();
@@ -117,6 +120,7 @@ function ProfileBuild(props) {
     }
   };
 
+  // default location
   const renderEmptyLocation = () => {
     return (
       <span>
@@ -151,6 +155,7 @@ function ProfileBuild(props) {
     );
   };
 
+  // location with USA as country
   const renderUSA = () => {
     return (
       <span>
@@ -206,6 +211,7 @@ function ProfileBuild(props) {
     );
   };
 
+  // location with USA not as country
   const renderNotUSA = () => {
     return (
       <span>

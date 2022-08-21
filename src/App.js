@@ -29,7 +29,7 @@ axios.defaults.baseURL =
 
 // Body
 function App() {
-  // Authentication
+  // Authentication (set deny Boolean)
   const [user] = useAuthState(auth);
   const [emailId, setEmailId] = useState(null);
   const [deny, setDeny] = useState(null);
@@ -62,9 +62,10 @@ function App() {
   };
 
   // Courses
-  const [courses, setCourses] = useState([]);
-  const [code, setCode] = useState("");
-  const [name, setName] = useState("");
+  const [courses, setCourses] = useState([]); // list of courses for SideBar
+  const [code, setCode] = useState(""); // course code for CourseView
+  const [name, setName] = useState(""); // course name for CourseView
+
   useEffect(() => {
     if (deny === false) getCourses();
   }, [deny]);
@@ -72,10 +73,11 @@ function App() {
     db.doc(`/profiles/${emailId}`)
       .get()
       .then((doc) => {
-        setCourses(doc.data().courses);
+        setCourses(doc.data().courses); // set list of courses for SideBar
         return doc.data().courses;
       })
       .then((courses) => {
+        // set code and name in CourseView
         let c, n;
         for (let i = 0; i < courses.length; i++) {
           if (courses[i].code.replace(/\s/g, "") === codeNS) {
@@ -89,18 +91,21 @@ function App() {
       .catch((err) => console.log(err));
   };
   const handleCode = (c) => {
+    // for updating code upon clicking course on SideBar
     setCode(c);
   };
   const handleName = (n) => {
+    // for updating name upon clicking course on SideBar
     setName(n);
   };
 
   const updateCourses = (courses) => {
+    // for setting list of courses upon editing courses in ProfileView
     setCourses(courses);
   };
 
   // Requests
-  const [requests, setRequests] = useState(null);
+  const [requests, setRequests] = useState(null); // number of requests
   useEffect(() => {
     if (deny === false) getRequests();
   }, [deny]);
@@ -108,19 +113,21 @@ function App() {
     db.doc(`/profiles/${emailId}`)
       .get()
       .then((doc) => {
-        setRequests(doc.data().requests);
+        setRequests(doc.data().requests); // set number of requests
       })
       .catch((err) => console.log(err));
   };
   const decRequests = () => {
+    // decrement requests
     setRequests(requests - 1);
   };
   const incRequests = () => {
+    // increment requests
     setRequests(requests + 1);
   };
 
   // Image URL
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(""); // url for profile picture
   useEffect(() => {
     if (deny === false) getImageUrl();
   }, [deny]);
@@ -128,17 +135,18 @@ function App() {
     db.doc(`/profiles/${emailId}`)
       .get()
       .then((doc) => {
-        setImageUrl(doc.data().imageUrl);
+        setImageUrl(doc.data().imageUrl); // set imageUrl
       })
       .catch((err) => console.log(err));
   };
   const updateImage = (url) => {
+    // update imageUrl upon changing profile pic in ProfileView
     setImageUrl(url);
   };
 
   // Outgoing and pending
-  const [outgoing, setOutgoing] = useState(null);
-  const [pending, setPending] = useState(null);
+  const [outgoing, setOutgoing] = useState(null); // list of outgoing connections
+  const [pending, setPending] = useState(null); // number of pending connections
   useEffect(() => {
     if (deny === false) {
       getOutgoing();
@@ -155,11 +163,12 @@ function App() {
         data.forEach((doc) => {
           students.push(doc.data());
         });
-        setOutgoing(students);
+        setOutgoing(students); // set outgoing connections
       })
       .catch((err) => console.log(err));
   };
   const updateOutgoing = (s) => {
+    // update outgoing connections
     setOutgoing(s);
   };
   const getPending = () => {
@@ -172,16 +181,17 @@ function App() {
         data.forEach((doc) => {
           number += 1;
         });
-        setPending(number);
+        setPending(number); // set number of pending connections
       })
       .catch((err) => console.log(err));
   };
   const decPending = () => {
+    // decrement number of pending connections
     setPending(pending - 1);
   };
 
   // Messages
-  const [messageCount, setMessageCount] = useState(null);
+  const [messageCount, setMessageCount] = useState(null); // number of unread messages
   useEffect(() => {
     if (deny === false) getMessageCount();
   }, [deny]);
@@ -189,16 +199,17 @@ function App() {
     axios
       .get(`/messages/${emailId}`)
       .then((res) => {
-        setMessageCount(res.data.filter((message) => !message.read).length);
+        setMessageCount(res.data.filter((message) => !message.read).length); // set number of unread messages
       })
       .catch((err) => console.log(err));
   };
   const decMessageCount = () => {
+    // decrement number of unread messages
     setMessageCount(messageCount - 1);
   };
 
-  // First Time
-  const [firstTime, setFirstTime] = useState(null);
+  // First time users and onboarding
+  const [firstTime, setFirstTime] = useState(null); // boolean for first time user
   useEffect(() => {
     if (deny === false) checkFirstTime();
   }, [deny]);
@@ -211,10 +222,11 @@ function App() {
       .catch((err) => console.log(err));
   };
   const finishOB = () => {
+    // set firstTime to false upon completing onboarding
     setFirstTime(false);
   };
 
-  // Reset states
+  // Reset states upon signing out
   const reset = () => {
     setImageUrl("");
     setRequests(null);
@@ -224,6 +236,7 @@ function App() {
     setDeny(null);
   };
 
+  // Invalid URL
   const NoMatch = () => {
     return (
       <h3>

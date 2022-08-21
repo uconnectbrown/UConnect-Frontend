@@ -51,14 +51,17 @@ function ProfileView(props) {
   const [skipImage, setSkipImage] = useState(false);
   const [firstTime, setFirstTime] = useState(null);
 
+  // interchangeable
   const student = profile;
 
+  // authenticate
   useEffect(() => {
     if (auth.currentUser) {
       setEmailId(auth.currentUser.email.split("@")[0]);
     }
   }, []);
 
+  // iit profile and onboard if necessary
   useEffect(() => {
     if (emailId) {
       checkFirstTime();
@@ -66,6 +69,7 @@ function ProfileView(props) {
     }
   }, [emailId]);
 
+  // check whether onboard is necessary
   const checkFirstTime = () => {
     db.doc(`profiles/${emailId}`)
       .get()
@@ -78,6 +82,7 @@ function ProfileView(props) {
       .catch((err) => console.log(err));
   };
 
+  // end onboarding
   const handleCloseOnBoard = () => {
     setFirstTime(false);
     // backend function to turn firsttime to false in the profile
@@ -85,6 +90,7 @@ function ProfileView(props) {
       axios.get(`/onboard/${emailId}`).catch((err) => console.log(err));
   };
 
+  // get profile
   const getProfile = () => {
     axios
       .get(`/user/${emailId}`)
@@ -95,6 +101,7 @@ function ProfileView(props) {
       .catch((err) => console.log(err));
   };
 
+  // edit profile
   const editProfile = () => {
     if (emailId) {
       if (newProfile.courses !== profile.courses) {
@@ -129,6 +136,7 @@ function ProfileView(props) {
     }
   };
 
+  // update varsity, instruments, pick-up
   const updateInfo = () => {
     axios
       .get(`/update/${emailId}`)
@@ -144,6 +152,7 @@ function ProfileView(props) {
       .catch((err) => console.log(err));
   };
 
+  // update in others' connections tab
   const handleConnections = () => {
     let info = {
       name: newProfile.firstName + " " + newProfile.lastName,
@@ -158,6 +167,7 @@ function ProfileView(props) {
       .catch((err) => console.log(err));
   };
 
+  // remove card from course
   const handleDeleteCourses = () => {
     if (emailId) {
       let promises = [];
@@ -181,6 +191,7 @@ function ProfileView(props) {
     }
   };
 
+  // remove card from varsity
   const handleDeleteVarsity = () => {
     if (emailId) {
       let promises = [];
@@ -207,6 +218,7 @@ function ProfileView(props) {
     }
   };
 
+  // remove card from pick-up
   const handleDeletePickUp = () => {
     if (emailId) {
       let promises = [];
@@ -233,6 +245,7 @@ function ProfileView(props) {
     }
   };
 
+  // remove card from instrument
   const handleDeleteInstrument = () => {
     if (emailId) {
       let promises = [];
@@ -256,10 +269,12 @@ function ProfileView(props) {
     }
   };
 
+  // handle string change
   const handleChange = (event) => {
     setNewProfile({ ...newProfile, [event.target.name]: event.target.value });
   };
 
+  // handle array change
   const handleArrChange = (event, index) => {
     let newArr = [...newProfile[event.target.name]];
     newArr[index] = event.target.value;
@@ -269,6 +284,7 @@ function ProfileView(props) {
     });
   };
 
+  // handle course change
   const handleCourseChange = (event, index) => {
     let newCourses = [...newProfile.courses];
     let newCourse = {
@@ -283,6 +299,7 @@ function ProfileView(props) {
     });
   };
 
+  // handle location change
   const handleLocationChange = (event, name) => {
     let newLocation = { ...newProfile.location };
     newLocation[name] = event.target.value;
@@ -295,6 +312,7 @@ function ProfileView(props) {
     });
   };
 
+  // handle interests change
   const handleInterests = (i1, i2, i3) => {
     setNewProfile({
       ...newProfile,
@@ -304,6 +322,7 @@ function ProfileView(props) {
     });
   };
 
+  // update profile pic
   const updateImage = (url) => {
     setEditImage(false);
     setProfile({ ...profile, imageUrl: url });
@@ -325,6 +344,7 @@ function ProfileView(props) {
       .catch((err) => console.log(err));
   };
 
+  // left panel
   const renderLeftInfo = () => {
     const classYears = [
       "2021.5",
@@ -648,6 +668,7 @@ function ProfileView(props) {
     );
   };
 
+  // courses row
   const renderCourses = () => {
     if (!editing) {
       if (
@@ -717,6 +738,7 @@ function ProfileView(props) {
     });
   };
 
+  // interests row
   const renderInterests = () => {
     const categories = [
       "Career and Academic",
@@ -781,6 +803,7 @@ function ProfileView(props) {
     );
   };
 
+  // extra-curricular's row
   const renderEcs = () => {
     const categories = [
       "Groups",
@@ -939,6 +962,7 @@ function ProfileView(props) {
     });
   };
 
+  // render profile view
   const renderProfile = () => {
     return (
       <Container

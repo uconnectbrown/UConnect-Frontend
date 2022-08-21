@@ -33,18 +33,19 @@ function DiscoverView(props) {
   const [email, setEmail] = useState(null);
   const [featured, setFeatured] = useState([]);
   const [students, setStudents] = useState(null);
-  const [query, setQuery] = useState("");
   const [studentId, setStudentId] = useState("");
   const [, setStudentInfo] = useState([]);
   const [, setMessageOpen] = useState(false);
-  const [searching, setSearching] = useState(false);
-  const [searchType, setSearchType] = useState(0);
-  const [selectedOptions, setSelectedOptions] = useState([]);
   const [onboardPage, setOnboardPage] = useState(0);
   const [firstTime, setFirstTime] = useState(props.firstTime);
   const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState("");
+  const [searching, setSearching] = useState(false);
+  const [searchType, setSearchType] = useState(0);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const params = [
+    // possible search parameters
     "",
     "classYear",
     "majors",
@@ -53,10 +54,12 @@ function DiscoverView(props) {
     "instruments",
   ];
 
+  // check for first time user
   useEffect(() => {
     setFirstTime(props.firstTime);
   }, [props.firstTime]);
 
+  // authenticate
   useEffect(() => {
     if (auth.currentUser) {
       setEmailId(auth.currentUser.email.split("@")[0]);
@@ -64,6 +67,7 @@ function DiscoverView(props) {
     }
   }, []);
 
+  // init featured profiles and reset search
   useEffect(() => {
     if (emailId) {
       getFeatured();
@@ -71,6 +75,7 @@ function DiscoverView(props) {
     }
   }, [emailId]);
 
+  // handle onboarding slides
   const handleNextPage = () => {
     setOnboardPage(onboardPage + 1);
   };
@@ -78,6 +83,7 @@ function DiscoverView(props) {
     setOnboardPage(onboardPage - 1);
   };
 
+  // gray out search types
   const disableSearchTypes = () => {
     let optionBools = [false, false, false, true, true, true];
     db.doc(`/profiles/${emailId}`)
@@ -103,6 +109,7 @@ function DiscoverView(props) {
       });
   };
 
+  // get featured profiles
   const getFeatured = () => {
     axios
       .get(`/featured/${emailId}`)
@@ -112,6 +119,7 @@ function DiscoverView(props) {
       .catch((err) => console.log(err));
   };
 
+  // filter by field
   const searchField = (options, param) => {
     setLoading(true);
     options = options.map((option) => option.value);
@@ -127,6 +135,7 @@ function DiscoverView(props) {
       .catch((err) => console.log(err));
   };
 
+  // search by name
   const searchName = (query) => {
     setLoading(true);
     axios
@@ -143,23 +152,28 @@ function DiscoverView(props) {
       .catch((err) => console.log(err));
   };
 
+  // open student card
   const handleOpenStudent = (index) => {
     setStudentId(students[index].emailId);
   };
 
+  // open featured student card
   const handleOpenFeatured = (index) => {
     setStudentId(featured[index].emailId);
   };
 
+  // close student card
   const handleCloseStudent = () => {
     setStudentId(null);
   };
 
+  // not used at the moment
   const handleOpenMessage = (id, image, name) => {
     setStudentInfo([id, image, name]);
     setMessageOpen(true);
   };
 
+  // submit search by name
   const onSearchSubmit = (e) => {
     e.preventDefault();
     if (query.length > 0) searchName(query);
@@ -171,6 +185,7 @@ function DiscoverView(props) {
     }
   };
 
+  // clear search by name
   const clearSearch = () => {
     setStudents([]);
     setQuery("");
@@ -178,6 +193,7 @@ function DiscoverView(props) {
     getFeatured();
   };
 
+  // filter picker
   const renderSearchPicker = () => {
     return (
       <Row className="search-picker my-2">
@@ -212,6 +228,7 @@ function DiscoverView(props) {
     );
   };
 
+  // multi select search filter
   const renderDataList = (i) => {
     return (
       <Row className="multiselect-search">
@@ -227,6 +244,7 @@ function DiscoverView(props) {
     );
   };
 
+  // search bar
   const renderSearchBar = () => {
     return (
       <SearchBar
@@ -240,6 +258,7 @@ function DiscoverView(props) {
     );
   };
 
+  // search buttons
   const renderSearchButtons = () => {
     return (
       <>
@@ -268,6 +287,7 @@ function DiscoverView(props) {
     );
   };
 
+  // search results
   const renderSearchResults = () => {
     return (
       <div className="pt-4 px-2">
@@ -355,6 +375,7 @@ function DiscoverView(props) {
     );
   };
 
+  // featured profiles panel
   const renderFeatured = () => {
     return (
       <div>
@@ -429,6 +450,7 @@ function DiscoverView(props) {
     );
   };
 
+  // onboarding slides
   const renderOnboard = () => {
     return (
       <Modal show={firstTime} dialogClassName="student-modal">

@@ -22,12 +22,14 @@ function Connections(props) {
   const [, setStudentInfo] = useState([]);
   const [query, setQuery] = useState("");
 
+  // authenticate
   useEffect(() => {
     if (auth.currentUser) {
       setEmailId(auth.currentUser.email.split("@")[0]);
     }
   }, []);
 
+  // init pending connections
   useEffect(() => {
     if (emailId) {
       getPending();
@@ -35,14 +37,17 @@ function Connections(props) {
     }
   }, [emailId]);
 
+  // init outgoing connections
   useEffect(() => {
     if (emailId) getOutgoing();
   }, [emailId]);
 
+  // init connections
   useEffect(() => {
     if (emailId) getConnections();
   }, [emailId]);
 
+  // filter database by name query
   const filterName = (fn, ln, query) => {
     fn = fn.toLowerCase().trim();
     ln = ln.toLowerCase().trim();
@@ -56,6 +61,7 @@ function Connections(props) {
     }
   };
 
+  // display connections according to query
   useEffect(() => {
     if (query.length === 0) {
       setConnections_(connections);
@@ -73,6 +79,7 @@ function Connections(props) {
     }
   }, [query]);
 
+  // get pending connections
   const getPending = () => {
     axios
       .get(`/pending/${emailId}`)
@@ -82,7 +89,7 @@ function Connections(props) {
       .catch((err) => console.log(err));
   };
 
-  // Outgoing
+  // get outgoing connections
   const getOutgoing = () => {
     let students = [];
     db.collection("profiles")
@@ -98,6 +105,7 @@ function Connections(props) {
       .catch((err) => console.log(err));
   };
 
+  // get connections
   const getConnections = () => {
     axios
       .get(`/connections/${emailId}`)
@@ -108,34 +116,41 @@ function Connections(props) {
       .catch((err) => console.log(err));
   };
 
+  // open pending connection student card
   const handleOpenPending = (index) => {
     setStudentId(pending[index].emailId);
   };
 
+  // open outgoing connection student card
   const handleOpenOutgoing = (index) => {
     setStudentId(outgoing[index].emailId);
   };
 
+  // open connection student card
   const handleOpenConnected = (index) => {
     setStudentId(connections_[index].emailId);
   };
 
+  // close student card
   const handleCloseStudent = () => {
     setStudentId("");
     getPending();
     getOutgoing();
   };
 
+  // not used at the moment
   const handleOpenMessage = (id, image, name) => {
     setStudentInfo([id, image, name]);
     setMessageOpen(true);
   };
 
+  // clear search
   const clearSearch = () => {
     setQuery("");
     getConnections();
   };
 
+  // search bar
   const renderSearchBar = () => {
     return (
       <SearchBar

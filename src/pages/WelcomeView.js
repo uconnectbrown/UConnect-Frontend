@@ -12,6 +12,7 @@ import Logo from "../assets/Logo.png";
 function Welcome(props) {
   let history = useHistory();
 
+  // check whether account exists
   function checkExists(emailId) {
     db.doc(`/profiles/${emailId}`)
       .get()
@@ -28,6 +29,7 @@ function Welcome(props) {
       });
   }
 
+  // sign in with Google
   function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth

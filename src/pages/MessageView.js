@@ -15,7 +15,6 @@ import "./MessageView.css";
 // Body
 function MessageView(props) {
   const [emailId, setEmailId] = useState(null);
-
   const [messages, setMessages] = useState([]);
   const [studentId, setStudentId] = useState("");
   const [studentImageUrl, setStudentImageUrl] = useState("");
@@ -27,12 +26,14 @@ function MessageView(props) {
   const [newMessage, setNewMessage] = useState(false);
   const [, setSelectedM] = useState(0);
 
+  // authenticate
   useEffect(() => {
     if (auth.currentUser) {
       setEmailId(auth.currentUser.email.split("@")[0]);
     }
   }, []);
 
+  // init messages
   useEffect(() => {
     if (emailId) {
       if (props.history.location.state) {
@@ -44,6 +45,7 @@ function MessageView(props) {
     }
   }, [emailId]);
 
+  // new message
   const startMessage = () => {
     let info = props.history.location.state.messageInfo;
     setStudentName(info.studentName);
@@ -67,6 +69,7 @@ function MessageView(props) {
       .catch((err) => console.log(err));
   };
 
+  // get messages
   const getMessages = () => {
     let promises = [
       axios.get(`/messages/${emailId}`),
@@ -90,6 +93,7 @@ function MessageView(props) {
       .catch((err) => console.error(err));
   };
 
+  // set current message
   const setMessage = (index) => {
     setNewMessage(false);
     setSelectedM(index);
@@ -112,11 +116,13 @@ function MessageView(props) {
     }
   };
 
+  // refresh messages
   const refreshMessages = () => {
     getMessages();
     setNewMessage(false);
   };
 
+  // left panel of messageView
   const renderLeftPanel = () => {
     return (
       <div>
@@ -133,6 +139,7 @@ function MessageView(props) {
     );
   };
 
+  // message cards
   const renderMessageCards = () => {
     if (!messages || messages.length === 0) {
       return (

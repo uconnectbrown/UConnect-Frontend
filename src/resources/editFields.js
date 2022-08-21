@@ -84,6 +84,7 @@ const majors = [
 ];
 
 const pronouns = ["he/him", "she/her", "they/their", "ze/hir"];
+
 const greekLife = [
   "Alpha Chi Omega",
   "Alpha Delta Phi Society",

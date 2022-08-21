@@ -45,6 +45,7 @@ function Course(props) {
     "instruments",
   ];
 
+  // authenticate
   useEffect(() => {
     if (auth.currentUser) {
       setEmailId(auth.currentUser.email.split("@")[0]);
@@ -52,11 +53,13 @@ function Course(props) {
     }
   }, []);
 
+  // init course code and name
   useEffect(() => {
     setCode(props.code);
     setName(props.name);
   }, [props.code, props.name]);
 
+  // init students
   useEffect(() => {
     if (email && codeNS) {
       getStudents();
@@ -64,6 +67,7 @@ function Course(props) {
     }
   }, [email, codeNS]);
 
+  // get students
   const getStudents = () => {
     axios
       .get(`/students/${email}/${codeNS}`)
@@ -74,6 +78,7 @@ function Course(props) {
       .catch((err) => console.log(err));
   };
 
+  // display students according to query
   useEffect(() => {
     if (query.length === 0) {
       setStudents_(students);
@@ -87,6 +92,7 @@ function Course(props) {
     }
   }, [query]);
 
+  // handle filter
   useEffect(() => {
     if (selectedOptions.length === 0) {
       setStudents_(students);
@@ -114,19 +120,23 @@ function Course(props) {
     }
   }, [selectedOptions]);
 
+  // open student card
   const handleOpenStudent = (index) => {
     setStudentId(students_[index].email.split("@")[0]);
   };
 
+  // not used at the moment
   const handleOpenMessage = (id, image, name) => {
     setStudentInfo([id, image, name]);
     setMessageOpen(true);
   };
 
+  // close student card
   const handleCloseStudent = () => {
     setStudentId("");
   };
 
+  // filter students by name query
   const filterName = (fn, ln, query) => {
     fn = fn.toLowerCase().trim();
     ln = ln.toLowerCase().trim();
@@ -140,12 +150,14 @@ function Course(props) {
     }
   };
 
+  // clear search
   const clearSearch = () => {
     setStudents_(students);
     setSearching(false);
     setQuery("");
   };
 
+  // search bar
   const renderSearchBar = () => {
     return (
       <SearchBar
@@ -157,6 +169,7 @@ function Course(props) {
     );
   };
 
+  // search buttons
   const renderSearchButtons = () => {
     return (
       <>
@@ -182,6 +195,7 @@ function Course(props) {
     );
   };
 
+  // filter picker
   const renderSearchPicker = () => {
     return (
       <Row className="search-picker my-2">
@@ -200,6 +214,7 @@ function Course(props) {
     );
   };
 
+  // multiselect search
   const renderDataList = (i) => {
     return (
       <Row className="multiselect-search">
